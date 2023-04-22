@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import { Inter } from 'next/font/google'
+import styles from '@/styles/Home.module.css'
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] })
 
 const Tx = () => {
-  const router = useRouter();
-  const slug = (router.query.slug as string[]) || [];
+  const router = useRouter()
+  const slug = (router.query.slug as string[]) || []
 
   return (
     <>
@@ -21,7 +21,7 @@ const Tx = () => {
         <h1>Transaction detail for {slug.join('/')}</h1>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Tx;
+export default Tx
