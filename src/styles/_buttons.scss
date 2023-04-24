@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 4px;
 
   background: var(--color-button-bg);
   color: var(--color-button-text);
@@ -19,4 +20,11 @@
   transition: 0.25s ease;
 
   cursor: pointer;
+
+  &__indicator {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 }

@@ -6,7 +6,7 @@ export interface Tab<T> {
   title: string
   value: T
   icon?: ReactNode
-  indicator?: string
+  indicator?: ReactNode
   disabled?: boolean
   hidden?: boolean
   className?: string
@@ -50,8 +50,8 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
               [`${item.className}`]: !!item.className,
             })}
             caption={item.title}
-            icon={item.icon}
             indicator={item.indicator}
+            icon={item.icon}
             hidden={item.hidden}
             disabled={disabled || item.disabled}
             onClick={(): void => {

@@ -1,16 +1,15 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { title } from 'process'
 import Address from '@/components/Address'
 import Avatar from '@/components/Avatar'
 import Card from '@/components/Card'
 import DetailsView from '@/components/DetailsView'
 import Header from '@/components/Header'
-import { Heading } from '@/components/Heading'
 import Label from '@/components/Label'
 import Properties from '@/components/Properties'
 import TabPanel from '@/components/TabPanel'
 import Tile from '@/components/Tile'
+import IconVerify from '@/images/icons/verified.svg'
 
 export default function Home() {
   return (
@@ -278,6 +277,7 @@ export default function Home() {
                 },
                 {
                   title: 'Contract',
+                  indicator: <IconVerify />,
                   value: 'contract',
                 },
                 {
@@ -294,6 +294,7 @@ export default function Home() {
                 },
                 {
                   title: 'Comments',
+                  indicator: <IconVerify />,
                   value: 'comments',
                 },
               ]}

@@ -14,9 +14,9 @@ export enum ButtonSizes {
 }
 
 export interface ButtonProps {
-  caption?: string
-  indicator?: string
+  caption?: ReactNode
   icon?: ReactNode
+  indicator?: ReactNode
   buttonSize?: ButtonSize
   className?: string
   classNamePrefix?: string
@@ -30,8 +30,8 @@ export interface ButtonProps {
 
 const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
   caption,
-  indicator,
   icon,
+  indicator,
   buttonSize = 'md',
   className,
   classNamePrefix = 'button',
@@ -70,9 +70,9 @@ const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
           <div className="caption">{caption || children}</div>
         </span>
       )}
-      {indicator && (
+      {!!indicator && (
         <span className={getPrefixClassName(classNamePrefix, 'indicator')}>
-          {indicator}
+          <span className="icon">{indicator}</span>
         </span>
       )}
     </>
