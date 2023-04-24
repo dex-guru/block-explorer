@@ -1,7 +1,8 @@
-import { useApollo } from '@/lib/apollo/client'
-import '@/styles/index.scss'
-import { ApolloProvider } from '@apollo/client'
 import type { AppProps } from 'next/app'
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '@/lib/apollo/client'
+import '@/styles/globals.scss'
+import '@/styles/index.scss'
 
 export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps)

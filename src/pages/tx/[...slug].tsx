@@ -1,12 +1,13 @@
-import { useRouter } from 'next/router'
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import { Inter } from 'next/font/google'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
+import clsx from 'clsx'
+import { TransactionModel } from '@/__generated__/resolvers-types'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { TRANSACTIONS_FIRST_TEN, TRANSACTIONS } from '@/lib/apollo/queries'
-import { TransactionModel } from '@/__generated__/resolvers-types'
-import { useQuery } from '@apollo/client'
+import styles from './Tx.module.scss'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,7 +33,7 @@ const Tx: NextPage<ITxProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main className={clsx(styles.main, inter.className)}>
         <h1>Transaction detail for {slug.join('/')}</h1>
         <h4>SSR [10]</h4>
         {/* // oldfox example SSR */}
