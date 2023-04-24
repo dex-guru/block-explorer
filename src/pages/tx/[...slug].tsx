@@ -2,12 +2,27 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { GetServerSidePropsContext, NextPage } from 'next'
+import { addApolloState, initializeApollo } from '@/lib/apollo/client'
+import { TRANSACTIONS_FIRST_TEN, TRANSACTIONS } from '@/lib/apollo/queries'
+import { TransactionModel } from '@/__generated__/resolvers-types'
+import { useQuery } from '@apollo/client'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Tx = () => {
+interface ITxProps {
+  data: { transactions: TransactionModel[] }
+}
+
+const Tx: NextPage<ITxProps> = (props) => {
   const router = useRouter()
   const slug = (router.query.slug as string[]) || []
+
+  const { data } = useQuery<{
+    transactions: TransactionModel[]
+  }>(TRANSACTIONS, {
+    variables: { first: 7 },
+  })
 
   return (
     <>
@@ -19,9 +34,34 @@ const Tx = () => {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <h1>Transaction detail for {slug.join('/')}</h1>
+        <h4>SSR [10]</h4>
+        {/* // oldfox example SSR */}
+        {props.data.transactions.map((item) => (
+          <span key={item.hash}>{item.blockHash}</span>
+        ))}
+
+        <br />
+        <h4>CSR [7]</h4>
+        {/* // oldfox example CSR */}
+        {data?.transactions.map((item) => (
+          <span key={item.blockHash}>{item.blockHash}</span>
+        ))}
       </main>
     </>
   )
 }
 
 export default Tx
+
+// oldfox SSR
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApollo({ ctx })
+
+  const { data } = await apolloClient.query({
+    query: TRANSACTIONS_FIRST_TEN,
+  })
+
+  return addApolloState(apolloClient, {
+    props: { data },
+  })
+}
