@@ -1,0 +1,72 @@
+.app-search {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__combo {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    background: var(--color-input-bg);
+    border: 1px transparent solid;
+    transition: all 0.25s ease;
+
+    border-radius: 8px;
+
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &--focus &__combo {
+    border-color: var(--color-input-focus);
+  }
+
+  &__query {
+    flex: 1 0 0;
+    background: none;
+    color: var(--color-input-text);
+    border: 0;
+    padding: 0 0 0 12px;
+    height: 40px;
+    border-radius: 8px;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+
+    &:last-child {
+      padding-right: 12px;
+    }
+
+    &::placeholder {
+      color: var(--color-input-placeholder);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+  }
+
+  &__action {
+    width: 36px;
+    height: 40px;
+
+    .icon {
+      opacity: 0.5;
+      transition: 0.25s ease;
+    }
+
+    &:focus,
+    &:hover {
+      .icon {
+        opacity: 1;
+      }
+    }
+  }
+}

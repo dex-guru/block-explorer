@@ -1,0 +1,42 @@
+.page {
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 16px;
+
+  &__body {
+    width: 100%;
+    padding: 0 8px;
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__header {
+    width: 100%;
+    background: var(--color-header-bg);
+  }
+
+  &-header {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 8px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+
+    &__search {
+      margin: 0 auto;
+      flex: 0 1 520px;
+    }
+  }
+
+  &__title {
+    grid-column: span 2;
+    margin: 0;
+    padding: 16px 8px;
+  }
+}

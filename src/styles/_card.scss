@@ -1,0 +1,51 @@
+.card {
+  grid-column: span 2;
+  background: var(--color-card-bg);
+  border-radius: var(--radii-card);
+  display: flex;
+  flex-flow: column;
+
+  &--half {
+    grid-column: span 1;
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__header {
+    padding: 16px;
+
+    &:not(:last-child) {
+      border-bottom: 1px var(--color-card-separator) solid;
+    }
+  }
+
+  &__body,
+  &__footer {
+    padding: 16px;
+  }
+
+  &__footer {
+    margin-top: auto;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__action {
+    flex: 1 0 auto;
+
+    &--more {
+      background: var(--color-action-bg);
+
+      &:hover {
+        background: var(--color-action-hover-bg);
+      }
+    }
+  }
+}

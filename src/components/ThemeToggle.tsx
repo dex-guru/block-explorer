@@ -1,28 +1,41 @@
 import { FC } from 'react'
+import classNames from 'classnames'
 
 export enum Theme {
   light = 'light',
   dark = 'dark',
 }
 
-const ThemeToggle: FC<{ onChange: (theme: Theme) => void }> = ({
-  onChange,
-}) => {
+export type ThemeValue = {
+  title: string
+}
+
+export const ThemeValues: Record<Theme, ThemeValue> = {
+  light: {
+    title: 'Light',
+  },
+  dark: {
+    title: 'Dark',
+  },
+}
+
+const ThemeToggle: FC<{
+  className?: string
+  onChange: (theme: Theme) => void
+}> = ({ className, onChange }) => {
   return (
-    <div className="page-header__theme">
-      <label className="page-theme">
-        <input
-          className="page-theme__control"
-          onChange={(e) => {
-            const value = !!e.target?.checked ? Theme.dark : Theme.light
-            onChange(value)
-          }}
-        />
-        <span className="page-theme__caption">
-          <span className="caption"></span>
-        </span>
-      </label>
-    </div>
+    <label className={classNames('theme-toggle', className)}>
+      <input
+        type="checkbox"
+        className="theme-toggle__control"
+        onChange={(e) => {
+          onChange(!!e.target?.checked ? Theme.dark : Theme.light)
+        }}
+      />
+      <span className="theme-toggle__caption">
+        <span className="caption"></span>
+      </span>
+    </label>
   )
 }
 
