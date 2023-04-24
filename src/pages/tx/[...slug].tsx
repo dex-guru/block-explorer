@@ -8,6 +8,7 @@ import clsx from 'clsx'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Card from '@/components/Card'
+import DetailsView from '@/components/DetailsView'
 import Header from '@/components/Header'
 import { Heading } from '@/components/Heading'
 import Label from '@/components/Label'
@@ -45,60 +46,54 @@ const Tx: NextPage<ITxProps> = (props) => {
         </div>
 
         <div className="page__body">
-          <div className="page__title">
-            <Heading
-              caption={`Transaction detail for ${slug.join('/')}`}
-              size="lg"
-              className="page__heading"
-            />
-          </div>
-
-          <Card
-            title="Latest Blocks"
-            className="card--half"
-            actions={[
-              {
-                caption: 'View all blocks',
-                className: 'card__action--more',
-              },
-            ]}
-          >
-            <table className="data-table">
-              <tbody>
-                {props.data.transactions.map((item) => {
-                  return (
-                    <tr className="data-table__trow">
-                      <th className="data-table__tcell data-table__tcell--asset">
-                        <Tile
-                          letters="Bk"
-                          title={
-                            <Address
-                              address={`${item.blockNumber}`}
-                              type="block"
-                            />
-                          }
-                          postfix="38 sec ago"
-                        />
-                      </th>
-                      <td className="data-table__tcell data-table__tcell--data">
-                        <div className="data-table__data">
-                          <div className="value">
-                            Miner <Link href="/">Poolin 2</Link>
+          <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
+            <Card
+              title="Latest Blocks"
+              className="card--half"
+              actions={[
+                {
+                  caption: 'View all blocks',
+                  className: 'card__action--more',
+                },
+              ]}
+            >
+              <table className="data-table">
+                <tbody>
+                  {props.data.transactions.map((item) => {
+                    return (
+                      <tr className="data-table__trow">
+                        <th className="data-table__tcell data-table__tcell--asset">
+                          <Tile
+                            letters="Bk"
+                            title={
+                              <Address
+                                address={`${item.blockNumber}`}
+                                type="block"
+                              />
+                            }
+                            postfix="38 sec ago"
+                          />
+                        </th>
+                        <td className="data-table__tcell data-table__tcell--data">
+                          <div className="data-table__data">
+                            <div className="value">
+                              Miner <Link href="/">Poolin 2</Link>
+                            </div>
+                            <small className="value">
+                              <Link href="/">171 txns</Link> in 29 sec
+                            </small>
                           </div>
-                          <small className="value">
-                            <Link href="/">171 txns</Link> in 29 sec
-                          </small>
-                        </div>
-                      </td>
-                      <td className="data-table__tcell data-table__tcell--label">
-                        <Label title="2.34912 ETH" />
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </Card>
+                        </td>
+                        <td className="data-table__tcell data-table__tcell--label">
+                          <Label title="2.34912 ETH" />
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </Card>
+          </DetailsView>
         </div>
       </div>
     </>
