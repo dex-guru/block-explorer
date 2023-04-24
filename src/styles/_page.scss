@@ -18,6 +18,9 @@
   &__header {
     width: 100%;
     background: var(--color-header-bg);
+    box-shadow: 0 0 8px 2px var(--color-page-bg);
+    position: sticky;
+    top: 0;
   }
 
   &-header {
@@ -32,11 +35,5 @@
       margin: 0 auto;
       flex: 0 1 520px;
     }
-  }
-
-  &__title {
-    grid-column: span 2;
-    margin: 0;
-    padding: 16px 8px;
   }
 }

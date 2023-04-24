@@ -4,7 +4,7 @@
   line-height: 20px;
   height: 32px;
   width: max-content;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 0 10px 0 14px;
   border-radius: 8px;
@@ -19,4 +19,11 @@
       var(--color-label-bg) 6px,
       var(--color-label-bg) 100%
     );
+
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
 }

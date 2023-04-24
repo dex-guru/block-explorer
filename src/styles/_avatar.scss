@@ -7,6 +7,14 @@
   align-items: center;
   justify-content: center;
 
+  &--smooth {
+    border-radius: 4px;
+  }
+
+  &--rounded {
+    border-radius: 50%;
+  }
+
   &[data-letters] {
     &::before {
       content: attr(data-letters);

@@ -1,12 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Sora:wght@200;400;600&display=swap');
 
 @import '_vars';
+@import '_mixins';
 @import '_base';
 @import '_typo';
 @import '_logo';
 @import '_buttons';
 @import '_page';
 @import '_layout';
+@import '_details-view';
+@import '_react-tooltip';
 @import '_card';
 @import '_avatar';
 @import '_tile';

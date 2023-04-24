@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import classNames from 'classnames'
 import Link from 'next/link'
+import clsx from 'clsx'
 import { getShortAddress } from '@/lib/utils'
 
 export type AddressType = 'account' | 'tx' | 'block'
@@ -46,7 +46,7 @@ const Address: FC<{
   }
 
   return (
-    <Link href={addressData.url} className={classNames('address', className)}>
+    <Link href={addressData.url} className={clsx('address', className)}>
       <span className="caption">{addressData.caption}</span>
     </Link>
   )

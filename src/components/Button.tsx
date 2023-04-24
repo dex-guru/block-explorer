@@ -1,7 +1,7 @@
-import { getPrefixClassName } from '@/lib/utils'
-import classNames from 'classnames'
-import Link from 'next/link'
 import React, { FC, ReactNode } from 'react'
+import Link from 'next/link'
+import clsx from 'clsx'
+import { getPrefixClassName } from '@/lib/utils'
 
 export type ButtonSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 
@@ -44,7 +44,7 @@ const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
   children,
   ...rest
 }) => {
-  const classProp = classNames(
+  const classProp = clsx(
     getPrefixClassName(classNamePrefix, '', buttonSize || ''),
     {
       active: !!active,

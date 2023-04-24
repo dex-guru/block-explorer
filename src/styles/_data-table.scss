@@ -21,9 +21,37 @@
     display: grid;
     gap: 2px;
     grid-template-columns: 100%;
+  }
 
-    small.value {
-      color: var(--color-title-secondary);
+  &__tag {
+    min-width: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+
+    &--in,
+    &--out {
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    &--in {
+      background: #12b886;
+    }
+
+    &--out {
+      background: red;
+    }
+
+    &--approve {
+      background: #215545;
     }
   }
 }

@@ -1,0 +1,72 @@
+.react-tooltip {
+  position: fixed;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'IBM Plex Sans Condensed';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  max-width: 320px;
+  transition: opacity 0.25s ease;
+  z-index: 65535;
+  background-color: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
+  margin: 0;
+  pointer-events: none;
+
+  &[class*=' styles-module_show'] {
+    transition-delay: 0s;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  &-arrow {
+    position: absolute;
+    background: inherit;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    z-index: -1;
+  }
+}
+
+.tooltip-anchor {
+  background: none;
+  display: inline-flex;
+  background: none;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  vertical-align: middle;
+  align-self: center;
+  height: 16px;
+  width: 16px;
+
+  &:not(:first-child) {
+    margin-left: 8px;
+  }
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  .caption {
+    @include visually-hidden;
+  }
+
+  path {
+    stroke: var(--color-tooltip-bg);
+  }
+
+  &:hover {
+    path {
+      stroke: var(--color-link-hover);
+    }
+  }
+}

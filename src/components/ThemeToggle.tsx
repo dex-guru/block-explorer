@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 export enum Theme {
   light = 'light',
@@ -24,7 +24,7 @@ const ThemeToggle: FC<{
   onChange: (theme: Theme) => void
 }> = ({ className, onChange }) => {
   return (
-    <label className={classNames('theme-toggle', className)}>
+    <label className={clsx('theme-toggle', className)}>
       <input
         type="checkbox"
         className="theme-toggle__control"

@@ -1,24 +1,43 @@
-import { FC, ReactNode } from 'react'
-import classNames from 'classnames'
+import { FC, ReactNode, useEffect, useRef } from 'react'
+import jazzicon from '@metamask/jazzicon'
+import clsx from 'clsx'
 
 export type AvatarType = 'square' | 'smooth' | 'rounded'
 
 const Avatar: FC<{
   type?: AvatarType
-  icon?: ReactNode
+  address?: string
   letters?: string
   className?: string
-}> = ({ icon, letters, className, type = 'square' }) => {
+}> = ({ address, letters, className, type = 'smooth' }) => {
+  const avatarRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const element = avatarRef.current
+
+    if (!element) {
+      return
+    }
+
+    if (element.firstChild) {
+      element.removeChild(element.firstChild)
+    }
+
+    if (address) {
+      const addr = address?.slice(2, 10)
+      const seed = parseInt(addr, 16)
+      const icon = jazzicon(32, seed)
+
+      element.appendChild(icon)
+    }
+  }, [address, avatarRef])
+
   return (
     <div
-      className={classNames('avatar', `avatar--${type}`, className)}
+      className={clsx('avatar', `avatar--${type}`, className)}
       data-letters={letters}
     >
-      {!!icon && (
-        <div className="avatar__icon">
-          <div className="icon">{icon}</div>
-        </div>
-      )}
+      {!!address && <div className="avatar__icon" ref={avatarRef} />}
     </div>
   )
 }

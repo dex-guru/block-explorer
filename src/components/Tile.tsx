@@ -1,7 +1,7 @@
 import { FC, ReactNode, createElement } from 'react'
-import Avatar, { AvatarType } from './Avatar'
-import classNames from 'classnames'
 import Link from 'next/link'
+import clsx from 'clsx'
+import Avatar, { AvatarType } from './Avatar'
 
 const Tile: FC<{
   title: ReactNode
@@ -12,7 +12,7 @@ const Tile: FC<{
   className?: string
   avatarType?: AvatarType
 }> = ({ title, prefix, postfix, icon, letters, avatarType, className }) => {
-  const tileClassName = classNames('tile', className)
+  const tileClassName = clsx('tile', className)
 
   return (
     <div className={tileClassName}>

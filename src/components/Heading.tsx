@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React, { FC, ReactNode } from 'react'
+import clsx from 'clsx'
+import { TooltipAnchor, TooltipAnchorOptions } from './TooltipAnchor'
 
 export type HeadingSize = 'lg' | 'md' | 'sm' | 'xs'
 
@@ -15,20 +16,27 @@ export const Heading: FC<
     size?: HeadingSize
     caption?: ReactNode
     className?: string
+    tooltip?: ReactNode
+    tooltipOptions?: TooltipAnchorOptions
   }
-> = ({ size = 'md', caption, className, children, ...rest }) => {
+> = ({
+  size = 'md',
+  caption,
+  className,
+  tooltip,
+  tooltipOptions,
+  children,
+  ...rest
+}) => {
   return React.createElement(
     elements[size],
     {
-      className: classNames(
-        'heading',
-        { [`heading--${size}`]: size },
-        className
-      ),
+      className: clsx('heading', { [`heading--${size}`]: size }, className),
       ...rest,
     },
     <>
-      <span className="caption">{children || caption}</span>
+      <span className="caption">{children || caption}</span>{' '}
+      {tooltip && <TooltipAnchor tooltip={tooltip} {...tooltipOptions} />}
     </>
   )
 }

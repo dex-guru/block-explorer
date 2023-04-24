@@ -1,5 +1,5 @@
-import classNames from 'classnames'
 import { FC, ReactElement, ReactNode, useEffect, useState } from 'react'
+import clsx from 'clsx'
 import Button from './Button'
 
 export interface Tab<T> {
@@ -41,11 +41,11 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
   }
 
   return (
-    <div className={classNames('tabs', className || '')}>
+    <div className={clsx('tabs', className || '')}>
       {tabs.map((item, index) => {
         return (
           <Button
-            className={classNames('tabs__tab', {
+            className={clsx('tabs__tab', {
               active: item.value === currentValue,
               [`${item.className}`]: !!item.className,
             })}

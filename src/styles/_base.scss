@@ -20,12 +20,18 @@ body {
 }
 
 a {
+  color: var(--color-link);
   transition: all 0.25s ease;
+
+  &:hover {
+    color: var(--color-link-hover);
+  }
 }
 
 small {
   font-size: 12px;
   line-height: 20px;
+  color: var(--color-title-secondary);
 }
 
 table {

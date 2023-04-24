@@ -33,7 +33,7 @@
     padding: 16px;
 
     &__header {
-      flex: 0 1 360px;
+      flex: 0 1 30%;
     }
 
     &__body {
@@ -45,6 +45,16 @@
       font-size: 16px;
       line-height: 20px;
       color: var(--color-title-secondary);
+      display: flex;
+      gap: 8px;
+
+      .caption {
+        order: 1;
+      }
+
+      .tooltip-anchor {
+        margin: 0;
+      }
     }
   }
 }

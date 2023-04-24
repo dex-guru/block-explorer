@@ -5,11 +5,11 @@ const Label: FC<{ title?: string; children?: ReactNode }> = ({
   children,
 }) => {
   return (
-    <div className="label">
+    <span className="label">
       <div className="label__title">
         <span className="caption">{title || children}</span>
       </div>
-    </div>
+    </span>
   )
 }
 

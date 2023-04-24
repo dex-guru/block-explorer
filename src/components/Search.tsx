@@ -1,7 +1,6 @@
 import { FC, FocusEventHandler, useState } from 'react'
+import clsx from 'clsx'
 import Button from './Button'
-import classNames from 'classnames'
-
 import IconQR from '@/images/icons/qr.svg'
 import IconSearch from '@/images/icons/search.svg'
 
@@ -23,7 +22,7 @@ const Search: FC<{
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         'app-search',
         { 'app-search--focus': isFocus },
         className

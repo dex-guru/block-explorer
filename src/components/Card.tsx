@@ -1,8 +1,7 @@
-import classNames from 'classnames'
 import React, { FC, ReactNode } from 'react'
-
-import { Heading } from './Heading'
+import clsx from 'clsx'
 import Button, { ButtonProps } from './Button'
+import { Heading } from './Heading'
 
 export const Card: FC<{
   className?: string
@@ -13,7 +12,7 @@ export const Card: FC<{
 }> = ({ className, title, subtitle, actions, children }) => {
   return (
     <div
-      className={classNames('card', {
+      className={clsx('card', {
         [`${className}`]: !!className,
       })}
     >
@@ -31,11 +30,12 @@ export const Card: FC<{
       {!!actions && (
         <div className="card__footer">
           <div className="card__actions">
-            {actions.map((button) => {
+            {actions.map((button, idx) => {
               return (
                 <Button
+                  key={idx}
                   {...button}
-                  className={classNames('card__action', button.className)}
+                  className={clsx('card__action', button.className)}
                 />
               )
             })}

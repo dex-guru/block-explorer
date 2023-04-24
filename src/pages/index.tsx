@@ -1,25 +1,16 @@
-import Header from '@/components/Header'
 import Head from 'next/head'
-import { IBM_Plex_Sans_Condensed, Sora } from 'next/font/google'
-import classNames from 'classnames'
-import Card from '@/components/Card'
-import Tile from '@/components/Tile'
-import Button from '@/components/Button'
-import Label from '@/components/Label'
 import Link from 'next/link'
+import { title } from 'process'
 import Address from '@/components/Address'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import DetailsView from '@/components/DetailsView'
+import Header from '@/components/Header'
 import { Heading } from '@/components/Heading'
-import Tabs from '@/components/Tabs'
-import TabPanel from '@/components/TabPanel'
+import Label from '@/components/Label'
 import Properties from '@/components/Properties'
-const fontIBM = IBM_Plex_Sans_Condensed({
-  weight: ['400', '500'],
-  subsets: ['latin-ext'],
-})
-const fontSora = Sora({
-  weight: ['500'],
-  subsets: ['latin-ext'],
-})
+import TabPanel from '@/components/TabPanel'
+import Tile from '@/components/Tile'
 
 export default function Home() {
   return (
@@ -87,7 +78,8 @@ export default function Home() {
                 <tr className="data-table__trow">
                   <th className="data-table__tcell data-table__tcell--asset">
                     <Tile
-                      letters="Bk"
+                      letters="Tx"
+                      avatarType="rounded"
                       title={
                         <Address
                           address="0x61e1A8041186CeB8a561F6F264e8B2BB2E20e06D"
@@ -125,69 +117,258 @@ export default function Home() {
         </div>
 
         <div className="page__body">
-          <div className="page__title">
-            <Heading size="lg" className="page__heading">
-              Transaction Details
-            </Heading>
-          </div>
+          <DetailsView title="Transaction Details">
+            <TabPanel
+              className="tab-panel"
+              tabs={[
+                {
+                  title: 'Overview',
+                  value: 'overview',
+                },
+                {
+                  title: 'Logs (16)',
+                  value: 'logs',
+                },
+                {
+                  title: 'Trace',
+                  value: 'trace',
+                },
+              ]}
+              value="overview"
+            >
+              <Card>
+                <Properties
+                  data={[
+                    {
+                      title: 'Transaction Hash:',
+                      value:
+                        '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                      tooltip: 'Transaction Hash',
+                    },
+                    {
+                      title: 'Status:',
+                      value: 'Success',
+                      tooltip: 'Status',
+                    },
+                    {
+                      title: 'Block / Position:',
+                      value: (
+                        <>
+                          <Address address="40340230" type="block" />
+                          <Label>
+                            <small>26143 Block Confirmations</small>
+                          </Label>
+                        </>
+                      ),
+                      tooltip: 'Block / Position',
+                    },
+                    {
+                      title: 'Timestamp:',
+                      value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                      tooltip: 'Timestamp',
+                    },
+                  ]}
+                />
+              </Card>
+              <Card>
+                <Properties
+                  data={[
+                    {
+                      title: 'Transaction Hash:',
+                      value:
+                        '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                    },
+                    {
+                      title: 'Timestamp:',
+                      value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                    },
+                  ]}
+                />
+              </Card>
+            </TabPanel>
+          </DetailsView>
+        </div>
 
-          <TabPanel
-            className="tab-panel"
-            tabs={[
-              {
-                title: 'Overview',
-                value: 'overview',
-              },
-              {
-                title: 'Logs (16)',
-                value: 'logs',
-              },
-              {
-                title: 'Trace',
-                value: 'trace',
-              },
-            ]}
-            value="overview"
+        <div className="page__body">
+          <DetailsView
+            icon={
+              <Avatar address="0x514910771AF9Ca656af840dff83E8264EcF986CA" />
+            }
+            title="Contract"
+            address="0x514910771AF9Ca656af840dff83E8264EcF986CA"
+            tag="Token Contract"
           >
-            <Card>
+            <Card className="card--half">
               <Properties
                 data={[
                   {
-                    title: 'Transaction Hash:',
-                    value:
-                      '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                    title: 'Contract Overview:',
+                    value: 'ChainLink: LINK Token',
                   },
                   {
-                    title: 'Status:',
-                    value: 'Success',
+                    title: 'Balance:',
+                    value: '0 Ether',
                   },
                   {
-                    title: 'Block / Position:',
-                    value: '40,340,230',
+                    title: 'Ether Value:',
+                    value: '$0.00',
                   },
                   {
-                    title: 'Timestamp:',
-                    value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                    title: 'Token:',
+                    value: '>$23,811.08',
                   },
                 ]}
               />
             </Card>
-            <Card>
+            <Card className="card--half">
               <Properties
                 data={[
                   {
-                    title: 'Transaction Hash:',
-                    value:
-                      '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                    title: 'More Info:',
+                    value: 'ChainLink: LINK Token',
                   },
                   {
-                    title: 'Timestamp:',
-                    value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                    title: 'My Name Tag:',
+                    tooltip: '',
+                    value: (
+                      <>
+                        Not Availiable <a href="/">Login to update</a>
+                      </>
+                    ),
+                  },
+                  {
+                    title: 'Contract Creator:',
+                    value: (
+                      <>
+                        <Address
+                          address="0xf55037738604fddfc40"
+                          type="account"
+                        />{' '}
+                        at txn{' '}
+                        <Address address="0xf55037738604fddfc40" type="tx" />
+                      </>
+                    ),
+                  },
+                  {
+                    title: 'Token Tracker:',
+                    value: <>ChainLink Token (LINK) (@$22.93)</>,
                   },
                 ]}
               />
             </Card>
-          </TabPanel>
+
+            <TabPanel
+              className="tab-panel"
+              tabs={[
+                {
+                  title: 'Transactions',
+                  value: 'txs',
+                },
+                {
+                  title: 'Internal TXns',
+                  value: 'internal-txs',
+                },
+                {
+                  title: 'Erc20 Token TXns',
+                  value: 'erc20',
+                },
+                {
+                  title: 'Erc721 Token TXns',
+                  value: 'erc721',
+                },
+                {
+                  title: 'Contract',
+                  value: 'contract',
+                },
+                {
+                  title: 'Events',
+                  value: 'events',
+                },
+                {
+                  title: 'Analytics',
+                  value: 'analytics',
+                },
+                {
+                  title: 'Info',
+                  value: 'info',
+                },
+                {
+                  title: 'Comments',
+                  value: 'comments',
+                },
+              ]}
+              value="txs"
+            >
+              <Card>
+                <table className="data-table">
+                  <thead className="data-table__thead">
+                    <tr className="data-table__trow">
+                      <th className="data-table__tcell" />
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Txn Hash</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Method</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Block</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Age</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">From</div>
+                      </th>
+                      <th className="data-table__tcell" />
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">To</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Value</div>
+                      </th>
+                      <th className="data-table__tcell">
+                        <div className="data-table__tcaption">Txn Fee</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="data-table__tbody">
+                    <tr>
+                      <td className="data-table__tcell" />
+                      <td className="data-table__tcell">
+                        <Address
+                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
+                          type="tx"
+                        />
+                      </td>
+                      <td className="data-table__tcell">
+                        <div className="data-table__tag data-table__tag--approve">
+                          Approve
+                        </div>
+                      </td>
+                      <td className="data-table__tcell">Pending</td>
+                      <td className="data-table__tcell">5 mins ago</td>
+                      <td className="data-table__tcell">
+                        <Address
+                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
+                          type="account"
+                        />
+                      </td>
+                      <td className="data-table__tcell">
+                        <div className="data-table__tag data-table__tag--in">
+                          IN
+                        </div>
+                      </td>
+                      <td className="data-table__tcell">
+                        ChainLink: LINK TOKEN
+                      </td>
+                      <td className="data-table__tcell">O Ether</td>
+                      <td className="data-table__tcell">Pending</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card>
+            </TabPanel>
+          </DetailsView>
         </div>
       </div>
     </>

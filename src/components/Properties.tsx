@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react'
+import clsx from 'clsx'
 import Card from './Card'
-import classNames from 'classnames'
 import { Heading } from './Heading'
 
 type Property = {
@@ -14,7 +14,7 @@ const Properties: FC<{ data: Property[]; className?: string }> = ({
   className,
 }) => {
   return (
-    <div className={classNames('properties', className)}>
+    <div className={clsx('properties', className)}>
       <ul className="properties__list">
         {data.map((item, idx) => {
           return (
@@ -25,6 +25,7 @@ const Properties: FC<{ data: Property[]; className?: string }> = ({
                     caption={item.title}
                     className="properties-entry__title"
                     size="xs"
+                    tooltip={item.tooltip}
                   />
                 </div>
                 <div className="properties-entry__body">
