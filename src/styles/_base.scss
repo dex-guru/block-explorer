@@ -1,17 +1,18 @@
-*,
-*::before,
-*::after {
-  flex: 0 0 auto;
-  box-sizing: border-box;
-  outline: 0 transparent;
-}
-
 html {
   margin: 0;
   padding: 0;
   background: var(--color-page-bg);
   color: var(--color-page-text);
   font-family: 'IBM Plex Sans Condensed', sans-serif;
+  color-scheme: dark light;
+  content: '';
+
+  @media (prefers-color-scheme: light) {
+    content: 'light';
+  }
+  @media (prefers-color-scheme: dark) {
+    content: 'dark';
+  }
 }
 
 body {
@@ -53,27 +54,5 @@ tr {
 
   & > :last-child {
     padding-right: 16px;
-  }
-}
-
-.icon {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  justify-content: center;
-  speak: never;
-
-  img,
-  svg {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  svg {
-    * {
-      transition: all 0.25s ease;
-    }
   }
 }

@@ -1,0 +1,35 @@
+.button {
+}
+
+.sm {
+  height: 24px;
+}
+
+.md {
+  height: 28px;
+}
+
+.lg {
+  height: 32px;
+}
+
+.action {
+  background: var(--color-link);
+
+  &:hover,
+  &:focus {
+    background: var(--color-link-hover);
+  }
+}
+
+.indicator {
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.icon,
+.indicator {
+  composes: icon from '../../styles/_common.scss';
+}

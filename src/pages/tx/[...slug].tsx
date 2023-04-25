@@ -4,10 +4,10 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
-import Card from '@/components/Card'
-import DetailsView from '@/components/DetailsView'
-import Header from '@/components/Header'
+import Card from '@/components/Card/Card'
+import DetailsView from '@/components/DetailsView/DetailsView'
 import Label from '@/components/Label'
+import Header from '@/components/Page/PageHeader'
 import Tile from '@/components/Tile'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { TRANSACTIONS_FIRST_TEN } from '@/lib/apollo/queries'
@@ -36,8 +36,8 @@ const Tx: NextPage<ITxProps> = (props) => {
         <div className="page__body">
           <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
             <Card
+              isHalf
               title="Latest Blocks"
-              className="card--half"
               actions={[
                 {
                   caption: 'View all blocks',
