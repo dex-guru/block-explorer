@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react'
-import jazzicon from '@metamask/jazzicon'
 import clsx from 'clsx'
+import { getJazzIcon } from './helpers'
 import { AvatarProps } from './types'
 import styles from './Avatar.module.scss'
 
@@ -24,11 +24,7 @@ const Avatar: FC<AvatarProps> = ({
     }
 
     if (address) {
-      const addr = address?.slice(2, 10)
-      const seed = parseInt(addr, 16)
-      const icon = jazzicon(32, seed)
-
-      element.appendChild(icon)
+      element.appendChild(getJazzIcon(address))
     }
   }, [address, avatarRef])
 

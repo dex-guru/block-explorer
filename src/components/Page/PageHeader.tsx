@@ -1,8 +1,7 @@
-import { FC, useEffect } from 'react'
-import clsx from 'clsx'
+import { FC } from 'react'
 import Logo from '../Logo'
 import Search from '../Search'
-import ThemeToggle, { Theme } from '../ThemeToggle'
+import ThemeToggle from '../ThemeToggle'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 

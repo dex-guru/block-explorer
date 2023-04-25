@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import clsx from 'clsx'
 import Button from '../Button'
 import Heading from '../Heading'
@@ -13,6 +13,18 @@ export const Card: FC<CardProps> = ({
   actions,
   children,
 }) => {
+  const renderActions = () => {
+    return actions?.map((button, idx) => {
+      return (
+        <Button
+          key={idx}
+          {...button}
+          className={clsx(styles.action, button.className)}
+        />
+      )
+    })
+  }
+
   return (
     <div
       className={clsx(styles.container, { [styles.half]: isHalf }, className)}
@@ -30,17 +42,7 @@ export const Card: FC<CardProps> = ({
       <div className={styles.body}>{children}</div>
       {!!actions && (
         <div className={styles.footer}>
-          <div className={styles.actions}>
-            {actions.map((button, idx) => {
-              return (
-                <Button
-                  key={idx}
-                  {...button}
-                  className={clsx(styles.action, button.className)}
-                />
-              )
-            })}
-          </div>
+          <div className={styles.actions}>{renderActions()}</div>
         </div>
       )}
     </div>

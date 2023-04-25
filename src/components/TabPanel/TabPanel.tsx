@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement } from 'react'
 import clsx from 'clsx'
-import Tabs, { TabsProps } from '../Tabs'
+import Tabs from '../Tabs'
 import { TabPanelProps } from './types'
 import styles from './TabPanel.module.scss'
 

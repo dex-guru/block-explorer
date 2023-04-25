@@ -14,9 +14,7 @@ export interface ButtonProps {
   caption?: ReactNode
   icon?: ReactNode
   indicator?: ReactNode
-  buttonSize?: ButtonSize
   className?: string
-  classNamePrefix?: string
   active?: boolean
   disabled?: boolean
   hidden?: boolean

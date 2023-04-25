@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import clsx from 'clsx'
 import TooltipAnchor from '../TooltipAnchor'
 import { HeadingProps, HeadingSize } from './type'

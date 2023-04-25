@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import clsx from 'clsx'
 import PageHeader from './PageHeader'
 import { PageProps } from './types'
 import styles from './Page.module.scss'

@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { TooltipAnchorProps } from './types'
 import IconInfo from '@/images/icons/info.svg'

@@ -1,16 +1,14 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { ButtonProps, ButtonSize } from './types'
+import { ButtonProps } from './types'
 import styles from './Button.module.scss'
 
 const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
   caption,
   icon,
   indicator,
-  buttonSize = 'md',
   className,
-  classNamePrefix = 'button',
   active,
   disabled,
   hidden,

@@ -1,5 +1,3 @@
-import clsx from 'clsx'
-
 export const getShortAddress = (address: string): string => {
   const result = address.replace(
     /(0x)([0-9a-f]{3})(.+)([0-9a-f]{4})/i,

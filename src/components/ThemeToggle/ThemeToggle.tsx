@@ -1,6 +1,5 @@
 import { ChangeEventHandler, FC, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { ThemeValues } from './helpers'
 import { Theme, ThemeToggleProps } from './types'
 import styles from './ThemeToggle.module.scss'
 
@@ -23,13 +22,12 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
     if (value) {
       doThemeChange(value === Theme.dark ? Theme.dark : Theme.light)
     }
-  })
+  }, [])
 
   const handleThemeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = !!e.target?.checked ? Theme.dark : Theme.light
 
-    console.log(value)
-
+    onChange && onChange(value)
     doThemeChange(value)
   }
 

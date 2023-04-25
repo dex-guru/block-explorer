@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import clsx from 'clsx'
 import Avatar from '../Avatar'
 import { TileProps } from './types'

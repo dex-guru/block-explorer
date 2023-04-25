@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import Button from '../Button'
 import { TabsProps } from './types'
@@ -22,33 +22,33 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
     onChange && onChange(value, title)
   }
 
-  return (
-    <div className={clsx(styles.container, className)}>
-      {tabs.map((item, index) => {
-        return (
-          <Button
-            className={clsx(
-              styles.tab,
-              {
-                [styles.active]: item.value === currentValue,
-              },
-              item.className
-            )}
-            caption={item.title}
-            indicator={item.indicator}
-            icon={item.icon}
-            hidden={item.hidden}
-            disabled={disabled || item.disabled}
-            onClick={(): void => {
-              item.onClick && item.onClick()
-              handleItemClick(item.value, item.title)
-            }}
-            key={index}
-          />
-        )
-      })}
-    </div>
-  )
+  const renderTabs = () => {
+    return tabs.map((item, index) => {
+      return (
+        <Button
+          className={clsx(
+            styles.tab,
+            {
+              [styles.active]: item.value === currentValue,
+            },
+            item.className
+          )}
+          caption={item.title}
+          indicator={item.indicator}
+          icon={item.icon}
+          hidden={item.hidden}
+          disabled={disabled || item.disabled}
+          onClick={(): void => {
+            item.onClick && item.onClick()
+            handleItemClick(item.value, item.title)
+          }}
+          key={index}
+        />
+      )
+    })
+  }
+
+  return <div className={clsx(styles.container, className)}>{renderTabs()}</div>
 }
 
 export default Tabs

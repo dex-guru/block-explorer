@@ -230,7 +230,7 @@ export default function Home() {
                   tooltip: '',
                   value: (
                     <>
-                      Not Availiable <a href="/">Login to update</a>
+                      Not Availiable <Link href="/">Login to update</Link>
                     </>
                   ),
                 },
