@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Address from '@/components/Address'
 import Avatar from '@/components/Avatar'
 import Card from '@/components/Card'
@@ -12,6 +13,8 @@ import Tile from '@/components/Tile'
 import IconVerify from '@/images/icons/verified.svg'
 
 export default function Home() {
+  const router = useRouter()
+  const { tab } = router.query
   return (
     <>
       <Head>
@@ -122,7 +125,7 @@ export default function Home() {
               tabs={[
                 {
                   title: 'Overview',
-                  value: 'overview',
+                  value: '',
                 },
                 {
                   title: 'Logs (16)',
@@ -133,7 +136,7 @@ export default function Home() {
                   value: 'trace',
                 },
               ]}
-              value="overview"
+              value={tab}
             >
               <Card>
                 <Properties
