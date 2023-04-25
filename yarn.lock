@@ -10,7 +10,7 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@apollo/client@^3.7.12":
+"@apollo/client@3.7.12":
   version "3.7.12"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.7.12.tgz#9ddd355d0788374cdb900e5f40298b196176952b"
   integrity sha512-XvH8ssDibx5hR92Tet8CHtUxhiIs+RbYjyxkflAcnF85QT3VacUdNAhjj0OcA2kcZ+5KyceJmilmBNjj6+rJFg==
@@ -1743,7 +1743,7 @@
     tiny-glob "^0.2.9"
     tslib "^2.4.0"
 
-"@rainbow-me/rainbowkit@^0.12.9":
+"@rainbow-me/rainbowkit@0.12.9":
   version "0.12.9"
   resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.12.9.tgz#137c1fda3d674cc9aaa35942db77aa084c6b2044"
   integrity sha512-8qm3zNtOUAyxRPm7HsxIQf9NzqHoOJyUtceoHQn0JEU98aYdyVgxMm1lx7cjAvzNwz/kfxEIYm5d5W3c3Hfebw==
@@ -6981,7 +6981,7 @@ value-or-promise@^1.0.11, value-or-promise@^1.0.12:
   resolved "https://registry.yarnpkg.com/value-or-promise/-/value-or-promise-1.0.12.tgz#0e5abfeec70148c78460a849f6b003ea7986f15c"
   integrity sha512-Z6Uz+TYwEqE7ZN50gwn+1LCVo9ZVrpxRPOhOLnncYkY1ZzOYtrX8Fwf/rFktZ8R5mJms6EZf5TqNOMeZmnPq9Q==
 
-wagmi@^0.12.12:
+wagmi@0.12.12:
   version "0.12.12"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.12.12.tgz#1b87a1aa5360e43cca4272313ea215b0b9c4066c"
   integrity sha512-AEY4res9WCeAEbVv++tgdx6981lkdiAwfpLPj24mawMoocj2Cqr6j304lq7EJiEhnoiPqIwvbBzme3sAmUWYUA==
