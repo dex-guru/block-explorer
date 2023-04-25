@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
-import Card from './Card'
 import { Heading } from './Heading'
 
 type Property = {

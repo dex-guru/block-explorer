@@ -16,7 +16,7 @@ const Search: FC<{
     e.target.value = query || ''
   }
 
-  const handleFocus: FocusEventHandler<HTMLInputElement> = (e) => {
+  const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
     setIsFocus(true)
   }
 

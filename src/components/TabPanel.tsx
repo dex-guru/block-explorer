@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import Tabs, { TabsProps } from './Tabs'
 
 const TabPanel = <T,>(

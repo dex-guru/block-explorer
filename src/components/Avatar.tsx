@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import jazzicon from '@metamask/jazzicon'
 import clsx from 'clsx'
 
