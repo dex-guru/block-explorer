@@ -1,46 +1,48 @@
-import dayjs from 'dayjs'
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Button } from '@/components'
+import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import styles from './txnColumns.module.scss'
+import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 export const columns: IColumn<TransactionModel>[] = [
   {
     accessor: 'hash',
-    header: 'txHash',
-    render: (data) => (
-      <Button className={styles.link} to={`/tx/${data.hash}`}>
-        {data.hash}
-      </Button>
-    ),
+    title: 'Txn Hash',
+    modifier: 'address',
+    render: (data) => <Address address={data.hash} type="tx" />,
   },
   {
     accessor: 'blockHash',
-    header: 'block',
+    title: 'Block',
+    modifier: 'address',
+    render: (data) => <Address address={data.blockHash} type="tx" />,
   },
   {
     accessor: 'blockTimestamp',
-    header: 'age',
-    render: (data) => {
-      const age = dayjs(new Date(data.blockTimestamp * 1000))
-      const now = dayjs()
-      return `${now.diff(age, 'minute')} min ago`
-    },
+    title: 'Age',
+    render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
   },
   {
     accessor: 'fromAddress',
-    header: 'from',
+    title: 'From',
+    modifier: 'address',
+    render: (data) =>
+      data.fromAddress ? (
+        <Address address={data.fromAddress} type="account" />
+      ) : null,
   },
   {
     accessor: 'toAddress',
-    header: 'to',
+    title: 'To',
+    modifier: 'address',
+    render: (data) =>
+      data.toAddress ? (
+        <Address address={data.toAddress} type="account" />
+      ) : null,
   },
   {
     accessor: 'value',
-    header: 'value',
-  },
-  {
-    accessor: 'blockHash',
-    header: 'block',
+    title: 'Value',
+    type: 'number',
+    render: (data) => financialFormatLowValueHighPrecision(data.value),
   },
 ]

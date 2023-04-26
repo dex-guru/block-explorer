@@ -7,9 +7,8 @@ import {
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Card, DetailsView, Page, Summary } from '@/components'
-import { Pagination } from '@/components/Pagination'
-import { Table } from '@/components/Table/Table'
+import { DetailsView, Page, Summary } from '@/components'
+import DataTable from '@/components/DataTable'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS } from '@/lib/apollo/queries'
@@ -49,6 +48,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <Page withSearch>
         <DetailsView title="Transactions">
           <Summary
@@ -68,19 +68,13 @@ const Txs: NextPage<ITxsProps> = (props) => {
             ]}
           />
 
-          <Card>
-            {transactions?.length && (
-              <Table columns={columns} data={transactions} />
-            )}
-
-            {transactions?.length && (
-              <Pagination
-                total={transactions[0].blockNumber}
-                perPage={perPage[1]}
-                onChange={onPaginationChange}
-              />
-            )}
-          </Card>
+          <DataTable
+            columns={columns}
+            data={transactions}
+            total={transactions[0].blockNumber}
+            perPage={perPage[1]}
+            onPageChange={onPaginationChange}
+          ></DataTable>
         </DetailsView>
       </Page>
     </>

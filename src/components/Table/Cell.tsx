@@ -1,5 +1,6 @@
 import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
+import styles from './Table.module.scss'
 
 interface ICellProps {
   children: ReactNode
@@ -9,7 +10,8 @@ interface ICellProps {
 
 export const Cell: FC<ICellProps> = ({ children, className, th }) => {
   if (th) {
-    return <th className={clsx(className, 'cell-header')}>{children}</th>
+    return <th className={clsx(styles.thcell, className)}>{children}</th>
   }
-  return <td className={clsx(className, 'cell')}>{children}</td>
+
+  return <td className={clsx(styles.tcell, className)}>{children}</td>
 }

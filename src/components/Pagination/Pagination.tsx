@@ -1,4 +1,5 @@
 import { FC, useCallback, useState } from 'react'
+import clsx from 'clsx'
 import Button from '../Button'
 import { getTotalPages } from './utils'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
@@ -8,16 +9,19 @@ import styles from './Pagination.module.scss'
 
 interface IPaginationProps {
   total: number
-  perPage: number
+  perPage?: number
+  className?: string
   onChange: (variables: PaginationVariables) => void
 }
 
 export const DEFAULT_FIRST_PAGE = 1
+export const DEFAULT_PER_PAGE = 10
 
 export const Pagination: FC<IPaginationProps> = ({
   total,
-  perPage,
+  perPage = DEFAULT_PER_PAGE,
   onChange,
+  className,
 }) => {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
   const [totalPages] = useState(() => getTotalPages(total, perPage))
@@ -73,7 +77,7 @@ export const Pagination: FC<IPaginationProps> = ({
   }, [disabled, onChange, perPage, total, totalPages])
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, className)}>
       <Button
         onClick={getPrevHandler}
         disabled={disabled.prev}

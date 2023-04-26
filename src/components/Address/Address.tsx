@@ -3,7 +3,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { AddressValues } from './helpers'
 import { AddressProps } from './types'
-import './Address.module.scss'
+import styles from './Address.module.scss'
 
 const Address: FC<AddressProps> = ({ address, type, className }) => {
   const values = AddressValues[type]
@@ -17,8 +17,13 @@ const Address: FC<AddressProps> = ({ address, type, className }) => {
   }
 
   return (
-    <Link href={addressData.url} className={clsx('address', className)}>
-      <span className="caption">{addressData.caption}</span>
+    <Link
+      href={addressData.url}
+      className={clsx(styles.container, className)}
+      data-tooltip-id="app-tooltip"
+      data-tooltip-content={address}
+    >
+      {addressData.caption}
     </Link>
   )
 }
