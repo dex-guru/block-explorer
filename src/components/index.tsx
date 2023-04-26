@@ -3,7 +3,7 @@ import AddressView from './AddressView'
 import Avatar from './Avatar'
 import Button from './Button'
 import Card from './Card'
-import ContractView from './ContractView'
+import ContractView, { Files } from './ContractView'
 import DetailsView from './DetailsView'
 import Heading from './Heading'
 import Label from './Label'
@@ -28,4 +28,5 @@ export {
   Logo,
   ContractView,
   AddressView,
+  Files,
 }

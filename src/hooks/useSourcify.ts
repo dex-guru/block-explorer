@@ -141,8 +141,10 @@ export type Match = {
 
 const sourcifyFetcher: Fetcher<
   Match | null | undefined,
-  [string, number, SourcifySource]
-> = async ([address, chainId, sourcifySource]) => {
+  ['sourcify', string, number, SourcifySource]
+  // this "_" is important for sourcify metadata
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+> = async ([_, address, chainId, sourcifySource]) => {
   // Try full match
   try {
     const url = sourcifyMetadata(

@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { IContractViewProps } from './types'
@@ -11,8 +10,9 @@ import {
   Page,
   Properties,
   TabPanel,
+  Files,
 } from '@/components'
-import { MatchType, useSourcifyMetadata } from '@/hooks/useSourcify'
+import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 
 const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
@@ -159,66 +159,9 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                     {['readContract', 'writeContract'].includes(
                       tab as string
                     ) && <ConnectButton />}
-                    <Properties
-                      data={[
-                        {
-                          title: 'Language',
-                          value: match?.metadata.language,
-                        },
-                        {
-                          title: 'Compiler Version:',
-                          value: match?.metadata.compiler.version,
-                        },
-                        {
-                          title: 'Optimizer Enabled',
-                          value: match?.metadata.settings.optimizer?.enabled
-                            ? `Yes with ${match?.metadata.settings.optimizer?.runs} runs`
-                            : 'No',
-                        },
-                        {
-                          title: 'Match',
-                          value:
-                            match?.type === MatchType.FULL_MATCH
-                              ? 'Full'
-                              : 'Partial',
-                        },
-                      ]}
-                    />
-                    {match?.metadata.output.abi && (
-                      <>
-                        <h3>ABI</h3>
-                        <SyntaxHighlighter language="json" showLineNumbers>
-                          {JSON.stringify(
-                            match?.metadata.output.abi,
-                            null,
-                            '  '
-                          ) ?? ''}
-                        </SyntaxHighlighter>
-                      </>
-                    )}
-
-                    {match?.metadata.sources && (
-                      <>
-                        <h3>Source files</h3>
-                        {Object.keys(match.metadata.sources).map((key) => {
-                          const sourcecode = match.metadata.sources[key].content
-                          if (!sourcecode) {
-                            return null
-                          }
-                          const filename = key.split('/').pop()
-                          return (
-                            <>
-                              <h4>{filename}</h4>
-                              <SyntaxHighlighter
-                                language="solidity"
-                                showLineNumbers
-                              >
-                                {sourcecode}
-                              </SyntaxHighlighter>
-                            </>
-                          )
-                        })}
-                      </>
+                    {tab === 'code' && <Files match={match} />}
+                    {tab === 'readContract' && (
+                      <div>Here you will see read contract methods</div>
                     )}
                   </Card>
                 </TabPanel>
