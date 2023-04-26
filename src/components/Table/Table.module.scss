@@ -1,5 +1,6 @@
 .container {
   overflow: auto;
+  margin: 0 -16px;
 }
 
 .table {
@@ -35,7 +36,7 @@
 
 .tcell,
 .thcell {
-  font-weight: 500;
+  font-weight: 400;
   box-sizing: content-box;
 }
 

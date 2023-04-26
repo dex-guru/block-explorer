@@ -16,11 +16,14 @@ import {
   Label,
   Page,
   Summary,
+  Table,
   Tile,
   TimeAgo,
 } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
+import { lastTxsColumns } from '@/components/Table/columns'
+import { lastBlocksColumns } from '@/components/Table/columns/lastBlocksColumns'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   BLOCKS_LAST,
@@ -123,39 +126,7 @@ const Index: NextPage<IndexProps> = (props) => {
             },
           ]}
         >
-          <table className="data-table">
-            <tbody>
-              {blocks?.map((block) => {
-                return (
-                  <tr className="data-table__trow" key={block.hash}>
-                    <th className="data-table__tcell data-table__tcell--asset">
-                      <Tile
-                        letters="Bk"
-                        title={
-                          <Address address={`${block.number}`} type="block" />
-                        }
-                        // postfix={<TimeAgo timestamp={block.timestamp} />}
-                      />
-                    </th>
-                    <td className="data-table__tcell data-table__tcell--data">
-                      <div className="data-table__data">
-                        <div className="value">
-                          Miner <Address address={block.miner} type="account" />
-                        </div>
-                        <small className="value">
-                          <Link href="/">{block.transactionCount} txns</Link> in
-                          😢 sec
-                        </small>
-                      </div>
-                    </td>
-                    <td className="data-table__tcell data-table__tcell--label">
-                      <Label title="😢" />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <Table columns={lastBlocksColumns} data={blocks} showHeader={false} />
         </Card>
 
         <Card
@@ -168,40 +139,11 @@ const Index: NextPage<IndexProps> = (props) => {
             },
           ]}
         >
-          <table className="data-table">
-            <tbody>
-              {transactions?.map((tx) => {
-                return (
-                  <tr className="data-table__trow" key={tx.hash}>
-                    <th className="data-table__tcell data-table__tcell--asset">
-                      <Tile
-                        letters="Tx"
-                        avatarType="rounded"
-                        title={<Address address={tx.hash} type="tx" />}
-                        // postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
-                      />
-                    </th>
-                    <td className="data-table__tcell data-table__tcell--data">
-                      <div className="data-table__data">
-                        <div className="value">
-                          From{' '}
-                          <Address address={tx.fromAddress} type="account" />
-                        </div>
-                        {!!tx.toAddress && (
-                          <div className="value">
-                            To <Address address={tx.toAddress} type="account" />
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="data-table__tcell data-table__tcell--label">
-                      <Label title={(tx.value / Math.pow(10, 18)).toString()} />
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <Table
+            columns={lastTxsColumns}
+            data={transactions}
+            showHeader={false}
+          />
         </Card>
       </Page>
     </>

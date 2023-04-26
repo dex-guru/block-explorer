@@ -3,7 +3,7 @@ import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 
-export const columns: IColumn<TransactionModel>[] = [
+export const txsColumns: IColumn<TransactionModel>[] = [
   {
     accessor: 'hash',
     title: 'Txn Hash',

@@ -7,9 +7,15 @@ export interface ITableProps<T> {
   columns: IColumn<T>[]
   data: T[]
   className?: string
+  showHeader?: boolean
 }
 
-export function Table<T>({ columns, data, className }: ITableProps<T>) {
+export function Table<T>({
+  columns,
+  data,
+  showHeader = true,
+  className,
+}: ITableProps<T>) {
   const header = useHeader<T>(columns)
 
   const rows = useBodyRows<T>(columns, data)
@@ -17,7 +23,7 @@ export function Table<T>({ columns, data, className }: ITableProps<T>) {
   return (
     <div className={clsx(styles.container, className)}>
       <table className={styles.table}>
-        <thead className={styles.thead}>{header}</thead>
+        {showHeader && <thead className={styles.thead}>{header}</thead>}
         <tbody className={styles.tbody}>{rows}</tbody>
       </table>
     </div>

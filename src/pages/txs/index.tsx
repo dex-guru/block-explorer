@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useLazyQuery } from '@apollo/client'
-import { columns } from '../../components/txsColumns/txsColumns'
 import {
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { DetailsView, Page, Summary } from '@/components'
 import DataTable from '@/components/DataTable'
+import { txsColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS } from '@/lib/apollo/queries'
@@ -69,7 +69,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
           />
 
           <DataTable
-            columns={columns}
+            columns={txsColumns}
             data={transactions}
             total={transactions[0].blockNumber}
             perPage={perPage[1]}
