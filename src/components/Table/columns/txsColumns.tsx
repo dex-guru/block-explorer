@@ -1,7 +1,10 @@
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormatLowValueHighPrecision,
+  getNormalizedValue,
+} from '@/lib/utils'
 
 export const txsColumns: IColumn<TransactionModel>[] = [
   {
@@ -43,6 +46,6 @@ export const txsColumns: IColumn<TransactionModel>[] = [
     accessor: 'value',
     title: 'Value',
     type: 'number',
-    render: (data) => financialFormatLowValueHighPrecision(data.value),
+    render: (data) => getNormalizedValue(data.value),
   },
 ]
