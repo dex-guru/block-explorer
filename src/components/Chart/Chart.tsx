@@ -94,42 +94,53 @@ const Chart: FC<ChartProps> = ({
         </div>
       )}
       <div className={styles.body}>
-        <svg
-          preserveAspectRatio="none meet"
-          viewBox={`0 -10 ${data.length - 1} 120`}
-          className={styles.chart}
-          width="100"
-          height="100"
-        >
-          <path
-            stroke={color}
-            strokeWidth={stroke}
-            fill="none"
-            d={pathDraw}
-            vectorEffect="non-scaling-stroke"
-          />
+        <div className={styles.values}>
+          <div className={styles.min}>
+            {financialFormatLowValueHighPrecision(Math.min(...values))}
+          </div>
+          <div className={styles.max}>
+            {financialFormatLowValueHighPrecision(Math.max(...values))}
+          </div>
+        </div>
+        <div className={styles.chart}>
+          <svg
+            preserveAspectRatio="none meet"
+            viewBox={`0 -10 ${data.length - 1} 120`}
+            className={styles.canvas}
+            width="100"
+            height="100"
+          >
+            <path
+              stroke={color}
+              strokeWidth={stroke}
+              fill="none"
+              d={pathDraw}
+              vectorEffect="non-scaling-stroke"
+            />
 
-          {percentsOfMax.map((point, index) => {
-            return (
-              <rect
-                x={index - 0.5}
-                y={0}
-                width="1"
-                fill="transparent"
-                height="100"
-                data-tooltip-id="app-tooltip"
-                data-tooltip-html={renderToStaticMarkup(
-                  <div className="text">
-                    <Heading size="xs" caption={labels[index]} />
-                    <div className="value">
-                      {financialFormatLowValueHighPrecision(values[index])}
+            {percentsOfMax.map((point, index) => {
+              return (
+                <rect
+                  key={index}
+                  x={index - 0.5}
+                  y={0}
+                  width="1"
+                  fill="transparent"
+                  height="100"
+                  data-tooltip-id="app-tooltip"
+                  data-tooltip-html={renderToStaticMarkup(
+                    <div className="text">
+                      <Heading size="xs" caption={labels[index]} />
+                      <div className="value">
+                        {financialFormatLowValueHighPrecision(values[index])}
+                      </div>
                     </div>
-                  </div>
-                )}
-              />
-            )
-          })}
-        </svg>
+                  )}
+                />
+              )
+            })}
+          </svg>
+        </div>
       </div>
     </div>
   )

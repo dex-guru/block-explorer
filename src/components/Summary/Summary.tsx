@@ -7,14 +7,14 @@ import styles from './Summary.module.scss'
 
 const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
   const renderCharts = () => {
-    return charts?.map((chart) => {
-      return <Chart {...chart} />
+    return charts?.map((chart, index) => {
+      return <Chart key={index} {...chart} />
     })
   }
 
   const renderStats = () => {
-    return stats?.map((stat) => {
-      return <Tile prefix={stat.title} title={stat.value} />
+    return stats?.map((stat, index) => {
+      return <Tile key={index} prefix={stat.title} title={stat.value} />
     })
   }
 

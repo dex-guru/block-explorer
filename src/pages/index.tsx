@@ -10,6 +10,7 @@ import {
   Address,
   Banner,
   Card,
+  Delta,
   Heading,
   Label,
   Page,
@@ -17,6 +18,7 @@ import {
   Tile,
   TimeAgo,
 } from '@/components'
+import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
@@ -35,7 +37,7 @@ interface IndexProps {
 const Index: NextPage<IndexProps> = (props) => {
   const { blocks, chainStats: stats, transactions } = props
 
-  const chartData = stats.transactionsCountHistory.map(
+  const chartData: ChartData[] = stats.transactionsCountHistory.map(
     ({ timestamp, value }) => {
       const date = new Date(timestamp * 1000)
       return [date.toUTCString(), value]
@@ -95,9 +97,7 @@ const Index: NextPage<IndexProps> = (props) => {
                     {financialFormatLowValueHighPrecision(
                       stats.nativeTokenPriceUsd
                     )}{' '}
-                    {financialFormatLowValueHighPrecision(
-                      stats.nativeTokenPriceUsd24hDelta
-                    )}
+                    <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
                   </>
                 ),
               },
