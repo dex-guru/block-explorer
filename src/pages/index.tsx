@@ -1,18 +1,5 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import {
-  Address,
-  Avatar,
-  Card,
-  DetailsView,
-  Heading,
-  Label,
-  Page,
-  Properties,
-  TabPanel,
-  Tile,
-} from '@/components'
-import IconVerify from '@/images/icons/verified.svg'
+import { Heading, Page } from '@/components'
 
 export default function Home() {
   return (
