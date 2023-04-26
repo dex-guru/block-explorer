@@ -12,6 +12,6 @@ export type SummaryProps = {
   className?: string
   children?: ReactNode
 
-  charts: ChartProps[]
+  charts?: ChartProps[]
   stats?: SummaryStat[]
 }
