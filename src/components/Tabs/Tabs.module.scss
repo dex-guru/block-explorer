@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+}
+
+.tab {
+  composes: button from '../../styles/_common.scss';
+  border: 2px transparent solid;
+  height: 40px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  border-radius: 0;
+  color: var(--color-link);
+  padding: 0 10px;
+}
+
+.active {
+  color: var(--color-action-text);
+  border-bottom-color: var(--color-link);
+}

@@ -7,7 +7,6 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { canto } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
-import styles from '@/styles/Home.module.css'
 
 const { chains, provider } = configureChains([canto], [publicProvider()])
 
@@ -39,7 +38,7 @@ const Address: NextPage = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main className={`${styles.main}`}>
+        <main>
           <h1>{address}</h1>
           <ConnectButton />
         </main>

@@ -1,15 +1,16 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
-import { Inter } from 'next/font/google'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
-import clsx from 'clsx'
 import { TransactionModel } from '@/__generated__/resolvers-types'
+import { Page } from '@/components'
+import Address from '@/components/Address'
+import Card from '@/components/Card/Card'
+import DetailsView from '@/components/DetailsView/DetailsView'
+import Label from '@/components/Label'
+import Tile from '@/components/Tile'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { TRANSACTIONS_FIRST_TEN, TRANSACTIONS } from '@/lib/apollo/queries'
-import styles from './Tx.module.scss'
-
-const inter = Inter({ subsets: ['latin'] })
+import { TRANSACTIONS_FIRST_TEN } from '@/lib/apollo/queries'
 
 interface ITxProps {
   data: { transactions: TransactionModel[] }
@@ -19,12 +20,6 @@ const Tx: NextPage<ITxProps> = (props) => {
   const router = useRouter()
   const slug = (router.query.slug as string[]) || []
 
-  const { data } = useQuery<{
-    transactions: TransactionModel[]
-  }>(TRANSACTIONS, {
-    variables: { first: 7 },
-  })
-
   return (
     <>
       <Head>
@@ -33,21 +28,57 @@ const Tx: NextPage<ITxProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={clsx(styles.main, inter.className)}>
-        <h1>Transaction detail for {slug.join('/')}</h1>
-        <h4>SSR [10]</h4>
-        {/* // oldfox example SSR */}
-        {props.data.transactions.map((item) => (
-          <span key={item.hash}>{item.blockHash}</span>
-        ))}
 
-        <br />
-        <h4>CSR [7]</h4>
-        {/* // oldfox example CSR */}
-        {data?.transactions.map((item) => (
-          <span key={item.blockHash}>{item.blockHash}</span>
-        ))}
-      </main>
+      <Page withSearch>
+        <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
+          <Card
+            isHalf
+            title="Latest Blocks"
+            actions={[
+              {
+                caption: 'View all blocks',
+                className: 'card__action--more',
+              },
+            ]}
+          >
+            <table className="data-table">
+              <tbody>
+                {props.data.transactions.map((item) => {
+                  return (
+                    <tr className="data-table__trow" key={item.hash}>
+                      <th className="data-table__tcell data-table__tcell--asset">
+                        <Tile
+                          letters="Bk"
+                          title={
+                            <Address
+                              address={`${item.blockNumber}`}
+                              type="block"
+                            />
+                          }
+                          postfix="38 sec ago"
+                        />
+                      </th>
+                      <td className="data-table__tcell data-table__tcell--data">
+                        <div className="data-table__data">
+                          <div className="value">
+                            Miner <Link href="/">Poolin 2</Link>
+                          </div>
+                          <small className="value">
+                            <Link href="/">171 txns</Link> in 29 sec
+                          </small>
+                        </div>
+                      </td>
+                      <td className="data-table__tcell data-table__tcell--label">
+                        <Label title="2.34912 ETH" />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </Card>
+        </DetailsView>
+      </Page>
     </>
   )
 }

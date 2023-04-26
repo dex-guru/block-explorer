@@ -1,0 +1,58 @@
+html {
+  margin: 0;
+  padding: 0;
+  background: var(--color-page-bg);
+  color: var(--color-page-text);
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  color-scheme: dark light;
+  content: '';
+
+  @media (prefers-color-scheme: light) {
+    content: 'light';
+  }
+  @media (prefers-color-scheme: dark) {
+    content: 'dark';
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--color-link);
+  transition: all 0.25s ease;
+
+  &:hover {
+    color: var(--color-link-hover);
+  }
+}
+
+small {
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--color-title-secondary);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 16px 8px;
+}
+
+tr {
+  border-bottom: 1px var(--color-table-separator) solid;
+
+  & > :first-child {
+    padding-left: 16px;
+  }
+
+  & > :last-child {
+    padding-right: 16px;
+  }
+}

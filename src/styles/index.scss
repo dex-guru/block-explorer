@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Sora:wght@200;400;600&display=swap');
+
+*,
+*::before,
+*::after {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  outline: 0 transparent;
+}
+
+@import '_vars';
+@import '_mixins';
+@import '_base';
+@import '_typography';
+@import '_react-tooltip';

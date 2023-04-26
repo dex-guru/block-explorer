@@ -1,0 +1,55 @@
+.container {
+}
+
+.cardChild {
+  composes: child from '../Card/Card.module.scss';
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px var(--color-card-separator) solid;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.entry {
+  display: flex;
+  gap: 8px 16px;
+  padding: 16px;
+
+  &Header {
+    flex: 0 1 30%;
+  }
+
+  &Body {
+    flex: 1 0 320px;
+  }
+
+  &Title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--color-title-secondary);
+    display: flex;
+    gap: 8px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+
+    .caption {
+      order: 1;
+    }
+
+    .tooltip-anchor {
+      margin: 0;
+    }
+  }
+}
