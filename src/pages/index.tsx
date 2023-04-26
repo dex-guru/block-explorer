@@ -134,7 +134,7 @@ const Index: NextPage<IndexProps> = (props) => {
                         title={
                           <Address address={`${block.number}`} type="block" />
                         }
-                        postfix={<TimeAgo timestamp={block.timestamp} />}
+                        // postfix={<TimeAgo timestamp={block.timestamp} />}
                       />
                     </th>
                     <td className="data-table__tcell data-table__tcell--data">
@@ -178,7 +178,7 @@ const Index: NextPage<IndexProps> = (props) => {
                         letters="Tx"
                         avatarType="rounded"
                         title={<Address address={tx.hash} type="tx" />}
-                        postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
+                        // postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
                       />
                     </th>
                     <td className="data-table__tcell data-table__tcell--data">
