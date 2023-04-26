@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import SyntaxHighlighter from 'react-syntax-highlighter'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { IContractViewProps } from './types'
@@ -11,9 +12,14 @@ import {
   Properties,
   TabPanel,
 } from '@/components'
+import { MatchType, useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 
 const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
+  const match = useSourcifyMetadata(address, 7700)
+
+  console.log(match)
+
   return (
     <>
       <Head>
@@ -153,73 +159,67 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                     {['readContract', 'writeContract'].includes(
                       tab as string
                     ) && <ConnectButton />}
+                    <Properties
+                      data={[
+                        {
+                          title: 'Language',
+                          value: match?.metadata.language,
+                        },
+                        {
+                          title: 'Compiler Version:',
+                          value: match?.metadata.compiler.version,
+                        },
+                        {
+                          title: 'Optimizer Enabled',
+                          value: match?.metadata.settings.optimizer?.enabled
+                            ? `Yes with ${match?.metadata.settings.optimizer?.runs} runs`
+                            : 'No',
+                        },
+                        {
+                          title: 'Match',
+                          value:
+                            match?.type === MatchType.FULL_MATCH
+                              ? 'Full'
+                              : 'Partial',
+                        },
+                      ]}
+                    />
+                    {match?.metadata.output.abi && (
+                      <>
+                        <h3>ABI</h3>
+                        <SyntaxHighlighter language="json" showLineNumbers>
+                          {JSON.stringify(
+                            match?.metadata.output.abi,
+                            null,
+                            '  '
+                          ) ?? ''}
+                        </SyntaxHighlighter>
+                      </>
+                    )}
 
-                    <table className="data-table">
-                      <thead className="data-table__thead">
-                        <tr className="data-table__trow">
-                          <th className="data-table__tcell" />
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Txn Hash</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Method</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Block</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Age</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">From</div>
-                          </th>
-                          <th className="data-table__tcell" />
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">To</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Value</div>
-                          </th>
-                          <th className="data-table__tcell">
-                            <div className="data-table__tcaption">Txn Fee</div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="data-table__tbody">
-                        <tr>
-                          <td className="data-table__tcell" />
-                          <td className="data-table__tcell">
-                            <Address
-                              address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                              type="tx"
-                            />
-                          </td>
-                          <td className="data-table__tcell">
-                            <div className="data-table__tag data-table__tag--approve">
-                              Approve
-                            </div>
-                          </td>
-                          <td className="data-table__tcell">Pending</td>
-                          <td className="data-table__tcell">5 mins ago</td>
-                          <td className="data-table__tcell">
-                            <Address
-                              address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                              type="account"
-                            />
-                          </td>
-                          <td className="data-table__tcell">
-                            <div className="data-table__tag data-table__tag--in">
-                              IN
-                            </div>
-                          </td>
-                          <td className="data-table__tcell">
-                            ChainLink: LINK TOKEN
-                          </td>
-                          <td className="data-table__tcell">O Ether</td>
-                          <td className="data-table__tcell">Pending</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    {match?.metadata.sources && (
+                      <>
+                        <h3>Source files</h3>
+                        {Object.keys(match.metadata.sources).map((key) => {
+                          const sourcecode = match.metadata.sources[key].content
+                          if (!sourcecode) {
+                            return null
+                          }
+                          const filename = key.split('/').pop()
+                          return (
+                            <>
+                              <h4>{filename}</h4>
+                              <SyntaxHighlighter
+                                language="solidity"
+                                showLineNumbers
+                              >
+                                {sourcecode}
+                              </SyntaxHighlighter>
+                            </>
+                          )
+                        })}
+                      </>
+                    )}
                   </Card>
                 </TabPanel>
               ) : (

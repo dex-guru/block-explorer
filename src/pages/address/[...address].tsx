@@ -28,6 +28,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({ isContract }) => {
   const router = useRouter()
   const { address, tab } = router.query
   console.log('isContract', isContract)
+
   if (!address) {
     return null
   }
