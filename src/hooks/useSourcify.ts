@@ -3,7 +3,6 @@ import { Interface } from '@ethersproject/abi'
 import { ErrorDescription } from '@ethersproject/abi/lib/interface'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { ChecksummedAddress, TransactionData } from '../types'
 
 export type UserMethod = {
   notice?: string | undefined
@@ -110,7 +109,7 @@ const resolveSourcifySource = (source: SourcifySource) => {
  * and chain.
  */
 export const sourcifyMetadata = (
-  address: ChecksummedAddress,
+  address: string,
   chainId: number,
   source: SourcifySource,
   type: MatchType
@@ -120,7 +119,7 @@ export const sourcifyMetadata = (
   }/${chainId}/${address}/metadata.json`
 
 export const sourcifySourceFile = (
-  address: ChecksummedAddress,
+  address: string,
   chainId: number,
   filepath: string,
   source: SourcifySource,
@@ -142,8 +141,8 @@ export type Match = {
 
 const sourcifyFetcher: Fetcher<
   Match | null | undefined,
-  ['sourcify', ChecksummedAddress, number, SourcifySource]
-> = async ([_, address, chainId, sourcifySource]) => {
+  [string, number, SourcifySource]
+> = async ([address, chainId, sourcifySource]) => {
   // Try full match
   try {
     const url = sourcifyMetadata(
@@ -190,7 +189,7 @@ const sourcifyFetcher: Fetcher<
 }
 
 export const useSourcifyMetadata = (
-  address: ChecksummedAddress | undefined,
+  address: string | undefined,
   chainId: number | undefined
 ): Match | null | undefined => {
   const sourcifySource = SourcifySource.IPFS_IPNS
@@ -240,7 +239,7 @@ export const useContract = (
 }
 
 export const useHasCode = (
-  address: ChecksummedAddress | undefined
+  address: string | undefined
 ): boolean | undefined => {
   const url = `https://sourcify.dev/server/check-all-by-addresses?addresses=${address}&chainIds=7700`
   const { data, error } = useSWRImmutable(url, (fetchUrl: string) =>
@@ -251,34 +250,6 @@ export const useHasCode = (
   }
   console.log(data)
   return data[0].status !== 'false'
-}
-
-export const useTransactionDescription = (
-  metadata: Metadata | null | undefined,
-  txData: TransactionData | null | undefined
-) => {
-  const txDesc = useMemo(() => {
-    if (metadata === null) {
-      return null
-    }
-    if (!metadata || !txData) {
-      return undefined
-    }
-
-    const abi = metadata.output.abi
-    const intf = new Interface(abi as any)
-    try {
-      return intf.parseTransaction({
-        data: txData.data,
-        value: txData.value,
-      })
-    } catch (err) {
-      console.warn("Couldn't find function signature", err)
-      return null
-    }
-  }, [metadata, txData])
-
-  return txDesc
 }
 
 export const useError = (
