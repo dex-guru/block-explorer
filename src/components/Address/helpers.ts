@@ -18,7 +18,7 @@ export const AddressValues: Record<
       return getShortAddress(address)
     },
     url: (address: string) => {
-      return `/tx/${address}`
+      return `/txs/${address}`
     },
   },
   block: {
@@ -26,7 +26,7 @@ export const AddressValues: Record<
       return address
     },
     url: (address: string) => {
-      return `/block/${address}`
+      return `/blocks/${address}`
     },
   },
 }
