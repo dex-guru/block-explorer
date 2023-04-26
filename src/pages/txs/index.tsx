@@ -20,7 +20,7 @@ interface ITxsProps {
 const Txs: NextPage<ITxsProps> = (props) => {
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.data.transactions)
-  const [getTransactions, { loading, data }] = useLazyQuery(GET_TRANSACTIONS)
+  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {

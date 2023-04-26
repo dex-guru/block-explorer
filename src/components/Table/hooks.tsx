@@ -3,12 +3,12 @@ import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
 
-export const useBodyRows = (
-  columns: IColumn<object>[],
-  data: object[],
+export const useBodyRows = <T,>(
+  columns: IColumn<T>[],
+  data: T[],
   rowClassName?: string,
   isHeader?: boolean,
-  onRowClick?: (rowData: object) => void
+  onRowClick?: (rowData: T) => void
 ) => {
   return data.map((dataItem) => {
     const cells = columns.map((column) => {
@@ -55,8 +55,8 @@ export const useBodyRows = (
   })
 }
 
-export const useHeader = (
-  columns: IColumn<object>[],
+export const useHeader = <T,>(
+  columns: IColumn<T>[],
   // isFiltered?:boolean,
   // onSort?: () => void,
   // onFilter?:()=>void,
