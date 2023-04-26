@@ -1,6 +1,8 @@
 import { FC } from 'react'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import ContractMethodForm from './ContractMethodForm'
+import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
 import {
   Address,
@@ -161,7 +163,30 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                     ) && <ConnectButton />}
                     {tab === 'code' && <Files match={match} />}
                     {tab === 'readContract' && (
-                      <div>Here you will see read contract methods</div>
+                      <>
+                        {match?.metadata.output.abi
+                          .filter(
+                            (item) =>
+                              item.type === 'function' &&
+                              item.stateMutability === 'view'
+                          )
+                          .map((method, index) => {
+                            return method.inputs?.length === 0 ? (
+                              <ContractProperty
+                                method={method}
+                                address={address}
+                                abi={match?.metadata.output.abi}
+                              />
+                            ) : (
+                              <ContractMethodForm
+                                key={index}
+                                method={method}
+                                address={address}
+                                abi={match?.metadata.output.abi}
+                              />
+                            )
+                          })}
+                      </>
                     )}
                   </Card>
                 </TabPanel>
