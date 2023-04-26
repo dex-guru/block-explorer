@@ -59,7 +59,7 @@ export const useHeader = <T,>(
   columns: IColumn<T>[],
   // isFiltered?:boolean,
   // onSort?: () => void,
-  // onFilter?:()=>void,
+  // onFilter?:()=>void,,
   rowClassName?: string
 ) => {
   const cells = columns.map((column) => {
