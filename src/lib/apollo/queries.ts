@@ -16,3 +16,16 @@ export const TRANSACTIONS = gql`
     }
   }
 `
+export const GET_TRANSACTIONS = gql`
+  query Transactions($first: Int!, $skip: Int!) {
+    transactions(first: $first, skip: $skip) {
+      blockNumber
+      blockTimestamp
+      hash
+      fromAddress
+      toAddress
+      value
+      blockHash
+    }
+  }
+`

@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-types */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql'
+
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -52,6 +54,23 @@ export type BlockModel = {
   transactionsRoot: Scalars['String']
 }
 
+export type ChainStatsModel = {
+  __typename?: 'ChainStatsModel'
+  lastBlockNumber: Scalars['Int']
+  liquidity24hDelta: Scalars['Decimal']
+  liquidityUsd: Scalars['Decimal']
+  marketCap: Scalars['Decimal']
+  mediumGasPrice: Scalars['Decimal']
+  nativeTokenPriceUsd: Scalars['Decimal']
+  nativeTokenPriceUsd24hDelta: Scalars['Decimal']
+  tokenSupply: Scalars['Decimal']
+  transactionsCount: Scalars['Int']
+  transactionsCountHistory: Array<TimeSeriesChartModel>
+  transactionsPerSecond: Scalars['Decimal']
+  volume24hDeltaUsd: Scalars['Decimal']
+  volume24hUsd: Scalars['Decimal']
+}
+
 export type LogModel = {
   __typename?: 'LogModel'
   address: Scalars['String']
@@ -68,6 +87,8 @@ export type Query = {
   __typename?: 'Query'
   /** Get blocks */
   blocks: Array<BlockModel>
+  /** Get transactions */
+  chainStats: ChainStatsModel
   /** Get logs */
   logs: Array<LogModel>
   /** Get transactions */
@@ -76,14 +97,27 @@ export type Query = {
 
 export type QueryBlocksArgs = {
   first: Scalars['Int']
+  number?: InputMaybe<Scalars['Int']>
+  skip?: Scalars['Int']
 }
 
 export type QueryLogsArgs = {
   first: Scalars['Int']
+  skip?: Scalars['Int']
+  transactionHash: Scalars['String']
 }
 
 export type QueryTransactionsArgs = {
+  blockNumber?: InputMaybe<Scalars['Int']>
   first: Scalars['Int']
+  hash?: InputMaybe<Scalars['String']>
+  skip?: Scalars['Int']
+}
+
+export type TimeSeriesChartModel = {
+  __typename?: 'TimeSeriesChartModel'
+  timestamp: Scalars['Int']
+  value: Scalars['Int']
 }
 
 export type TransactionModel = {
@@ -223,11 +257,13 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   BlockModel: ResolverTypeWrapper<BlockModel>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>
   Decimal: ResolverTypeWrapper<Scalars['Decimal']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   LogModel: ResolverTypeWrapper<LogModel>
   Query: ResolverTypeWrapper<{}>
   String: ResolverTypeWrapper<Scalars['String']>
+  TimeSeriesChartModel: ResolverTypeWrapper<TimeSeriesChartModel>
   TransactionModel: ResolverTypeWrapper<TransactionModel>
 }>
 
@@ -235,11 +271,13 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   BlockModel: BlockModel
   Boolean: Scalars['Boolean']
+  ChainStatsModel: ChainStatsModel
   Decimal: Scalars['Decimal']
   Int: Scalars['Int']
   LogModel: LogModel
   Query: {}
   String: Scalars['String']
+  TimeSeriesChartModel: TimeSeriesChartModel
   TransactionModel: TransactionModel
 }>
 
@@ -273,6 +311,50 @@ export type BlockModelResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type ChainStatsModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ChainStatsModel'] = ResolversParentTypes['ChainStatsModel']
+> = ResolversObject<{
+  lastBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  liquidity24hDelta?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  liquidityUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  marketCap?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  mediumGasPrice?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  nativeTokenPriceUsd?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  nativeTokenPriceUsd24hDelta?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  tokenSupply?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  transactionsCountHistory?: Resolver<
+    Array<ResolversTypes['TimeSeriesChartModel']>,
+    ParentType,
+    ContextType
+  >
+  transactionsPerSecond?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  volume24hDeltaUsd?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  volume24hUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export interface DecimalScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['Decimal'], any> {
   name: 'Decimal'
@@ -301,20 +383,37 @@ export type QueryResolvers<
     Array<ResolversTypes['BlockModel']>,
     ParentType,
     ContextType,
-    RequireFields<QueryBlocksArgs, 'first'>
+    RequireFields<QueryBlocksArgs, 'first' | 'number' | 'skip'>
+  >
+  chainStats?: Resolver<
+    ResolversTypes['ChainStatsModel'],
+    ParentType,
+    ContextType
   >
   logs?: Resolver<
     Array<ResolversTypes['LogModel']>,
     ParentType,
     ContextType,
-    RequireFields<QueryLogsArgs, 'first'>
+    RequireFields<QueryLogsArgs, 'first' | 'skip' | 'transactionHash'>
   >
   transactions?: Resolver<
     Array<ResolversTypes['TransactionModel']>,
     ParentType,
     ContextType,
-    RequireFields<QueryTransactionsArgs, 'first'>
+    RequireFields<
+      QueryTransactionsArgs,
+      'blockNumber' | 'first' | 'hash' | 'skip'
+    >
   >
+}>
+
+export type TimeSeriesChartModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TimeSeriesChartModel'] = ResolversParentTypes['TimeSeriesChartModel']
+> = ResolversObject<{
+  timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  value?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type TransactionModelResolvers<
@@ -375,8 +474,10 @@ export type TransactionModelResolvers<
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   BlockModel?: BlockModelResolvers<ContextType>
+  ChainStatsModel?: ChainStatsModelResolvers<ContextType>
   Decimal?: GraphQLScalarType
   LogModel?: LogModelResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  TimeSeriesChartModel?: TimeSeriesChartModelResolvers<ContextType>
   TransactionModel?: TransactionModelResolvers<ContextType>
 }>
