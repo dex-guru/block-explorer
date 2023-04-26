@@ -1,12 +1,13 @@
 import { FC } from 'react'
 import clsx from 'clsx'
+import Card from '../Card'
 import Heading from '../Heading'
 import { PropertiesProps } from './types'
 import styles from './Properties.module.scss'
 
-const Properties: FC<PropertiesProps> = ({ data, className, isCardChild }) => {
+const Properties: FC<PropertiesProps> = (props) => {
   const renderItems = () => {
-    return data.map((item, idx) => {
+    return props.data.map((item, idx) => {
       return (
         <li className={styles.item} key={idx}>
           <div className={styles.entry}>
@@ -26,15 +27,9 @@ const Properties: FC<PropertiesProps> = ({ data, className, isCardChild }) => {
   }
 
   return (
-    <div
-      className={clsx(
-        styles.container,
-        { [styles.cardChild]: isCardChild },
-        className
-      )}
-    >
+    <Card {...props} className={clsx(styles.container, props.className)}>
       <ul className={styles.list}>{renderItems()}</ul>
-    </div>
+    </Card>
   )
 }
 

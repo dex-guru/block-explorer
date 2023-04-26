@@ -56,64 +56,60 @@ const AddressPage: NextPage = () => {
             address={normalizedAddress}
             tag="Token Contract"
           >
-            <Card className="card--half">
-              <Properties
-                data={[
-                  {
-                    title: 'Contract Overview:',
-                    value: 'ChainLink: LINK Token',
-                  },
-                  {
-                    title: 'Balance:',
-                    value: '0 Ether',
-                  },
-                  {
-                    title: 'Ether Value:',
-                    value: '$0.00',
-                  },
-                  {
-                    title: 'Token:',
-                    value: '>$23,811.08',
-                  },
-                ]}
-              />
-            </Card>
-            <Card className="card--half">
-              <Properties
-                data={[
-                  {
-                    title: 'More Info:',
-                    value: 'ChainLink: LINK Token',
-                  },
-                  {
-                    title: 'My Name Tag:',
-                    tooltip: '',
-                    value: (
-                      <>
-                        Not Availiable <Link href="/">Login to update</Link>
-                      </>
-                    ),
-                  },
-                  {
-                    title: 'Contract Creator:',
-                    value: (
-                      <>
-                        <Address
-                          address="0xf55037738604fddfc40"
-                          type="account"
-                        />{' '}
-                        at txn{' '}
-                        <Address address="0xf55037738604fddfc40" type="tx" />
-                      </>
-                    ),
-                  },
-                  {
-                    title: 'Token Tracker:',
-                    value: <>ChainLink Token (LINK) (@$22.93)</>,
-                  },
-                ]}
-              />
-            </Card>
+            <Properties
+              isHalf
+              data={[
+                {
+                  title: 'Contract Overview:',
+                  value: 'ChainLink: LINK Token',
+                },
+                {
+                  title: 'Balance:',
+                  value: '0 Ether',
+                },
+                {
+                  title: 'Ether Value:',
+                  value: '$0.00',
+                },
+                {
+                  title: 'Token:',
+                  value: '>$23,811.08',
+                },
+              ]}
+            />
+
+            <Properties
+              isHalf
+              data={[
+                {
+                  title: 'More Info:',
+                  value: 'ChainLink: LINK Token',
+                },
+                {
+                  title: 'My Name Tag:',
+                  tooltip: '',
+                  value: (
+                    <>
+                      Not Availiable <Link href="/">Login to update</Link>
+                    </>
+                  ),
+                },
+                {
+                  title: 'Contract Creator:',
+                  value: (
+                    <>
+                      <Address address="0xf55037738604fddfc40" type="account" />{' '}
+                      at txn{' '}
+                      <Address address="0xf55037738604fddfc40" type="tx" />
+                    </>
+                  ),
+                },
+                {
+                  title: 'Token Tracker:',
+                  value: <>ChainLink Token (LINK) (@$22.93)</>,
+                },
+              ]}
+            />
 
             <TabPanel
               className="tab-panel"

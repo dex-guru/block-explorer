@@ -31,4 +31,8 @@
     background-color: rgb(var(--color-banner-color));
     background-size: 496px;
   }
+
+  &:first-child {
+    margin-top: -16px;
+  }
 }
