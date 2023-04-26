@@ -49,7 +49,3 @@ const Address: NextPage = () => {
 }
 
 export default Address
-
-export const config = {
-  runtime: 'experimental-edge',
-}
