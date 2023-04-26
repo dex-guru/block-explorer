@@ -1,7 +1,7 @@
 export type AddressType = 'account' | 'tx' | 'block'
 
 export type AddressProps = {
-  address: string
+  address?: string
   type: AddressType
   className?: string
 }

@@ -12,6 +12,7 @@ import Properties from './Properties'
 import Summary from './Summary'
 import TabPanel from './TabPanel'
 import Tile from './Tile'
+import TimeAgo from './TimeAgo'
 
 export {
   Banner,
@@ -28,4 +29,5 @@ export {
   Heading,
   Logo,
   Summary,
+  TimeAgo,
 }

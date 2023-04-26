@@ -1,31 +1,47 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { TransactionModel } from '@/__generated__/resolvers-types'
+import {
+  BlockModel,
+  ChainStatsModel,
+  TransactionModel,
+} from '@/__generated__/resolvers-types'
 import {
   Address,
-  Avatar,
   Banner,
   Card,
-  DetailsView,
   Heading,
   Label,
   Page,
-  Properties,
   Summary,
-  TabPanel,
   Tile,
+  TimeAgo,
 } from '@/components'
 import Search from '@/components/Search'
-import IconVerify from '@/images/icons/verified.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { TRANSACTIONS_FIRST_TEN } from '@/lib/apollo/queries'
+import {
+  BLOCKS_LAST,
+  CHAIN_STATS,
+  TRANSACTIONS_LAST,
+} from '@/lib/apollo/queries'
+import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 interface IndexProps {
-  data: { transactions: TransactionModel[] }
+  transactions: TransactionModel[]
+  blocks: BlockModel[]
+  chainStats: ChainStatsModel
 }
 
 const Index: NextPage<IndexProps> = (props) => {
+  const { blocks, chainStats: stats, transactions } = props
+
+  const chartData = stats.transactionsCountHistory.map(
+    ({ timestamp, value }) => {
+      const date = new Date(timestamp * 1000)
+      return [date.toUTCString(), value]
+    }
+  )
+
   return (
     <>
       <Head>
@@ -40,23 +56,61 @@ const Index: NextPage<IndexProps> = (props) => {
           <Search />
         </Banner>
 
-        <Summary
-          charts={[
-            {
-              title: 'Ethereum Transaction History in 14 days',
-              data: [
-                [0, 1400],
-                [0, 1410],
-                [0, 1405],
-                [0, 1407],
-                [0, 1411],
-                [0, 1415],
-                [0, 1420],
-              ],
-              color: '#9488F0',
-            },
-          ]}
-        />
+        {!!stats && (
+          <Summary
+            stats={[
+              {
+                title: 'Last Block Number',
+                value: financialFormatLowValueHighPrecision(
+                  stats.lastBlockNumber
+                ),
+              },
+              {
+                title: 'Transactions',
+                value: (
+                  <>
+                    {financialFormatLowValueHighPrecision(
+                      stats.transactionsCount
+                    )}{' '}
+                    (
+                    {financialFormatLowValueHighPrecision(
+                      stats.transactionsPerSecond
+                    )}
+                    txs/sec)
+                  </>
+                ),
+              },
+              {
+                title: 'Market Cap',
+                value: financialFormatLowValueHighPrecision(stats.marketCap),
+              },
+              {
+                title: 'Token Supply',
+                value: financialFormatLowValueHighPrecision(stats.tokenSupply),
+              },
+              {
+                title: 'Token Price',
+                value: (
+                  <>
+                    {financialFormatLowValueHighPrecision(
+                      stats.nativeTokenPriceUsd
+                    )}{' '}
+                    {financialFormatLowValueHighPrecision(
+                      stats.nativeTokenPriceUsd24hDelta
+                    )}
+                  </>
+                ),
+              },
+            ]}
+            charts={[
+              {
+                title: 'Ethereum Transaction History in 14 days',
+                data: chartData,
+                color: '#9488F0',
+              },
+            ]}
+          />
+        )}
 
         <Card
           isHalf
@@ -64,39 +118,37 @@ const Index: NextPage<IndexProps> = (props) => {
           actions={[
             {
               caption: 'View all blocks',
-              to: '/',
+              to: '/blocks',
             },
           ]}
         >
           <table className="data-table">
             <tbody>
-              {props.data.transactions.map((item) => {
+              {blocks?.map((block) => {
                 return (
-                  <tr className="data-table__trow" key={item.hash}>
+                  <tr className="data-table__trow" key={block.hash}>
                     <th className="data-table__tcell data-table__tcell--asset">
                       <Tile
                         letters="Bk"
                         title={
-                          <Address
-                            address={`${item.blockNumber}`}
-                            type="block"
-                          />
+                          <Address address={`${block.number}`} type="block" />
                         }
-                        postfix="38 sec ago"
+                        postfix={<TimeAgo timestamp={block.timestamp} />}
                       />
                     </th>
                     <td className="data-table__tcell data-table__tcell--data">
                       <div className="data-table__data">
                         <div className="value">
-                          Miner <Link href="/">Poolin 2</Link>
+                          Miner <Address address={block.miner} type="account" />
                         </div>
                         <small className="value">
-                          <Link href="/">171 txns</Link> in 29 sec
+                          <Link href="/">{block.transactionCount} txns</Link> in
+                          😢 sec
                         </small>
                       </div>
                     </td>
                     <td className="data-table__tcell data-table__tcell--label">
-                      <Label title="2.34912 ETH" />
+                      <Label title="😢" />
                     </td>
                   </tr>
                 )
@@ -111,76 +163,38 @@ const Index: NextPage<IndexProps> = (props) => {
           actions={[
             {
               caption: 'View all transactions',
+              to: '/txs',
             },
           ]}
         >
           <table className="data-table">
             <tbody>
-              <tr className="data-table__trow">
-                <th className="data-table__tcell data-table__tcell--asset">
-                  <Tile
-                    letters="Tx"
-                    avatarType="rounded"
-                    title={
-                      <Address
-                        address="0x61e1A8041186CeB8a561F6F264e8B2BB2E20e06D"
-                        type="tx"
-                      />
-                    }
-                    postfix="38 sec ago"
-                  />
-                </th>
-                <td className="data-table__tcell data-table__tcell--data">
-                  <div className="data-table__data">
-                    <div className="value">
-                      From{' '}
-                      <Address
-                        address="0x61e1A8041186CeB8a561F6F264e8B2BB2E20e06D"
-                        type="account"
-                      />
-                    </div>
-                    <div className="value">
-                      To{' '}
-                      <Address
-                        address="0x61e1A8041186CeB8a561F6F264e8B2BB2E20e06D"
-                        type="account"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className="data-table__tcell data-table__tcell--label">
-                  <Label title="2.34912 ETH" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table className="data-table">
-            <tbody>
-              {props.data.transactions.map((item) => {
+              {transactions?.map((tx) => {
                 return (
-                  <tr className="data-table__trow" key={item.hash}>
+                  <tr className="data-table__trow" key={tx.hash}>
                     <th className="data-table__tcell data-table__tcell--asset">
                       <Tile
-                        letters="Bk"
-                        title={
-                          <Address address={`${item.blockHash}`} type="tx" />
-                        }
-                        postfix="38 sec ago"
+                        letters="Tx"
+                        avatarType="rounded"
+                        title={<Address address={tx.hash} type="tx" />}
+                        postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
                       />
                     </th>
                     <td className="data-table__tcell data-table__tcell--data">
                       <div className="data-table__data">
                         <div className="value">
-                          Miner <Link href="/">Poolin 2</Link>
+                          From{' '}
+                          <Address address={tx.fromAddress} type="account" />
                         </div>
-                        <small className="value">
-                          <Link href="/">171 txns</Link> in 29 sec
-                        </small>
+                        {!!tx.toAddress && (
+                          <div className="value">
+                            To <Address address={tx.toAddress} type="account" />
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="data-table__tcell data-table__tcell--label">
-                      <Label title="2.34912 ETH" />
+                      <Label title={(tx.value / Math.pow(10, 18)).toString()} />
                     </td>
                   </tr>
                 )
@@ -198,11 +212,21 @@ export default Index
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const { data } = await apolloClient.query({
-    query: TRANSACTIONS_FIRST_TEN,
+  const { data: transactions } = await apolloClient.query({
+    query: TRANSACTIONS_LAST,
+  })
+  const { data: blocks } = await apolloClient.query({
+    query: BLOCKS_LAST,
+  })
+  const { data: chainStats } = await apolloClient.query({
+    query: CHAIN_STATS,
   })
 
   return addApolloState(apolloClient, {
-    props: { data },
+    props: {
+      ...transactions,
+      ...blocks,
+      ...chainStats,
+    },
   })
 }

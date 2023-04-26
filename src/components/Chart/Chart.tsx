@@ -1,7 +1,9 @@
 import { FC } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import clsx from 'clsx'
 import Heading from '../Heading'
 import { ChartCoord, ChartProps } from './types'
+import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Chart.module.scss'
 
 const calcLine = (
@@ -106,6 +108,27 @@ const Chart: FC<ChartProps> = ({
             d={pathDraw}
             vectorEffect="non-scaling-stroke"
           />
+
+          {percentsOfMax.map((point, index) => {
+            return (
+              <rect
+                x={index - 0.5}
+                y={0}
+                width="1"
+                fill="transparent"
+                height="100"
+                data-tooltip-id="app-tooltip"
+                data-tooltip-html={renderToStaticMarkup(
+                  <div className="text">
+                    <Heading size="xs" caption={labels[index]} />
+                    <div className="value">
+                      {financialFormatLowValueHighPrecision(values[index])}
+                    </div>
+                  </div>
+                )}
+              />
+            )
+          })}
         </svg>
       </div>
     </div>

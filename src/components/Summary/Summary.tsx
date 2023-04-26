@@ -1,22 +1,32 @@
 import { FC } from 'react'
 import Card from '../Card'
 import Chart from '../Chart'
+import Tile from '../Tile'
 import { SummaryProps } from './types'
 import styles from './Summary.module.scss'
 
-const Summary: FC<SummaryProps> = ({ charts, children }) => {
+const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
   const renderCharts = () => {
     return charts?.map((chart) => {
       return <Chart {...chart} />
     })
   }
 
+  const renderStats = () => {
+    return stats?.map((stat) => {
+      return <Tile prefix={stat.title} title={stat.value} />
+    })
+  }
+
   return (
-    <Card className={styles.container}>
-      <div className={styles.body}>
-        <div className={styles.charts}>{renderCharts()}</div>
+    <Card>
+      <div className={styles.container}>
+        <div className={styles.body}>
+          <div className={styles.stats}>{renderStats()}</div>
+          <div className={styles.charts}>{renderCharts()}</div>
+        </div>
+        {Boolean(children) && <div className={styles.body}>{children}</div>}
       </div>
-      {Boolean(children) && <div className={styles.body}>{children}</div>}
     </Card>
   )
 }
