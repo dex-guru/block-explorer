@@ -9,29 +9,26 @@
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.yml"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint",
-      "pre-push": "yarn build"
-    }
-  },
+  "pre-push": [
+    "yarn build"
+  ],
   "dependencies": {
     "@apollo/client": "3.7.12",
     "@metamask/jazzicon": "2.0.0",
     "@rainbow-me/rainbowkit": "0.12.9",
     "@types/node": "18.15.13",
-    "@types/react-dom": "18.0.11",
     "@types/react": "18.0.38",
+    "@types/react-dom": "18.0.11",
     "clsx": "1.2.1",
     "deepmerge": "4.3.1",
-    "eslint-config-next": "13.3.1",
     "eslint": "8.39.0",
+    "eslint-config-next": "13.3.1",
     "graphql": "16.6.0",
     "lodash": "4.17.21",
     "next": "13.3.1",
+    "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-tooltip": "5.11.1",
-    "react": "18.2.0",
     "typescript": "5.0.4",
     "wagmi": "0.12.12"
   },
@@ -39,8 +36,8 @@
     "@graphql-codegen/cli": "3.3.1",
     "@graphql-codegen/client-preset": "3.0.1",
     "@graphql-codegen/introspection": "3.0.1",
-    "@graphql-codegen/typescript-resolvers": "3.2.1",
     "@graphql-codegen/typescript": "3.0.4",
+    "@graphql-codegen/typescript-resolvers": "3.2.1",
     "@svgr/webpack": "7.0.0",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "@types/lodash": "4.14.194",
@@ -48,6 +45,7 @@
     "eslint-config-prettier": "8.8.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.1",
+    "pre-push": "^0.1.4",
     "prettier": "2.8.7",
     "sass": "1.62.0"
   }
