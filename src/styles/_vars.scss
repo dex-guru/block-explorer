@@ -1,13 +1,10 @@
-:root {
+html {
   --color-page-bg: #1e242c;
   --color-page-text: #fff;
 
   --color-header-bg: #181d23;
 
   --color-button-text: #fff;
-
-  --color-action-bg: #9488f0;
-  --color-action-hover-bg: #afa5fb;
 
   --color-link: #9488f0;
   --color-link-hover: #afa5fb;
@@ -35,4 +32,37 @@
 
   --radii-button: 4px;
   --radii-card: 8px;
+
+  &.theme-light {
+    --color-page-bg: #eceff1;
+    --color-page-text: #181d23;
+
+    --color-header-bg: #fff;
+
+    --color-button-text: #181d23;
+
+    --color-link: #9488f0;
+    --color-link-hover: #afa5fb;
+    --color-link-active: #181d23;
+
+    --color-title-primary: #181d23;
+    --color-title-secondary: #6d7986;
+
+    --color-label-bg: #2d3642;
+
+    --color-card-bg: #fff;
+    --color-card-separator: #eceff1;
+
+    --color-table-separator: #eceff1;
+
+    --color-avatar-bg: #a8b4c1;
+
+    --color-input-bg: #eceff1;
+    --color-input-text: #000;
+    --color-input-placeholder: #a7b2bd;
+    --color-input-focus: #6046ff;
+
+    --color-tooltip-bg: #2d3642;
+    --color-tooltip-text: #fff;
+  }
 }

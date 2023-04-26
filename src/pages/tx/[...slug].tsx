@@ -3,10 +3,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { TransactionModel } from '@/__generated__/resolvers-types'
+import { Page } from '@/components'
 import Address from '@/components/Address'
-import Card from '@/components/Card'
-import DetailsView from '@/components/DetailsView'
-import Header from '@/components/Header'
+import Card from '@/components/Card/Card'
+import DetailsView from '@/components/DetailsView/DetailsView'
 import Label from '@/components/Label'
 import Tile from '@/components/Tile'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -28,62 +28,57 @@ const Tx: NextPage<ITxProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="page">
-        <div className="page__header">
-          <Header withSearch />
-        </div>
 
-        <div className="page__body">
-          <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
-            <Card
-              title="Latest Blocks"
-              className="card--half"
-              actions={[
-                {
-                  caption: 'View all blocks',
-                  className: 'card__action--more',
-                },
-              ]}
-            >
-              <table className="data-table">
-                <tbody>
-                  {props.data.transactions.map((item) => {
-                    return (
-                      <tr className="data-table__trow" key={item.hash}>
-                        <th className="data-table__tcell data-table__tcell--asset">
-                          <Tile
-                            letters="Bk"
-                            title={
-                              <Address
-                                address={`${item.blockNumber}`}
-                                type="block"
-                              />
-                            }
-                            postfix="38 sec ago"
-                          />
-                        </th>
-                        <td className="data-table__tcell data-table__tcell--data">
-                          <div className="data-table__data">
-                            <div className="value">
-                              Miner <Link href="/">Poolin 2</Link>
-                            </div>
-                            <small className="value">
-                              <Link href="/">171 txns</Link> in 29 sec
-                            </small>
+      <Page withSearch>
+        <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
+          <Card
+            isHalf
+            title="Latest Blocks"
+            actions={[
+              {
+                caption: 'View all blocks',
+                className: 'card__action--more',
+              },
+            ]}
+          >
+            <table className="data-table">
+              <tbody>
+                {props.data.transactions.map((item) => {
+                  return (
+                    <tr className="data-table__trow" key={item.hash}>
+                      <th className="data-table__tcell data-table__tcell--asset">
+                        <Tile
+                          letters="Bk"
+                          title={
+                            <Address
+                              address={`${item.blockNumber}`}
+                              type="block"
+                            />
+                          }
+                          postfix="38 sec ago"
+                        />
+                      </th>
+                      <td className="data-table__tcell data-table__tcell--data">
+                        <div className="data-table__data">
+                          <div className="value">
+                            Miner <Link href="/">Poolin 2</Link>
                           </div>
-                        </td>
-                        <td className="data-table__tcell data-table__tcell--label">
-                          <Label title="2.34912 ETH" />
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </Card>
-          </DetailsView>
-        </div>
-      </div>
+                          <small className="value">
+                            <Link href="/">171 txns</Link> in 29 sec
+                          </small>
+                        </div>
+                      </td>
+                      <td className="data-table__tcell data-table__tcell--label">
+                        <Label title="2.34912 ETH" />
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </Card>
+        </DetailsView>
+      </Page>
     </>
   )
 }
@@ -101,4 +96,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return addApolloState(apolloClient, {
     props: { data },
   })
+}
+
+export const config = {
+  runtime: 'experimental-edge',
 }
