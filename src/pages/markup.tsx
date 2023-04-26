@@ -129,57 +129,52 @@ export default function Home() {
             ]}
             value="overview"
           >
-            <Card>
-              <Properties
-                isCardChild
-                data={[
-                  {
-                    title: 'Transaction Hash:',
-                    value:
-                      '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
-                    tooltip: 'Transaction Hash',
-                  },
-                  {
-                    title: 'Status:',
-                    value: 'Success',
-                    tooltip: 'Status',
-                  },
-                  {
-                    title: 'Block / Position:',
-                    value: (
-                      <>
-                        <Address address="40340230" type="block" />
-                        <Label>
-                          <small>26143 Block Confirmations</small>
-                        </Label>
-                      </>
-                    ),
-                    tooltip: 'Block / Position',
-                  },
-                  {
-                    title: 'Timestamp:',
-                    value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
-                    tooltip: 'Timestamp',
-                  },
-                ]}
-              />
-            </Card>
-            <Card>
-              <Properties
-                isCardChild
-                data={[
-                  {
-                    title: 'Transaction Hash:',
-                    value:
-                      '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
-                  },
-                  {
-                    title: 'Timestamp:',
-                    value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
-                  },
-                ]}
-              />
-            </Card>
+            <Properties
+              data={[
+                {
+                  title: 'Transaction Hash:',
+                  value:
+                    '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                  tooltip: 'Transaction Hash',
+                },
+                {
+                  title: 'Status:',
+                  value: 'Success',
+                  tooltip: 'Status',
+                },
+                {
+                  title: 'Block / Position:',
+                  value: (
+                    <>
+                      <Address address="40340230" type="block" />
+                      <Label>
+                        <small>26143 Block Confirmations</small>
+                      </Label>
+                    </>
+                  ),
+                  tooltip: 'Block / Position',
+                },
+                {
+                  title: 'Timestamp:',
+                  value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                  tooltip: 'Timestamp',
+                },
+              ]}
+            />
+
+            <Properties
+              data={[
+                {
+                  title: 'Transaction Hash:',
+                  value:
+                    '0x995590a78bcae74c64282a7ff42d8e7c3b7ae9030c1319a18fc53257b8666c99',
+                },
+                {
+                  title: 'Timestamp:',
+                  value: '5 hrs 5 mins ago (Jul 18 2023 10:34:23 AM +UTC)',
+                },
+              ]}
+            />
           </TabPanel>
         </DetailsView>
 
@@ -194,63 +189,59 @@ export default function Home() {
           address="0x514910771AF9Ca656af840dff83E8264EcF986CA"
           tag="Token Contract"
         >
-          <Card isHalf>
-            <Properties
-              isCardChild
-              data={[
-                {
-                  title: 'Contract Overview:',
-                  value: 'ChainLink: LINK Token',
-                },
-                {
-                  title: 'Balance:',
-                  value: '0 Ether',
-                },
-                {
-                  title: 'Ether Value:',
-                  value: '$0.00',
-                },
-                {
-                  title: 'Token:',
-                  value: '>$23,811.08',
-                },
-              ]}
-            />
-          </Card>
-          <Card isHalf>
-            <Properties
-              isCardChild
-              data={[
-                {
-                  title: 'More Info:',
-                  value: 'ChainLink: LINK Token',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '',
-                  value: (
-                    <>
-                      Not Availiable <Link href="/">Login to update</Link>
-                    </>
-                  ),
-                },
-                {
-                  title: 'Contract Creator:',
-                  value: (
-                    <>
-                      <Address address="0xf55037738604fddfc40" type="account" />{' '}
-                      at txn{' '}
-                      <Address address="0xf55037738604fddfc40" type="tx" />
-                    </>
-                  ),
-                },
-                {
-                  title: 'Token Tracker:',
-                  value: <>ChainLink Token (LINK) (@$22.93)</>,
-                },
-              ]}
-            />
-          </Card>
+          <Properties
+            isHalf
+            data={[
+              {
+                title: 'Contract Overview:',
+                value: 'ChainLink: LINK Token',
+              },
+              {
+                title: 'Balance:',
+                value: '0 Ether',
+              },
+              {
+                title: 'Ether Value:',
+                value: '$0.00',
+              },
+              {
+                title: 'Token:',
+                value: '>$23,811.08',
+              },
+            ]}
+          />
+
+          <Properties
+            isHalf
+            data={[
+              {
+                title: 'More Info:',
+                value: 'ChainLink: LINK Token',
+              },
+              {
+                title: 'My Name Tag:',
+                tooltip: '',
+                value: (
+                  <>
+                    Not Availiable <Link href="/">Login to update</Link>
+                  </>
+                ),
+              },
+              {
+                title: 'Contract Creator:',
+                value: (
+                  <>
+                    <Address address="0xf55037738604fddfc40" type="account" />{' '}
+                    at txn <Address address="0xf55037738604fddfc40" type="tx" />
+                  </>
+                ),
+              },
+              {
+                title: 'Token Tracker:',
+                value: <>ChainLink Token (LINK) (@$22.93)</>,
+              },
+            ]}
+          />
 
           <TabPanel
             tabs={[

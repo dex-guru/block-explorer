@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { CardProps } from '../Card'
 
 export type Property = {
   title: string
@@ -6,8 +7,6 @@ export type Property = {
   value?: ReactNode
 }
 
-export type PropertiesProps = {
+export type PropertiesProps = CardProps & {
   data: Property[]
-  className?: string
-  isCardChild?: boolean
 }
