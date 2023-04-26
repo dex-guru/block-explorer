@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useLazyQuery } from '@apollo/client'
-import { columns } from './txsColumns'
+import { columns } from '../../components/txsColumns/txsColumns'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import { Card } from '@/components'
 import { Pagination } from '@/components/Pagination'
