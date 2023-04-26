@@ -27,7 +27,7 @@ const Delta: FC<DeltaProps> = ({ value = 0, className, showZero = false }) => {
         [styles.low]: absValue && displayValue === '0',
       })}
       data-tooltip-id="app-tooltip"
-      data-tooltip-content={absValue}
+      data-tooltip-content={String(absValue)}
     >
       <span className="delta__value">{displayValue}%</span>
     </span>

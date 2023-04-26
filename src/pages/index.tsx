@@ -38,7 +38,7 @@ interface IndexProps {
 const Index: NextPage<IndexProps> = (props) => {
   const { blocks, chainStats: stats, transactions } = props
 
-  const chartData: ChartData[] = stats.transactionsCountHistory.map(
+  const chartData = stats.transactionsCountHistory.map(
     ({ timestamp, value }) => {
       const date = new Date(timestamp * 1000)
       return [date.toUTCString(), value]
@@ -106,7 +106,7 @@ const Index: NextPage<IndexProps> = (props) => {
             charts={[
               {
                 title: 'Ethereum Transaction History in 14 days',
-                data: chartData,
+                data: chartData as ChartData,
                 color: '#9488F0',
               },
             ]}
