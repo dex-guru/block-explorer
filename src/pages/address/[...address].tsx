@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -89,7 +90,7 @@ const AddressPage: NextPage = () => {
                     tooltip: '',
                     value: (
                       <>
-                        Not Availiable <a href="/">Login to update</a>
+                        Not Available <Link href="/">Login to update</Link>
                       </>
                     ),
                   },
