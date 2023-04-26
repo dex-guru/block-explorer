@@ -14,7 +14,7 @@ interface TxsProps {
   chainStats: ChainStatsModel
 }
 
-const TxsPage: NextPage<TxsProps> = ({ chainStats, transactions }) => {
+const TxsPage: NextPage<TxsProps> = ({ chainStats }) => {
   return (
     <>
       <Head>
