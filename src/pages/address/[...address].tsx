@@ -90,7 +90,7 @@ const AddressPage: NextPage = () => {
                   tooltip: '',
                   value: (
                     <>
-                      Not Availiable <Link href="/">Login to update</Link>
+                      Not Available <Link href="/">Login to update</Link>
                     </>
                   ),
                 },
