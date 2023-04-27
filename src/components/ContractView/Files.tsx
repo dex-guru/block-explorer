@@ -36,6 +36,7 @@ const Files: FC<IFilesProps> = ({ match }) => {
           <Heading size="md">ABI</Heading>
           <SyntaxHighlighter
             language="json"
+            wrapLongLines
             showLineNumbers
             customStyle={{ margin: 0 }}
           >

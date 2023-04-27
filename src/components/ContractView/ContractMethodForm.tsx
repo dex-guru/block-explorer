@@ -86,14 +86,23 @@ const ContractMethodForm: FC<IFormProps> = ({
       <form
         key={method.name}
         onSubmit={handleSubmit(isWrite ? onWrite : onRead)}
+        className={styles.form}
       >
         <>
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
             return (
-              <label key={index}>
-                <Heading caption={input.name} size="xs" />
-                <input {...register(name)} />
+              <label key={index} className={styles.field}>
+                <Heading
+                  caption={input.name}
+                  size="xs"
+                  className={styles.label}
+                />
+                <input
+                  {...register(name)}
+                  className={styles.input}
+                  placeholder={`${input.internalType} (${input.type})`}
+                />
                 {/* errors will return when field validation fails  */}
                 {errors.exampleRequired && <span>This field is required</span>}
               </label>
