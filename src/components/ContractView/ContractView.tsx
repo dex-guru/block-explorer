@@ -49,19 +49,19 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
               data={[
                 {
                   title: 'Contract Overview:',
-                  value: 'ChainLink: LINK Token',
+                  value: '🫠',
                 },
                 {
                   title: 'Balance:',
-                  value: '0 Ether',
+                  value: '🫠',
                 },
                 {
                   title: 'Ether Value:',
-                  value: '$0.00',
+                  value: '🫠',
                 },
                 {
                   title: 'Token:',
-                  value: '>$23,811.08',
+                  value: '🫠',
                 },
               ]}
             />
@@ -70,11 +70,11 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
               data={[
                 {
                   title: 'More Info:',
-                  value: 'ChainLink: LINK Token',
+                  value: '🫠',
                 },
                 {
                   title: 'My Name Tag:',
-                  tooltip: '',
+                  tooltip: '🫠',
                   value: (
                     <>
                       Not Availiable <a href="/">Login to update</a>
@@ -85,15 +85,14 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   title: 'Contract Creator:',
                   value: (
                     <>
-                      <Address address="0xf55037738604fddfc40" type="account" />{' '}
-                      at txn{' '}
-                      <Address address="0xf55037738604fddfc40" type="tx" />
+                      <Address address="🫠" type="account" /> at txn{' '}
+                      <Address address="🫠" type="tx" />
                     </>
                   ),
                 },
                 {
                   title: 'Token Tracker:',
-                  value: <>ChainLink Token (LINK) (@$22.93)</>,
+                  value: <>🫠</>,
                 },
               ]}
             />

@@ -27,7 +27,6 @@ interface AddressPageServerProps {
 const AddressPage: NextPage<AddressPageServerProps> = ({ isContract }) => {
   const router = useRouter()
   const { address, tab } = router.query
-  console.log('isContract', isContract)
 
   if (!address) {
     return null
@@ -58,7 +57,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const res = await fetch(url)
   const data = await res.json()
 
-  console.log(data)
   const isContract = data[0].status !== 'false'
 
   // Pass data to the page via props

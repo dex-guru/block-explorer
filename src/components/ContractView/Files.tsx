@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { Heading, Properties, Details } from '@/components'
-import { Match, MatchType } from '@/hooks/useSourcify'
+import { Match, MatchType } from '@/types'
 
 export interface IFilesProps {
   match: Match | undefined | null
