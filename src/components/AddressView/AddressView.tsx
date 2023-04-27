@@ -6,6 +6,7 @@ import {
   Avatar,
   Card,
   DetailsView,
+  Grid,
   Page,
   Properties,
   TabPanel,
@@ -26,42 +27,42 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
           address={address}
           tag="Address"
         >
-          <Properties
-            isHalf
-            data={[
-              {
-                title: 'Balance:',
-                value: '0 Ether',
-              },
-              {
-                title: 'Ether Value:',
-                value: '$0.00',
-              },
-              {
-                title: 'Token:',
-                value: '>$23,811.08',
-              },
-            ]}
-          />
+          <Grid>
+            <Properties
+              data={[
+                {
+                  title: 'Balance:',
+                  value: '0 Ether',
+                },
+                {
+                  title: 'Ether Value:',
+                  value: '$0.00',
+                },
+                {
+                  title: 'Token:',
+                  value: '>$23,811.08',
+                },
+              ]}
+            />
 
-          <Properties
-            isHalf
-            data={[
-              {
-                title: 'More Info:',
-                value: 'Address',
-              },
-              {
-                title: 'My Name Tag:',
-                tooltip: '',
-                value: (
-                  <>
-                    Not Availiable <a href="/">Login to update</a>
-                  </>
-                ),
-              },
-            ]}
-          />
+            <Properties
+              data={[
+                {
+                  title: 'More Info:',
+                  value: 'Address',
+                },
+                {
+                  title: 'My Name Tag:',
+                  tooltip: '',
+                  value: (
+                    <>
+                      Not Availiable <a href="/">Login to update</a>
+                    </>
+                  ),
+                },
+              ]}
+            />
+          </Grid>
 
           <TabPanel
             className="tab-panel"
@@ -91,9 +92,6 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
           >
             {/* Card here should depend on Tab's query param value */}
             <Card>
-              <h2>Current tab: {tab}</h2>
-              {/* move contract tabs array to the const */}
-
               <Table columns={txsColumns} data={[]} />
             </Card>
           </TabPanel>

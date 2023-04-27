@@ -1,0 +1,5 @@
+.submit {
+  composes: button from '../Button/Button.module.scss';
+  composes: xl from '../Button/Button.module.scss';
+  composes: submit from '../Button/Button.module.scss';
+}

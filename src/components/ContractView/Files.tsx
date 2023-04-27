@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import Properties from '../Properties'
+import { Heading, Properties, Details } from '@/components'
 import { Match, MatchType } from '@/hooks/useSourcify'
 
 export interface IFilesProps {
@@ -33,8 +33,12 @@ const Files: FC<IFilesProps> = ({ match }) => {
       />
       {match?.metadata.output.abi && (
         <>
-          <h3>ABI</h3>
-          <SyntaxHighlighter language="json" showLineNumbers>
+          <Heading size="md">ABI</Heading>
+          <SyntaxHighlighter
+            language="json"
+            showLineNumbers
+            customStyle={{ margin: 0 }}
+          >
             {JSON.stringify(match?.metadata.output.abi, null, '  ') ?? ''}
           </SyntaxHighlighter>
         </>
@@ -42,7 +46,7 @@ const Files: FC<IFilesProps> = ({ match }) => {
 
       {match?.metadata.sources && (
         <>
-          <h3>Source files</h3>
+          <Heading size="md">Source files</Heading>
           {Object.keys(match.metadata.sources).map((key) => {
             const sourcecode = match.metadata.sources[key].content
             if (!sourcecode) {
@@ -50,12 +54,11 @@ const Files: FC<IFilesProps> = ({ match }) => {
             }
             const filename = key.split('/').pop()
             return (
-              <>
-                <h4>{filename}</h4>
+              <Details title={filename || ''} key={key}>
                 <SyntaxHighlighter language="solidity" showLineNumbers>
                   {sourcecode}
                 </SyntaxHighlighter>
-              </>
+              </Details>
             )
           })}
         </>

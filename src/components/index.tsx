@@ -6,7 +6,9 @@ import Button from './Button'
 import Card from './Card'
 import ContractView, { Files } from './ContractView'
 import Delta from './Delta'
+import Details from './Details'
 import DetailsView from './DetailsView'
+import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
 import Logo from './Logo'
@@ -27,6 +29,8 @@ export {
   Button,
   Card,
   DetailsView,
+  Details,
+  Grid,
   Page,
   Tile,
   Label,

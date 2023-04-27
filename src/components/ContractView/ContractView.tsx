@@ -16,6 +16,7 @@ import {
   TabPanel,
   Files,
   Table,
+  Grid,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -26,6 +27,10 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
   if (!abi) {
     return null
   }
+
+  const isSubTab =
+    tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+
   return (
     <>
       <Head>
@@ -39,59 +44,60 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           address={address}
           tag="Token Contract"
         >
-          <Properties
-            isHalf
-            data={[
-              {
-                title: 'Contract Overview:',
-                value: 'ChainLink: LINK Token',
-              },
-              {
-                title: 'Balance:',
-                value: '0 Ether',
-              },
-              {
-                title: 'Ether Value:',
-                value: '$0.00',
-              },
-              {
-                title: 'Token:',
-                value: '>$23,811.08',
-              },
-            ]}
-          />
+          <Grid>
+            <Properties
+              data={[
+                {
+                  title: 'Contract Overview:',
+                  value: 'ChainLink: LINK Token',
+                },
+                {
+                  title: 'Balance:',
+                  value: '0 Ether',
+                },
+                {
+                  title: 'Ether Value:',
+                  value: '$0.00',
+                },
+                {
+                  title: 'Token:',
+                  value: '>$23,811.08',
+                },
+              ]}
+            />
 
-          <Properties
-            isHalf
-            data={[
-              {
-                title: 'More Info:',
-                value: 'ChainLink: LINK Token',
-              },
-              {
-                title: 'My Name Tag:',
-                tooltip: '',
-                value: (
-                  <>
-                    Not Availiable <a href="/">Login to update</a>
-                  </>
-                ),
-              },
-              {
-                title: 'Contract Creator:',
-                value: (
-                  <>
-                    <Address address="0xf55037738604fddfc40" type="account" />{' '}
-                    at txn <Address address="0xf55037738604fddfc40" type="tx" />
-                  </>
-                ),
-              },
-              {
-                title: 'Token Tracker:',
-                value: <>ChainLink Token (LINK) (@$22.93)</>,
-              },
-            ]}
-          />
+            <Properties
+              data={[
+                {
+                  title: 'More Info:',
+                  value: 'ChainLink: LINK Token',
+                },
+                {
+                  title: 'My Name Tag:',
+                  tooltip: '',
+                  value: (
+                    <>
+                      Not Availiable <a href="/">Login to update</a>
+                    </>
+                  ),
+                },
+                {
+                  title: 'Contract Creator:',
+                  value: (
+                    <>
+                      <Address address="0xf55037738604fddfc40" type="account" />{' '}
+                      at txn{' '}
+                      <Address address="0xf55037738604fddfc40" type="tx" />
+                    </>
+                  ),
+                },
+                {
+                  title: 'Token Tracker:',
+                  value: <>ChainLink Token (LINK) (@$22.93)</>,
+                },
+              ]}
+            />
+          </Grid>
 
           <TabPanel
             className="tab-panel"
@@ -133,12 +139,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           >
             {/* Card here should depend on Tab's query param value */}
             <Card>
-              <h2>Current tab: {tab}</h2>
-              {/* move contract tabs array to the const */}
-              {tab &&
-              ['code', 'readContract', 'writeContract'].includes(
-                tab as string
-              ) ? (
+              {isSubTab && (
                 <TabPanel
                   className="tab-panel"
                   tabs={[
@@ -157,73 +158,69 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   ]}
                   value={tab}
                 >
-                  <Card>
-                    <h3>Current tab: {tab}</h3>
-
-                    {['readContract', 'writeContract'].includes(
-                      tab as string
-                    ) && <ConnectButton />}
-                    {tab === 'code' && <Files match={match} />}
-                    {tab === 'readContract' && (
-                      <>
-                        {(abi as Abi)
-                          .filter(
-                            (item) =>
-                              item.type === 'function' &&
-                              item.stateMutability === 'view'
+                  {['readContract', 'writeContract'].includes(
+                    tab as string
+                  ) && <ConnectButton />}
+                  {tab === 'code' && <Files match={match} />}
+                  {tab === 'readContract' && (
+                    <>
+                      {(abi as Abi)
+                        .filter(
+                          (item) =>
+                            item.type === 'function' &&
+                            item.stateMutability === 'view'
+                        )
+                        .map((method, index) => {
+                          const contractMethod = method as AbiFunction & {
+                            type: 'function'
+                          }
+                          return contractMethod.inputs.length === 0 ? (
+                            <ContractProperty
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                            />
+                          ) : (
+                            <ContractMethodForm
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                            />
                           )
-                          .map((method, index) => {
-                            const contractMethod = method as AbiFunction & {
-                              type: 'function'
-                            }
-                            return contractMethod.inputs.length === 0 ? (
-                              <ContractProperty
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                              />
-                            ) : (
-                              <ContractMethodForm
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                              />
-                            )
-                          })}
-                      </>
-                    )}
-                    {tab === 'writeContract' && (
-                      <>
-                        {(abi as Abi)
-                          .filter(
-                            (item) =>
-                              item.type === 'function' &&
-                              (item.stateMutability === 'nonpayable' ||
-                                item.stateMutability === 'payable')
+                        })}
+                    </>
+                  )}
+                  {tab === 'writeContract' && (
+                    <>
+                      {(abi as Abi)
+                        .filter(
+                          (item) =>
+                            item.type === 'function' &&
+                            (item.stateMutability === 'nonpayable' ||
+                              item.stateMutability === 'payable')
+                        )
+                        .map((method, index) => {
+                          const contractMethod = method as AbiFunction & {
+                            type: 'function'
+                          }
+                          return (
+                            <ContractMethodForm
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                              isWrite
+                            />
                           )
-                          .map((method, index) => {
-                            const contractMethod = method as AbiFunction & {
-                              type: 'function'
-                            }
-                            return (
-                              <ContractMethodForm
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                                isWrite
-                              />
-                            )
-                          })}
-                      </>
-                    )}
-                  </Card>
+                        })}
+                    </>
+                  )}
                 </TabPanel>
-              ) : (
-                <Table columns={txsColumns} data={[]} />
               )}
+
+              {!isSubTab && <Table columns={txsColumns} data={[]} />}
             </Card>
           </TabPanel>
         </DetailsView>
