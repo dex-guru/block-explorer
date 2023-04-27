@@ -1,7 +1,15 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import styles from '../Page.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Page, Properties, TimeAgo, Value } from '@/components'
+import {
+  Address,
+  DateTime,
+  Page,
+  Properties,
+  TimeAgo,
+  Value,
+} from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -15,9 +23,6 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
   if (!data) {
     return <></>
   }
-
-  const transactionsTime = new Date(data.blockTimestamp * 1000).toUTCString()
-  const blockTime = new Date(data.blockTimestamp * 1000).toUTCString()
 
   return (
     <>
@@ -40,17 +45,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
               {
                 title: 'Status:',
                 tooltip: '?',
-                value: (
-                  <Value
-                    icon={<StopwatchIcon />}
-                    value={
-                      <>
-                        <TimeAgo timestamp={data.blockTimestamp} />
-                        {`(${transactionsTime})`}
-                      </>
-                    }
-                  />
-                ),
+                value: '',
               },
               {
                 title: 'Block / Position:',
@@ -66,7 +61,14 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                     value={
                       <>
                         <TimeAgo timestamp={data.blockTimestamp} />{' '}
-                        <span className="muted">({blockTime})</span>
+                        <span className={styles.muted}>
+                          (
+                          <DateTime
+                            timestamp={data.blockTimestamp}
+                            className={styles.muted}
+                          />
+                          )
+                        </span>
                       </>
                     }
                   />
@@ -82,7 +84,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                       type="account"
                       isShorten={false}
                     />{' '}
-                    <span className="muted">| {data.nonce}</span>
+                    <span className={styles.muted}>| {data.nonce}</span>
                   </>
                 ),
               },

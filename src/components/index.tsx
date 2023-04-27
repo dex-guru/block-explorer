@@ -7,6 +7,7 @@ import Button from './Button'
 import Card from './Card'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
+import DateTime from './DateTime'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
@@ -51,4 +52,5 @@ export {
   Pagination,
   ConnectButton,
   Value,
+  DateTime,
 }

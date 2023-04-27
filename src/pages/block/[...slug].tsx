@@ -1,8 +1,21 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
+import clsx from 'clsx'
+import styles from '../Page.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, Page, Properties, TimeAgo, Value } from '@/components'
+import {
+  Address,
+  DateTime,
+  Page,
+  Properties,
+  TimeAgo,
+  Value,
+} from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import ArrowLeft from '@/images/icons/arrow-left.svg'
+import ArrowRight from '@/images/icons/arrow-right.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
@@ -17,8 +30,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
     return <></>
   }
 
-  const blockTime = new Date(data.timestamp * 1000).toUTCString()
-
   return (
     <>
       <Head>
@@ -29,10 +40,38 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title={`Block #${data.number}`}>
+        <DetailsView
+          title={
+            <>
+              Block <span className={styles.muted}>#{data.number}</span>
+            </>
+          }
+        >
           <Properties
             data={[
-              { title: 'Block Height:', value: data.number, tooltip: '?' },
+              {
+                title: 'Block Height:',
+                value: (
+                  <>
+                    {data.number}{' '}
+                    <Link
+                      href={AddressValues['block'].url(`${data.number - 1}`)}
+                      className={clsx(styles.button, {
+                        [styles.disabled]: data.number < 2,
+                      })}
+                    >
+                      <ArrowLeft className={styles.icon} />
+                    </Link>
+                    <Link
+                      href={AddressValues['block'].url(`${data.number + 1}`)}
+                      className={styles.button}
+                    >
+                      <ArrowRight className={styles.icon} />
+                    </Link>
+                  </>
+                ),
+                tooltip: '?',
+              },
               { title: 'Status:', value: '', tooltip: '?' },
               {
                 title: 'Timestamp:',
@@ -43,7 +82,14 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                     value={
                       <>
                         <TimeAgo timestamp={data.timestamp} />{' '}
-                        <span className="muted">({blockTime})</span>
+                        <span className={styles.muted}>
+                          (
+                          <DateTime
+                            timestamp={data.timestamp}
+                            className={styles.muted}
+                          />
+                          )
+                        </span>
                       </>
                     }
                   />
