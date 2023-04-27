@@ -29,7 +29,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title='Transaction Details'
+        <DetailsView title="Transaction Details">
           <Properties
             data={[
               {
