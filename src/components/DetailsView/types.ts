@@ -5,6 +5,6 @@ export type DetailsViewProps = {
   address?: string
   icon?: ReactNode
   tag?: string
-  children: ReactNode
+  children?: ReactNode
   className?: string
 }
