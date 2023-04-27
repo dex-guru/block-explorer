@@ -1,0 +1,77 @@
+.container {
+  position: relative;
+  overflow: hidden;
+
+  &[open] {
+    .body,
+    .header {
+      border-color: var(--color-details-active);
+    }
+
+    .header {
+      border-radius: var(--radii-card) var(--radii-card) 0 0;
+    }
+
+    .body {
+    }
+
+    .arrow {
+      transform: rotate(0deg);
+
+      path {
+        fill: var(--color-details-active);
+      }
+    }
+  }
+}
+
+.header {
+  border: 1px transparent solid;
+  border-bottom: 0;
+  background: var(--color-details-header);
+  padding: 10px 8px 10px 16px;
+  cursor: pointer;
+  border-radius: var(--radii-card);
+  display: flex;
+
+  &::marker {
+    content: none;
+  }
+
+  &:after {
+    content: '';
+  }
+}
+
+.title {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-details-title);
+  margin-right: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
+}
+
+.body {
+  border: 1px transparent solid;
+  border-top: 0;
+  padding: 15px 15px 23px;
+  background: var(--color-details-body);
+  border-radius: 0 0 var(--radii-card) var(--radii-card);
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  transform: rotate(-90deg);
+  transition: 0.15s ease;
+
+  path {
+    fill: var(--color-details-title);
+  }
+}

@@ -1,10 +1,15 @@
 import Address from './Address'
+import AddressView from './AddressView'
 import Avatar from './Avatar'
 import Banner from './Banner'
 import Button from './Button'
 import Card from './Card'
+import ConnectButton from './ConnectButton'
+import ContractView, { Files } from './ContractView'
 import Delta from './Delta'
+import Details from './Details'
 import DetailsView from './DetailsView'
+import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
 import Logo from './Logo'
@@ -25,6 +30,8 @@ export {
   Button,
   Card,
   DetailsView,
+  Details,
+  Grid,
   Page,
   Tile,
   Label,
@@ -32,8 +39,12 @@ export {
   Properties,
   Heading,
   Logo,
+  ContractView,
+  AddressView,
+  Files,
   Summary,
   TimeAgo,
   Table,
   Pagination,
+  ConnectButton,
 }

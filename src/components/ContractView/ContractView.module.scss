@@ -1,0 +1,41 @@
+.submit {
+  composes: button from '../Button/Button.module.scss';
+  composes: xl from '../Button/Button.module.scss';
+  composes: submit from '../Button/Button.module.scss';
+  align-self: flex-start;
+}
+
+.form {
+  display: flex;
+  gap: 16px;
+  flex-flow: column;
+}
+
+.input {
+  border: 1px var(--color-input-placeholder) solid;
+  background: var(--color-input-bg);
+  border-radius: var(--radii-button);
+  height: 32px;
+  padding: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  transition: 0.25s ease;
+
+  &:focus {
+    border-color: var(--color-input-focus);
+  }
+}
+
+.field {
+  display: flex;
+  gap: 8px;
+  flex-flow: column;
+}
+
+.label {
+  display: block;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
