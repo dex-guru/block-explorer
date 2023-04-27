@@ -2,11 +2,8 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { Address, Page, Properties, TimeAgo, Value } from '@/components'
-import Card from '@/components/Card/Card'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import { FormRow } from '@/components/ViewForm'
-import InfoCircleIcon from '@/images/icons/info-circle.svg'
-import StopatchIcon from '@/images/icons/stop-watch.svg'
+import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
@@ -42,7 +39,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 tooltip: '?',
                 value: (
                   <Value
-                    icon={<StopatchIcon />}
+                    icon={<StopwatchIcon />}
                     value={
                       <>
                         <TimeAgo timestamp={data.timestamp} />{' '}

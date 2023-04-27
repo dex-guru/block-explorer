@@ -1,12 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Page, TimeAgo } from '@/components'
+import { Address, Page, Properties, TimeAgo, Value } from '@/components'
 import Card from '@/components/Card/Card'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { FormRow } from '@/components/ViewForm'
 import InfoCircleIcon from '@/images/icons/info-circle.svg'
-import StopatchIcwon from '@/images/icons/stop-watch.svg'
+import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 
@@ -20,6 +20,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
   }
 
   const transactionsTime = new Date(data.blockTimestamp * 1000).toUTCString()
+  const blockTime = new Date(data.blockTimestamp * 1000).toUTCString()
 
   return (
     <>
@@ -32,47 +33,82 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
 
       <Page withSearch>
         <DetailsView title={`Transaction ${data.hash}`}>
-          <Card>
-            <FormRow label={'Transaction Hash:'} icon={<InfoCircleIcon />}>
-              {data.hash}
-            </FormRow>
-            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
-              <div>
-                <span>
-                  <StopatchIcwon />
-                </span>
-                <span>
-                  <TimeAgo timestamp={data.blockTimestamp} />
-                  {`(${transactionsTime})`}
-                </span>
-              </div>
-            </FormRow>
-            <FormRow label={'Block / Position:'} icon={<InfoCircleIcon />}>
-              <span>{data.blockNumber}</span>
-            </FormRow>
-            <FormRow label={'Timestamp'} icon={<InfoCircleIcon />}>
-              <span>{data.blockTimestamp}</span>
-            </FormRow>
-            <FormRow label={'From / Nonce:'} icon={<InfoCircleIcon />}>
-              <div>
-                <span>{data.fromAddress}</span>|<div>{data.nonce}</div>
-              </div>
-            </FormRow>
-            <FormRow label={'Interacted With (To):'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Transaction Action:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-          </Card>
-          <Card>
-            <FormRow label={'Transaction Hash:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-          </Card>
+          <Properties
+            data={[
+              {
+                title: 'Transaction Hash:',
+                tooltip: '?',
+                value: data.hash,
+              },
+              {
+                title: 'TStatus:',
+                tooltip: '?',
+                value: (
+                  <Value
+                    icon={<StopwatchIcon />}
+                    value={
+                      <>
+                        <TimeAgo timestamp={data.blockTimestamp} />
+                        {`(${transactionsTime})`}
+                      </>
+                    }
+                  />
+                ),
+              },
+              {
+                title: 'Block / Position:',
+                tooltip: '?',
+                value: data.blockNumber,
+              },
+              {
+                title: 'Timestamp:',
+                tooltip: '?',
+                value: (
+                  <Value
+                    icon={<StopwatchIcon />}
+                    value={
+                      <>
+                        <TimeAgo timestamp={data.blockTimestamp} />{' '}
+                        <span className="muted">({blockTime})</span>
+                      </>
+                    }
+                  />
+                ),
+              },
+              {
+                title: 'From / Nonce:',
+                tooltip: '?',
+                value: (
+                  <>
+                    <Address address={data.fromAddress} type="account" /> |{' '}
+                    {data.nonce}
+                  </>
+                ),
+              },
+              {
+                title: 'Interacted With (To):',
+                tooltip: '?',
+                value: data.toAddress ? (
+                  <Address address={data.toAddress} type="account" />
+                ) : null,
+              },
+              {
+                title: 'Transaction Action:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Transaction Hash:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Status:',
+                tooltip: '?',
+                value: '',
+              },
+            ]}
+          />
         </DetailsView>
       </Page>
     </>
