@@ -21,12 +21,15 @@ const ContractProperty: FC<IContractPropertyProps> = ({
   })
   const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
   return (
-    <div>
-      <>
-        <label htmlFor={method.name}>{method.name}</label>{' '}
-        {isLoading ? 'Loading...' : result}
-      </>
-    </div>
+    <>
+      <div>
+        <>
+          <label htmlFor={method.name}>{method.name}</label>{' '}
+          {isLoading ? 'Loading...' : result}
+        </>
+      </div>
+      <div> ==================</div>
+    </>
   )
 }
 

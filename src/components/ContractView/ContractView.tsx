@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { Abi, AbiFunction } from 'abitype'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -19,9 +20,10 @@ import IconVerify from '@/images/icons/verified.svg'
 
 const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
   const match = useSourcifyMetadata(address, 7700)
-
-  console.log(match)
-
+  const abi = match?.metadata.output.abi as Abi
+  if (!abi) {
+    return null
+  }
   return (
     <>
       <Head>
@@ -164,25 +166,54 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                     {tab === 'code' && <Files match={match} />}
                     {tab === 'readContract' && (
                       <>
-                        {match?.metadata.output.abi
+                        {(abi as Abi)
                           .filter(
                             (item) =>
                               item.type === 'function' &&
                               item.stateMutability === 'view'
                           )
                           .map((method, index) => {
-                            return method.inputs?.length === 0 ? (
+                            const contractMethod = method as AbiFunction & {
+                              type: 'function'
+                            }
+                            return contractMethod.inputs.length === 0 ? (
                               <ContractProperty
-                                method={method}
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
                                 address={address}
-                                abi={match?.metadata.output.abi}
+                                abi={abi}
                               />
                             ) : (
                               <ContractMethodForm
-                                key={index}
-                                method={method}
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
                                 address={address}
-                                abi={match?.metadata.output.abi}
+                                abi={abi}
+                              />
+                            )
+                          })}
+                      </>
+                    )}
+                    {tab === 'writeContract' && (
+                      <>
+                        {(abi as Abi)
+                          .filter(
+                            (item) =>
+                              item.type === 'function' &&
+                              (item.stateMutability === 'nonpayable' ||
+                                item.stateMutability === 'payable')
+                          )
+                          .map((method, index) => {
+                            const contractMethod = method as AbiFunction & {
+                              type: 'function'
+                            }
+                            return (
+                              <ContractMethodForm
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
+                                address={address}
+                                abi={abi}
+                                isWrite
                               />
                             )
                           })}
