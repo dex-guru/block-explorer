@@ -123,10 +123,10 @@ const Chart: FC<ChartProps> = ({
                 <rect
                   key={index}
                   x={index - 0.5}
-                  y={0}
+                  y={point - 10}
                   width="1"
                   fill="transparent"
-                  height="100"
+                  height={100 - point + 20}
                   data-tooltip-id="app-tooltip"
                   data-tooltip-html={renderToStaticMarkup(
                     <div className="text">
