@@ -60,6 +60,9 @@
   padding: 15px 15px 23px;
   background: var(--color-details-body);
   border-radius: 0 0 var(--radii-card) var(--radii-card);
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
 }
 
 .arrow {
