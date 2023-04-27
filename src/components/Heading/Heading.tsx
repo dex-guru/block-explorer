@@ -8,7 +8,7 @@ const elements: Record<HeadingSize, string> = {
   lg: 'h1',
   md: 'h2',
   sm: 'h3',
-  xs: 'span',
+  xs: 'strong',
 }
 
 export const Heading: FC<HeadingProps> = ({

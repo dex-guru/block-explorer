@@ -10,6 +10,10 @@ html {
   --color-link-hover: #afa5fb;
   --color-link-active: #fff;
 
+  --color-action-bg: #9488f0;
+  --color-action-text: #fff;
+  --color-action-hover: #afa5fb;
+
   --color-title-primary: #fff;
   --color-title-secondary: #6d7986;
 
@@ -19,6 +23,9 @@ html {
   --color-card-separator: #1e242c;
 
   --color-table-separator: #1e242c;
+  --color-table-row-hover: #1e242c;
+  --color-table-header-bg: #1e242c;
+  --color-table-header-text: #6d7986;
 
   --color-avatar-bg: #2d3642;
 
@@ -32,6 +39,10 @@ html {
 
   --radii-button: 4px;
   --radii-card: 8px;
+
+  --color-positive: #12b886;
+  --color-negative: #ff646d;
+  --color-neutral: #6d7986;
 
   &.theme-light {
     --color-page-bg: #eceff1;
@@ -48,7 +59,7 @@ html {
     --color-title-primary: #181d23;
     --color-title-secondary: #6d7986;
 
-    --color-label-bg: #2d3642;
+    --color-label-bg: #eceff1;
 
     --color-card-bg: #fff;
     --color-card-separator: #eceff1;

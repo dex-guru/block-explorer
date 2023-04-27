@@ -1,0 +1,64 @@
+.container {
+  overflow: auto;
+  margin: 0 -16px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.trow {
+  & > :first-child {
+    padding-left: 16px;
+  }
+
+  & > :last-child {
+    padding-right: 16px;
+  }
+}
+
+.theadrow {
+  background: var(--color-table-header-bg);
+}
+
+.tbodyrow {
+  border-bottom: 1px var(--color-table-separator) solid;
+  background: none;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--color-table-row-hover);
+  }
+}
+
+.tcell,
+.thcell {
+  font-weight: 400;
+  box-sizing: content-box;
+}
+
+.tcell {
+  padding: 16px 8px;
+}
+
+.thcell {
+  padding: 10px 8px;
+  color: var(--color-table-header-text);
+}
+
+.thead {
+}
+
+.tbody {
+}
+
+.number {
+  text-align: right;
+}
+
+.text {
+  text-align: left;
+}

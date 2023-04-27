@@ -1,14 +1,19 @@
 .container {
-}
-
-.cardChild {
-  composes: child from '../Card/Card.module.scss';
+  padding: 0;
 }
 
 .list {
-  margin: 0;
+  margin: 0 -16px;
   padding: 0;
   list-style: none;
+
+  &:first-child {
+    margin-top: -16px;
+  }
+
+  &:last-child {
+    margin-bottom: -16px;
+  }
 }
 
 .item {

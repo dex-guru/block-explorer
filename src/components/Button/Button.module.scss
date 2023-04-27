@@ -14,11 +14,13 @@
 }
 
 .action {
-  background: var(--color-link);
+  background: var(--color-action-bg);
+  color: var(--color-action-text);
 
   &:hover,
   &:focus {
-    background: var(--color-link-hover);
+    background: var(--color-action-hover);
+    color: var(--color-action-text);
   }
 }
 
