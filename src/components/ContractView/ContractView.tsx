@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import Head from 'next/head'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -17,6 +16,7 @@ import {
   Files,
   Table,
   Grid,
+  ConnectButton,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'

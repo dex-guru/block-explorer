@@ -4,6 +4,7 @@ import Avatar from './Avatar'
 import Banner from './Banner'
 import Button from './Button'
 import Card from './Card'
+import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
 import Delta from './Delta'
 import Details from './Details'
@@ -45,4 +46,5 @@ export {
   TimeAgo,
   Table,
   Pagination,
+  ConnectButton,
 }

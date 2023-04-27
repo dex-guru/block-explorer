@@ -119,7 +119,11 @@ const ContractMethodForm: FC<IFormProps> = ({
             </label>
           )}
           {callResult}
-          <Button type="submit" caption="Write" className={styles.submit} />
+          <Button
+            type="submit"
+            caption={isWrite ? 'Write' : 'Query'}
+            className={styles.submit}
+          />
         </>
       </form>
     </Details>
