@@ -90,6 +90,31 @@ export const GET_TRANSACTIONS = gql`
   }
 `
 
+export const GET_BLOCKS = gql`
+  query Blocks($first: Int!, $skip: Int!) {
+    blocks(first: $first, skip: $skip) {
+      difficulty
+      extraData
+      gasLimit
+      gasUsed
+      hash
+      logsBloom
+      miner
+      nonce
+      number
+      parentHash
+      receiptsRoot
+      sha3Uncles
+      size
+      stateRoot
+      timestamp
+      totalDifficulty
+      transactionCount
+      transactionsRoot
+    }
+  }
+`
+
 export const GET_TRANSACTIONS_BY_HASH = gql`
   query TransactionsByHash($hash: String) {
     transactions(hash: $hash, first: 1) {
