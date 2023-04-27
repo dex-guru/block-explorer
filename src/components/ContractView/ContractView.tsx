@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Abi, AbiFunction } from 'abitype'
+import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -14,6 +15,8 @@ import {
   Properties,
   TabPanel,
   Files,
+  Table,
+  Grid,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -24,6 +27,10 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
   if (!abi) {
     return null
   }
+
+  const isSubTab =
+    tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+
   return (
     <>
       <Head>
@@ -37,7 +44,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           address={address}
           tag="Token Contract"
         >
-          <Card className="card--half">
+          <Grid>
             <Properties
               data={[
                 {
@@ -58,8 +65,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                 },
               ]}
             />
-          </Card>
-          <Card className="card--half">
+
             <Properties
               data={[
                 {
@@ -90,7 +96,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                 },
               ]}
             />
-          </Card>
+          </Grid>
 
           <TabPanel
             className="tab-panel"
@@ -132,11 +138,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           >
             {/* Card here should depend on Tab's query param value */}
             <Card>
-              {/* move contract tabs array to the const */}
-              {tab &&
-              ['code', 'readContract', 'writeContract'].includes(
-                tab as string
-              ) ? (
+              {isSubTab && (
                 <TabPanel
                   className="tab-panel"
                   tabs={[
@@ -155,136 +157,69 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   ]}
                   value={tab}
                 >
-                  <Card>
-                    {['readContract', 'writeContract'].includes(
-                      tab as string
-                    ) && <ConnectButton />}
-                    {tab === 'code' && <Files match={match} />}
-                    {tab === 'readContract' && (
-                      <>
-                        {(abi as Abi)
-                          .filter(
-                            (item) =>
-                              item.type === 'function' &&
-                              item.stateMutability === 'view'
+                  {['readContract', 'writeContract'].includes(
+                    tab as string
+                  ) && <ConnectButton />}
+                  {tab === 'code' && <Files match={match} />}
+                  {tab === 'readContract' && (
+                    <>
+                      {(abi as Abi)
+                        .filter(
+                          (item) =>
+                            item.type === 'function' &&
+                            item.stateMutability === 'view'
+                        )
+                        .map((method, index) => {
+                          const contractMethod = method as AbiFunction & {
+                            type: 'function'
+                          }
+                          return contractMethod.inputs.length === 0 ? (
+                            <ContractProperty
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                            />
+                          ) : (
+                            <ContractMethodForm
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                            />
                           )
-                          .map((method, index) => {
-                            const contractMethod = method as AbiFunction & {
-                              type: 'function'
-                            }
-                            return contractMethod.inputs.length === 0 ? (
-                              <ContractProperty
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                              />
-                            ) : (
-                              <ContractMethodForm
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                              />
-                            )
-                          })}
-                      </>
-                    )}
-                    {tab === 'writeContract' && (
-                      <>
-                        {(abi as Abi)
-                          .filter(
-                            (item) =>
-                              item.type === 'function' &&
-                              (item.stateMutability === 'nonpayable' ||
-                                item.stateMutability === 'payable')
+                        })}
+                    </>
+                  )}
+                  {tab === 'writeContract' && (
+                    <>
+                      {(abi as Abi)
+                        .filter(
+                          (item) =>
+                            item.type === 'function' &&
+                            (item.stateMutability === 'nonpayable' ||
+                              item.stateMutability === 'payable')
+                        )
+                        .map((method, index) => {
+                          const contractMethod = method as AbiFunction & {
+                            type: 'function'
+                          }
+                          return (
+                            <ContractMethodForm
+                              key={`${index}-${contractMethod}`}
+                              method={contractMethod}
+                              address={address}
+                              abi={abi}
+                              isWrite
+                            />
                           )
-                          .map((method, index) => {
-                            const contractMethod = method as AbiFunction & {
-                              type: 'function'
-                            }
-                            return (
-                              <ContractMethodForm
-                                key={`${index}-${contractMethod}`}
-                                method={contractMethod}
-                                address={address}
-                                abi={abi}
-                                isWrite
-                              />
-                            )
-                          })}
-                      </>
-                    )}
-                  </Card>
+                        })}
+                    </>
+                  )}
                 </TabPanel>
-              ) : (
-                <table className="data-table">
-                  <thead className="data-table__thead">
-                    <tr className="data-table__trow">
-                      <th className="data-table__tcell" />
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Txn Hash</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Method</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Block</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Age</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">From</div>
-                      </th>
-                      <th className="data-table__tcell" />
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">To</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Value</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Txn Fee</div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="data-table__tbody">
-                    <tr>
-                      <td className="data-table__tcell" />
-                      <td className="data-table__tcell">
-                        <Address
-                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                          type="tx"
-                        />
-                      </td>
-                      <td className="data-table__tcell">
-                        <div className="data-table__tag data-table__tag--approve">
-                          Approve
-                        </div>
-                      </td>
-                      <td className="data-table__tcell">Pending</td>
-                      <td className="data-table__tcell">5 mins ago</td>
-                      <td className="data-table__tcell">
-                        <Address
-                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                          type="account"
-                        />
-                      </td>
-                      <td className="data-table__tcell">
-                        <div className="data-table__tag data-table__tag--in">
-                          IN
-                        </div>
-                      </td>
-                      <td className="data-table__tcell">
-                        ChainLink: LINK TOKEN
-                      </td>
-                      <td className="data-table__tcell">O Ether</td>
-                      <td className="data-table__tcell">Pending</td>
-                    </tr>
-                  </tbody>
-                </table>
               )}
+
+              {!isSubTab && <Table columns={txsColumns} data={[]} />}
             </Card>
           </TabPanel>
         </DetailsView>

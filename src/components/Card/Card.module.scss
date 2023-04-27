@@ -1,14 +1,9 @@
 .container {
-  grid-column: span 2;
   background: var(--color-card-bg);
   border-radius: var(--radii-card);
   display: flex;
   flex-flow: column;
   position: relative;
-}
-
-.half {
-  grid-column: span 1;
 }
 
 .title {
@@ -43,7 +38,7 @@
 }
 
 .action {
-  composes: button from '../../styles/_common.scss';
+  composes: button from '../Button/Button.module.scss';
   composes: sm from '../Button/Button.module.scss';
   composes: action from '../Button/Button.module.scss';
 

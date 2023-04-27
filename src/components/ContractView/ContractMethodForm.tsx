@@ -4,6 +4,8 @@ import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
+import { Details, Heading, Button } from '@/components'
+import styles from './ContractView.module.scss'
 
 export interface IFormProps {
   method: AbiFunction & { type: 'function' }
@@ -80,38 +82,47 @@ const ContractMethodForm: FC<IFormProps> = ({
   )
 
   return (
-    <>
-      <div>{method.name}</div>
+    <Details title={method.name}>
       <form
         key={method.name}
         onSubmit={handleSubmit(isWrite ? onWrite : onRead)}
+        className={styles.form}
       >
         <>
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
             return (
-              <>
-                <label htmlFor={name}>{input.name}</label>
-                <input {...register(name)} />
+              <label key={index} className={styles.field}>
+                <Heading
+                  caption={input.name}
+                  size="xs"
+                  className={styles.label}
+                />
+                <input
+                  {...register(name)}
+                  className={styles.input}
+                  placeholder={`${input.name} (${
+                    input.internalType || input.type
+                  })`}
+                />
                 {/* errors will return when field validation fails  */}
                 {errors.exampleRequired && <span>This field is required</span>}
-              </>
+              </label>
             )
           })}
           {method.stateMutability === 'payable' && (
-            <>
-              <label htmlFor="payable">native token amount (payable)</label>
+            <label>
+              <Heading caption="native token amount (payable)" size="xs" />
               <input {...register('payable')} />
               {/* errors will return when field validation fails  */}
               {errors.exampleRequired && <span>This field is required</span>}
-            </>
+            </label>
           )}
           {callResult}
-          <input type="submit" />
-          <div> ==================</div>
+          <Button type="submit" caption="Write" className={styles.submit} />
         </>
       </form>
-    </>
+    </Details>
   )
 }
 
