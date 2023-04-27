@@ -2,10 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import { Address, Page, Properties, TimeAgo, Value } from '@/components'
-import Card from '@/components/Card/Card'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import { FormRow } from '@/components/ViewForm'
-import InfoCircleIcon from '@/images/icons/info-circle.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
@@ -32,7 +29,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title={`Transaction ${data.hash}`}>
+        <DetailsView title='Transaction Details'
           <Properties
             data={[
               {
