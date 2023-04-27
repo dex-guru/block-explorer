@@ -1,0 +1,22 @@
+.container {
+  color: var(--color-neutral);
+}
+
+.low {
+}
+
+.up {
+  color: var(--color-positive);
+
+  &:before {
+    content: '+';
+  }
+}
+
+.down {
+  color: var(--color-negative);
+
+  &:before {
+    content: '–';
+  }
+}
