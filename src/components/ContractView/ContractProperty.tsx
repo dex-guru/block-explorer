@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useContractRead } from 'wagmi'
+import Details from '../Details'
 
 export interface IContractPropertyProps {
   method: AbiFunction & { type: 'function' }
@@ -21,15 +22,11 @@ const ContractProperty: FC<IContractPropertyProps> = ({
   })
   const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
   return (
-    <>
-      <div>
-        <>
-          <label htmlFor={method.name}>{method.name}</label>{' '}
-          {isLoading ? 'Loading...' : result}
-        </>
-      </div>
-      <div> ==================</div>
-    </>
+    <Details title={method.name}>
+      <>
+        {isLoading ? 'Loading...' : result} ({method.type})
+      </>
+    </Details>
   )
 }
 
