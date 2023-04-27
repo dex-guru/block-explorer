@@ -43,9 +43,9 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getTransactions({ variables })
+      getTransactions({ variables: { ...variables, address } })
     },
-    [getTransactions]
+    [getTransactions, address]
   )
 
   const abi = match?.metadata.output.abi as Abi
@@ -244,7 +244,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                 </TabPanel>
               )}
               {/* Transactions tab */}
-              {tab === undefined && transactions && (
+              {tab === undefined && transactions && transactions.length > 0 && (
                 <DataTable
                   columns={txsColumns}
                   data={transactions}

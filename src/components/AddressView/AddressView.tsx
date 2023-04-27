@@ -34,9 +34,9 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getTransactions({ variables })
+      getTransactions({ variables: { ...variables, address } })
     },
-    [getTransactions]
+    [getTransactions, address]
   )
   return (
     <>
@@ -117,7 +117,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             {/* Card here should depend on Tab's query param value */}
             <Card>
               {/* Transactions tab */}
-              {tab === undefined && transactions && (
+              {tab === undefined && transactions && transactions.length > 0 && (
                 <DataTable
                   columns={txsColumns}
                   data={transactions}
