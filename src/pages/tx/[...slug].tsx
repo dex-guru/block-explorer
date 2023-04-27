@@ -104,16 +104,6 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 tooltip: '?',
                 value: '',
               },
-              {
-                title: 'Transaction Hash:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Status:',
-                tooltip: '?',
-                value: '',
-              },
             ]}
           />
         </DetailsView>
