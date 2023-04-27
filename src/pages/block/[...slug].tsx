@@ -99,7 +99,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
               {
                 title: 'Base Fee Per Gas:',
                 tooltip: '?',
-                value: financialFormat(data.baseFeePerGas),
+                value: financialFormat(data.baseFeePerGas || 0),
               },
               {
                 title: 'Burnt Fees:',
