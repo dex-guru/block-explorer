@@ -1,14 +1,15 @@
 import { FC } from 'react'
 import Head from 'next/head'
+import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
-  Address,
   Avatar,
   Card,
   DetailsView,
   Page,
   Properties,
   TabPanel,
+  Table,
 } from '@/components'
 
 const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
@@ -94,70 +95,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
               <h2>Current tab: {tab}</h2>
               {/* move contract tabs array to the const */}
 
-              <table className="data-table">
-                <thead className="data-table__thead">
-                  <tr className="data-table__trow">
-                    <th className="data-table__tcell" />
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Txn Hash</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Method</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Block</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Age</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">From</div>
-                    </th>
-                    <th className="data-table__tcell" />
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">To</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Value</div>
-                    </th>
-                    <th className="data-table__tcell">
-                      <div className="data-table__tcaption">Txn Fee</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="data-table__tbody">
-                  <tr>
-                    <td className="data-table__tcell" />
-                    <td className="data-table__tcell">
-                      <Address
-                        address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                        type="tx"
-                      />
-                    </td>
-                    <td className="data-table__tcell">
-                      <div className="data-table__tag data-table__tag--approve">
-                        Approve
-                      </div>
-                    </td>
-                    <td className="data-table__tcell">Pending</td>
-                    <td className="data-table__tcell">5 mins ago</td>
-                    <td className="data-table__tcell">
-                      <Address
-                        address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                        type="account"
-                      />
-                    </td>
-                    <td className="data-table__tcell">
-                      <div className="data-table__tag data-table__tag--in">
-                        IN
-                      </div>
-                    </td>
-                    <td className="data-table__tcell">ChainLink: LINK TOKEN</td>
-                    <td className="data-table__tcell">O Ether</td>
-                    <td className="data-table__tcell">Pending</td>
-                  </tr>
-                </tbody>
-              </table>
+              <Table columns={txsColumns} data={[]} />
             </Card>
           </TabPanel>
         </DetailsView>

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Head from 'next/head'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { Abi, AbiFunction } from 'abitype'
+import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -14,6 +15,7 @@ import {
   Properties,
   TabPanel,
   Files,
+  Table,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -37,61 +39,57 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           address={address}
           tag="Token Contract"
         >
-          <Card className="card--half">
-            <Properties
-              data={[
-                {
-                  title: 'Contract Overview:',
-                  value: 'ChainLink: LINK Token',
-                },
-                {
-                  title: 'Balance:',
-                  value: '0 Ether',
-                },
-                {
-                  title: 'Ether Value:',
-                  value: '$0.00',
-                },
-                {
-                  title: 'Token:',
-                  value: '>$23,811.08',
-                },
-              ]}
-            />
-          </Card>
-          <Card className="card--half">
-            <Properties
-              data={[
-                {
-                  title: 'More Info:',
-                  value: 'ChainLink: LINK Token',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '',
-                  value: (
-                    <>
-                      Not Availiable <a href="/">Login to update</a>
-                    </>
-                  ),
-                },
-                {
-                  title: 'Contract Creator:',
-                  value: (
-                    <>
-                      <Address address="0xf55037738604fddfc40" type="account" />{' '}
-                      at txn{' '}
-                      <Address address="0xf55037738604fddfc40" type="tx" />
-                    </>
-                  ),
-                },
-                {
-                  title: 'Token Tracker:',
-                  value: <>ChainLink Token (LINK) (@$22.93)</>,
-                },
-              ]}
-            />
-          </Card>
+          <Properties
+            data={[
+              {
+                title: 'Contract Overview:',
+                value: 'ChainLink: LINK Token',
+              },
+              {
+                title: 'Balance:',
+                value: '0 Ether',
+              },
+              {
+                title: 'Ether Value:',
+                value: '$0.00',
+              },
+              {
+                title: 'Token:',
+                value: '>$23,811.08',
+              },
+            ]}
+          />
+
+          <Properties
+            data={[
+              {
+                title: 'More Info:',
+                value: 'ChainLink: LINK Token',
+              },
+              {
+                title: 'My Name Tag:',
+                tooltip: '',
+                value: (
+                  <>
+                    Not Availiable <a href="/">Login to update</a>
+                  </>
+                ),
+              },
+              {
+                title: 'Contract Creator:',
+                value: (
+                  <>
+                    <Address address="0xf55037738604fddfc40" type="account" />{' '}
+                    at txn <Address address="0xf55037738604fddfc40" type="tx" />
+                  </>
+                ),
+              },
+              {
+                title: 'Token Tracker:',
+                value: <>ChainLink Token (LINK) (@$22.93)</>,
+              },
+            ]}
+          />
 
           <TabPanel
             className="tab-panel"
@@ -222,72 +220,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   </Card>
                 </TabPanel>
               ) : (
-                <table className="data-table">
-                  <thead className="data-table__thead">
-                    <tr className="data-table__trow">
-                      <th className="data-table__tcell" />
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Txn Hash</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Method</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Block</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Age</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">From</div>
-                      </th>
-                      <th className="data-table__tcell" />
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">To</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Value</div>
-                      </th>
-                      <th className="data-table__tcell">
-                        <div className="data-table__tcaption">Txn Fee</div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="data-table__tbody">
-                    <tr>
-                      <td className="data-table__tcell" />
-                      <td className="data-table__tcell">
-                        <Address
-                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                          type="tx"
-                        />
-                      </td>
-                      <td className="data-table__tcell">
-                        <div className="data-table__tag data-table__tag--approve">
-                          Approve
-                        </div>
-                      </td>
-                      <td className="data-table__tcell">Pending</td>
-                      <td className="data-table__tcell">5 mins ago</td>
-                      <td className="data-table__tcell">
-                        <Address
-                          address="0x7FcC933f6042f840864886fa7f32e0397d3218eb"
-                          type="account"
-                        />
-                      </td>
-                      <td className="data-table__tcell">
-                        <div className="data-table__tag data-table__tag--in">
-                          IN
-                        </div>
-                      </td>
-                      <td className="data-table__tcell">
-                        ChainLink: LINK TOKEN
-                      </td>
-                      <td className="data-table__tcell">O Ether</td>
-                      <td className="data-table__tcell">Pending</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <Table columns={txsColumns} data={[]} />
               )}
             </Card>
           </TabPanel>
