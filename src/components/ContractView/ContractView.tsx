@@ -50,7 +50,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                 },
                 {
                   title: 'Ether Value:',
-                  value: '🫠,
+                  value: '🫠',
                 },
                 {
                   title: 'Token:',
@@ -79,8 +79,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   title: 'Contract Creator:',
                   value: (
                     <>
-                      <Address address="🫠" type="account" />{' '}
-                      at txn{' '}
+                      <Address address="🫠" type="account" /> at txn{' '}
                       <Address address="🫠" type="tx" />
                     </>
                   ),
