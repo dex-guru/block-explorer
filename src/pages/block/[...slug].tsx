@@ -1,15 +1,14 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, Page, Properties, TimeAgo, Value } from '@/components'
+import { Page, TimeAgo } from '@/components'
 import Card from '@/components/Card/Card'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { FormRow } from '@/components/ViewForm'
 import InfoCircleIcon from '@/images/icons/info-circle.svg'
-import StopatchIcon from '@/images/icons/stop-watch.svg'
+import StopatchIcwon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
 
 interface IBlockProps {
   data: BlockModel | null
@@ -33,89 +32,61 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
 
       <Page withSearch>
         <DetailsView title={`Block #${data.number}`}>
-          <Properties
-            data={[
-              { title: 'Block Height:', value: data.number, tooltip: '?' },
-              { title: 'Status:', value: '', tooltip: '?' },
-              {
-                title: 'Timestamp:',
-                tooltip: '?',
-                value: (
-                  <Value
-                    icon={<StopatchIcon />}
-                    value={
-                      <>
-                        <TimeAgo timestamp={data.timestamp} />{' '}
-                        <span className="muted">({blockTime})</span>
-                      </>
-                    }
-                  />
-                ),
-              },
-              { title: 'Proposed On:', tooltip: '?', value: '' },
-              {
-                title: 'Transactions:',
-                tooltip: '?',
-                value: financialFormat(data.transactionCount),
-              },
-              {
-                title: 'Withdrawals:',
-                tooltip: '?',
-                value: financialFormat(data.transactionCount),
-              },
-              {
-                title: 'Fee Recipient:',
-                tooltip: '?',
-                value: (
-                  <Address
-                    type="account"
-                    address={data.miner}
-                    isShorten={false}
-                  />
-                ),
-              },
-              {
-                title: 'Block Reward:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Total Difficulty:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Size:',
-                tooltip: '?',
-                value: financialFormat(data.size),
-              },
-              {
-                title: 'Gas Used:',
-                tooltip: data.gasUsed,
-                value: financialFormat(data.size),
-              },
-              {
-                title: 'Gas Limit:',
-                tooltip: '?',
-                value: financialFormat(data.gasLimit),
-              },
-              {
-                title: 'Base Fee Per Gas:',
-                tooltip: '?',
-                value: financialFormat(data.baseFeePerGas),
-              },
-              {
-                title: 'Burnt Fees:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Extra Data:',
-                tooltip: '?',
-                value: data.extraData,
-              },
-            ]}
-          />
+          <Card>
+            <FormRow label={'Block Height:'} icon={<InfoCircleIcon />}>
+              {data.number}
+            </FormRow>
+            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Timestamp:'} icon={<InfoCircleIcon />}>
+              <div>
+                <span>
+                  <StopatchIcwon />
+                </span>
+                <span>
+                  <TimeAgo timestamp={data.timestamp} />
+                  {`(${blockTime})`}
+                </span>
+              </div>
+            </FormRow>
+            <FormRow label={'Proposed On:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Transactions:'} icon={<InfoCircleIcon />}>
+              <span>{data.transactionCount}</span>
+            </FormRow>
+            <FormRow label={'Withdrawals:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Fee Recipient:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Block Reward:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Total Difficulty:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Size:'} icon={<InfoCircleIcon />}>
+              {data.size}
+            </FormRow>
+            <FormRow label={'Gas Used:'} icon={<InfoCircleIcon />}>
+              {data.gasUsed}
+            </FormRow>
+            <FormRow label={'Gas Limit:'} icon={<InfoCircleIcon />}>
+              {data.gasLimit}
+            </FormRow>
+            <FormRow label={'Base Fee Per Gas:'} icon={<InfoCircleIcon />}>
+              {data.baseFeePerGas}
+            </FormRow>
+            <FormRow label={'Burnt Fees:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Extra Data:'} icon={<InfoCircleIcon />}>
+              {data.extraData}
+            </FormRow>
+          </Card>
         </DetailsView>
       </Page>
     </>

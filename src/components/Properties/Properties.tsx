@@ -19,9 +19,7 @@ const Properties: FC<PropertiesProps> = (props) => {
                 tooltip={item.tooltip}
               />
             </div>
-            <div className={styles.entryBody}>
-              {item.value || <span className={styles.muted}>–</span>}
-            </div>
+            <div className={styles.entryBody}>{item.value || '–'}</div>
           </div>
         </li>
       )

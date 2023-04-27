@@ -5,9 +5,9 @@ import styles from './Label.module.scss'
 const Label: FC<LabelProps> = ({ title, children }) => {
   return (
     <span className={styles.container}>
-      <span className={styles.title}>
+      <div className={styles.title}>
         <span className={styles.caption}>{title || children}</span>
-      </span>
+      </div>
     </span>
   )
 }
