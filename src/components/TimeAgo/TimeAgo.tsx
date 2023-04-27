@@ -13,13 +13,13 @@ const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className }) => {
   const suffix = seconds < 0 ? 'to go' : 'ago'
 
   return (
-    <div
+    <span
       className={className}
       data-tooltip-id="app-tooltip"
       data-tooltip-content={dueDate.toUTCString()}
     >
       {formatTime(Math.abs(seconds))} {suffix}
-    </div>
+    </span>
   )
 }
 

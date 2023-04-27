@@ -75,6 +75,7 @@ export const CHAIN_STATS = gql`
     }
   }
 `
+
 export const GET_TRANSACTIONS = gql`
   query Transactions($first: Int!, $skip: Int!) {
     transactions(first: $first, skip: $skip) {
@@ -85,6 +86,31 @@ export const GET_TRANSACTIONS = gql`
       toAddress
       value
       blockHash
+    }
+  }
+`
+
+export const GET_BLOCKS = gql`
+  query Blocks($first: Int!, $skip: Int!) {
+    blocks(first: $first, skip: $skip) {
+      difficulty
+      extraData
+      gasLimit
+      gasUsed
+      hash
+      logsBloom
+      miner
+      nonce
+      number
+      parentHash
+      receiptsRoot
+      sha3Uncles
+      size
+      stateRoot
+      timestamp
+      totalDifficulty
+      transactionCount
+      transactionsRoot
     }
   }
 `
