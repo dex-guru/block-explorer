@@ -20,6 +20,11 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  transition: 0.25s ease;
+
+  &:focus {
+    border-color: var(--color-input-focus);
+  }
 }
 
 .field {
