@@ -1,0 +1,23 @@
+.container {
+  composes: container from '../Card/Card.module.scss';
+}
+
+.body {
+  composes: body from '../Card/Card.module.scss';
+}
+
+.header {
+  composes: header from '../Card/Card.module.scss';
+}
+
+.footer {
+  composes: header from '../Card/Card.module.scss';
+}
+
+.table {
+  margin: 0 -8px;
+}
+
+.pagination {
+  margin: 0 auto;
+}

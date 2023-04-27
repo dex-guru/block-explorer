@@ -34,25 +34,3 @@ small {
   line-height: 20px;
   color: var(--color-title-secondary);
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 16px 8px;
-}
-
-tr {
-  border-bottom: 1px var(--color-table-separator) solid;
-
-  & > :first-child {
-    padding-left: 16px;
-  }
-
-  & > :last-child {
-    padding-right: 16px;
-  }
-}
