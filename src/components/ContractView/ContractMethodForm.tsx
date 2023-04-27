@@ -101,7 +101,9 @@ const ContractMethodForm: FC<IFormProps> = ({
                 <input
                   {...register(name)}
                   className={styles.input}
-                  placeholder={`${input.internalType} (${input.type})`}
+                  placeholder={`${input.name} (${
+                    input.internalType || input.type
+                  })`}
                 />
                 {/* errors will return when field validation fails  */}
                 {errors.exampleRequired && <span>This field is required</span>}
