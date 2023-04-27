@@ -6,9 +6,14 @@ import { AddressProps } from './types'
 import './Address.module.scss'
 
 const Address: FC<AddressProps> = ({ address, type, className }) => {
+  const values = AddressValues[type]
+  if (!address || !values) {
+    return null
+  }
+
   const addressData = {
-    url: AddressValues[type].url(address),
-    caption: AddressValues[type].format(address),
+    url: values.url(address),
+    caption: values.format(address),
   }
 
   return (

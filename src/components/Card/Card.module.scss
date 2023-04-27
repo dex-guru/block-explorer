@@ -4,6 +4,7 @@
   border-radius: var(--radii-card);
   display: flex;
   flex-flow: column;
+  position: relative;
 }
 
 .half {
@@ -44,16 +45,4 @@
   composes: action from '../Button/Button.module.scss';
 
   flex: 1 0 auto;
-}
-
-.child {
-  margin: 0 -16px;
-
-  &:first-child {
-    margin-top: -16px;
-  }
-
-  &:last-child {
-    margin-bottom: -16px;
-  }
 }
