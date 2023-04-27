@@ -1,70 +1,66 @@
+import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
-import Head from 'next/head'
-import {
-  ChainStatsModel,
-  TransactionModel,
-} from '@/__generated__/resolvers-types'
-import { Card, DetailsView, Page, Summary } from '@/components'
+import { useLazyQuery } from '@apollo/client'
+import { columns } from '../../components/txsColumns/txsColumns'
+import { TransactionModel } from '@/__generated__/resolvers-types'
+import { Card } from '@/components'
+import { Pagination } from '@/components/Pagination'
+import { Table } from '@/components/Table/Table'
+import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { CHAIN_STATS, TRANSACTIONS_LAST } from '@/lib/apollo/queries'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { PaginationVariables } from '@/types'
 
-interface TxsProps {
-  transactions: TransactionModel[]
-  chainStats: ChainStatsModel
+const perPage = [5, 10, 25, 50, 100]
+
+interface ITxsProps {
+  data: { transactions: TransactionModel[] }
 }
 
-const TxsPage: NextPage<TxsProps> = ({ chainStats }) => {
-  return (
-    <>
-      <Head>
-        <title>Block Explorer</title>
-        <meta name="description" content="Block Explorer" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Page>
-        <DetailsView title="Transactions">
-          <Summary
-            stats={[
-              {
-                title: 'Transactions Count',
-                value: financialFormatLowValueHighPrecision(
-                  chainStats?.transactionsCount || 0
-                ),
-              },
-              {
-                title: 'Transactions per Second',
-                value: financialFormatLowValueHighPrecision(
-                  chainStats?.transactionsPerSecond || 0
-                ),
-              },
-            ]}
-          />
+const Txs: NextPage<ITxsProps> = (props) => {
+  const isMount = useIsMount()
+  const [transactions, setTransactions] = useState(props.data.transactions)
+  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
 
-          <Card></Card>
-        </DetailsView>
-      </Page>
-    </>
+  const onPaginationChange = useCallback(
+    (variables: PaginationVariables) => {
+      getTransactions({ variables })
+    },
+    [getTransactions]
+  )
+
+  useEffect(() => {
+    if (data && isMount) {
+      setTransactions(data.transactions)
+    }
+  }, [data, isMount])
+
+  return (
+    <Card>
+      {transactions.length && <Table columns={columns} data={transactions} />}
+
+      {transactions.length && (
+        <Pagination
+          total={transactions[0].blockNumber}
+          perPage={perPage[1]}
+          onChange={onPaginationChange}
+        />
+      )}
+    </Card>
   )
 }
 
-export default TxsPage
+export default Txs
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const { data: transactions } = await apolloClient.query({
-    query: TRANSACTIONS_LAST,
-  })
-  const { data: chainStats } = await apolloClient.query({
-    query: CHAIN_STATS,
+  const { data } = await apolloClient.query({
+    query: GET_TRANSACTIONS,
+    variables: { first: 10, skip: 0 },
   })
 
   return addApolloState(apolloClient, {
-    props: {
-      ...transactions,
-      ...chainStats,
-    },
+    props: { data },
   })
 }
