@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
@@ -56,7 +57,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
                   tooltip: '😕',
                   value: (
                     <>
-                      Not Availiable <a href="/">Login to update</a>
+                      Not Availiable <Link href="/">Login to update</Link>
                     </>
                   ),
                 },

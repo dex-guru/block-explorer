@@ -7,6 +7,9 @@
 }
 
 .body {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
   width: 100%;
   padding: 0 8px 8px;
   max-width: 1440px;

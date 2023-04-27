@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -77,7 +78,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   tooltip: '🫠',
                   value: (
                     <>
-                      Not Availiable <a href="/">Login to update</a>
+                      Not Availiable <Link href="/">Login to update</Link>
                     </>
                   ),
                 },

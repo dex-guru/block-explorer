@@ -1,24 +1,20 @@
 /* eslint-disable */
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import {
   BlockModel,
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import {
-  Address,
   Banner,
   Card,
   Delta,
+  Grid,
   Heading,
-  Label,
   Page,
   Summary,
   Table,
-  Tile,
-  TimeAgo,
 } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
@@ -48,6 +44,40 @@ const Index: NextPage<IndexProps> = (props) => {
     }
   )
 
+  const statsDisplay = [
+    {
+      title: 'Last Block Number',
+      value: financialFormatLowValueHighPrecision(stats.lastBlockNumber),
+    },
+    {
+      title: 'Transactions',
+      value: (
+        <>
+          {financialFormatLowValueHighPrecision(stats.transactionsCount)} (
+          {financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
+          txs/sec)
+        </>
+      ),
+    },
+    {
+      title: 'Market Cap',
+      value: financialFormatLowValueHighPrecision(stats.marketCap),
+    },
+    {
+      title: 'Token Supply',
+      value: financialFormatLowValueHighPrecision(stats.tokenSupply),
+    },
+    {
+      title: 'Token Price',
+      value: (
+        <>
+          {financialFormatLowValueHighPrecision(stats.nativeTokenPriceUsd)}{' '}
+          <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
+        </>
+      ),
+    },
+  ]
+
   return (
     <>
       <Head>
@@ -64,48 +94,7 @@ const Index: NextPage<IndexProps> = (props) => {
 
         {!!stats && (
           <Summary
-            stats={[
-              {
-                title: 'Last Block Number',
-                value: financialFormatLowValueHighPrecision(
-                  stats.lastBlockNumber
-                ),
-              },
-              {
-                title: 'Transactions',
-                value: (
-                  <>
-                    {financialFormatLowValueHighPrecision(
-                      stats.transactionsCount
-                    )}{' '}
-                    (
-                    {financialFormatLowValueHighPrecision(
-                      stats.transactionsPerSecond
-                    )}
-                    txs/sec)
-                  </>
-                ),
-              },
-              {
-                title: 'Market Cap',
-                value: financialFormatLowValueHighPrecision(stats.marketCap),
-              },
-              {
-                title: 'Token Supply',
-                value: financialFormatLowValueHighPrecision(stats.tokenSupply),
-              },
-              {
-                title: 'Token Price',
-                value: (
-                  <>
-                    {financialFormatLowValueHighPrecision(
-                      stats.nativeTokenPriceUsd
-                    )}{' '}
-                    <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
-                  </>
-                ),
-              },
-            ]}
+            stats={statsDisplay}
             charts={[
               {
                 title: 'Ethereum Transaction History in 14 days',
@@ -116,35 +105,39 @@ const Index: NextPage<IndexProps> = (props) => {
           />
         )}
 
-        <Card
-          isHalf
-          title="Latest Blocks"
-          actions={[
-            {
-              caption: 'View all blocks',
-              to: '/blocks',
-            },
-          ]}
-        >
-          <Table columns={lastBlocksColumns} data={blocks} showHeader={false} />
-        </Card>
+        <Grid>
+          <Card
+            title="Latest Blocks"
+            actions={[
+              {
+                caption: 'View all blocks',
+                to: '/blocks',
+              },
+            ]}
+          >
+            <Table
+              columns={lastBlocksColumns}
+              data={blocks}
+              showHeader={false}
+            />
+          </Card>
 
-        <Card
-          isHalf
-          title="Latest Transactions"
-          actions={[
-            {
-              caption: 'View all transactions',
-              to: '/txs',
-            },
-          ]}
-        >
-          <Table
-            columns={lastTxsColumns}
-            data={transactions}
-            showHeader={false}
-          />
-        </Card>
+          <Card
+            title="Latest Transactions"
+            actions={[
+              {
+                caption: 'View all transactions',
+                to: '/txs',
+              },
+            ]}
+          >
+            <Table
+              columns={lastTxsColumns}
+              data={transactions}
+              showHeader={false}
+            />
+          </Card>
+        </Grid>
       </Page>
     </>
   )

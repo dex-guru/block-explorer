@@ -172,6 +172,7 @@ export const useError = (
     }
 
     const abi = metadata.output.abi
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const intf = new Interface(abi as any)
     try {
       return intf.parseError(output)

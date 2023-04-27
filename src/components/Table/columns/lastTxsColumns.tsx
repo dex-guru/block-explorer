@@ -1,5 +1,5 @@
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Label, Tile } from '@/components'
+import { Address, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
@@ -12,7 +12,7 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
         letters="Tx"
         avatarType="rounded"
         title={<Address address={data.hash} type="tx" />}
-        // postfix={<TimeAgo timestamp={data.blockTimestamp} />}
+        postfix={<TimeAgo timestamp={data.blockTimestamp} />}
       />
     ),
   },

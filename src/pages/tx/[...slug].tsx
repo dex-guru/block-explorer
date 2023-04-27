@@ -32,7 +32,6 @@ const Tx: NextPage<ITxProps> = (props) => {
       <Page withSearch>
         <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
           <Card
-            isHalf
             title="Latest Blocks"
             actions={[
               {
