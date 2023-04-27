@@ -1,23 +1,64 @@
-.table {
-  width: 100%;
+.container {
+  overflow: auto;
+  margin: 0 -16px;
 }
 
-.header {
-  height: 48px;
-  background: var(--color-input-bg);
-  color: var(--color-title-secondary);
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 20px;
+}
 
-  th {
-    text-align: left;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+.trow {
+  & > :first-child {
+    padding-left: 16px;
+  }
+
+  & > :last-child {
+    padding-right: 16px;
   }
 }
 
-.row {
-  height: 56px;
-  border-bottom: 1px solid var(--color-table-separator);
-  background: var(--color-header-bg);
+.theadrow {
+  background: var(--color-table-header-bg);
+}
+
+.tbodyrow {
+  border-bottom: 1px var(--color-table-separator) solid;
+  background: none;
+  transition: 0.25s ease;
+
+  &:hover {
+    background-color: var(--color-table-row-hover);
+  }
+}
+
+.tcell,
+.thcell {
+  font-weight: 400;
+  box-sizing: content-box;
+}
+
+.tcell {
+  padding: 16px 8px;
+}
+
+.thcell {
+  padding: 10px 8px;
+  color: var(--color-table-header-text);
+}
+
+.thead {
+}
+
+.tbody {
+}
+
+.number {
+  text-align: right;
+}
+
+.text {
+  text-align: left;
 }

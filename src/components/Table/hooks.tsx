@@ -1,7 +1,9 @@
+import clsx from 'clsx'
 import { v1 as uuidv1 } from 'uuid'
 import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
+import styles from './Table.module.scss'
 
 export const useBodyRows = <T,>(
   columns: IColumn<T>[],
@@ -13,31 +15,29 @@ export const useBodyRows = <T,>(
   return data.map((dataItem) => {
     const cells = columns.map((column) => {
       const cellData = (dataItem as Record<string, unknown>)[column.accessor]
+
       if (!cellData) {
-        if (column.emptyPlaceholder) {
-          return column.emptyPlaceholder
+        if (column.placeholder) {
+          return column.placeholder
         }
         return ''
       }
 
+      const className = clsx(
+        styles[column.type || 'text'],
+        styles[column.modifier || 'default']
+      )
+
       if (cellData && column.render) {
         return (
-          <Cell
-            th={isHeader}
-            key={column.accessor}
-            className={column.cellClassname}
-          >
+          <Cell th={isHeader} key={column.accessor} className={className}>
             {column.render(dataItem)}
           </Cell>
         )
       }
 
       return (
-        <Cell
-          th={isHeader}
-          key={column.accessor}
-          className={column.cellClassname}
-        >
+        <Cell th={isHeader} key={column.accessor} className={className}>
           {`${cellData}`}
         </Cell>
       )
@@ -46,7 +46,7 @@ export const useBodyRows = <T,>(
     return (
       <Row
         key={uuidv1()}
-        className={rowClassName}
+        className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
         onClick={() => onRowClick && onRowClick(dataItem)}
       >
         {cells}
@@ -63,16 +63,21 @@ export const useHeader = <T,>(
   rowClassName?: string
 ) => {
   const cells = columns.map((column) => {
+    const className = clsx(
+      styles[column.type || 'text'],
+      styles[column.modifier || 'default']
+    )
+
     return (
-      <Cell
-        th={true}
-        key={column.accessor}
-        className={column.headerCellClassname}
-      >
-        {column.header}
+      <Cell th={true} key={column.accessor} className={className}>
+        {column.title}
       </Cell>
     )
   })
 
-  return <Row className={rowClassName}>{cells}</Row>
+  return (
+    <Row className={clsx(styles.trow, styles.theadrow, rowClassName)}>
+      {cells}
+    </Row>
+  )
 }

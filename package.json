@@ -9,6 +9,11 @@
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.yml"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn build"
+    }
+  },
   "dependencies": {
     "@apollo/client": "3.7.12",
     "@metamask/jazzicon": "2.0.0",
@@ -17,7 +22,6 @@
     "@types/react": "18.0.38",
     "@types/react-dom": "18.0.11",
     "clsx": "1.2.1",
-    "dayjs": "^1.11.7",
     "deepmerge": "4.3.1",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",

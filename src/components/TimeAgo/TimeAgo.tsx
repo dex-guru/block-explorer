@@ -12,6 +12,8 @@ const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className }) => {
 
   const suffix = seconds < 0 ? 'to go' : 'ago'
 
+  return <>{timestamp}</>
+
   return (
     <div
       className={className}

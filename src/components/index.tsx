@@ -9,9 +9,11 @@ import Heading from './Heading'
 import Label from './Label'
 import Logo from './Logo'
 import Page from './Page'
+import { Pagination } from './Pagination'
 import Properties from './Properties'
 import Summary from './Summary'
 import TabPanel from './TabPanel'
+import { Table } from './Table'
 import Tile from './Tile'
 import TimeAgo from './TimeAgo'
 
@@ -32,4 +34,6 @@ export {
   Logo,
   Summary,
   TimeAgo,
+  Table,
+  Pagination,
 }

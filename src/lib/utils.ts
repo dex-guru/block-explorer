@@ -1,5 +1,11 @@
 import BigNumber from 'bignumber.js'
 
+export const getNormalizedValue = (value: number): string => {
+  const result = new BigNumber(value)
+
+  return financialFormatLowValueHighPrecision(result.shiftedBy(-18))
+}
+
 export const getShortAddress = (address: string): string => {
   const result = address.replace(
     /(0x)([0-9a-f]{3})(.+)([0-9a-f]{4})/i,
