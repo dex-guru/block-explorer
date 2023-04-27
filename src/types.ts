@@ -71,6 +71,7 @@ export type Metadata = {
     }
   }
   output: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     abi: any[]
     userdoc?: UserDoc | undefined
     devdoc?: DevDoc | undefined
