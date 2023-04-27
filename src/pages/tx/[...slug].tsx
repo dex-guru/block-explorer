@@ -38,7 +38,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 value: data.hash,
               },
               {
-                title: 'TStatus:',
+                title: 'Status:',
                 tooltip: '?',
                 value: (
                   <Value
@@ -55,7 +55,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
               {
                 title: 'Block / Position:',
                 tooltip: '?',
-                value: data.blockNumber,
+                value: <Address type="block" address={`${data.blockNumber}`} />,
               },
               {
                 title: 'Timestamp:',
@@ -77,8 +77,12 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 tooltip: '?',
                 value: (
                   <>
-                    <Address address={data.fromAddress} type="account" /> |{' '}
-                    {data.nonce}
+                    <Address
+                      address={data.fromAddress}
+                      type="account"
+                      isShorten={false}
+                    />{' '}
+                    <span className="muted">| {data.nonce}</span>
                   </>
                 ),
               },
@@ -86,7 +90,11 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 title: 'Interacted With (To):',
                 tooltip: '?',
                 value: data.toAddress ? (
-                  <Address address={data.toAddress} type="account" />
+                  <Address
+                    address={data.toAddress}
+                    type="account"
+                    isShorten={false}
+                  />
                 ) : null,
               },
               {
