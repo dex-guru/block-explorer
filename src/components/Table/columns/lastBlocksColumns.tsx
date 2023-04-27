@@ -1,8 +1,11 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { Address, Label, Tile } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
+
+const TimeAgo = dynamic(() => import('../../TimeAgo/TimeAgo'), { ssr: false })
 
 export const lastBlocksColumns: IColumn<BlockModel>[] = [
   {
@@ -11,7 +14,7 @@ export const lastBlocksColumns: IColumn<BlockModel>[] = [
       <Tile
         letters="Bk"
         title={<Address address={`${data.number}`} type="block" />}
-        // postfix={<TimeAgo timestamp={block.timestamp} />}
+        postfix={<TimeAgo timestamp={data.timestamp} />}
       />
     ),
   },
