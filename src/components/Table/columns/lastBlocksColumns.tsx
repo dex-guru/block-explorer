@@ -29,8 +29,21 @@ export const lastBlocksColumns: IColumn<BlockModel>[] = [
     ),
   },
   {
-    accessor: 'transactionCount',
+    accessor: 'gasUsed',
     type: 'number',
-    render: (data) => <Label title={financialFormat(data.transactionCount)} />,
+    render: (data) => {
+      if (!data.gasUsed || data.gasUsed === '0') {
+        return null
+      }
+
+      const gasUtilization = financialFormat(
+        ((data.gasUsed || 0) / data.gasLimit) * 100,
+        {
+          decimals: 2,
+        }
+      )
+
+      return <Label title={`${gasUtilization}%`} />
+    },
   },
 ]

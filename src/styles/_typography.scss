@@ -7,6 +7,10 @@ a {
   }
 }
 
+.muted {
+  color: var(--color-page-muted);
+}
+
 .text {
   &:first-child {
     margin-top: 0;
