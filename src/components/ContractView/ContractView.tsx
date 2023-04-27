@@ -1,6 +1,7 @@
-import { FC } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -15,15 +16,38 @@ import {
   Properties,
   TabPanel,
   Files,
-  Table,
   Grid,
   ConnectButton,
+  DataTable,
 } from '@/components'
+import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
+import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { PaginationVariables } from '@/types'
 
-const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
+const perPage = [5, 10, 25, 50, 100]
+
+const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
   const match = useSourcifyMetadata(address, 7700)
+  const isMount = useIsMount()
+  const [transactions, setTransactions] = useState(props.transactions)
+
+  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
+
+  useEffect(() => {
+    if (data && isMount) {
+      setTransactions(data.transactions)
+    }
+  }, [data, isMount])
+
+  const onPaginationChange = useCallback(
+    (variables: PaginationVariables) => {
+      getTransactions({ variables })
+    },
+    [getTransactions]
+  )
+
   const abi = match?.metadata.output.abi as Abi
   if (!abi) {
     return null
@@ -219,8 +243,16 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                   )}
                 </TabPanel>
               )}
-
-              {!isSubTab && <Table columns={txsColumns} data={[]} />}
+              {/* Transactions tab */}
+              {tab === undefined && transactions && (
+                <DataTable
+                  columns={txsColumns}
+                  data={transactions}
+                  total={transactions[0].blockNumber}
+                  perPage={perPage[1]}
+                  onPageChange={onPaginationChange}
+                />
+              )}
             </Card>
           </TabPanel>
         </DetailsView>

@@ -7,6 +7,7 @@ import Button from './Button'
 import Card from './Card'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
+import DataTable from './DataTable'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
@@ -49,4 +50,5 @@ export {
   Table,
   Pagination,
   ConnectButton,
+  DataTable,
 }
