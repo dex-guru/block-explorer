@@ -40,6 +40,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           tag="Token Contract"
         >
           <Properties
+            isHalf
             data={[
               {
                 title: 'Contract Overview:',
@@ -61,6 +62,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
           />
 
           <Properties
+            isHalf
             data={[
               {
                 title: 'More Info:',

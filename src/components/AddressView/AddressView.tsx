@@ -26,43 +26,42 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
           address={address}
           tag="Address"
         >
-          <Card className="card--half">
-            <Properties
-              data={[
-                {
-                  title: 'Balance:',
-                  value: '0 Ether',
-                },
-                {
-                  title: 'Ether Value:',
-                  value: '$0.00',
-                },
-                {
-                  title: 'Token:',
-                  value: '>$23,811.08',
-                },
-              ]}
-            />
-          </Card>
-          <Card className="card--half">
-            <Properties
-              data={[
-                {
-                  title: 'More Info:',
-                  value: 'Address',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '',
-                  value: (
-                    <>
-                      Not Availiable <a href="/">Login to update</a>
-                    </>
-                  ),
-                },
-              ]}
-            />
-          </Card>
+          <Properties
+            isHalf
+            data={[
+              {
+                title: 'Balance:',
+                value: '0 Ether',
+              },
+              {
+                title: 'Ether Value:',
+                value: '$0.00',
+              },
+              {
+                title: 'Token:',
+                value: '>$23,811.08',
+              },
+            ]}
+          />
+
+          <Properties
+            isHalf
+            data={[
+              {
+                title: 'More Info:',
+                value: 'Address',
+              },
+              {
+                title: 'My Name Tag:',
+                tooltip: '',
+                value: (
+                  <>
+                    Not Availiable <a href="/">Login to update</a>
+                  </>
+                ),
+              },
+            ]}
+          />
 
           <TabPanel
             className="tab-panel"
