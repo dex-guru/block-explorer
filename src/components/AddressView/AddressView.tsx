@@ -30,15 +30,15 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
               data={[
                 {
                   title: 'Balance:',
-                  value: '0 Ether',
+                  value: '😕',
                 },
                 {
                   title: 'Ether Value:',
-                  value: '$0.00',
+                  value: '😕',
                 },
                 {
                   title: 'Token:',
-                  value: '>$23,811.08',
+                  value: '😕',
                 },
               ]}
             />
@@ -48,11 +48,11 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
               data={[
                 {
                   title: 'More Info:',
-                  value: 'Address',
+                  value: '😕',
                 },
                 {
                   title: 'My Name Tag:',
-                  tooltip: '',
+                  tooltip: '😕',
                   value: (
                     <>
                       Not Availiable <a href="/">Login to update</a>
@@ -91,7 +91,6 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
           >
             {/* Card here should depend on Tab's query param value */}
             <Card>
-              <h2>Current tab: {tab}</h2>
               {/* move contract tabs array to the const */}
 
               <table className="data-table">

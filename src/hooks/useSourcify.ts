@@ -250,7 +250,6 @@ export const useHasCode = (
   if (error) {
     return undefined
   }
-  console.log(data)
   return data[0].status !== 'false'
 }
 
