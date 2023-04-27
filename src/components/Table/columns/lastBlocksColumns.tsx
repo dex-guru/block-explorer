@@ -1,11 +1,8 @@
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, Label, Tile } from '@/components'
+import { Address, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
-
-const TimeAgo = dynamic(() => import('../../TimeAgo/TimeAgo'), { ssr: false })
 
 export const lastBlocksColumns: IColumn<BlockModel>[] = [
   {

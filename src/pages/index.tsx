@@ -1,24 +1,20 @@
 /* eslint-disable */
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
 import {
   BlockModel,
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import {
-  Address,
   Banner,
   Card,
   Delta,
+  Grid,
   Heading,
-  Label,
   Page,
   Summary,
   Table,
-  Tile,
-  TimeAgo,
 } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
@@ -116,35 +112,39 @@ const Index: NextPage<IndexProps> = (props) => {
           />
         )}
 
-        <Card
-          isHalf
-          title="Latest Blocks"
-          actions={[
-            {
-              caption: 'View all blocks',
-              to: '/blocks',
-            },
-          ]}
-        >
-          <Table columns={lastBlocksColumns} data={blocks} showHeader={false} />
-        </Card>
+        <Grid>
+          <Card
+            title="Latest Blocks"
+            actions={[
+              {
+                caption: 'View all blocks',
+                to: '/blocks',
+              },
+            ]}
+          >
+            <Table
+              columns={lastBlocksColumns}
+              data={blocks}
+              showHeader={false}
+            />
+          </Card>
 
-        <Card
-          isHalf
-          title="Latest Transactions"
-          actions={[
-            {
-              caption: 'View all transactions',
-              to: '/txs',
-            },
-          ]}
-        >
-          <Table
-            columns={lastTxsColumns}
-            data={transactions}
-            showHeader={false}
-          />
-        </Card>
+          <Card
+            title="Latest Transactions"
+            actions={[
+              {
+                caption: 'View all transactions',
+                to: '/txs',
+              },
+            ]}
+          >
+            <Table
+              columns={lastTxsColumns}
+              data={transactions}
+              showHeader={false}
+            />
+          </Card>
+        </Grid>
       </Page>
     </>
   )

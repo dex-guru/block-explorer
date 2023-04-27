@@ -6,7 +6,6 @@ import { CardProps } from './types'
 import styles from './Card.module.scss'
 
 export const Card: FC<CardProps> = ({
-  isHalf,
   className,
   title,
   subtitle,
@@ -26,9 +25,7 @@ export const Card: FC<CardProps> = ({
   }
 
   return (
-    <div
-      className={clsx(styles.container, { [styles.half]: isHalf }, className)}
-    >
+    <div className={clsx(styles.container, className)}>
       {(title || subtitle) && (
         <div className={styles.header}>
           {title && (
