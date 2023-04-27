@@ -84,3 +84,13 @@ export enum SourcifySource {
   // Centralized Sourcify servers
   CENTRAL_SERVER,
 }
+
+export enum MatchType {
+  FULL_MATCH,
+  PARTIAL_MATCH,
+}
+
+export type Match = {
+  type: MatchType
+  metadata: Metadata
+}

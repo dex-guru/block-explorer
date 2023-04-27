@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
-import { Metadata } from 'next'
 import { Interface } from '@ethersproject/abi'
 import { ErrorDescription } from '@ethersproject/abi/lib/interface'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { SourcifySource } from '@/types'
+import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
 const sourcifyIPNS =
   'k51qzi5uqu5dll0ocge71eudqnrgnogmbr37gsgl12uubsinphjoknl6bbi41p'
@@ -48,16 +47,6 @@ export const sourcifySourceFile = (
   `${resolveSourcifySource(source)}/contracts/${
     type === MatchType.FULL_MATCH ? 'full_match' : 'partial_match'
   }/${chainId}/${address}/sources/${filepath}`
-
-export enum MatchType {
-  FULL_MATCH,
-  PARTIAL_MATCH,
-}
-
-export type Match = {
-  type: MatchType
-  metadata: Metadata
-}
 
 const sourcifyFetcher: Fetcher<
   Match | null | undefined,
