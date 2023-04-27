@@ -1,24 +1,25 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Page } from '@/components'
-import Address from '@/components/Address'
+import { Page, TimeAgo } from '@/components'
 import Card from '@/components/Card/Card'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import Label from '@/components/Label'
-import Tile from '@/components/Tile'
+import { FormRow } from '@/components/ViewForm'
+import InfoCircleIcon from '@/images/icons/info-circle.svg'
+import StopatchIcwon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { TRANSACTIONS_FIRST_TEN } from '@/lib/apollo/queries'
+import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 
 interface ITxProps {
-  data: { transactions: TransactionModel[] }
+  data: TransactionModel | null
 }
 
-const Tx: NextPage<ITxProps> = (props) => {
-  const router = useRouter()
-  const slug = (router.query.slug as string[]) || []
+const Tx: NextPage<ITxProps> = ({ data }) => {
+  if (!data) {
+    return <></>
+  }
+
+  const transactionsTime = new Date(data.blockTimestamp * 1000).toUTCString()
 
   return (
     <>
@@ -30,51 +31,47 @@ const Tx: NextPage<ITxProps> = (props) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title={`Transaction detail for ${slug.join('/')}`}>
-          <Card
-            title="Latest Blocks"
-            actions={[
-              {
-                caption: 'View all blocks',
-                className: 'card__action--more',
-              },
-            ]}
-          >
-            <table className="data-table">
-              <tbody>
-                {props.data.transactions.map((item) => {
-                  return (
-                    <tr className="data-table__trow" key={item.hash}>
-                      <th className="data-table__tcell data-table__tcell--asset">
-                        <Tile
-                          letters="Bk"
-                          title={
-                            <Address
-                              address={`${item.blockNumber}`}
-                              type="block"
-                            />
-                          }
-                          postfix="38 sec ago"
-                        />
-                      </th>
-                      <td className="data-table__tcell data-table__tcell--data">
-                        <div className="data-table__data">
-                          <div className="value">
-                            Miner <Link href="/">Poolin 2</Link>
-                          </div>
-                          <small className="value">
-                            <Link href="/">171 txns</Link> in 29 sec
-                          </small>
-                        </div>
-                      </td>
-                      <td className="data-table__tcell data-table__tcell--label">
-                        <Label title="2.34912 ETH" />
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+        <DetailsView title={`Transaction ${data.hash}`}>
+          <Card>
+            <FormRow label={'Transaction Hash:'} icon={<InfoCircleIcon />}>
+              {data.hash}
+            </FormRow>
+            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
+              <div>
+                <span>
+                  <StopatchIcwon />
+                </span>
+                <span>
+                  <TimeAgo timestamp={data.blockTimestamp} />
+                  {`(${transactionsTime})`}
+                </span>
+              </div>
+            </FormRow>
+            <FormRow label={'Block / Position:'} icon={<InfoCircleIcon />}>
+              <span>{data.blockNumber}</span>
+            </FormRow>
+            <FormRow label={'Timestamp'} icon={<InfoCircleIcon />}>
+              <span>{data.blockTimestamp}</span>
+            </FormRow>
+            <FormRow label={'From / Nonce:'} icon={<InfoCircleIcon />}>
+              <div>
+                <span>{data.fromAddress}</span>|<div>{data.nonce}</div>
+              </div>
+            </FormRow>
+            <FormRow label={'Interacted With (To):'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Transaction Action:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+          </Card>
+          <Card>
+            <FormRow label={'Transaction Hash:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
+            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
+              ???
+            </FormRow>
           </Card>
         </DetailsView>
       </Page>
@@ -84,16 +81,27 @@ const Tx: NextPage<ITxProps> = (props) => {
 
 export default Tx
 
-// oldfox SSR
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const { data } = await apolloClient.query({
-    query: TRANSACTIONS_FIRST_TEN,
+  const { slug } = ctx.query
+  const hash = (slug as string[])[0]
+
+  const { data } = await apolloClient.query<{
+    transactions: TransactionModel[]
+  }>({
+    query: GET_TRANSACTIONS_BY_HASH,
+    variables: { hash },
   })
 
+  let transactions: TransactionModel | null = null
+
+  if (data.transactions.length) {
+    transactions = data.transactions[0]
+  }
+
   return addApolloState(apolloClient, {
-    props: { data },
+    props: { data: transactions },
   })
 }
 

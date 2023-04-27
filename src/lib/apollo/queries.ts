@@ -90,9 +90,38 @@ export const GET_TRANSACTIONS = gql`
   }
 `
 
-export const GET_BLOCKS = gql`
-  query Blocks($first: Int!, $skip: Int!) {
-    blocks(first: $first, skip: $skip) {
+export const GET_TRANSACTIONS_BY_HASH = gql`
+  query TransactionsByHash($hash: String) {
+    transactions(hash: $hash, first: 1) {
+      blockHash
+      blockNumber
+      blockTimestamp
+      fromAddress
+      gas
+      gasPrice
+      hash
+      input
+      maxFeePerGas
+      maxPriorityFeePerGas
+      nonce
+      receiptContractAddress
+      receiptCumulativeGasUsed
+      receiptEffectiveGasPrice
+      receiptGasUsed
+      receiptRoot
+      receiptStatus
+      toAddress
+      transactionIndex
+      transactionType
+      value
+    }
+  }
+`
+
+export const GET_BLOCKS_BY_NUMBER = gql`
+  query BlokByNumber($number: Int) {
+    blocks(first: 1, number: $number) {
+      baseFeePerGas
       difficulty
       extraData
       gasLimit

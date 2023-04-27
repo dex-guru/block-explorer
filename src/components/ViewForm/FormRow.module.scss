@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  min-height: 56px;
+  border-bottom: solid 1px var(--color-page-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  flex-basis: 50px;
+  flex-grow: 0;
+  color: var(--color-neutral);
+}
+
+.label {
+  flex-basis: 215px;
+  flex-grow: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--color-neutral);
+}
+
+.value {
+  flex-grow: 1;
+}
