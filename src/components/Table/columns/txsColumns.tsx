@@ -1,10 +1,7 @@
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import {
-  financialFormatLowValueHighPrecision,
-  getNormalizedValue,
-} from '@/lib/utils'
+import { getNormalizedValue } from '@/lib/utils'
 
 export const txsColumns: IColumn<TransactionModel>[] = [
   {
