@@ -21,6 +21,7 @@ import Summary from './Summary'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
 import Tile from './Tile'
+import Value from './Value'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 
@@ -49,4 +50,5 @@ export {
   Table,
   Pagination,
   ConnectButton,
+  Value,
 }
