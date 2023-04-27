@@ -44,6 +44,40 @@ const Index: NextPage<IndexProps> = (props) => {
     }
   )
 
+  const statsDisplay = [
+    {
+      title: 'Last Block Number',
+      value: financialFormatLowValueHighPrecision(stats.lastBlockNumber),
+    },
+    {
+      title: 'Transactions',
+      value: (
+        <>
+          {financialFormatLowValueHighPrecision(stats.transactionsCount)} (
+          {financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
+          txs/sec)
+        </>
+      ),
+    },
+    {
+      title: 'Market Cap',
+      value: financialFormatLowValueHighPrecision(stats.marketCap),
+    },
+    {
+      title: 'Token Supply',
+      value: financialFormatLowValueHighPrecision(stats.tokenSupply),
+    },
+    {
+      title: 'Token Price',
+      value: (
+        <>
+          {financialFormatLowValueHighPrecision(stats.nativeTokenPriceUsd)}{' '}
+          <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
+        </>
+      ),
+    },
+  ]
+
   return (
     <>
       <Head>
@@ -60,48 +94,7 @@ const Index: NextPage<IndexProps> = (props) => {
 
         {!!stats && (
           <Summary
-            stats={[
-              {
-                title: 'Last Block Number',
-                value: financialFormatLowValueHighPrecision(
-                  stats.lastBlockNumber
-                ),
-              },
-              {
-                title: 'Transactions',
-                value: (
-                  <>
-                    {financialFormatLowValueHighPrecision(
-                      stats.transactionsCount
-                    )}{' '}
-                    (
-                    {financialFormatLowValueHighPrecision(
-                      stats.transactionsPerSecond
-                    )}
-                    txs/sec)
-                  </>
-                ),
-              },
-              {
-                title: 'Market Cap',
-                value: financialFormatLowValueHighPrecision(stats.marketCap),
-              },
-              {
-                title: 'Token Supply',
-                value: financialFormatLowValueHighPrecision(stats.tokenSupply),
-              },
-              {
-                title: 'Token Price',
-                value: (
-                  <>
-                    {financialFormatLowValueHighPrecision(
-                      stats.nativeTokenPriceUsd
-                    )}{' '}
-                    <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
-                  </>
-                ),
-              },
-            ]}
+            stats={statsDisplay}
             charts={[
               {
                 title: 'Ethereum Transaction History in 14 days',
