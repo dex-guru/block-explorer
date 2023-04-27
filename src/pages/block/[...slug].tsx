@@ -61,7 +61,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
               {
                 title: 'Withdrawals:',
                 tooltip: '?',
-                value: financialFormat(data.transactionCount),
+                value: '',
               },
               {
                 title: 'Fee Recipient:',
