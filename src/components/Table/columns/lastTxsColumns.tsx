@@ -6,6 +6,7 @@ import { getNormalizedValue } from '@/lib/utils'
 export const lastTxsColumns: IColumn<TransactionModel>[] = [
   {
     accessor: 'hash',
+    title: 'Block',
     render: (data) => (
       <Tile
         letters="Tx"

@@ -5,7 +5,7 @@ import { DataTableProps } from './types'
 import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
-  if (!props.data.length) {
+  if (!props.data?.length) {
     return null
   }
 

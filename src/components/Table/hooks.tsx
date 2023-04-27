@@ -16,31 +16,24 @@ export const useBodyRows = <T,>(
     const cells = columns.map((column) => {
       const cellData = (dataItem as Record<string, unknown>)[column.accessor]
 
-      if (!cellData) {
-        if (column.placeholder) {
-          return column.placeholder
-        }
-        return ''
-      }
-
       const className = clsx(
         styles[column.type || 'text'],
         styles[column.modifier || 'default']
       )
 
-      if (cellData && column.render) {
-        return (
-          <Cell th={isHeader} key={column.accessor} className={className}>
-            {column.render(dataItem)}
-          </Cell>
-        )
-      }
+      const cellDisplay = column.render
+        ? column.render(dataItem, column.placeholder)
+        : cellData
+        ? `${cellData}`
+        : column.placeholder || ''
 
       return (
         <Cell th={isHeader} key={column.accessor} className={className}>
-          {`${cellData}`}
+          {cellDisplay}
         </Cell>
       )
+      if (column.render) {
+      }
     })
 
     return (
