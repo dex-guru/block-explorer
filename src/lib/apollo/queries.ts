@@ -79,8 +79,8 @@ export const CHAIN_STATS = gql`
 `
 
 export const GET_TRANSACTIONS = gql`
-  query Transactions($first: Int!, $skip: Int!) {
-    transactions(first: $first, skip: $skip) {
+  query Transactions($first: Int!, $skip: Int!, $address: String) {
+    transactions(first: $first, skip: $skip, address: $address) {
       blockNumber
       blockTimestamp
       hash
