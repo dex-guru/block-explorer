@@ -6,4 +6,5 @@ export type ValueProps = {
   icon?: ReactNode
   prefix?: ReactNode
   postfix?: ReactNode
+  className?: string
 }

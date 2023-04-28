@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import clsx from 'clsx'
 import styles from '../Page.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import {
@@ -12,6 +13,7 @@ import {
 } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
+import IconVerify from '@/images/icons/verified.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 
@@ -45,7 +47,20 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
               {
                 title: 'Status:',
                 tooltip: '?',
-                value: '',
+                value: (
+                  <Value
+                    icon={
+                      !!data.receiptStatus ? (
+                        <IconVerify className={styles.icon} />
+                      ) : undefined
+                    }
+                    value={data.receiptStatus ? 'Success' : 'Failed'}
+                    className={clsx({
+                      [styles.positive]: !!data.receiptStatus,
+                      [styles.negative]: !data.receiptStatus,
+                    })}
+                  />
+                ),
               },
               {
                 title: 'Block / Position:',
@@ -57,7 +72,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 tooltip: '?',
                 value: (
                   <Value
-                    icon={<StopwatchIcon />}
+                    icon={<StopwatchIcon className={styles.muted} />}
                     value={
                       <>
                         <TimeAgo timestamp={data.blockTimestamp} />{' '}

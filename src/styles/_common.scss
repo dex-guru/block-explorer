@@ -1,5 +1,6 @@
 .icon {
-  display: flex;
+  vertical-align: middle;
+  display: inline-flex;
   gap: 4px;
   align-items: center;
   justify-content: center;
@@ -22,4 +23,20 @@
 
 .muted {
   color: var(--color-page-muted);
+
+  path {
+    fill: var(--color-page-muted);
+  }
+}
+
+.positive {
+  color: var(--color-positive);
+}
+
+.negative {
+  color: var(--color-negative);
+}
+
+.neutral {
+  color: var(--color-neutral);
 }

@@ -1,10 +1,18 @@
 import { FC } from 'react'
+import clsx from 'clsx'
 import { ValueProps } from './types'
 import styles from './Value.module.scss'
 
-const Value: FC<ValueProps> = ({ value, icon, prefix, postfix, children }) => {
+const Value: FC<ValueProps> = ({
+  value,
+  icon,
+  prefix,
+  postfix,
+  className,
+  children,
+}) => {
   return (
-    <span className={styles.container}>
+    <span className={clsx(styles.container, className)}>
       {!!icon && <span className={styles.icon}>{icon}</span>}
       <span className={styles.value}>
         {!!prefix && <span className={styles.prefix}>{prefix}</span>}

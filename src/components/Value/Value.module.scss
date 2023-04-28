@@ -16,8 +16,4 @@
   composes: icon from '../../styles/_common.scss';
 
   flex: 0 0 20px;
-
-  path {
-    fill: var(--color-page-muted);
-  }
 }

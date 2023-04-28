@@ -15,3 +15,15 @@
 .disabled {
   composes: disabled from '../components/Button/Button.module.scss';
 }
+
+.neutral {
+  composes: neutral from '../styles/_common.scss';
+}
+
+.positive {
+  composes: positive from '../styles/_common.scss';
+}
+
+.negative {
+  composes: negative from '../styles/_common.scss';
+}
