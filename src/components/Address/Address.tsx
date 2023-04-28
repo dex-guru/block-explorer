@@ -5,25 +5,25 @@ import { AddressValues } from './helpers'
 import { AddressProps } from './types'
 import styles from './Address.module.scss'
 
-const Address: FC<AddressProps> = ({ address, type, className }) => {
+const Address: FC<AddressProps> = ({
+  address,
+  type,
+  className,
+  isShorten = true,
+}) => {
   const values = AddressValues[type]
   if (!address || !values) {
     return null
   }
 
-  const addressData = {
-    url: values.url(address),
-    caption: values.format(address),
-  }
-
   return (
     <Link
-      href={addressData.url}
+      href={values.url(address)}
       className={clsx(styles.container, className)}
       data-tooltip-id="app-tooltip"
       data-tooltip-content={address}
     >
-      {addressData.caption}
+      {isShorten ? values.format(address) : address}
     </Link>
   )
 }

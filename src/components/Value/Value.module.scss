@@ -1,0 +1,21 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+}
+
+.value {
+  flex: 1 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon {
+  composes: icon from '../../styles/_common.scss';
+
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+}

@@ -1,12 +1,12 @@
 .container {
-  color: var(--color-neutral);
+  composes: neutral from '../../styles/_common.scss';
 }
 
 .low {
 }
 
 .up {
-  color: var(--color-positive);
+  composes: positive from '../../styles/_common.scss';
 
   &:before {
     content: '+';
@@ -14,7 +14,7 @@
 }
 
 .down {
-  color: var(--color-negative);
+  composes: negative from '../../styles/_common.scss';
 
   &:before {
     content: '–';

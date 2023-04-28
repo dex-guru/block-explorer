@@ -7,6 +7,7 @@ import Button from './Button'
 import Card from './Card'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
+import DateTime from './DateTime'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
@@ -21,6 +22,7 @@ import Summary from './Summary'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
 import Tile from './Tile'
+import Value from './Value'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 
@@ -49,4 +51,6 @@ export {
   Table,
   Pagination,
   ConnectButton,
+  Value,
+  DateTime,
 }

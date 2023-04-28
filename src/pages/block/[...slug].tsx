@@ -1,14 +1,25 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
+import clsx from 'clsx'
+import styles from '../Page.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Page, TimeAgo } from '@/components'
-import Card from '@/components/Card/Card'
+import {
+  Address,
+  DateTime,
+  Page,
+  Properties,
+  TimeAgo,
+  Value,
+} from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import { FormRow } from '@/components/ViewForm'
-import InfoCircleIcon from '@/images/icons/info-circle.svg'
-import StopatchIcwon from '@/images/icons/stop-watch.svg'
+import ArrowLeft from '@/images/icons/arrow-left.svg'
+import ArrowRight from '@/images/icons/arrow-right.svg'
+import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
+import { financialFormat } from '@/lib/utils'
 
 interface IBlockProps {
   data: BlockModel | null
@@ -18,8 +29,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
   if (!data) {
     return <></>
   }
-
-  const blockTime = new Date(data.timestamp * 1000).toUTCString()
 
   return (
     <>
@@ -31,62 +40,125 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title={`Block #${data.number}`}>
-          <Card>
-            <FormRow label={'Block Height:'} icon={<InfoCircleIcon />}>
-              {data.number}
-            </FormRow>
-            <FormRow label={'Status:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Timestamp:'} icon={<InfoCircleIcon />}>
-              <div>
-                <span>
-                  <StopatchIcwon />
-                </span>
-                <span>
-                  <TimeAgo timestamp={data.timestamp} />
-                  {`(${blockTime})`}
-                </span>
-              </div>
-            </FormRow>
-            <FormRow label={'Proposed On:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Transactions:'} icon={<InfoCircleIcon />}>
-              <span>{data.transactionCount}</span>
-            </FormRow>
-            <FormRow label={'Withdrawals:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Fee Recipient:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Block Reward:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Total Difficulty:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Size:'} icon={<InfoCircleIcon />}>
-              {data.size}
-            </FormRow>
-            <FormRow label={'Gas Used:'} icon={<InfoCircleIcon />}>
-              {data.gasUsed}
-            </FormRow>
-            <FormRow label={'Gas Limit:'} icon={<InfoCircleIcon />}>
-              {data.gasLimit}
-            </FormRow>
-            <FormRow label={'Base Fee Per Gas:'} icon={<InfoCircleIcon />}>
-              {data.baseFeePerGas}
-            </FormRow>
-            <FormRow label={'Burnt Fees:'} icon={<InfoCircleIcon />}>
-              ???
-            </FormRow>
-            <FormRow label={'Extra Data:'} icon={<InfoCircleIcon />}>
-              {data.extraData}
-            </FormRow>
-          </Card>
+        <DetailsView
+          title={
+            <>
+              Block <span className={styles.muted}>#{data.number}</span>
+            </>
+          }
+        >
+          <Properties
+            data={[
+              {
+                title: 'Block Height:',
+                value: (
+                  <>
+                    {data.number}{' '}
+                    <Link
+                      href={AddressValues['block'].url(`${data.number - 1}`)}
+                      className={clsx(styles.button, {
+                        [styles.disabled]: data.number < 2,
+                      })}
+                    >
+                      <ArrowLeft className={styles.icon} />
+                    </Link>
+                    <Link
+                      href={AddressValues['block'].url(`${data.number + 1}`)}
+                      className={styles.button}
+                    >
+                      <ArrowRight className={styles.icon} />
+                    </Link>
+                  </>
+                ),
+                tooltip: '?',
+              },
+              { title: 'Status:', value: '', tooltip: '?' },
+              {
+                title: 'Timestamp:',
+                tooltip: '?',
+                value: (
+                  <Value
+                    icon={<StopwatchIcon />}
+                    value={
+                      <>
+                        <TimeAgo timestamp={data.timestamp} />{' '}
+                        <span className={styles.muted}>
+                          (
+                          <DateTime
+                            timestamp={data.timestamp}
+                            className={styles.muted}
+                          />
+                          )
+                        </span>
+                      </>
+                    }
+                  />
+                ),
+              },
+              { title: 'Proposed On:', tooltip: '?', value: '' },
+              {
+                title: 'Transactions:',
+                tooltip: '?',
+                value: financialFormat(data.transactionCount),
+              },
+              {
+                title: 'Withdrawals:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Fee Recipient:',
+                tooltip: '?',
+                value: (
+                  <Address
+                    type="account"
+                    address={data.miner}
+                    isShorten={false}
+                  />
+                ),
+              },
+              {
+                title: 'Block Reward:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Total Difficulty:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Size:',
+                tooltip: '?',
+                value: financialFormat(data.size),
+              },
+              {
+                title: 'Gas Used:',
+                tooltip: data.gasUsed,
+                value: financialFormat(data.size),
+              },
+              {
+                title: 'Gas Limit:',
+                tooltip: '?',
+                value: financialFormat(data.gasLimit),
+              },
+              {
+                title: 'Base Fee Per Gas:',
+                tooltip: '?',
+                value: financialFormat(data.baseFeePerGas || 0),
+              },
+              {
+                title: 'Burnt Fees:',
+                tooltip: '?',
+                value: '',
+              },
+              {
+                title: 'Extra Data:',
+                tooltip: '?',
+                value: data.extraData,
+              },
+            ]}
+          />
         </DetailsView>
       </Page>
     </>

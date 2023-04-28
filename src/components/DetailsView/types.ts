@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export type DetailsViewProps = {
-  title: string
+  title: ReactNode
   address?: string
   icon?: ReactNode
   tag?: string
