@@ -1,13 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useLazyQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
-  Card,
   DetailsView,
   Grid,
   Page,
@@ -122,19 +121,17 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             ]}
             value={tab}
           >
-            {/* Card here should depend on Tab's query param value */}
-            <Card>
-              {/* Transactions tab */}
-              {tab === undefined && transactions && transactions.length > 0 && (
-                <DataTable
-                  columns={txsColumns}
-                  data={transactions}
-                  total={transactions[0].blockNumber}
-                  perPage={perPage[1]}
-                  onPageChange={onPaginationChange}
-                />
-              )}
-            </Card>
+            {/* Content here should depend on Tab's query param value */}
+            {/* Transactions tab */}
+            {tab === undefined && transactions && transactions.length > 0 && (
+              <DataTable
+                columns={txsColumns}
+                data={transactions}
+                total={transactions[0].blockNumber}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+              />
+            )}
           </TabPanel>
         </DetailsView>
       </Page>
