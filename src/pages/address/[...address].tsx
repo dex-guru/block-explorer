@@ -35,6 +35,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
+  console.log(isContract)
   if (!address) {
     return null
   }
@@ -87,9 +88,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const transactionsProps = addApolloState(apolloClient, {
       props: { ...transactions },
     })
+    console.log('result before', result)
 
-    result = { ...result, ...transactionsProps }
+    result = { props: { ...result.props, ...transactionsProps.props } }
   }
+  console.log('result', result)
 
   // Pass data to the page via props
   return result
