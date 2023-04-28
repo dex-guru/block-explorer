@@ -74,7 +74,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
             total={transactions[0].blockNumber}
             perPage={perPage[1]}
             onPageChange={onPaginationChange}
-          ></DataTable>
+          />
         </DetailsView>
       </Page>
     </>
