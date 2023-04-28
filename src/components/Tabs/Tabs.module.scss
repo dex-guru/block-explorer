@@ -6,6 +6,7 @@
 
 .tab {
   composes: button from '../Button/Button.module.scss';
+
   border: 2px transparent solid;
   height: 40px;
   font-weight: 500;
