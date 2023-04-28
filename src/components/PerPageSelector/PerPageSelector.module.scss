@@ -1,12 +1,7 @@
 .container {
   display: flex;
   gap: 4px;
-  align-items: center;
   justify-self: center;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
 }
 
 .label {
@@ -16,14 +11,5 @@
 .selector {
   background: var(--color-card-bg);
   color: var(--color-title-secondary);
-  height: 32px;
-  border: 1px solid var(--color-table-separator);
-  border-radius: 4px;
-  padding: 0 4px;
-  transition: 0.25s ease;
-
-  &:hover,
-  &:focus {
-    border-color: var(--color-action-hover);
-  }
+  height: 24px;
 }

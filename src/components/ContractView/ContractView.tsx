@@ -20,7 +20,6 @@ import {
   ConnectButton,
   DataTable,
   Empty,
-  Card,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
@@ -176,89 +175,87 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
             {/* Content here should depend on Tab's query param value */}
 
             {isSubTab && (
-              <Card>
-                <TabPanel
-                  className="tab-panel"
-                  tabs={[
-                    {
-                      title: 'Code',
-                      value: 'code',
-                      to: `${pathname}?tab=code`,
-                    },
-                    {
-                      title: 'Read Contract',
-                      value: 'readContract',
-                      to: `${pathname}?tab=readContract`,
-                    },
-                    {
-                      title: 'Write Contract',
-                      value: 'writeContract',
-                      to: `${pathname}?tab=writeContract`,
-                    },
-                  ]}
-                  value={tab}
-                >
-                  {['readContract', 'writeContract'].includes(
-                    tab as string
-                  ) && <ConnectButton />}
-                  {tab === 'code' && <Files match={match} />}
-                  {tab === 'readContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            item.stateMutability === 'view'
+              <TabPanel
+                className="tab-panel"
+                tabs={[
+                  {
+                    title: 'Code',
+                    value: 'code',
+                    to: `${pathname}?tab=code`,
+                  },
+                  {
+                    title: 'Read Contract',
+                    value: 'readContract',
+                    to: `${pathname}?tab=readContract`,
+                  },
+                  {
+                    title: 'Write Contract',
+                    value: 'writeContract',
+                    to: `${pathname}?tab=writeContract`,
+                  },
+                ]}
+                value={tab}
+              >
+                {['readContract', 'writeContract'].includes(tab as string) && (
+                  <ConnectButton />
+                )}
+                {tab === 'code' && <Files match={match} />}
+                {tab === 'readContract' && (
+                  <>
+                    {(abi as Abi)
+                      .filter(
+                        (item) =>
+                          item.type === 'function' &&
+                          item.stateMutability === 'view'
+                      )
+                      .map((method, index) => {
+                        const contractMethod = method as AbiFunction & {
+                          type: 'function'
+                        }
+                        return contractMethod.inputs.length === 0 ? (
+                          <ContractProperty
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                          />
+                        ) : (
+                          <ContractMethodForm
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                          />
                         )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return contractMethod.inputs.length === 0 ? (
-                            <ContractProperty
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          ) : (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          )
-                        })}
-                    </>
-                  )}
-                  {tab === 'writeContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            (item.stateMutability === 'nonpayable' ||
-                              item.stateMutability === 'payable')
+                      })}
+                  </>
+                )}
+                {tab === 'writeContract' && (
+                  <>
+                    {(abi as Abi)
+                      .filter(
+                        (item) =>
+                          item.type === 'function' &&
+                          (item.stateMutability === 'nonpayable' ||
+                            item.stateMutability === 'payable')
+                      )
+                      .map((method, index) => {
+                        const contractMethod = method as AbiFunction & {
+                          type: 'function'
+                        }
+                        return (
+                          <ContractMethodForm
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                            isWrite
+                          />
                         )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                              isWrite
-                            />
-                          )
-                        })}
-                    </>
-                  )}
-                </TabPanel>
-              </Card>
+                      })}
+                  </>
+                )}
+              </TabPanel>
             )}
 
             {/* Transactions tab */}

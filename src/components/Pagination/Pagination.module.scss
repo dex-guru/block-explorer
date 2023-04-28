@@ -20,11 +20,7 @@
 
   &:hover {
     background: var(--color-action-hover);
-    color: var(--color-action-text);
-
-    path {
-      stroke: var(--color-action-text);
-    }
+    color: white;
   }
 }
 
