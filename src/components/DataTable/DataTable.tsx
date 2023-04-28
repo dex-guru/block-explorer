@@ -1,37 +1,65 @@
+import { useCallback, useState } from 'react'
 import clsx from 'clsx'
-import { Pagination } from '../Pagination'
+import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE, Pagination } from '../Pagination'
+import { PerPageSelector } from '../PerPageSelector'
 import { Table } from '../Table'
 import { DataTableProps } from './types'
 import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
-  if (!props.data?.length) {
-    return null
-  }
+  const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
+  const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
 
-  const { className, total, perPage, onPageChange } = props
+  const { className, total, onPageChange, ...tablePropsRest } = props
 
-  const renderPagination = () => {
+  const onChangePerPageHandler = useCallback(
+    (value: number) => {
+      onPageChange && onPageChange({ first: value, skip: 0 })
+      setCurrentPerPage(value)
+      setCurrentPage(DEFAULT_FIRST_PAGE)
+    },
+    [onPageChange]
+  )
+
+  const renderPagination = useCallback(() => {
     if (!total || !onPageChange) {
       return null
     }
     return (
       <Pagination
         total={total}
-        perPage={perPage}
+        perPage={currentPerPagePage}
         onChange={onPageChange}
         className={styles.pagination}
+        defaultCurrentPage={currentPage}
+        setdefaultCurrentPage={setCurrentPage}
       />
     )
+  }, [currentPage, currentPerPagePage, onPageChange, total])
+
+  if (!props.data?.length) {
+    return null
   }
 
   return (
     <div className={clsx(styles.container, className)}>
-      <div className={styles.header}>{renderPagination()}</div>
-      <div className={styles.body}>
-        <Table {...props} className={styles.table} />
+      <div className={styles.header}>
+        <PerPageSelector
+          onChange={onChangePerPageHandler}
+          defaultPerPage={currentPerPagePage}
+        />
+        {renderPagination()}
       </div>
-      <div className={styles.footer}>{renderPagination()}</div>
+      <div className={styles.body}>
+        <Table {...tablePropsRest} className={styles.table} />
+      </div>
+      <div className={styles.footer}>
+        <PerPageSelector
+          onChange={onChangePerPageHandler}
+          defaultPerPage={currentPerPagePage}
+        />
+        {renderPagination()}
+      </div>
     </div>
   )
 }
