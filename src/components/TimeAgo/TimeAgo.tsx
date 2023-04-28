@@ -1,6 +1,8 @@
 import { FC } from 'react'
+import clsx from 'clsx'
 import { formatTime } from './helpers'
 import { TimeAgoProps } from './types'
+import styles from './TimeAgo.module.scss'
 
 const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className }) => {
   if (!timestamp) {
@@ -14,7 +16,7 @@ const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className }) => {
 
   return (
     <span
-      className={className}
+      className={clsx(styles.container, className)}
       data-tooltip-id="app-tooltip"
       data-tooltip-content={dueDate.toUTCString()}
     >

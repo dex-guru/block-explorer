@@ -28,15 +28,23 @@
 
 .entry {
   display: flex;
+  flex-flow: row wrap;
   gap: 8px 16px;
   padding: 16px;
 
   &Header {
-    flex: 0 1 30%;
+    flex: 1 0 160px;
   }
 
   &Body {
-    flex: 1 0 320px;
+    flex: 2 1 320px;
+    max-width: 100%;
+
+    word-break: break-all;
+
+    @media (max-width: 960px) {
+      flex: 0 0 100%;
+    }
   }
 
   &Title {

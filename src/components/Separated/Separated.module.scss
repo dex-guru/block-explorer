@@ -3,18 +3,20 @@
 
 .list {
   display: flex;
+  flex-flow: row wrap;
   gap: 16px;
-  margin: 0;
+  margin: 0 -16px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .item {
+  max-width: 100%;
   margin: -8px 0;
   padding: 8px 0;
 
-  &:not(:first-child) {
-    border-left: 1px var(--color-separator) solid;
-    padding-left: 16px;
+  &:not(:last-child) {
+    border-right: 1px var(--color-separator) solid;
+    padding-right: 16px;
   }
 }
