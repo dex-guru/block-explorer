@@ -1,8 +1,11 @@
 .container {
-  composes: neutral from '../../styles/_common.scss';
 }
 
 .low {
+}
+
+.neutral {
+  composes: neutral from '../../styles/_common.scss';
 }
 
 .up {

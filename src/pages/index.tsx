@@ -29,7 +29,11 @@ import {
   GET_BLOCKS_SHORT,
   TRANSACTIONS_LAST,
 } from '@/lib/apollo/queries'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+} from '@/lib/utils'
+import styles from './Pages.module.scss'
 
 interface IndexProps {
   transactions: TransactionModel[]
@@ -78,7 +82,8 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Token Price',
       value: (
         <>
-          {financialFormatLowValueHighPrecision(stats.nativeTokenPriceUsd)}{' '}
+          <span className={styles.muted}>$</span>
+          {financialFormat(stats.nativeTokenPriceUsd)}{' '}
           <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
         </>
       ),

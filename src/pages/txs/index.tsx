@@ -5,20 +5,29 @@ import { useLazyQuery } from '@apollo/client'
 import {
   ChainStatsModel,
   TransactionModel,
+  TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { DetailsView, Page, Summary } from '@/components'
+import { Delta, DetailsView, Page, Summary } from '@/components'
 import DataTable from '@/components/DataTable'
 import { txsColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { CHAIN_STATS, GET_TRANSACTIONS } from '@/lib/apollo/queries'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  CHAIN_STATS,
+  GET_TRANSACTIONS,
+  TRANSACTIONS_STATS,
+} from '@/lib/apollo/queries'
+import {
+  financialFormatLowValueHighPrecision,
+  getNormalizedValue,
+} from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
 const perPage = [5, 10, 25, 50, 100]
 
 interface ITxsProps {
   transactions: TransactionModel[]
+  transactionStats: TransactionStatsModel
   chainStats: ChainStatsModel
 }
 
@@ -40,6 +49,8 @@ const Txs: NextPage<ITxsProps> = (props) => {
     }
   }, [data, isMount])
 
+  console.log(props.transactionStats)
+
   return (
     <>
       <Head>
@@ -56,13 +67,42 @@ const Txs: NextPage<ITxsProps> = (props) => {
               {
                 title: 'Transactions Count',
                 value: financialFormatLowValueHighPrecision(
-                  props.chainStats.transactionsCount || 0
+                  props.chainStats?.transactionsCount || 0
                 ),
               },
               {
                 title: 'Transactions per Second',
                 value: financialFormatLowValueHighPrecision(
-                  props.chainStats.transactionsPerSecond || 0
+                  props.chainStats?.transactionsPerSecond || 0
+                ),
+              },
+              {
+                title: 'Transactions, 24h',
+                value: (
+                  <>
+                    {financialFormatLowValueHighPrecision(
+                      props.transactionStats?.transactions24H
+                    )}{' '}
+                    <Delta
+                      value={props.transactionStats?.transactionsDelta24H * 100}
+                    />
+                  </>
+                ),
+              },
+              {
+                title: 'Network Transactions Fee, 24h',
+                value: (
+                  <>
+                    {getNormalizedValue(
+                      props.transactionStats?.networkTransactionsFee24H
+                    )}{' '}
+                    <Delta
+                      value={
+                        props.transactionStats?.networkTransactionsFeeDelta24H *
+                        100
+                      }
+                    />
+                  </>
                 ),
               },
             ]}
@@ -72,7 +112,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
             isLoading={loading}
             columns={txsColumns}
             data={transactions}
-            total={props.chainStats.transactionsCount}
+            total={transactions[0].blockNumber}
             perPage={perPage[1]}
             onPageChange={onPaginationChange}
           />
@@ -96,7 +136,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: CHAIN_STATS,
   })
 
+  const { data: transactionStats } = await apolloClient.query({
+    query: TRANSACTIONS_STATS,
+  })
+
   return addApolloState(apolloClient, {
-    props: { ...transactions, ...chainStats },
+    props: { ...transactions, ...chainStats, ...transactionStats },
   })
 }

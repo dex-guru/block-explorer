@@ -11,6 +11,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-flow: row wrap;
+
+  &::after {
+    @media (min-width: 640px) {
+      content: '';
+      flex: 0 0 120px;
+    }
+  }
 }
 
 .footer {

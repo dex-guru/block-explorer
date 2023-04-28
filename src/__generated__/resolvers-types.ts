@@ -29,6 +29,17 @@ export type Scalars = {
   Decimal: any
 }
 
+export type AddressModel = {
+  __typename?: 'AddressModel'
+  address: Scalars['String']
+  addressType: Scalars['String']
+  assetsCount: Scalars['Int']
+  assetsValueUSD: Scalars['Float']
+  assetsValueUSD24hDelta: Scalars['Float']
+  nativeBalance: Scalars['Float']
+  nativeBalanceUSD: Scalars['Float']
+}
+
 export type BlockModel = {
   __typename?: 'BlockModel'
   baseFeePerGas?: Maybe<Scalars['Decimal']>
@@ -50,6 +61,13 @@ export type BlockModel = {
   totalDifficulty: Scalars['Decimal']
   transactionCount: Scalars['Int']
   transactionsRoot: Scalars['String']
+}
+
+export type BlockStatsModel = {
+  __typename?: 'BlockStatsModel'
+  burntFees: Scalars['Float']
+  lastSafeBlock: Scalars['Int']
+  networkUtilization24H: Scalars['Float']
 }
 
 export type ChainConfigModel = {
@@ -111,6 +129,10 @@ export type NativeCurrencyModel = {
 
 export type Query = {
   __typename?: 'Query'
+  /** Get address */
+  address: AddressModel
+  /** Get block stats */
+  blockStats: BlockStatsModel
   /** Get blocks */
   blocks: Array<BlockModel>
   /** Get chain config */
@@ -119,8 +141,16 @@ export type Query = {
   chainStats: ChainStatsModel
   /** Get logs */
   logs: Array<LogModel>
+  /** Search Blocks/Address/Transactions/Logs */
+  search: Search
+  /** Get transaction stats */
+  transactionStats: TransactionStatsModel
   /** Get transactions */
   transactions: Array<TransactionModel>
+}
+
+export type QueryAddressArgs = {
+  address: Scalars['String']
 }
 
 export type QueryBlocksArgs = {
@@ -135,11 +165,26 @@ export type QueryLogsArgs = {
   transactionHash: Scalars['String']
 }
 
+export type QuerySearchArgs = {
+  first: Scalars['Int']
+  query: Scalars['String']
+  skip?: Scalars['Int']
+}
+
 export type QueryTransactionsArgs = {
+  address?: InputMaybe<Scalars['String']>
   blockNumber?: InputMaybe<Scalars['Int']>
   first: Scalars['Int']
   hash?: InputMaybe<Scalars['String']>
   skip?: Scalars['Int']
+}
+
+export type Search = {
+  __typename?: 'Search'
+  addresses?: Maybe<Array<AddressModel>>
+  blocks?: Maybe<Array<BlockModel>>
+  query: Scalars['String']
+  transactions?: Maybe<Array<TransactionModel>>
 }
 
 export type TimeSeriesChartModel = {
@@ -171,6 +216,14 @@ export type TransactionModel = {
   transactionIndex: Scalars['Int']
   transactionType?: Maybe<Scalars['Int']>
   value: Scalars['Decimal']
+}
+
+export type TransactionStatsModel = {
+  __typename?: 'TransactionStatsModel'
+  networkTransactionsFee24H: Scalars['Decimal']
+  networkTransactionsFeeDelta24H: Scalars['Float']
+  transactions24H: Scalars['Int']
+  transactionsDelta24H: Scalars['Float']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -283,36 +336,64 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AddressModel: ResolverTypeWrapper<AddressModel>
   BlockModel: ResolverTypeWrapper<BlockModel>
+  BlockStatsModel: ResolverTypeWrapper<BlockStatsModel>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   ChainConfigModel: ResolverTypeWrapper<ChainConfigModel>
   ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>
   Decimal: ResolverTypeWrapper<Scalars['Decimal']>
   ExplorerModel: ResolverTypeWrapper<ExplorerModel>
+  Float: ResolverTypeWrapper<Scalars['Float']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   LogModel: ResolverTypeWrapper<LogModel>
   NativeCurrencyModel: ResolverTypeWrapper<NativeCurrencyModel>
   Query: ResolverTypeWrapper<{}>
+  Search: ResolverTypeWrapper<Search>
   String: ResolverTypeWrapper<Scalars['String']>
   TimeSeriesChartModel: ResolverTypeWrapper<TimeSeriesChartModel>
   TransactionModel: ResolverTypeWrapper<TransactionModel>
+  TransactionStatsModel: ResolverTypeWrapper<TransactionStatsModel>
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AddressModel: AddressModel
   BlockModel: BlockModel
+  BlockStatsModel: BlockStatsModel
   Boolean: Scalars['Boolean']
   ChainConfigModel: ChainConfigModel
   ChainStatsModel: ChainStatsModel
   Decimal: Scalars['Decimal']
   ExplorerModel: ExplorerModel
+  Float: Scalars['Float']
   Int: Scalars['Int']
   LogModel: LogModel
   NativeCurrencyModel: NativeCurrencyModel
   Query: {}
+  Search: Search
   String: Scalars['String']
   TimeSeriesChartModel: TimeSeriesChartModel
   TransactionModel: TransactionModel
+  TransactionStatsModel: TransactionStatsModel
+}>
+
+export type AddressModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AddressModel'] = ResolversParentTypes['AddressModel']
+> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  addressType?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  assetsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  assetsValueUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  assetsValueUSD24hDelta?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >
+  nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type BlockModelResolvers<
@@ -342,6 +423,20 @@ export type BlockModelResolvers<
   totalDifficulty?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   transactionCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   transactionsRoot?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type BlockStatsModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['BlockStatsModel'] = ResolversParentTypes['BlockStatsModel']
+> = ResolversObject<{
+  burntFees?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  lastSafeBlock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  networkUtilization24H?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -458,6 +553,17 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
+  address?: Resolver<
+    ResolversTypes['AddressModel'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryAddressArgs, 'address'>
+  >
+  blockStats?: Resolver<
+    ResolversTypes['BlockStatsModel'],
+    ParentType,
+    ContextType
+  >
   blocks?: Resolver<
     Array<ResolversTypes['BlockModel']>,
     ParentType,
@@ -480,15 +586,49 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryLogsArgs, 'first' | 'skip' | 'transactionHash'>
   >
+  search?: Resolver<
+    ResolversTypes['Search'],
+    ParentType,
+    ContextType,
+    RequireFields<QuerySearchArgs, 'first' | 'query' | 'skip'>
+  >
+  transactionStats?: Resolver<
+    ResolversTypes['TransactionStatsModel'],
+    ParentType,
+    ContextType
+  >
   transactions?: Resolver<
     Array<ResolversTypes['TransactionModel']>,
     ParentType,
     ContextType,
     RequireFields<
       QueryTransactionsArgs,
-      'blockNumber' | 'first' | 'hash' | 'skip'
+      'address' | 'blockNumber' | 'first' | 'hash' | 'skip'
     >
   >
+}>
+
+export type SearchResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Search'] = ResolversParentTypes['Search']
+> = ResolversObject<{
+  addresses?: Resolver<
+    Maybe<Array<ResolversTypes['AddressModel']>>,
+    ParentType,
+    ContextType
+  >
+  blocks?: Resolver<
+    Maybe<Array<ResolversTypes['BlockModel']>>,
+    ParentType,
+    ContextType
+  >
+  query?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  transactions?: Resolver<
+    Maybe<Array<ResolversTypes['TransactionModel']>>,
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type TimeSeriesChartModelResolvers<
@@ -556,8 +696,33 @@ export type TransactionModelResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type TransactionStatsModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TransactionStatsModel'] = ResolversParentTypes['TransactionStatsModel']
+> = ResolversObject<{
+  networkTransactionsFee24H?: Resolver<
+    ResolversTypes['Decimal'],
+    ParentType,
+    ContextType
+  >
+  networkTransactionsFeeDelta24H?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >
+  transactions24H?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  transactionsDelta24H?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type Resolvers<ContextType = any> = ResolversObject<{
+  AddressModel?: AddressModelResolvers<ContextType>
   BlockModel?: BlockModelResolvers<ContextType>
+  BlockStatsModel?: BlockStatsModelResolvers<ContextType>
   ChainConfigModel?: ChainConfigModelResolvers<ContextType>
   ChainStatsModel?: ChainStatsModelResolvers<ContextType>
   Decimal?: GraphQLScalarType
@@ -565,6 +730,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   LogModel?: LogModelResolvers<ContextType>
   NativeCurrencyModel?: NativeCurrencyModelResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  Search?: SearchResolvers<ContextType>
   TimeSeriesChartModel?: TimeSeriesChartModelResolvers<ContextType>
   TransactionModel?: TransactionModelResolvers<ContextType>
+  TransactionStatsModel?: TransactionStatsModelResolvers<ContextType>
 }>
