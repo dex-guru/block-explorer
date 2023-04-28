@@ -4,6 +4,7 @@ html {
   background: var(--color-page-bg);
   color: var(--color-page-text);
   font-family: 'IBM Plex Sans Condensed', sans-serif;
+  min-width: 320px;
   color-scheme: dark light;
   content: '';
 
@@ -18,6 +19,7 @@ html {
 body {
   margin: 0;
   padding: 0;
+  min-width: 320px;
 }
 
 a {

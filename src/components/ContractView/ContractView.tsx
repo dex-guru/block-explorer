@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useLazyQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -256,6 +256,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                   )}
                 </TabPanel>
               )}
+
               {/* Transactions tab */}
               {tab === undefined && transactions && transactions.length > 0 && (
                 <DataTable

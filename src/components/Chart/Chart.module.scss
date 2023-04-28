@@ -15,6 +15,7 @@
 .chart {
   flex: 1 0 0;
   position: relative;
+  min-height: 80px;
 }
 
 .canvas {
@@ -39,6 +40,7 @@
   display: flex;
   flex-flow: column-reverse;
   justify-content: space-between;
+  align-items: flex-end;
 
   color: var(--color-title-secondary);
 

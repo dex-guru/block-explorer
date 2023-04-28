@@ -2,6 +2,8 @@
   display: flex;
   gap: 4px;
   align-items: flex-end;
+
+  overflow: auto;
 }
 
 .tab {
@@ -17,6 +19,8 @@
   border-color: transparent;
   background: var(--color-tab-bg);
   color: var(--color-tab-text);
+  width: min-content;
+  white-space: nowrap;
 
   &:hover {
     background: none;

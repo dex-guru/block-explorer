@@ -16,10 +16,14 @@
 
 .address {
   color: var(--color-title-secondary);
+  max-width: 100%;
+  word-break: break-all;
+  margin-right: auto;
 }
 
 .tools {
-  flex: 1 0 0;
+  margin-left: auto;
+  display: none;
 }
 
 .tag {
