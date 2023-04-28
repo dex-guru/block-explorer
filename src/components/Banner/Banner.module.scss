@@ -17,75 +17,84 @@
     width: 100vw;
     height: 100%;
 
-    --color-banner-color: 96, 70, 255;
-    background: radial-gradient(
-          circle,
-          #46a6ff 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        ) -5% -1% no-repeat,
-      radial-gradient(
-          circle,
-          #12b886 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        )
-        50% -20% no-repeat,
-      radial-gradient(
-          circle,
-          #ff646d 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        )
-        105% -1% no-repeat;
-    background-repeat: no-repeat;
-    background-position: -5% 5%, 50% -15%, 105% 5%;
-    background-color: rgb(var(--color-banner-color));
-    background-size: 496px;
+    background: repeating-linear-gradient(
+      0deg,
+      #151515 0%,
+      #151515 4px,
+      #141a18 4px,
+      #141a18 8px
+    );
+    background-repeat: repeat-y;
 
-    animation: banner-bg-size 23s infinite alternate,
-      banner-bg-position 37s infinite alternate;
+    // --color-banner-color: 96, 70, 255;
+    // background: radial-gradient(
+    //       circle,
+    //       #46a6ff 50%,
+    //       rgba(var(--color-banner-color), 0) 95%
+    //     ) -5% -1% no-repeat,
+    //   radial-gradient(
+    //       circle,
+    //       #12b886 50%,
+    //       rgba(var(--color-banner-color), 0) 95%
+    //     )
+    //     50% -20% no-repeat,
+    //   radial-gradient(
+    //       circle,
+    //       #ff646d 50%,
+    //       rgba(var(--color-banner-color), 0) 95%
+    //     )
+    //     105% -1% no-repeat;
+    // background-repeat: no-repeat;
+    // background-position: -5% 5%, 50% -15%, 105% 5%;
+    // background-color: rgb(var(--color-banner-color));
+    // background-size: 496px;
 
-    @keyframes banner-bg-size {
-      0% {
-        background-size: 496px, 496px, 496px;
-      }
+    // animation: banner-bg-size 23s infinite alternate,
+    //   banner-bg-position 37s infinite alternate;
 
-      25% {
-        background-size: 600px, 720px, 360px;
-      }
+    // @keyframes banner-bg-size {
+    //   0% {
+    //     background-size: 496px, 496px, 496px;
+    //   }
 
-      50% {
-        background-size: 560px, 640px, 400px;
-      }
+    //   25% {
+    //     background-size: 600px, 720px, 360px;
+    //   }
 
-      75% {
-        background-size: 720px, 560px, 640px;
-      }
+    //   50% {
+    //     background-size: 560px, 640px, 400px;
+    //   }
 
-      100% {
-        background-size: 496px, 496px, 496px;
-      }
-    }
+    //   75% {
+    //     background-size: 720px, 560px, 640px;
+    //   }
 
-    @keyframes banner-bg-position {
-      0% {
-        background-position: -5% 5%, 50% -15%, 105% 5%;
-      }
+    //   100% {
+    //     background-size: 496px, 496px, 496px;
+    //   }
+    // }
 
-      25% {
-        background-position: -15% -5%, 35% 25%, 115% 15%;
-      }
+    // @keyframes banner-bg-position {
+    //   0% {
+    //     background-position: -5% 5%, 50% -15%, 105% 5%;
+    //   }
 
-      50% {
-        background-position: 5% 15%, 55% 25%, 95% -5%;
-      }
+    //   25% {
+    //     background-position: -15% -5%, 35% 25%, 115% 15%;
+    //   }
 
-      75% {
-        background-position: -15% -5%, 75% 25%, 95% 15%;
-      }
+    //   50% {
+    //     background-position: 5% 15%, 55% 25%, 95% -5%;
+    //   }
 
-      100% {
-        background-position: -5% 5%, 50% -15%, 105% 5%;
-      }
-    }
+    //   75% {
+    //     background-position: -15% -5%, 75% 25%, 95% 15%;
+    //   }
+
+    //   100% {
+    //     background-position: -5% 5%, 50% -15%, 105% 5%;
+    //   }
+    // }
   }
 
   &:first-child {

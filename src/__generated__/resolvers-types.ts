@@ -31,7 +31,7 @@ export type Scalars = {
 
 export type BlockModel = {
   __typename?: 'BlockModel'
-  baseFeePerGas?: Maybe<Scalars['Int']>
+  baseFeePerGas?: Maybe<Scalars['Decimal']>
   difficulty: Scalars['Decimal']
   extraData: Scalars['String']
   gasLimit: Scalars['Decimal']
@@ -52,6 +52,20 @@ export type BlockModel = {
   transactionsRoot: Scalars['String']
 }
 
+export type ChainConfigModel = {
+  __typename?: 'ChainConfigModel'
+  chain: Scalars['String']
+  chainId: Scalars['Int']
+  explorers: Array<ExplorerModel>
+  faucets: Array<Scalars['String']>
+  infoURL: Scalars['String']
+  name: Scalars['String']
+  nativeCurrency: NativeCurrencyModel
+  networkId: Scalars['Int']
+  rpc: Array<Scalars['String']>
+  shortName: Scalars['String']
+}
+
 export type ChainStatsModel = {
   __typename?: 'ChainStatsModel'
   lastBlockNumber: Scalars['Int']
@@ -69,6 +83,13 @@ export type ChainStatsModel = {
   volume24hUsd: Scalars['Decimal']
 }
 
+export type ExplorerModel = {
+  __typename?: 'ExplorerModel'
+  name: Scalars['String']
+  standard: Scalars['String']
+  url: Scalars['String']
+}
+
 export type LogModel = {
   __typename?: 'LogModel'
   address: Scalars['String']
@@ -81,10 +102,19 @@ export type LogModel = {
   transactionIndex: Scalars['Int']
 }
 
+export type NativeCurrencyModel = {
+  __typename?: 'NativeCurrencyModel'
+  decimals: Scalars['Int']
+  name: Scalars['String']
+  symbol: Scalars['String']
+}
+
 export type Query = {
   __typename?: 'Query'
   /** Get blocks */
   blocks: Array<BlockModel>
+  /** Get chain config */
+  chainConfig: ChainConfigModel
   /** Get transactions */
   chainStats: ChainStatsModel
   /** Get logs */
@@ -124,7 +154,7 @@ export type TransactionModel = {
   blockNumber: Scalars['Int']
   blockTimestamp: Scalars['Int']
   fromAddress: Scalars['String']
-  gas: Scalars['Int']
+  gas: Scalars['Decimal']
   gasPrice: Scalars['Decimal']
   hash: Scalars['String']
   input: Scalars['String']
@@ -132,9 +162,9 @@ export type TransactionModel = {
   maxPriorityFeePerGas?: Maybe<Scalars['Decimal']>
   nonce: Scalars['Int']
   receiptContractAddress?: Maybe<Scalars['String']>
-  receiptCumulativeGasUsed: Scalars['Int']
+  receiptCumulativeGasUsed: Scalars['Decimal']
   receiptEffectiveGasPrice?: Maybe<Scalars['Decimal']>
-  receiptGasUsed: Scalars['Int']
+  receiptGasUsed: Scalars['Decimal']
   receiptRoot?: Maybe<Scalars['String']>
   receiptStatus: Scalars['Int']
   toAddress?: Maybe<Scalars['String']>
@@ -255,10 +285,13 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   BlockModel: ResolverTypeWrapper<BlockModel>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  ChainConfigModel: ResolverTypeWrapper<ChainConfigModel>
   ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>
   Decimal: ResolverTypeWrapper<Scalars['Decimal']>
+  ExplorerModel: ResolverTypeWrapper<ExplorerModel>
   Int: ResolverTypeWrapper<Scalars['Int']>
   LogModel: ResolverTypeWrapper<LogModel>
+  NativeCurrencyModel: ResolverTypeWrapper<NativeCurrencyModel>
   Query: ResolverTypeWrapper<{}>
   String: ResolverTypeWrapper<Scalars['String']>
   TimeSeriesChartModel: ResolverTypeWrapper<TimeSeriesChartModel>
@@ -269,10 +302,13 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   BlockModel: BlockModel
   Boolean: Scalars['Boolean']
+  ChainConfigModel: ChainConfigModel
   ChainStatsModel: ChainStatsModel
   Decimal: Scalars['Decimal']
+  ExplorerModel: ExplorerModel
   Int: Scalars['Int']
   LogModel: LogModel
+  NativeCurrencyModel: NativeCurrencyModel
   Query: {}
   String: Scalars['String']
   TimeSeriesChartModel: TimeSeriesChartModel
@@ -284,7 +320,7 @@ export type BlockModelResolvers<
   ParentType extends ResolversParentTypes['BlockModel'] = ResolversParentTypes['BlockModel']
 > = ResolversObject<{
   baseFeePerGas?: Resolver<
-    Maybe<ResolversTypes['Int']>,
+    Maybe<ResolversTypes['Decimal']>,
     ParentType,
     ContextType
   >
@@ -306,6 +342,31 @@ export type BlockModelResolvers<
   totalDifficulty?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   transactionCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   transactionsRoot?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type ChainConfigModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ChainConfigModel'] = ResolversParentTypes['ChainConfigModel']
+> = ResolversObject<{
+  chain?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  explorers?: Resolver<
+    Array<ResolversTypes['ExplorerModel']>,
+    ParentType,
+    ContextType
+  >
+  faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  nativeCurrency?: Resolver<
+    ResolversTypes['NativeCurrencyModel'],
+    ParentType,
+    ContextType
+  >
+  networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  rpc?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  shortName?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -358,6 +419,16 @@ export interface DecimalScalarConfig
   name: 'Decimal'
 }
 
+export type ExplorerModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ExplorerModel'] = ResolversParentTypes['ExplorerModel']
+> = ResolversObject<{
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  standard?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type LogModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['LogModel'] = ResolversParentTypes['LogModel']
@@ -373,6 +444,16 @@ export type LogModelResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export type NativeCurrencyModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['NativeCurrencyModel'] = ResolversParentTypes['NativeCurrencyModel']
+> = ResolversObject<{
+  decimals?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -382,6 +463,11 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryBlocksArgs, 'first' | 'number' | 'skip'>
+  >
+  chainConfig?: Resolver<
+    ResolversTypes['ChainConfigModel'],
+    ParentType,
+    ContextType
   >
   chainStats?: Resolver<
     ResolversTypes['ChainStatsModel'],
@@ -422,7 +508,7 @@ export type TransactionModelResolvers<
   blockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   blockTimestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   fromAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  gas?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  gas?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   gasPrice?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   input?: Resolver<ResolversTypes['String'], ParentType, ContextType>
@@ -443,7 +529,7 @@ export type TransactionModelResolvers<
     ContextType
   >
   receiptCumulativeGasUsed?: Resolver<
-    ResolversTypes['Int'],
+    ResolversTypes['Decimal'],
     ParentType,
     ContextType
   >
@@ -452,7 +538,7 @@ export type TransactionModelResolvers<
     ParentType,
     ContextType
   >
-  receiptGasUsed?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  receiptGasUsed?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   receiptRoot?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,
@@ -472,9 +558,12 @@ export type TransactionModelResolvers<
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   BlockModel?: BlockModelResolvers<ContextType>
+  ChainConfigModel?: ChainConfigModelResolvers<ContextType>
   ChainStatsModel?: ChainStatsModelResolvers<ContextType>
   Decimal?: GraphQLScalarType
+  ExplorerModel?: ExplorerModelResolvers<ContextType>
   LogModel?: LogModelResolvers<ContextType>
+  NativeCurrencyModel?: NativeCurrencyModelResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   TimeSeriesChartModel?: TimeSeriesChartModelResolvers<ContextType>
   TransactionModel?: TransactionModelResolvers<ContextType>

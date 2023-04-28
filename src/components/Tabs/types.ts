@@ -10,6 +10,7 @@ export interface Tab<T> {
   className?: string
   onClick?: () => void
   tooltip?: string
+  to?: string
 }
 
 export interface TabsProps<T> {

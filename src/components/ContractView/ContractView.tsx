@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -29,6 +30,8 @@ import { PaginationVariables } from '@/types'
 const perPage = [5, 10, 25, 50, 100]
 
 const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
@@ -129,34 +132,41 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
               {
                 title: 'Transactions',
                 value: '',
+                to: pathname,
               },
               {
                 title: 'Internal TXns',
                 value: 'internaltx',
+                to: `${pathname}?tab=internaltx`,
               },
               {
                 title: 'Erc20 Token TXns',
                 value: 'tokentxns',
+                to: `${pathname}?tab=tokentxns`,
               },
 
               {
                 title: 'Contract',
                 indicator: <IconVerify />,
                 value: ['code', 'readContract', 'writeContract'],
+                to: `${pathname}?tab=code`,
               },
               {
                 title: 'Events',
                 value: 'events',
+                to: `${pathname}?tab=events`,
               },
               {
                 title: 'Analytics',
                 value: 'analytics',
+                to: `${pathname}?tab=analytics`,
               },
 
               {
                 title: 'Comments',
                 indicator: <IconVerify />,
                 value: 'comments',
+                to: `${pathname}?tab=comments`,
               },
             ]}
             value={tab}
@@ -170,14 +180,17 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                     {
                       title: 'Code',
                       value: 'code',
+                      to: `${pathname}?tab=code`,
                     },
                     {
                       title: 'Read Contract',
                       value: 'readContract',
+                      to: `${pathname}?tab=readContract`,
                     },
                     {
                       title: 'Write Contract',
                       value: 'writeContract',
+                      to: `${pathname}?tab=writeContract`,
                     },
                   ]}
                   value={tab}

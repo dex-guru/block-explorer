@@ -1,1 +1,1 @@
-export type LogoProps = { withText?: boolean }
+export type LogoProps = { title?: string }

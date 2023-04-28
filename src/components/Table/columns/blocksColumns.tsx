@@ -3,7 +3,11 @@ import styles from '../Table.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+  getNormalizedValue,
+} from '@/lib/utils'
 
 export const blocksColumns: IColumn<BlockModel>[] = [
   {
@@ -32,9 +36,30 @@ export const blocksColumns: IColumn<BlockModel>[] = [
     },
   },
   {
+    accessor: 'feeRecipient',
+    title: 'Fee Recipient',
+    render: (data) => <Address type="account" address={data.miner} />,
+  },
+  {
     accessor: 'gasUsed',
     title: 'Gas Used',
-    render: (data) => financialFormatLowValueHighPrecision(data.gasUsed || 0),
+    render: (data) => {
+      if (!data.gasUsed || !data.gasLimit) {
+        return <span className={styles.muted}>0</span>
+      }
+
+      return (
+        <>
+          {financialFormatLowValueHighPrecision(data.gasUsed || 0)}{' '}
+          <span className={styles.muted}>
+            {financialFormat(((data.gasUsed || 0) / data.gasLimit) * 100, {
+              decimals: 2,
+            })}
+            %
+          </span>
+        </>
+      )
+    },
   },
   {
     accessor: 'gasLimit',
@@ -46,7 +71,6 @@ export const blocksColumns: IColumn<BlockModel>[] = [
     accessor: 'baseFee',
     title: 'Base Fee',
     type: 'number',
-    render: (data) =>
-      financialFormatLowValueHighPrecision(data.baseFeePerGas || 0),
+    render: (data) => <>{getNormalizedValue(data.baseFeePerGas || 0)} Gwei</>,
   },
 ]

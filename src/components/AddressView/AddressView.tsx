@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
@@ -21,6 +22,8 @@ import { PaginationVariables } from '@/types'
 const perPage = [5, 10, 25, 50, 100]
 
 const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
 
@@ -94,22 +97,27 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
               {
                 title: 'Transactions',
                 value: '',
+                to: pathname,
               },
               {
                 title: 'Internal TXns',
                 value: 'internaltx',
+                to: `${pathname}?tab=internaltx`,
               },
               {
                 title: 'Erc20 Token TXns',
                 value: 'tokentxns',
+                to: `${pathname}?tab=tokentxns`,
               },
               {
                 title: 'Analytics',
                 value: 'analytics',
+                to: `${pathname}?tab=analytics`,
               },
               {
                 title: 'Comments',
                 value: 'comments',
+                to: `${pathname}?tab=comments`,
               },
             ]}
             value={tab}

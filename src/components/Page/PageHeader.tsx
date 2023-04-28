@@ -2,7 +2,6 @@ import { FC } from 'react'
 import Link from 'next/link'
 import Logo from '../Logo'
 import Search from '../Search'
-import ThemeToggle from '../ThemeToggle'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
@@ -10,7 +9,7 @@ const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
   return (
     <header className={styles.container}>
       <Link className={styles.logo} href="/">
-        <Logo withText />
+        <Logo title="canto.explorer" />
       </Link>
       {!!withMenu && <div className={styles.menu}></div>}
       {!!withSearch && (
@@ -18,9 +17,9 @@ const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
           <Search className={styles.searchElement} />
         </div>
       )}
-      <div className={styles.theme}>
+      {/* <div className={styles.theme}>
         <ThemeToggle />
-      </div>
+      </div> */}
     </header>
   )
 }

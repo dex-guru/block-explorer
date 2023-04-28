@@ -8,6 +8,7 @@ import Card from './Card'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
 import DataTable from './DataTable'
+import DateTime from './DateTime'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
@@ -22,33 +23,36 @@ import Summary from './Summary'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
 import Tile from './Tile'
+import Value from './Value'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 
 export {
-  Delta,
-  Banner,
-  Avatar,
   Address,
+  AddressView,
+  Avatar,
+  Banner,
   Button,
   Card,
-  DetailsView,
-  Details,
-  Grid,
-  Page,
-  Tile,
-  Label,
-  TabPanel,
-  Properties,
-  Heading,
-  Logo,
-  ContractView,
-  AddressView,
-  Files,
-  Summary,
-  TimeAgo,
-  Table,
-  Pagination,
   ConnectButton,
+  ContractView,
   DataTable,
+  DateTime,
+  Delta,
+  Details,
+  DetailsView,
+  Files,
+  Grid,
+  Heading,
+  Label,
+  Logo,
+  Page,
+  Pagination,
+  Properties,
+  Summary,
+  Table,
+  TabPanel,
+  Tile,
+  TimeAgo,
+  Value,
 }
