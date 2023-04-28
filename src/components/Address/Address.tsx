@@ -17,8 +17,6 @@ const Address: FC<AddressProps> = ({
     return null
   }
 
-  console.log(type, values, isShorten)
-
   const tooltipData =
     values.canBeShort && isShorten
       ? {
