@@ -1,0 +1,29 @@
+.muted {
+  composes: muted from '../styles/_common.scss';
+}
+
+.icon {
+  composes: icon from '../styles/_common.scss';
+}
+
+.button {
+  composes: button from '../components/Button/Button.module.scss';
+  composes: sm from '../components/Button/Button.module.scss';
+  display: inline-flex;
+}
+
+.disabled {
+  composes: disabled from '../components/Button/Button.module.scss';
+}
+
+.neutral {
+  composes: neutral from '../styles/_common.scss';
+}
+
+.positive {
+  composes: positive from '../styles/_common.scss';
+}
+
+.negative {
+  composes: negative from '../styles/_common.scss';
+}
