@@ -82,8 +82,6 @@ export const Pagination: FC<IPaginationProps> = ({
 
   useEffect(() => {
     if (isMounted) {
-      console.log('*** UF', total, perPage)
-      //setCurrentPage(DEFAULT_FIRST_PAGE)
       setTotalPages(getTotalPages(total, perPage))
       setDisabled(getDisabled(total, perPage))
     }
