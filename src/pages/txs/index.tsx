@@ -25,7 +25,7 @@ interface ITxsProps {
 const Txs: NextPage<ITxsProps> = (props) => {
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
-  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
+  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -69,6 +69,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
           />
 
           <DataTable
+            isLoading={loading}
             columns={txsColumns}
             data={transactions}
             total={transactions[0].blockNumber}

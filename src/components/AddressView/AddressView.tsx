@@ -27,24 +27,22 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
   const pathname = router.asPath.split('?')[0]
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
+  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
 
   useEffect(() => {
     if (data && isMount) {
       setTransactions(data.transactions)
-      setIsLoading(false)
     }
   }, [data, isMount])
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      setIsLoading(true)
       getTransactions({ variables: { ...variables, address } })
     },
     [getTransactions, address]
   )
+
   return (
     <>
       <Head>
@@ -132,7 +130,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
               <>
                 {transactions && transactions.length > 0 && (
                   <DataTable
-                    isLoading={isLoading}
+                    isLoading={loading}
                     columns={txsColumns}
                     data={transactions}
                     total={transactions[0].blockNumber}
