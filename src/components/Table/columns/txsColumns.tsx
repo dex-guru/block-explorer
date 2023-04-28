@@ -11,10 +11,10 @@ export const txsColumns: IColumn<TransactionModel>[] = [
     render: (data) => <Address address={data.hash} type="tx" />,
   },
   {
-    accessor: 'blockHash',
+    accessor: 'blockNumber',
     title: 'Block',
     modifier: 'address',
-    render: (data) => <Address address={data.blockHash} type="tx" />,
+    render: (data) => <Address address={`${data.blockNumber}`} type="block" />,
   },
   {
     accessor: 'blockTimestamp',

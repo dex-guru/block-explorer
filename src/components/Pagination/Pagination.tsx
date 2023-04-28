@@ -4,6 +4,7 @@ import Button from '../Button'
 import { getTotalPages } from './utils'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'
+import { financialFormat } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 import styles from './Pagination.module.scss'
 
@@ -81,34 +82,32 @@ export const Pagination: FC<IPaginationProps> = ({
       <Button
         onClick={getPrevHandler}
         disabled={disabled.prev}
-        className={styles['pagination-button']}
-      >
-        <ArrowLeft />
-      </Button>
+        className={styles.button}
+        icon={<ArrowLeft />}
+      />
       <Button
+        caption="First"
         onClick={getFirstHandler}
         disabled={disabled.first}
-        className={styles['pagination-button']}
-      >
-        First
-      </Button>
+        className={styles.button}
+      />
+
       <span className={styles.counter}>
-        {currentPage} of {totalPages}
+        Page {financialFormat(currentPage)} of {financialFormat(totalPages)}
       </span>
+
       <Button
+        caption="Last"
         onClick={getLastHandler}
         disabled={disabled.last}
-        className={styles['pagination-button']}
-      >
-        Last
-      </Button>
+        className={styles.button}
+      />
       <Button
+        icon={<ArrowRight />}
         onClick={getNextHandler}
         disabled={disabled.next}
-        className={styles['pagination-button']}
-      >
-        <ArrowRight />
-      </Button>
+        className={styles.button}
+      />
     </div>
   )
 }

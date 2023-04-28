@@ -1,21 +1,25 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
-import styles from '../Page.module.scss'
+import labelStyles from '../../components/Label/Label.module.scss'
+import styles from '../Pages.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import {
   Address,
   DateTime,
+  Label,
   Page,
   Properties,
   TimeAgo,
   Value,
 } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
+import { getNormalizedValue } from '@/lib/utils'
 
 interface ITxProps {
   data: TransactionModel | null
@@ -93,14 +97,16 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 title: 'From / Nonce:',
                 tooltip: '?',
                 value: (
-                  <>
+                  <Separated>
                     <Address
                       address={data.fromAddress}
                       type="account"
                       isShorten={false}
-                    />{' '}
-                    <span className={styles.muted}>| {data.nonce}</span>
-                  </>
+                    />
+                    <Label type="tag" className={labelStyles.success}>
+                      {data.nonce}
+                    </Label>
+                  </Separated>
                 ),
               },
               {
@@ -113,6 +119,11 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                     isShorten={false}
                   />
                 ) : null,
+              },
+              {
+                title: 'Value:',
+                tooltip: '?',
+                value: getNormalizedValue(data.value),
               },
               {
                 title: 'Transaction Action:',

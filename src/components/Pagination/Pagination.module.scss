@@ -1,11 +1,13 @@
 .container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 286px;
+  gap: 4px;
+  justify-self: center;
 }
 
-.pagination-button {
+.button {
+  composes: button from '../Button/Button.module.scss';
+  composes: lg from '../Button/Button.module.scss';
+
   color: var(--color-title-secondary);
   border: 1px solid var(--color-table-separator);
   border-radius: 4px;
@@ -13,19 +15,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11px;
-  height: 32px;
+  padding: 0 8px;
+  min-width: 32px;
 
   &:hover {
-    background: var(--color-link);
+    background: var(--color-action-hover);
     color: white;
   }
 }
 
 .counter {
   color: var(--color-title-secondary);
+  border: 1px solid var(--color-table-separator);
+  border-radius: 4px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
 }

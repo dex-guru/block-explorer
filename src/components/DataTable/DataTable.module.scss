@@ -8,10 +8,14 @@
 
 .header {
   composes: header from '../Card/Card.module.scss';
+  display: flex;
+  justify-content: space-between;
 }
 
 .footer {
   composes: header from '../Card/Card.module.scss';
+  display: flex;
+  justify-content: space-between;
 }
 
 .table {
