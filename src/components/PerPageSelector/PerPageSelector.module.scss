@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  gap: 4px;
+  justify-self: center;
+}
+
+.label {
+  color: var(--color-title-secondary);
+}
+
+.selector {
+  background: var(--color-card-bg);
+  color: var(--color-title-secondary);
+  height: 24px;
+}

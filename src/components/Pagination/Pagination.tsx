@@ -1,7 +1,8 @@
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import Button from '../Button'
-import { getTotalPages } from './utils'
+import { getDisabled, getTotalPages } from './utils'
+import { useIsMount } from '@/hooks'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'
 import { financialFormat } from '@/lib/utils'
@@ -10,9 +11,11 @@ import styles from './Pagination.module.scss'
 
 interface IPaginationProps {
   total: number
+  defaultCurrentPage: number
   perPage?: number
   className?: string
   onChange: (variables: PaginationVariables) => void
+  setdefaultCurrentPage: (page: number) => void
 }
 
 export const DEFAULT_FIRST_PAGE = 1
@@ -23,59 +26,74 @@ export const Pagination: FC<IPaginationProps> = ({
   perPage = DEFAULT_PER_PAGE,
   onChange,
   className,
+  setdefaultCurrentPage,
+  defaultCurrentPage = DEFAULT_FIRST_PAGE,
 }) => {
-  const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
-  const [totalPages] = useState(() => getTotalPages(total, perPage))
-  const [disabled, setDisabled] = useState(() => {
-    if (total > perPage) {
-      return { prev: true, first: true, last: false, next: false }
-    }
+  const isMounted = useIsMount()
 
-    return { prev: true, first: true, last: true, next: true }
-  })
+  const [currentPage, setCurrentPage] = useState(defaultCurrentPage)
+  const [totalPages, setTotalPages] = useState(() =>
+    getTotalPages(total, perPage)
+  )
+  const [disabled, setDisabled] = useState(() => getDisabled(total, perPage))
 
   const getNextHandler = useCallback(() => {
     const skip = currentPage * perPage
 
     if (skip + perPage >= total) {
       setDisabled({ ...disabled, last: true, next: true })
-      setCurrentPage(total)
+      setdefaultCurrentPage(total)
       onChange({ first: perPage, skip: total - perPage })
       return
     }
 
-    setCurrentPage(currentPage + 1)
+    setdefaultCurrentPage(currentPage + 1)
     setDisabled({ ...disabled, first: false, prev: false })
     onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage, total])
+  }, [currentPage, disabled, onChange, perPage, setdefaultCurrentPage, total])
 
   const getPrevHandler = useCallback(() => {
     const skip = currentPage * perPage - perPage
 
     if (skip - perPage <= 0) {
       setDisabled({ ...disabled, prev: true, first: true })
-      setCurrentPage(DEFAULT_FIRST_PAGE)
+      setdefaultCurrentPage(DEFAULT_FIRST_PAGE)
       onChange({ first: perPage, skip: 0 })
       return
     }
 
-    setCurrentPage(currentPage - 1)
+    setdefaultCurrentPage(currentPage - 1)
     setDisabled({ ...disabled, last: false, next: false })
     onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage])
+  }, [currentPage, disabled, onChange, perPage, setdefaultCurrentPage])
 
   const getFirstHandler = useCallback(() => {
     setDisabled({ ...disabled, prev: true, first: true })
-    setCurrentPage(DEFAULT_FIRST_PAGE)
+    setdefaultCurrentPage(DEFAULT_FIRST_PAGE)
     onChange({ first: perPage, skip: 0 })
-  }, [disabled, onChange, perPage])
+  }, [disabled, onChange, perPage, setdefaultCurrentPage])
 
   const getLastHandler = useCallback(() => {
     const skip = total - perPage
     setDisabled({ ...disabled, last: true, next: true })
-    setCurrentPage(totalPages)
+    setdefaultCurrentPage(totalPages)
     onChange({ first: perPage, skip })
-  }, [disabled, onChange, perPage, total, totalPages])
+  }, [disabled, onChange, perPage, setdefaultCurrentPage, total, totalPages])
+
+  useEffect(() => {
+    if (isMounted) {
+      console.log('*** UF', total, perPage)
+      //setCurrentPage(DEFAULT_FIRST_PAGE)
+      setTotalPages(getTotalPages(total, perPage))
+      setDisabled(getDisabled(total, perPage))
+    }
+  }, [isMounted, perPage, total])
+
+  useEffect(() => {
+    if (isMounted) {
+      setCurrentPage(defaultCurrentPage)
+    }
+  }, [isMounted, defaultCurrentPage])
 
   return (
     <div className={clsx(styles.container, className)}>
