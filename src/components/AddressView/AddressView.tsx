@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
@@ -15,6 +16,9 @@ import {
 } from '@/components'
 
 const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
+
   return (
     <>
       <Head>
@@ -71,22 +75,27 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab }) => {
               {
                 title: 'Transactions',
                 value: '',
+                to: pathname,
               },
               {
                 title: 'Internal TXns',
                 value: 'internaltx',
+                to: `${pathname}?tab=internaltx`,
               },
               {
                 title: 'Erc20 Token TXns',
                 value: 'tokentxns',
+                to: `${pathname}?tab=tokentxns`,
               },
               {
                 title: 'Analytics',
                 value: 'analytics',
+                to: `${pathname}?tab=analytics`,
               },
               {
                 title: 'Comments',
                 value: 'comments',
+                to: `${pathname}?tab=comments`,
               },
             ]}
             value={tab}

@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -23,6 +24,9 @@ import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 
 const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
+
   const match = useSourcifyMetadata(address, 7700)
   const abi = match?.metadata.output.abi as Abi
   if (!abi) {
@@ -105,34 +109,41 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
               {
                 title: 'Transactions',
                 value: '',
+                to: pathname,
               },
               {
                 title: 'Internal TXns',
                 value: 'internaltx',
+                to: `${pathname}?tab=internaltx`,
               },
               {
                 title: 'Erc20 Token TXns',
                 value: 'tokentxns',
+                to: `${pathname}?tab=tokentxns`,
               },
 
               {
                 title: 'Contract',
                 indicator: <IconVerify />,
                 value: ['code', 'readContract', 'writeContract'],
+                to: `${pathname}?tab=code`,
               },
               {
                 title: 'Events',
                 value: 'events',
+                to: `${pathname}?tab=events`,
               },
               {
                 title: 'Analytics',
                 value: 'analytics',
+                to: `${pathname}?tab=analytics`,
               },
 
               {
                 title: 'Comments',
                 indicator: <IconVerify />,
                 value: 'comments',
+                to: `${pathname}?tab=comments`,
               },
             ]}
             value={tab}
@@ -146,14 +157,17 @@ const ContractView: FC<IContractViewProps> = ({ address, tab }) => {
                     {
                       title: 'Code',
                       value: 'code',
+                      to: `${pathname}?tab=code`,
                     },
                     {
                       title: 'Read Contract',
                       value: 'readContract',
+                      to: `${pathname}?tab=readContract`,
                     },
                     {
                       title: 'Write Contract',
                       value: 'writeContract',
+                      to: `${pathname}?tab=writeContract`,
                     },
                   ]}
                   value={tab}
