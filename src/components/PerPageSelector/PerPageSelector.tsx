@@ -36,8 +36,6 @@ export const PerPageSelector: FC<IPerPageSelectorProps> = ({
     <div className={styles.container}>
       <span className={styles.label}>Show rows</span>
       <select
-        name="pets"
-        id="pet-select"
         onChange={onPerPageChangeHandler}
         className={clsx(styles.selector, className)}
       >

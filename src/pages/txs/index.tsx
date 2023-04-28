@@ -56,13 +56,13 @@ const Txs: NextPage<ITxsProps> = (props) => {
               {
                 title: 'Transactions Count',
                 value: financialFormatLowValueHighPrecision(
-                  props.chainStats?.transactionsCount || 0
+                  props.chainStats.transactionsCount || 0
                 ),
               },
               {
                 title: 'Transactions per Second',
                 value: financialFormatLowValueHighPrecision(
-                  props.chainStats?.transactionsPerSecond || 0
+                  props.chainStats.transactionsPerSecond || 0
                 ),
               },
             ]}
@@ -71,7 +71,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
           <DataTable
             columns={txsColumns}
             data={transactions}
-            total={transactions[0].blockNumber}
+            total={props.chainStats.transactionsCount}
             perPage={perPage[1]}
             onPageChange={onPaginationChange}
           />
