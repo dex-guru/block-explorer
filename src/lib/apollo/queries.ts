@@ -118,6 +118,20 @@ export const GET_BLOCKS = gql`
   }
 `
 
+export const GET_BLOCKS_SHORT = gql`
+  query Blocks($first: Int!, $skip: Int!) {
+    blocks(first: $first, skip: $skip) {
+      hash
+      number
+      miner
+      transactionCount
+      timestamp
+      gasUsed
+      gasLimit
+    }
+  }
+`
+
 export const GET_TRANSACTIONS_BY_HASH = gql`
   query TransactionsByHash($hash: String) {
     transactions(hash: $hash, first: 1) {

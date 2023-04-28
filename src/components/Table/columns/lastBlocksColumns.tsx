@@ -4,7 +4,9 @@ import { Address, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
 
-export const lastBlocksColumns: IColumn<BlockModel>[] = [
+export type BlockModelWithTimeDiff = BlockModel & { timeDiff: number }
+
+export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
   {
     accessor: 'hash',
     render: (data) => (
@@ -23,7 +25,8 @@ export const lastBlocksColumns: IColumn<BlockModel>[] = [
           Miner <Address address={data.miner} type="account" />
         </div>
         <small className="value">
-          <Link href="/">{data.transactionCount} txns</Link> in 😢 sec
+          <Link href="/">{data.transactionCount} txns</Link> in {data.timeDiff}{' '}
+          sec
         </small>
       </div>
     ),
