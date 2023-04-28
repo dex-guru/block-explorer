@@ -1,21 +1,22 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useLazyQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
-  Card,
   DetailsView,
   Grid,
   Page,
   Properties,
   TabPanel,
   DataTable,
+  Empty,
 } from '@/components'
 import { useIsMount } from '@/hooks'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 
@@ -26,17 +27,20 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
   const pathname = router.asPath.split('?')[0]
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
 
   useEffect(() => {
     if (data && isMount) {
       setTransactions(data.transactions)
+      setIsLoading(false)
     }
   }, [data, isMount])
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
+      setIsLoading(true)
       getTransactions({ variables: { ...variables, address } })
     },
     [getTransactions, address]
@@ -122,19 +126,29 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             ]}
             value={tab}
           >
-            {/* Card here should depend on Tab's query param value */}
-            <Card>
-              {/* Transactions tab */}
-              {tab === undefined && transactions && transactions.length > 0 && (
-                <DataTable
-                  columns={txsColumns}
-                  data={transactions}
-                  total={transactions[0].blockNumber}
-                  perPage={perPage[1]}
-                  onPageChange={onPaginationChange}
-                />
-              )}
-            </Card>
+            {/* Content here should depend on Tab's query param value */}
+            {/* Transactions tab */}
+            {tab === undefined && (
+              <>
+                {transactions && transactions.length > 0 && (
+                  <DataTable
+                    isLoading={isLoading}
+                    columns={txsColumns}
+                    data={transactions}
+                    total={transactions[0].blockNumber}
+                    perPage={perPage[1]}
+                    onPageChange={onPaginationChange}
+                  />
+                )}
+
+                {(!transactions || !transactions.length) && (
+                  <Empty
+                    icon={<IconEmpty />}
+                    title="No transactions for this account"
+                  />
+                )}
+              </>
+            )}
           </TabPanel>
         </DetailsView>
       </Page>

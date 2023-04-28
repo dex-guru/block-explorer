@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useLazyQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
 import ContractMethodForm from './ContractMethodForm'
@@ -11,7 +11,6 @@ import { IContractViewProps } from './types'
 import {
   Address,
   Avatar,
-  Card,
   DetailsView,
   Page,
   Properties,
@@ -20,9 +19,11 @@ import {
   Grid,
   ConnectButton,
   DataTable,
+  Empty,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -171,102 +172,113 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
             ]}
             value={tab}
           >
-            {/* Card here should depend on Tab's query param value */}
-            <Card>
-              {isSubTab && (
-                <TabPanel
-                  className="tab-panel"
-                  tabs={[
-                    {
-                      title: 'Code',
-                      value: 'code',
-                      to: `${pathname}?tab=code`,
-                    },
-                    {
-                      title: 'Read Contract',
-                      value: 'readContract',
-                      to: `${pathname}?tab=readContract`,
-                    },
-                    {
-                      title: 'Write Contract',
-                      value: 'writeContract',
-                      to: `${pathname}?tab=writeContract`,
-                    },
-                  ]}
-                  value={tab}
-                >
-                  {['readContract', 'writeContract'].includes(
-                    tab as string
-                  ) && <ConnectButton />}
-                  {tab === 'code' && <Files match={match} />}
-                  {tab === 'readContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            item.stateMutability === 'view'
+            {/* Content here should depend on Tab's query param value */}
+
+            {isSubTab && (
+              <TabPanel
+                className="tab-panel"
+                tabs={[
+                  {
+                    title: 'Code',
+                    value: 'code',
+                    to: `${pathname}?tab=code`,
+                  },
+                  {
+                    title: 'Read Contract',
+                    value: 'readContract',
+                    to: `${pathname}?tab=readContract`,
+                  },
+                  {
+                    title: 'Write Contract',
+                    value: 'writeContract',
+                    to: `${pathname}?tab=writeContract`,
+                  },
+                ]}
+                value={tab}
+              >
+                {['readContract', 'writeContract'].includes(tab as string) && (
+                  <ConnectButton />
+                )}
+                {tab === 'code' && <Files match={match} />}
+                {tab === 'readContract' && (
+                  <>
+                    {(abi as Abi)
+                      .filter(
+                        (item) =>
+                          item.type === 'function' &&
+                          item.stateMutability === 'view'
+                      )
+                      .map((method, index) => {
+                        const contractMethod = method as AbiFunction & {
+                          type: 'function'
+                        }
+                        return contractMethod.inputs.length === 0 ? (
+                          <ContractProperty
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                          />
+                        ) : (
+                          <ContractMethodForm
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                          />
                         )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return contractMethod.inputs.length === 0 ? (
-                            <ContractProperty
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          ) : (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          )
-                        })}
-                    </>
-                  )}
-                  {tab === 'writeContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            (item.stateMutability === 'nonpayable' ||
-                              item.stateMutability === 'payable')
+                      })}
+                  </>
+                )}
+                {tab === 'writeContract' && (
+                  <>
+                    {(abi as Abi)
+                      .filter(
+                        (item) =>
+                          item.type === 'function' &&
+                          (item.stateMutability === 'nonpayable' ||
+                            item.stateMutability === 'payable')
+                      )
+                      .map((method, index) => {
+                        const contractMethod = method as AbiFunction & {
+                          type: 'function'
+                        }
+                        return (
+                          <ContractMethodForm
+                            key={`${index}-${contractMethod}`}
+                            method={contractMethod}
+                            address={address}
+                            abi={abi}
+                            isWrite
+                          />
                         )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                              isWrite
-                            />
-                          )
-                        })}
-                    </>
-                  )}
-                </TabPanel>
-              )}
-              {/* Transactions tab */}
-              {tab === undefined && transactions && transactions.length > 0 && (
-                <DataTable
-                  columns={txsColumns}
-                  data={transactions}
-                  total={transactions[0].blockNumber}
-                  perPage={perPage[1]}
-                  onPageChange={onPaginationChange}
-                />
-              )}
-            </Card>
+                      })}
+                  </>
+                )}
+              </TabPanel>
+            )}
+
+            {/* Transactions tab */}
+            {tab === undefined && (
+              <>
+                {transactions && transactions.length > 0 && (
+                  <DataTable
+                    columns={txsColumns}
+                    data={transactions}
+                    total={transactions[0].blockNumber}
+                    perPage={perPage[1]}
+                    onPageChange={onPaginationChange}
+                  />
+                )}
+
+                {(!transactions || !transactions.length) && (
+                  <Empty
+                    icon={<IconEmpty />}
+                    title="No transactions for this contract"
+                  />
+                )}
+              </>
+            )}
           </TabPanel>
         </DetailsView>
       </Page>

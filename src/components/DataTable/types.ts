@@ -4,7 +4,7 @@ import { PaginationVariables } from '@/types'
 
 export type DataTableProps<T> = ITableProps<T> & {
   className?: string
-  children?: ReactNode
+  children?: ReactNode | ReactNode[]
 
   total?: number
   perPage?: number

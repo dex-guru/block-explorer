@@ -10,7 +10,7 @@ export type SummaryStat = {
 
 export type SummaryProps = {
   className?: string
-  children?: ReactNode
+  children?: ReactNode | ReactNode[]
 
   charts?: ChartProps[]
   stats?: SummaryStat[]

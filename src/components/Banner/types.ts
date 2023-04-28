@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
 
 export type BannerProps = {
-  children?: ReactNode
+  children?: ReactNode | ReactNode[]
 }

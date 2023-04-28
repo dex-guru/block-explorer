@@ -8,6 +8,7 @@ export interface ITableProps<T> {
   data: T[]
   className?: string
   showHeader?: boolean
+  isLoading?: boolean
 }
 
 export function Table<T>({
@@ -15,6 +16,7 @@ export function Table<T>({
   data,
   showHeader = true,
   className,
+  isLoading,
 }: ITableProps<T>) {
   const header = useHeader<T>(columns)
 
@@ -22,9 +24,21 @@ export function Table<T>({
 
   return (
     <div className={clsx(styles.container, className)}>
-      <table className={styles.table}>
-        {showHeader && <thead className={styles.thead}>{header}</thead>}
-        <tbody className={styles.tbody}>{rows}</tbody>
+      <table
+        className={clsx(styles.table, { [styles.tableLoading]: isLoading })}
+      >
+        {showHeader && (
+          <thead
+            className={clsx(styles.thead, { [styles.theadLoading]: isLoading })}
+          >
+            {header}
+          </thead>
+        )}
+        <tbody
+          className={clsx(styles.tbody, { [styles.tbodyLoading]: isLoading })}
+        >
+          {rows}
+        </tbody>
       </table>
     </div>
   )
