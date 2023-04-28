@@ -43,7 +43,7 @@ export const lastBlocksColumns: IColumn<BlockModel>[] = [
         }
       )
 
-      return <Label title={`${gasUtilization}%`} />
+      return <Label title={`${gasUtilization}%`} type="accent" />
     },
   },
 ]

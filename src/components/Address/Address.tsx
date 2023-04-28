@@ -12,16 +12,26 @@ const Address: FC<AddressProps> = ({
   isShorten = true,
 }) => {
   const values = AddressValues[type]
+
   if (!address || !values) {
     return null
   }
+
+  console.log(type, values, isShorten)
+
+  const tooltipData =
+    values.canBeShort && isShorten
+      ? {
+          'data-tooltip-id': 'app-tooltip',
+          'data-tooltip-content': address,
+        }
+      : {}
 
   return (
     <Link
       href={values.url(address)}
       className={clsx(styles.container, className)}
-      data-tooltip-id="app-tooltip"
-      data-tooltip-content={address}
+      {...tooltipData}
     >
       {isShorten ? values.format(address) : address}
     </Link>

@@ -60,9 +60,13 @@
 
   width: 36px;
   opacity: 0.5;
+  background: none;
+  border: none;
 
   &:focus,
   &:hover {
     opacity: 1;
+    background: none;
+    border: none;
   }
 }

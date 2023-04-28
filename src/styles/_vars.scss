@@ -6,7 +6,7 @@ html {
   --color-header-bg: #181d23;
 
   --color-button-bg: #1e242c;
-  --color-button-hover: #9488f0;
+  --color-button-hover: #05fc99;
   --color-button-text: #fff;
   --color-button-icon: #a8b4c1;
 
@@ -20,6 +20,11 @@ html {
   --color-action-text: #181d23;
   --color-action-hover: #3aeab5;
 
+  --color-tab-bg: transparent;
+  --color-tab-text: #05fc99;
+  --color-tab-hover: #fff;
+  --color-tab-active: #05fc99;
+
   --color-submit-bg: #12b886;
   --color-submit-text: #fff;
   --color-submit-hover: #3aeab5;
@@ -31,6 +36,8 @@ html {
 
   --color-card-bg: #181d23;
   --color-card-separator: #1e242c;
+
+  --color-separator: #2d3642;
 
   --color-details-active: #05fc99;
   --color-details-header: #1e242c;
@@ -52,6 +59,10 @@ html {
 
   --color-tooltip-bg: #2d3642;
   --color-tooltip-text: #fff;
+
+  --color-tag-bg: #2d3642;
+  --color-tag-text: #fff;
+  --color-tag-text-a: #f181D23ff;
 
   --radii-button: 4px;
   --radii-card: 8px;

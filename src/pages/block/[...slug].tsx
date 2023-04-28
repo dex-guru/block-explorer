@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import clsx from 'clsx'
-import styles from '../Page.module.scss'
+import styles from '../Pages.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import {
   Address,

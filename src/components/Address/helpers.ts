@@ -1,10 +1,13 @@
 import { AddressType } from './types'
 import { getShortAddress } from '@/lib/utils'
 
-export const AddressValues: Record<
-  AddressType,
-  { format: (address: string) => string; url: (address: string) => string }
-> = {
+type AddressValueProps = {
+  format: (address: string) => string
+  url: (address: string) => string
+  canBeShort?: boolean
+}
+
+export const AddressValues: Record<AddressType, AddressValueProps> = {
   account: {
     format: (address: string) => {
       return getShortAddress(address)
@@ -12,6 +15,7 @@ export const AddressValues: Record<
     url: (address: string) => {
       return `/address/${address}`
     },
+    canBeShort: true,
   },
   tx: {
     format: (address: string) => {
@@ -20,6 +24,7 @@ export const AddressValues: Record<
     url: (address: string) => {
       return `/tx/${address}`
     },
+    canBeShort: true,
   },
   block: {
     format: (address: string) => {
@@ -28,5 +33,6 @@ export const AddressValues: Record<
     url: (address: string) => {
       return `/block/${address}`
     },
+    canBeShort: false,
   },
 }

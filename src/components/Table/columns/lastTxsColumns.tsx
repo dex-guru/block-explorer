@@ -39,7 +39,7 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
         return <></>
       }
 
-      return <Label title={getNormalizedValue(data.value)} />
+      return <Label title={getNormalizedValue(data.value)} type="accent" />
     },
   },
 ]

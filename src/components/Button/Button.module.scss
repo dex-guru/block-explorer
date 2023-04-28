@@ -18,18 +18,22 @@
 
   cursor: pointer;
 
-  path {
-    fill: var(--color-button-icon);
-  }
-
   &:hover {
     background: var(--color-button-hover);
     border-color: var(--color-button-hover);
     color: var(--color-button-text);
 
-    path {
-      fill: var(--color-button-text);
+    .icon {
+      path {
+        fill: var(--color-button-text);
+      }
     }
+  }
+}
+
+.icon {
+  path {
+    fill: var(--color-button-icon);
   }
 }
 

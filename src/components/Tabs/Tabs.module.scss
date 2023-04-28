@@ -13,11 +13,23 @@
   font-size: 16px;
   line-height: 20px;
   border-radius: 0;
-  color: var(--color-link);
   padding: 0 10px;
+  border-color: transparent;
+  background: var(--color-tab-bg);
+  color: var(--color-tab-text);
+
+  &:hover {
+    background: none;
+    border-color: transparent;
+    color: var(--color-tab-hover);
+  }
 }
 
 .active {
-  color: var(--color-action-text);
-  border-bottom-color: var(--color-link);
+  color: var(--color-tab-text);
+  border-bottom-color: var(--color-tab-active);
+
+  &:hover {
+    border-bottom-color: var(--color-tab-active);
+  }
 }

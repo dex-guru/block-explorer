@@ -2,6 +2,7 @@ import { FC } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { Heading, Properties, Details } from '@/components'
 import { Match, MatchType } from '@/types'
+import styles from './ContractView.module.scss'
 
 export interface IFilesProps {
   match: Match | undefined | null
@@ -35,10 +36,10 @@ const Files: FC<IFilesProps> = ({ match }) => {
         <>
           <Heading size="md">ABI</Heading>
           <SyntaxHighlighter
+            className={styles.code}
             language="json"
             wrapLongLines
             showLineNumbers
-            customStyle={{ margin: 0 }}
           >
             {JSON.stringify(match?.metadata.output.abi, null, '  ') ?? ''}
           </SyntaxHighlighter>
@@ -56,7 +57,12 @@ const Files: FC<IFilesProps> = ({ match }) => {
             const filename = key.split('/').pop()
             return (
               <Details title={filename || ''} key={key}>
-                <SyntaxHighlighter language="solidity" showLineNumbers>
+                <SyntaxHighlighter
+                  language="solidity"
+                  showLineNumbers
+                  wrapLongLines
+                  className={styles.code}
+                >
                   {sourcecode}
                 </SyntaxHighlighter>
               </Details>
