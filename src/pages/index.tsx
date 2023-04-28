@@ -19,18 +19,22 @@ import {
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
 import { lastTxsColumns } from '@/components/Table/columns'
-import { lastBlocksColumns } from '@/components/Table/columns/lastBlocksColumns'
+import {
+  BlockModelWithTimeDiff,
+  lastBlocksColumns,
+} from '@/components/Table/columns/lastBlocksColumns'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   BLOCKS_LAST,
   CHAIN_STATS,
+  GET_BLOCKS,
   TRANSACTIONS_LAST,
 } from '@/lib/apollo/queries'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 interface IndexProps {
   transactions: TransactionModel[]
-  blocks: BlockModel[]
+  blocks: BlockModelWithTimeDiff[]
   chainStats: ChainStatsModel
 }
 
@@ -151,9 +155,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data: transactions } = await apolloClient.query({
     query: TRANSACTIONS_LAST,
   })
-  const { data: blocks } = await apolloClient.query({
-    query: BLOCKS_LAST,
+  const { data: blocks } = await apolloClient.query<{ blocks: BlockModel[] }>({
+    query: GET_BLOCKS,
+    variables: { first: 11, skip: 0 },
   })
+
+  const blocksWithTimeDiff = blocks.blocks.map((block, index, array) => {
+    if (index !== 10) {
+      const timeDiff = block.timestamp - array[10].timestamp
+      return { ...block, timeDiff }
+    }
+    return block
+  })
+
+  blocksWithTimeDiff.splice(10, 1)
+
   const { data: chainStats } = await apolloClient.query({
     query: CHAIN_STATS,
   })
@@ -161,8 +177,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return addApolloState(apolloClient, {
     props: {
       ...transactions,
-      ...blocks,
       ...chainStats,
+      blocks: blocksWithTimeDiff,
     },
   })
 }
