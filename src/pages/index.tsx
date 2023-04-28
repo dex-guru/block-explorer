@@ -40,7 +40,7 @@ const Index: NextPage<IndexProps> = (props) => {
   const chartData = stats.transactionsCountHistory.map(
     ({ timestamp, value }) => {
       const date = new Date(timestamp * 1000)
-      return [date.toUTCString(), value]
+      return [date.toUTCString().replace(' 00:00:00', ''), value]
     }
   )
 
@@ -53,9 +53,11 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Transactions',
       value: (
         <>
-          {financialFormatLowValueHighPrecision(stats.transactionsCount)} (
-          {financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
-          txs/sec)
+          {financialFormatLowValueHighPrecision(stats.transactionsCount)}{' '}
+          <span className="muted">
+            ({financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
+            txs/sec)
+          </span>
         </>
       ),
     },
@@ -88,7 +90,6 @@ const Index: NextPage<IndexProps> = (props) => {
       </Head>
       <Page>
         <Banner>
-          <Heading size="lg">Dex.guru Explorer</Heading>
           <Search />
         </Banner>
 
@@ -99,7 +100,6 @@ const Index: NextPage<IndexProps> = (props) => {
               {
                 title: 'Ethereum Transaction History in 14 days',
                 data: chartData as ChartData,
-                color: '#9488F0',
               },
             ]}
           />

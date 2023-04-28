@@ -34,6 +34,12 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
   {
     accessor: 'value',
     type: 'number',
-    render: (data) => <Label title={getNormalizedValue(data.value)} />,
+    render: (data) => {
+      if (!data.value || data.value === '0') {
+        return <></>
+      }
+
+      return <Label title={getNormalizedValue(data.value)} />
+    },
   },
 ]

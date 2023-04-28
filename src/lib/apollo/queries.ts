@@ -35,6 +35,8 @@ export const BLOCKS_LAST = gql`
       miner
       transactionCount
       timestamp
+      gasUsed
+      gasLimit
     }
   }
 `
@@ -93,6 +95,7 @@ export const GET_TRANSACTIONS = gql`
 export const GET_BLOCKS = gql`
   query Blocks($first: Int!, $skip: Int!) {
     blocks(first: $first, skip: $skip) {
+      baseFeePerGas
       difficulty
       extraData
       gasLimit
