@@ -4,5 +4,5 @@ export type DetailsProps = {
   title: string
   isOpen?: boolean
   className?: string
-  children?: ReactNode
+  children?: ReactNode | ReactNode[]
 }

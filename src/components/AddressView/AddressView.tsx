@@ -13,8 +13,10 @@ import {
   Properties,
   TabPanel,
   DataTable,
+  Empty,
 } from '@/components'
 import { useIsMount } from '@/hooks'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 
@@ -26,7 +28,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
 
-  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
+  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
 
   useEffect(() => {
     if (data && isMount) {
@@ -40,6 +42,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
     },
     [getTransactions, address]
   )
+
   return (
     <>
       <Head>
@@ -123,14 +126,26 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
           >
             {/* Content here should depend on Tab's query param value */}
             {/* Transactions tab */}
-            {tab === undefined && transactions && transactions.length > 0 && (
-              <DataTable
-                columns={txsColumns}
-                data={transactions}
-                total={transactions[0].blockNumber}
-                perPage={perPage[1]}
-                onPageChange={onPaginationChange}
-              />
+            {tab === undefined && (
+              <>
+                {transactions && transactions.length > 0 && (
+                  <DataTable
+                    isLoading={loading}
+                    columns={txsColumns}
+                    data={transactions}
+                    total={transactions[0].blockNumber}
+                    perPage={perPage[1]}
+                    onPageChange={onPaginationChange}
+                  />
+                )}
+
+                {(!transactions || !transactions.length) && (
+                  <Empty
+                    icon={<IconEmpty />}
+                    title="No transactions for this account"
+                  />
+                )}
+              </>
             )}
           </TabPanel>
         </DetailsView>

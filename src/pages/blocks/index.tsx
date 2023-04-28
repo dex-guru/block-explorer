@@ -22,7 +22,7 @@ interface IBlocksProps {
 const Txs: NextPage<IBlocksProps> = (props) => {
   const isMount = useIsMount()
   const [blocks, setBlocks] = useState(props.blocks)
-  const [getBlocks, { data }] = useLazyQuery(GET_BLOCKS)
+  const [getBlocks, { data, loading }] = useLazyQuery(GET_BLOCKS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -60,6 +60,7 @@ const Txs: NextPage<IBlocksProps> = (props) => {
           />
 
           <DataTable
+            isLoading={loading}
             columns={blocksColumns}
             data={blocks}
             total={props?.chainStats?.lastBlockNumber || 0}

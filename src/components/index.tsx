@@ -12,6 +12,7 @@ import DateTime from './DateTime'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
+import Empty from './Empty'
 import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
@@ -19,6 +20,7 @@ import Logo from './Logo'
 import Page from './Page'
 import { Pagination } from './Pagination'
 import Properties from './Properties'
+import Search from './Search'
 import Summary from './Summary'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
@@ -41,6 +43,7 @@ export {
   Delta,
   Details,
   DetailsView,
+  Empty,
   Files,
   Grid,
   Heading,
@@ -50,6 +53,7 @@ export {
   Pagination,
   Properties,
   Summary,
+  Search,
   Table,
   TabPanel,
   Tile,

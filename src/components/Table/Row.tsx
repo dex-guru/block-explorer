@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import styles from './Table.module.scss'
 
 interface IRowProps {
-  children: ReactNode
+  children: ReactNode | ReactNode[]
   className?: string
   onClick?: () => void
 }

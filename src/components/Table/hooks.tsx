@@ -32,8 +32,6 @@ export const useBodyRows = <T,>(
           {cellDisplay}
         </Cell>
       )
-      if (column.render) {
-      }
     })
 
     return (
