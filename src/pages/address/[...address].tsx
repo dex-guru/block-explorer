@@ -88,7 +88,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: { ...transactions },
     })
 
-    result = { ...result, ...transactionsProps }
+    result = { props: { ...result.props, ...transactionsProps.props } }
   }
 
   // Pass data to the page via props
