@@ -15,5 +15,7 @@
 .icon {
   composes: icon from '../../styles/_common.scss';
 
-  flex: 0 0 20px;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
 }
