@@ -78,6 +78,27 @@ export const CHAIN_STATS = gql`
   }
 `
 
+export const TRANSACTIONS_STATS = gql`
+  query TransactionsStats {
+    transactionStats {
+      networkTransactionsFee24H
+      networkTransactionsFeeDelta24H
+      transactions24H
+      transactionsDelta24H
+    }
+  }
+`
+
+export const BLOCKS_STATS = gql`
+  query BlocksStats {
+    blockStats {
+      burntFees
+      lastSafeBlock
+      networkUtilization24H
+    }
+  }
+`
+
 export const GET_TRANSACTIONS = gql`
   query Transactions($first: Int!, $skip: Int!, $address: String) {
     transactions(first: $first, skip: $skip, address: $address) {

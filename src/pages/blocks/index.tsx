@@ -2,13 +2,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useLazyQuery } from '@apollo/client'
-import { BlockModel, ChainStatsModel } from '@/__generated__/resolvers-types'
+import {
+  BlockModel,
+  BlockStatsModel,
+  ChainStatsModel,
+} from '@/__generated__/resolvers-types'
 import { DetailsView, Page, Summary } from '@/components'
 import DataTable from '@/components/DataTable'
 import { blocksColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { CHAIN_STATS, GET_BLOCKS } from '@/lib/apollo/queries'
+import { BLOCKS_STATS, CHAIN_STATS, GET_BLOCKS } from '@/lib/apollo/queries'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
@@ -16,6 +20,7 @@ const perPage = [5, 10, 25, 50, 100]
 
 interface IBlocksProps {
   blocks: BlockModel[]
+  blockStats: BlockStatsModel
   chainStats: ChainStatsModel
 }
 
@@ -56,6 +61,24 @@ const Txs: NextPage<IBlocksProps> = (props) => {
                   props?.chainStats?.lastBlockNumber
                 ),
               },
+              {
+                title: 'Last Safe Block',
+                value: financialFormatLowValueHighPrecision(
+                  props?.blockStats?.lastSafeBlock
+                ),
+              },
+              {
+                title: 'Burnt Fees',
+                value: financialFormatLowValueHighPrecision(
+                  props?.blockStats?.burntFees
+                ),
+              },
+              {
+                title: 'Network Utilization',
+                value: financialFormatLowValueHighPrecision(
+                  props?.blockStats?.networkUtilization24H
+                ),
+              },
             ]}
           />
 
@@ -87,7 +110,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: CHAIN_STATS,
   })
 
+  const { data: blockStats } = await apolloClient.query({
+    query: BLOCKS_STATS,
+  })
+
   return addApolloState(apolloClient, {
-    props: { ...blocks, ...chainStats },
+    props: { ...blocks, ...chainStats, ...blockStats },
   })
 }
