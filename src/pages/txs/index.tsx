@@ -49,8 +49,6 @@ const Txs: NextPage<ITxsProps> = (props) => {
     }
   }, [data, isMount])
 
-  console.log(props.transactionStats)
-
   return (
     <>
       <Head>
