@@ -20,12 +20,10 @@ import {
   Grid,
   ConnectButton,
   DataTable,
-  Empty,
   Card,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
-import IconEmpty from '@/images/icons/no-flash.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -39,7 +37,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
   const isMount = useIsMount()
   const [transactions, setTransactions] = useState(props.transactions)
 
-  const [getTransactions, { data }] = useLazyQuery(GET_TRANSACTIONS)
+  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
 
   useEffect(() => {
     if (data && isMount) {
@@ -263,25 +261,50 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
 
             {/* Transactions tab */}
             {tab === undefined && (
-              <>
-                {transactions && transactions.length > 0 && (
-                  <DataTable
-                    columns={txsColumns}
-                    data={transactions}
-                    total={transactions[0].blockNumber}
-                    perPage={perPage[1]}
-                    onPageChange={onPaginationChange}
-                  />
-                )}
-
-                {(!transactions || !transactions.length) && (
-                  <Empty
-                    icon={<IconEmpty />}
-                    title="No transactions for this contract"
-                  />
-                )}
-              </>
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={transactions || []}
+                total={transactions && transactions[0].blockNumber}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No transactions for this contract',
+                }}
+              />
             )}
+
+            {tab === 'internaltx' && (
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={[]}
+                total={0}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No internal transactions for this contract',
+                }}
+              />
+            )}
+
+            {tab === 'tokentxns' && (
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={[]}
+                total={0}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No token transactions for this contract',
+                }}
+              />
+            )}
+
+            {tab === 'analytics' && <Card>Some analytics here soon</Card>}
+            {tab === 'events' && <Card>Some events here soon</Card>}
+            {tab === 'comments' && <Card>Some comments here soon</Card>}
           </TabPanel>
         </DetailsView>
       </Page>

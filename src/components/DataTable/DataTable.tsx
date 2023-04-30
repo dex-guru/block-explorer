@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
+import Empty from '../Empty'
 import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE, Pagination } from '../Pagination'
 import { PerPageSelector } from '../PerPageSelector'
 import { Table } from '../Table'
 import { DataTableProps } from './types'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
@@ -51,10 +53,6 @@ export function DataTable<T>(props: DataTableProps<T>) {
     )
   }, [currentPage, currentPerPagePage, onPageChange, total])
 
-  if (!props.data?.length) {
-    return null
-  }
-
   return (
     <div className={clsx(styles.container, className)}>
       {total > currentPerPagePage && (
@@ -64,7 +62,11 @@ export function DataTable<T>(props: DataTableProps<T>) {
         </div>
       )}
       <div className={styles.body}>
-        <Table {...tablePropsRest} className={styles.table} />
+        {!total && props.empty && (
+          <Empty icon={<IconEmpty />} {...props.empty} />
+        )}
+
+        {!!total && <Table {...tablePropsRest} className={styles.table} />}
       </div>
       {total > currentPerPagePage && (
         <div className={styles.footer}>
