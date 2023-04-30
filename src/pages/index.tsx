@@ -25,6 +25,7 @@ import {
 } from '@/components/Table/columns/lastBlocksColumns'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
+  CHAIN_CONFIG,
   CHAIN_STATS,
   GET_BLOCKS_SHORT,
   TRANSACTIONS_LAST,
@@ -129,6 +130,7 @@ const Index: NextPage<IndexProps> = (props) => {
               columns={lastBlocksColumns}
               data={blocks}
               showHeader={false}
+              className={styles.cardChild}
             />
           </Card>
 
@@ -145,6 +147,7 @@ const Index: NextPage<IndexProps> = (props) => {
               columns={lastTxsColumns}
               data={transactions}
               showHeader={false}
+              className={styles.cardChild}
             />
           </Card>
         </Grid>

@@ -13,6 +13,7 @@ import {
   TimeAgo,
   Value,
 } from '@/components'
+import Copy from '@/components/Copy'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
@@ -46,7 +47,11 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
               {
                 title: 'Transaction Hash:',
                 tooltip: '?',
-                value: data.hash,
+                value: (
+                  <>
+                    {data.hash} <Copy text={data.hash} />
+                  </>
+                ),
               },
               {
                 title: 'Status:',
@@ -77,17 +82,14 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                 value: (
                   <Value
                     icon={<StopwatchIcon className={styles.muted} />}
-                    value={
+                    value={<TimeAgo timestamp={data.blockTimestamp} />}
+                    suffix={
                       <>
-                        <TimeAgo timestamp={data.blockTimestamp} />{' '}
-                        <span className={styles.muted}>
-                          (
-                          <DateTime
-                            timestamp={data.blockTimestamp}
-                            className={styles.muted}
-                          />
-                          )
-                        </span>
+                        {' '}
+                        <DateTime
+                          timestamp={data.blockTimestamp}
+                          className={styles.muted}
+                        />
                       </>
                     }
                   />
@@ -102,6 +104,7 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                       address={data.fromAddress}
                       type="account"
                       isShorten={false}
+                      isCopy
                     />
                     <Label type="tag" className={labelStyles.success}>
                       {data.nonce}
@@ -117,13 +120,16 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
                     address={data.toAddress}
                     type="account"
                     isShorten={false}
+                    isCopy
                   />
                 ) : null,
               },
               {
                 title: 'Value:',
                 tooltip: '?',
-                value: getNormalizedValue(data.value),
+                value: (
+                  <Value value={getNormalizedValue(data.value)} prefix="$" />
+                ),
               },
               {
                 title: 'Transaction Action:',

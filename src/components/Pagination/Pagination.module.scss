@@ -30,7 +30,7 @@
     color: var(--color-action-text);
 
     path {
-      stroke: var(--color-action-text);
+      fill: currentColor;
     }
   }
 }

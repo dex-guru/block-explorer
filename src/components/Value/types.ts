@@ -5,6 +5,6 @@ export type ValueProps = {
   children?: ReactNode | ReactNode[]
   icon?: ReactNode
   prefix?: ReactNode
-  postfix?: ReactNode
+  suffix?: ReactNode
   className?: string
 }

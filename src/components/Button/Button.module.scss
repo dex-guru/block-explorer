@@ -1,5 +1,6 @@
 .button {
-  display: flex;
+  display: inline-flex;
+  vertical-align: middle;
   align-items: center;
   justify-content: center;
   gap: 4px;
@@ -22,18 +23,12 @@
     background: var(--color-button-hover);
     border-color: var(--color-button-hover);
     color: var(--color-button-text);
-
-    .icon {
-      path {
-        fill: var(--color-button-text);
-      }
-    }
   }
 }
 
 .icon {
   path {
-    fill: var(--color-button-icon);
+    fill: currentColor;
   }
 }
 
@@ -45,11 +40,13 @@
 .sm {
   height: 24px;
   padding: 0 8px;
+  min-width: 24px;
 }
 
 .md {
   height: 28px;
   padding: 0 8px;
+  min-width: 28px;
 }
 
 .lg {
@@ -58,6 +55,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  min-width: 32px;
 }
 
 .xl {
@@ -66,6 +64,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
+  min-width: 40px;
 }
 
 .action {

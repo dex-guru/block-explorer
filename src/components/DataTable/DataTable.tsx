@@ -10,7 +10,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
   const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
 
-  const { className, total, onPageChange, ...tablePropsRest } = props
+  const { className, total = 0, onPageChange, ...tablePropsRest } = props
 
   const onChangePerPageHandler = useCallback(
     (value: number) => {
@@ -21,10 +21,24 @@ export function DataTable<T>(props: DataTableProps<T>) {
     [onPageChange]
   )
 
+  const renderPerPage = useCallback(() => {
+    if (!total) {
+      return null
+    }
+
+    return (
+      <PerPageSelector
+        onChange={onChangePerPageHandler}
+        defaultPerPage={currentPerPagePage}
+      />
+    )
+  }, [currentPerPagePage, onChangePerPageHandler, total])
+
   const renderPagination = useCallback(() => {
     if (!total || !onPageChange) {
       return null
     }
+
     return (
       <Pagination
         total={total}
@@ -43,23 +57,21 @@ export function DataTable<T>(props: DataTableProps<T>) {
 
   return (
     <div className={clsx(styles.container, className)}>
-      <div className={styles.header}>
-        <PerPageSelector
-          onChange={onChangePerPageHandler}
-          defaultPerPage={currentPerPagePage}
-        />
-        {renderPagination()}
-      </div>
+      {total > currentPerPagePage && (
+        <div className={styles.header}>
+          {renderPerPage()}
+          {renderPagination()}
+        </div>
+      )}
       <div className={styles.body}>
         <Table {...tablePropsRest} className={styles.table} />
       </div>
-      <div className={styles.footer}>
-        <PerPageSelector
-          onChange={onChangePerPageHandler}
-          defaultPerPage={currentPerPagePage}
-        />
-        {renderPagination()}
-      </div>
+      {total > currentPerPagePage && (
+        <div className={styles.footer}>
+          {renderPerPage()}
+          {renderPagination()}
+        </div>
+      )}
     </div>
   )
 }

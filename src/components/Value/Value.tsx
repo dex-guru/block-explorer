@@ -7,7 +7,7 @@ const Value: FC<ValueProps> = ({
   value,
   icon,
   prefix,
-  postfix,
+  suffix,
   className,
   children,
 }) => {
@@ -17,7 +17,7 @@ const Value: FC<ValueProps> = ({
       <span className={styles.value}>
         {!!prefix && <span className={styles.prefix}>{prefix}</span>}
         <span className={styles.value}>{value || children}</span>
-        {!!postfix && <span className={styles.postfix}>{postfix}</span>}
+        {!!suffix && <span className={styles.suffix}>{suffix}</span>}
       </span>
     </span>
   )

@@ -12,6 +12,11 @@
   display: inline-flex;
 }
 
+.pageTo {
+  composes: button from '../components/Pagination/Pagination.module.scss';
+  display: inline-flex;
+}
+
 .disabled {
   composes: disabled from '../components/Button/Button.module.scss';
 }
@@ -26,4 +31,16 @@
 
 .negative {
   composes: negative from '../styles/_common.scss';
+}
+
+.cardChild {
+  margin: 0 -16px;
+
+  &:first-child {
+    margin-top: -16px;
+  }
+
+  &:last-child {
+    margin-bottom: -16px;
+  }
 }

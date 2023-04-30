@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
+import Copy from '../Copy'
 import { AddressValues } from './helpers'
 import { AddressProps } from './types'
 import styles from './Address.module.scss'
@@ -10,6 +11,7 @@ const Address: FC<AddressProps> = ({
   type,
   className,
   isShorten = true,
+  isCopy,
 }) => {
   const values = AddressValues[type]
 
@@ -26,13 +28,12 @@ const Address: FC<AddressProps> = ({
       : {}
 
   return (
-    <Link
-      href={values.url(address)}
-      className={clsx(styles.container, className)}
-      {...tooltipData}
-    >
-      {isShorten ? values.format(address) : address}
-    </Link>
+    <span className={clsx(styles.container, className)}>
+      <Link href={values.url(address)} className={styles.link} {...tooltipData}>
+        {isShorten ? values.format(address) : address}
+      </Link>
+      {isCopy && <Copy text={address} />}
+    </span>
   )
 }
 

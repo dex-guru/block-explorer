@@ -25,8 +25,10 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
           Miner <Address address={data.miner} type="account" />
         </div>
         <small className="value">
-          <Link href="/">{data.transactionCount} txns</Link> in {data.timeDiff}{' '}
-          sec
+          <Link href={`/txs?block=${data.number}`}>
+            {data.transactionCount} txns
+          </Link>{' '}
+          in {data.timeDiff} sec
         </small>
       </div>
     ),

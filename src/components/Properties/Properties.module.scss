@@ -33,18 +33,15 @@
   padding: 16px;
 
   &Header {
-    flex: 1 0 160px;
+    flex: 1 0 25%;
+    min-width: 160px;
   }
 
   &Body {
-    flex: 2 1 320px;
+    flex: 2 0 320px;
     max-width: 100%;
 
     word-break: break-all;
-
-    @media (max-width: 960px) {
-      flex: 0 0 100%;
-    }
   }
 
   &Title {

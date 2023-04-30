@@ -55,6 +55,31 @@ export const TRANSACTIONS_LAST = gql`
   }
 `
 
+export const CHAIN_CONFIG = gql`
+  query ChainConfig {
+    chainConfig {
+      chain
+      chainId
+      faucets
+      infoURL
+      name
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      explorers {
+        name
+        standard
+        url
+      }
+      networkId
+      rpc
+      shortName
+    }
+  }
+`
+
 export const CHAIN_STATS = gql`
   query ChainStats {
     chainStats {
@@ -100,8 +125,18 @@ export const BLOCKS_STATS = gql`
 `
 
 export const GET_TRANSACTIONS = gql`
-  query Transactions($first: Int!, $skip: Int!, $address: String) {
-    transactions(first: $first, skip: $skip, address: $address) {
+  query Transactions(
+    $first: Int!
+    $skip: Int!
+    $address: String
+    $blockNumber: Int
+  ) {
+    transactions(
+      first: $first
+      skip: $skip
+      address: $address
+      blockNumber: $blockNumber
+    ) {
       blockNumber
       blockTimestamp
       hash

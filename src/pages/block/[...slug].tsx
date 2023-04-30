@@ -56,7 +56,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                     {data.number}{' '}
                     <Link
                       href={AddressValues['block'].url(`${data.number - 1}`)}
-                      className={clsx(styles.button, {
+                      className={clsx(styles.pageTo, {
                         [styles.disabled]: data.number < 2,
                       })}
                     >
@@ -64,7 +64,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                     </Link>
                     <Link
                       href={AddressValues['block'].url(`${data.number + 1}`)}
-                      className={styles.button}
+                      className={styles.pageTo}
                     >
                       <ArrowRight className={styles.icon} />
                     </Link>
@@ -99,7 +99,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
               {
                 title: 'Transactions:',
                 tooltip: '?',
-                value: financialFormat(data.transactionCount),
+                value: (
+                  <Link href={`/txs?block=${data.number}?`}>
+                    {financialFormat(data.transactionCount)}
+                  </Link>
+                ),
               },
               {
                 title: 'Withdrawals:',

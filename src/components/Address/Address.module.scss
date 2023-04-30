@@ -1,9 +1,14 @@
 .container {
-  display: inline-block;
+  display: inline-flex;
+  gap: 4px;
   width: max-content;
   max-width: 100%;
+  vertical-align: bottom;
+}
+
+.link {
+  flex: 0 1 auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  vertical-align: bottom;
 }

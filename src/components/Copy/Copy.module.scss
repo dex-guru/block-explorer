@@ -1,0 +1,13 @@
+.button {
+  composes: button from '../Button/Button.module.scss';
+  composes: sm from '../Button/Button.module.scss';
+
+  padding: 0;
+
+  color: var(--color-neutral);
+
+  &:hover {
+    background: var(--color-action-hover);
+    color: var(--color-action-text);
+  }
+}
