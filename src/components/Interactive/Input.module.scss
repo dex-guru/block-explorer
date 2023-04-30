@@ -1,0 +1,26 @@
+.input {
+  border: 1px var(--color-input-border) solid;
+  background: var(--color-input-bg);
+  color: var(--color-text);
+  border-radius: var(--radii-sm);
+  padding: 0 8px;
+  height: 32px;
+  font: normal 400 14px/20px 'IBM Plex Sans Condensed', sans-serif;
+  transition: 0.25s ease;
+
+  &:focus {
+    border-color: var(--color-input-focus);
+  }
+
+  &::placeholder {
+    color: var(--color-input-placeholder);
+  }
+}
+
+.sm {
+  height: 28px;
+}
+
+.lg {
+  height: 40px;
+}

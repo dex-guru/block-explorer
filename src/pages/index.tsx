@@ -40,7 +40,16 @@ const Index: NextPage<IndexProps> = (props) => {
   const chartData = stats.transactionsCountHistory.map(
     ({ timestamp, value }) => {
       const date = new Date(timestamp * 1000)
-      return [date.toUTCString().replace(' 00:00:00', ''), value]
+      return {
+        value,
+        label: date.toLocaleDateString('en-GB', {
+          timeZone: 'UTC',
+          month: 'short',
+          day: '2-digit',
+        }),
+        tooltipLabel: date.toUTCString().replace(' 00:00:00', ''),
+        tooltipValue: `${financialFormatLowValueHighPrecision(value)} txs`,
+      }
     }
   )
 
@@ -97,7 +106,7 @@ const Index: NextPage<IndexProps> = (props) => {
       </Head>
       <Page>
         <Banner>
-          <Search />
+          <Search className={styles.searchMain} />
         </Banner>
 
         {!!stats && (

@@ -6,11 +6,10 @@
   gap: 4px;
   vertical-align: middle;
 
-  background: none;
+  background: var(--color-button-bg);
   color: var(--color-button-text);
-
+  border: 1px var(--color-button-border) solid;
   border-radius: 4px;
-  border: 1px var(--color-button-bg) solid;
 
   font: normal 400 12px/20px 'IBM Plex Sans Condensed', sans-serif;
 
@@ -20,9 +19,14 @@
   cursor: pointer;
 
   &:hover {
-    background: var(--color-button-hover);
-    border-color: var(--color-button-hover);
-    color: var(--color-button-text);
+    background: var(--color-button-hover-bg);
+    border-color: var(--color-button-hover-border);
+    color: var(--color-button-hover-text);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 
@@ -68,25 +72,21 @@
 }
 
 .action {
-  background: var(--color-action-bg);
-  color: var(--color-action-text);
-
-  &:hover,
-  &:focus {
-    background: var(--color-action-hover);
-    color: var(--color-action-text);
-  }
+  --color-button-border: var(--color-accent);
+  --color-button-hover-border: var(--color-accent-a);
+  --color-button-bg: var(--color-accent);
+  --color-button-hover-bg: var(--color-accent-a);
+  --color-button-icon: var(--color-bg-2);
 }
 
 .submit {
-  background: var(--color-submit-bg);
-  color: var(--color-submit-text);
-
-  &:hover,
-  &:focus {
-    background: var(--color-submit-hover);
-    color: var(--color-submit-text);
-  }
+  --color-button-border: var(--color-positive);
+  --color-button-hover-border: var(--color-accent);
+  --color-button-bg: var(--color-positive);
+  --color-button-hover-bg: var(--color-accent-a);
+  --color-button-text: var(--color-text);
+  --color-button-hover-text: var(--color-text);
+  --color-button-icon: var(--color-text);
 }
 
 .indicator {

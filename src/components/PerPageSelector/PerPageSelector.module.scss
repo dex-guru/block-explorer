@@ -1,4 +1,12 @@
 .container {
+  --color-page-count-title: var(--color-muted);
+  --color-page-count-border: var(--color-separator);
+  --color-page-count-bg: transparent;
+  --color-page-count-text: var(--color-muted);
+  --color-page-count-hover-border: var(--color-accent);
+  --color-page-count-hover-bg: transparent;
+  --color-page-count-hover-text: var(--color-muted);
+
   flex: 0 0 auto;
   display: flex;
   gap: 4px;
@@ -13,20 +21,22 @@
 
 .label {
   flex: 0 0 auto;
-  color: var(--color-title-secondary);
+  color: var(--color-muted);
 }
 
 .selector {
-  background: var(--color-card-bg);
-  color: var(--color-title-secondary);
-  height: 32px;
-  border: 1px solid var(--color-table-separator);
   border-radius: 4px;
+  border: 1px solid var(--color-page-count-border);
+  background: var(--color-page-count-bg);
+  color: var(--color-page-count-text);
+  height: 32px;
   padding: 0 4px;
   transition: 0.25s ease;
 
   &:hover,
   &:focus {
-    border-color: var(--color-action-hover);
+    border: 1px solid var(--color-page-count-hover-border);
+    background: var(--color-page-count-hover-bg);
+    color: var(--color-page-count-hover-ext);
   }
 }

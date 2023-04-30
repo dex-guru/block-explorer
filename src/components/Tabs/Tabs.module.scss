@@ -1,4 +1,11 @@
 .container {
+  --color-button-border: transparent;
+  --color-button-hover-border: transparent;
+  --color-button-bg: transparent;
+  --color-button-hover-bg: transparent;
+  --color-button-text: var(--color-accent);
+  --color-button-hover-text: var(--color-text);
+
   display: flex;
   gap: 4px;
   align-items: flex-end;
@@ -16,24 +23,15 @@
   line-height: 20px;
   border-radius: 0;
   padding: 0 10px;
-  border-color: transparent;
-  background: var(--color-tab-bg);
-  color: var(--color-tab-text);
   width: min-content;
   white-space: nowrap;
-
-  &:hover {
-    background: none;
-    border-color: transparent;
-    color: var(--color-tab-hover);
-  }
 }
 
 .active {
-  color: var(--color-tab-text);
-  border-bottom-color: var(--color-tab-active);
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
 
   &:hover {
-    border-bottom-color: var(--color-tab-active);
+    border-bottom-color: var(--color-accent);
   }
 }

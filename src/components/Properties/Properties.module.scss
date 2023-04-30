@@ -1,4 +1,7 @@
 .container {
+  --color-properties-separator: var(--color-separator)
+  --color-properties-title: var(--color-muted);
+
   padding: 0;
 }
 
@@ -19,7 +22,7 @@
 .item {
   margin: 0;
   padding: 0;
-  border-bottom: 1px var(--color-card-separator) solid;
+  border-bottom: 1px var(--color-properties-separator) solid;
 
   &:last-child {
     border-bottom: 0;
@@ -48,7 +51,7 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 20px;
-    color: var(--color-title-secondary);
+    color: var(--color-properties-title);
     display: flex;
     gap: 8px;
     flex-direction: row-reverse;
@@ -64,6 +67,6 @@
   }
 }
 
-.muted {
+.notAccessible {
   composes: muted from '../../styles/_common.scss';
 }

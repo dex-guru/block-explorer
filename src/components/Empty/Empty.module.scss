@@ -1,6 +1,6 @@
 .container {
-  background: var(--color-card-bg);
-  border-radius: var(--radii-card);
+  background: var(--color-bg-2);
+  border-radius: var(--radii-lg);
   display: flex;
   flex-flow: column;
   position: relative;
@@ -49,5 +49,5 @@
 }
 
 .subtitle {
-  color: var(--color-title-secondary);
+  color: var(--color-muted);
 }

@@ -20,7 +20,7 @@ const Properties: FC<PropertiesProps> = (props) => {
               />
             </div>
             <div className={styles.entryBody}>
-              {item.value || <span className={styles.muted}>–</span>}
+              {item.value || <span className={styles.notAccessible}>–</span>}
             </div>
           </div>
         </li>

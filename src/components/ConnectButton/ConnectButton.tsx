@@ -1,4 +1,6 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import Button from '../Button'
+import styles from './ConnectButton.module.scss'
 
 const CustomConnectButton = () => {
   return (
@@ -34,24 +36,31 @@ const CustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
-                    🔴 Connect to Web3
-                  </button>
+                  <Button
+                    icon={'🔴'}
+                    caption="Connect to Web3"
+                    onClick={openConnectModal}
+                    className={styles.button}
+                  />
                 )
               }
               if (chain.unsupported) {
                 return (
-                  <button onClick={openChainModal} type="button">
-                    🔴 Wrong network
-                  </button>
+                  <Button
+                    icon={'🔴'}
+                    caption="Wrong network"
+                    onClick={openChainModal}
+                    className={styles.button}
+                  />
                 )
               }
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <button onClick={openAccountModal} type="button">
-                    🟢 Connected - Web3 [{account.displayName}]
-                  </button>
-                </div>
+                <Button
+                  icon={'🟢'}
+                  caption="Connected - Web3"
+                  onClick={openAccountModal}
+                  className={styles.button}
+                />
               )
             })()}
           </div>

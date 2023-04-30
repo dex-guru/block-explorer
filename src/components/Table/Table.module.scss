@@ -27,16 +27,16 @@
 }
 
 .theadrow {
-  background: var(--color-table-header-bg);
+  background: var(--color-bg);
 }
 
 .tbodyrow {
-  border-bottom: 1px var(--color-table-separator) solid;
+  border-bottom: 1px var(--color-bg) solid;
   background: none;
   transition: 0.25s ease;
 
   &:hover {
-    background-color: var(--color-table-row-hover);
+    background-color: var(--color-bg);
   }
 }
 
@@ -52,7 +52,7 @@
 
 .thcell {
   padding: 10px 8px;
-  color: var(--color-table-header-text);
+  color: var(--color-muted);
 }
 
 .thead {
