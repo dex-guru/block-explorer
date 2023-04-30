@@ -1,14 +1,9 @@
 .button {
-  --color-copy-color: var(--color-neutral);
+  --color-button-text: var(--color-neutral);
+  --color-button-hover-text: var(--color-accent);
 
   composes: button from '../Button/Button.module.scss';
   composes: sm from '../Button/Button.module.scss';
 
   padding: 0;
-
-  color: var(--color-copy-color);
-
-  &:hover {
-    color: var(--color-copy-color);
-  }
 }

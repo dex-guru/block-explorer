@@ -32,7 +32,7 @@ const Address: FC<AddressProps> = ({
       <Link href={values.url(address)} className={styles.link} {...tooltipData}>
         {isShorten ? values.format(address) : address}
       </Link>
-      {isCopy && <Copy text={address} />}
+      {isCopy && <Copy text={address} className={styles.copy} />}
     </span>
   )
 }
