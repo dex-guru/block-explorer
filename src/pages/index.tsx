@@ -6,17 +6,7 @@ import {
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Banner,
-  Card,
-  Delta,
-  Grid,
-  Heading,
-  Page,
-  Summary,
-  Table,
-  Value,
-} from '@/components'
+import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
 import { lastTxsColumns } from '@/components/Table/columns'
@@ -26,7 +16,6 @@ import {
 } from '@/components/Table/columns/lastBlocksColumns'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
-  CHAIN_CONFIG,
   CHAIN_STATS,
   GET_BLOCKS_SHORT,
   TRANSACTIONS_LAST,
