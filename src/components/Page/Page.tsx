@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import PageFooter from './PageFooter'
 import PageHeader from './PageHeader'
 import { PageProps } from './types'
 import styles from './Page.module.scss'
@@ -10,6 +11,9 @@ const Page: FC<PageProps> = ({ withMenu, withSearch, children }) => {
         <PageHeader withMenu={withMenu} withSearch={withSearch} />
       </div>
       <div className={styles.body}>{children}</div>
+      <div className={styles.footer}>
+        <PageFooter />
+      </div>
     </div>
   )
 }
