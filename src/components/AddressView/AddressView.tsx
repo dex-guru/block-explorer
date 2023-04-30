@@ -95,7 +95,6 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
           </Grid>
 
           <TabPanel
-            tabsClassName={tabsStyles.inner}
             tabs={[
               {
                 title: 'Transactions',
