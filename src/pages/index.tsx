@@ -15,6 +15,7 @@ import {
   Page,
   Summary,
   Table,
+  Value,
 } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
@@ -62,18 +63,22 @@ const Index: NextPage<IndexProps> = (props) => {
     {
       title: 'Transactions',
       value: (
-        <>
-          {financialFormatLowValueHighPrecision(stats.transactionsCount)}{' '}
-          <span className="muted">
-            ({financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
-            txs/sec)
-          </span>
-        </>
+        <Value
+          value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
+          suffix={` ${financialFormatLowValueHighPrecision(
+            stats.transactionsPerSecond
+          )}  txs/sec`}
+        />
       ),
     },
     {
       title: 'Market Cap',
-      value: financialFormatLowValueHighPrecision(stats.marketCap),
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(stats.marketCap)}
+          prefix="$"
+        />
+      ),
     },
     {
       title: 'Token Supply',
@@ -83,9 +88,11 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Token Price',
       value: (
         <>
-          <span className={styles.muted}>$</span>
-          {financialFormat(stats.nativeTokenPriceUsd)}{' '}
-          <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
+          <Value
+            value={financialFormat(stats.nativeTokenPriceUsd)}
+            prefix="$"
+            delta={stats.nativeTokenPriceUsd24hDelta * 100}
+          />
         </>
       ),
     },

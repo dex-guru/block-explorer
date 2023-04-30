@@ -5,4 +5,5 @@ export type LabelProps = {
   className?: string
   children?: ReactNode | ReactNode[]
   type?: 'tag' | 'accent'
+  tooltip?: string
 }

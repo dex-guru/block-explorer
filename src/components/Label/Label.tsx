@@ -8,9 +8,20 @@ const Label: FC<LabelProps> = ({
   className,
   type = 'tag',
   children,
+  tooltip,
 }) => {
+  const tooltipData = tooltip
+    ? {
+        'data-tooltip-id': 'app-tooltip',
+        'data-tooltip-content': tooltip,
+      }
+    : {}
+
   return (
-    <span className={clsx(styles.container, styles[type], className)}>
+    <span
+      className={clsx(styles.container, styles[type], className)}
+      {...tooltipData}
+    >
       {title || children}
     </span>
   )

@@ -7,4 +7,5 @@ export type ValueProps = {
   prefix?: ReactNode
   suffix?: ReactNode
   className?: string
+  delta?: number
 }
