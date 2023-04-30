@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
+import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -129,7 +130,6 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
           </Grid>
 
           <TabPanel
-            className="tab-panel"
             tabs={[
               {
                 title: 'Transactions',
@@ -178,7 +178,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
             {isSubTab && (
               <Card>
                 <TabPanel
-                  className="tab-panel"
+                  tabsClassName={tabsStyles.inner}
                   tabs={[
                     {
                       title: 'Code',

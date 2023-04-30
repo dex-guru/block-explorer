@@ -1,10 +1,17 @@
 .container {
-  --color-button-border: transparent;
-  --color-button-hover-border: transparent;
-  --color-button-bg: transparent;
-  --color-button-hover-bg: transparent;
-  --color-button-text: var(--color-accent);
-  --color-button-hover-text: var(--color-text);
+  --color-tab-border: transparent;
+  --color-tab-hover-border: transparent;
+  --color-tab-bg: transparent;
+  --color-tab-hover-bg: transparent;
+  --color-tab-text: var(--color-accent);
+  --color-tab-hover-text: var(--color-text);
+  --color-tab-active: var(--color-accent);
+  --color-tab-active-text: var(--color-text);
+  --color-tab-active-bg: transparent;
+
+  --color-tab-border-width: 2px;
+  --color-tab-height: 40px;
+  --color-tab-radius: 0;
 
   display: flex;
   gap: 4px;
@@ -14,24 +21,48 @@
 }
 
 .tab {
-  composes: button from '../Button/Button.module.scss';
+  --color-button-border: var(--color-tab-border);
+  --color-button-hover-border: var(--color-tab-hover-border);
+  --color-button-bg: var(--color-tab-bg);
+  --color-button-hover-bg: var(--color-tab-hover-bg);
+  --color-button-text: var(--color-tab-text);
+  --color-button-hover-text: var(--color-tab-hover-text);
 
-  border: 2px transparent solid;
-  height: 40px;
+  border-width: var(--color-tab-border-width);
+  height: var(--color-tab-height);
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  border-radius: 0;
-  padding: 0 10px;
+  border-radius: var(--color-tab-radius);
+  padding: 0 8px;
   width: min-content;
   white-space: nowrap;
 }
 
 .active {
-  color: var(--color-text);
-  border-bottom-color: var(--color-accent);
+  color: var(--color-tab-active-text);
+  background: var(--color-tab-active-bg);
+  border-bottom-color: var(--color-tab-active);
 
   &:hover {
-    border-bottom-color: var(--color-accent);
+    color: var(--color-tab-active-text);
+    background: var(--color-tab-active-bg);
+    border-bottom-color: var(--color-tab-active);
   }
+}
+
+.inner {
+  --color-tab-border: transparent;
+  --color-tab-hover-border: transparent;
+  --color-tab-bg: transparent;
+  --color-tab-hover-bg: transparent;
+  --color-tab-text: var(--color-accent);
+  --color-tab-hover-text: var(--color-accent-a);
+
+  --color-tab-active-text: var(--color-text);
+  --color-tab-active-bg: var(--color-accent);
+
+  --color-tab-border-width: 0;
+  --color-tab-height: 32px;
+  --color-tab-radius: var(--radii-sm);
 }

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
+import tabsStyles from '../Tabs/Tabs.module.scss'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -94,7 +95,7 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
           </Grid>
 
           <TabPanel
-            className="tab-panel"
+            tabsClassName={tabsStyles.inner}
             tabs={[
               {
                 title: 'Transactions',
