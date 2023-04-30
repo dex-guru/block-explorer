@@ -265,7 +265,9 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                 isLoading={loading}
                 columns={txsColumns}
                 data={transactions || []}
-                total={transactions && transactions[0].blockNumber}
+                total={
+                  transactions && transactions[0] && transactions[0].blockNumber
+                }
                 perPage={perPage[1]}
                 onPageChange={onPaginationChange}
                 empty={{

@@ -61,7 +61,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       })}
                     >
                       <ArrowLeft className={styles.icon} />
-                    </Link>
+                    </Link>{' '}
                     <Link
                       href={AddressValues['block'].url(`${data.number + 1}`)}
                       className={styles.pageTo}

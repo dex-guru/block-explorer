@@ -1,6 +1,10 @@
 .container {
   overflow: auto;
   margin: 0 -8px;
+
+  --color-table-separator: var(--color-bg);
+  --color-table-thead: var(--color-bg);
+  --color-table-hover-bg: var(--color-table-separator);
 }
 
 .table {
@@ -27,16 +31,16 @@
 }
 
 .theadrow {
-  background: var(--color-bg);
+  background: var(--color-table-thead);
 }
 
 .tbodyrow {
-  border-bottom: 1px var(--color-bg) solid;
+  border-bottom: 1px var(--color-table-separator) solid;
   background: none;
   transition: 0.25s ease;
 
   &:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-table-hover-bg);
   }
 }
 
