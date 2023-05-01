@@ -29,26 +29,24 @@ const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
               },
               {
                 title: 'Topics',
-                value: (
-                  <>
-                    {!!log.topics?.length && (
-                      <ul>
-                        {log.topics.map((topic, tIdx) => (
-                          <li key={tIdx}>
-                            [{tIdx}]{' '}
-                            <Address
-                              type="account"
-                              address={topic}
-                              isLink={false}
-                              isShorten={false}
-                              isCopy
-                            />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                ),
+                value: log.topics?.length ? (
+                  <div className="text">
+                    <ul>
+                      {log.topics.map((topic, tIdx) => (
+                        <li key={tIdx}>
+                          [{tIdx}]{' '}
+                          <Address
+                            type="account"
+                            address={topic}
+                            isLink={false}
+                            isShorten={false}
+                            isCopy
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null,
               },
               {
                 title: 'Data',
