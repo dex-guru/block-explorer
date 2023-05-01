@@ -47,24 +47,27 @@
 .link {
   color: var(--color-link);
 
+  svg {
+    display: block;
+  }
+
   path {
-    stroke: var(--color-link);
+    fill: var(--color-link);
   }
 
   &:hover {
     color: var(--color-link-hover);
 
     path {
-      stroke: var(--color-link-hover);
+      fill: var(--color-link-hover);
     }
   }
 }
 
 .backlink {
-  background: var(--color-header-bg);
-  height: 24px;
+  background: var(--color-bg-2);
   border-radius: 4px;
-  padding: 0 8px;
+  padding: 4px 8px;
   display: inline-flex;
   align-items: center;
 }

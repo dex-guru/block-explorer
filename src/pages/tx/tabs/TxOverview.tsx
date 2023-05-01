@@ -23,11 +23,7 @@ const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
         {
           title: 'Transaction Hash:',
           tooltip: '?',
-          value: (
-            <>
-              {data.hash} <Copy text={data.hash} />
-            </>
-          ),
+          value: <Address address={data.hash} isLink={false} isCopy />,
         },
         {
           title: 'Status:',

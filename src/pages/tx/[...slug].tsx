@@ -1,13 +1,17 @@
+import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { TxLogs, TxOverview, TxTrace } from './tabs'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
 import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTION_BY_HASH } from '@/lib/apollo/queries'
+
+const TxOverview = lazy(() => import('./tabs/TxOverview'))
+const TxLogs = lazy(() => import('./tabs/TxLogs'))
+const TxTrace = lazy(() => import('./tabs/TxTrace'))
 
 interface ITxProps {
   data: TransactionModel | null
@@ -41,19 +45,31 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
                   title: 'Overview',
                   value: '',
                   to: pathname,
-                  content: <TxOverview data={data} />,
+                  content: (
+                    <Suspense>
+                      <TxOverview data={data} />
+                    </Suspense>
+                  ),
                 },
                 {
                   title: `Logs (${logs?.length || 0})`,
                   value: 'logs',
                   to: `${pathname}?tab=logs`,
-                  content: <TxLogs data={data} logs={logs} />,
+                  content: (
+                    <Suspense>
+                      <TxLogs data={data} logs={logs} />
+                    </Suspense>
+                  ),
                 },
                 {
                   title: 'Trace',
                   value: 'trace',
                   to: `${pathname}?tab=trace`,
-                  content: <TxTrace data={data} />,
+                  content: (
+                    <Suspense>
+                      <TxTrace data={data} />
+                    </Suspense>
+                  ),
                 },
               ]}
               value={tab || ''}
