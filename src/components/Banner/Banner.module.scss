@@ -7,6 +7,10 @@
   gap: 16px;
   flex-flow: column;
 
+  @media (max-width: 840px) {
+    padding: 16px 8px 56px;
+  }
+
   &:before {
     content: '';
     position: absolute;

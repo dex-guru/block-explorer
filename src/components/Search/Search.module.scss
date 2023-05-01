@@ -10,7 +10,10 @@
   gap: 1px;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 640px;
+
+  @media (min-width: 840.1px) {
+    max-width: 640px;
+  }
 }
 
 .combo {
