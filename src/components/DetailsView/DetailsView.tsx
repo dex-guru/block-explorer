@@ -21,7 +21,7 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!address && (
           <>
             <Heading caption={address} size="lg" className={styles.address} />
-            <Copy text={`${address}`} />
+            <Copy text={address} />
           </>
         )}
         <div className={styles.tools}></div>
