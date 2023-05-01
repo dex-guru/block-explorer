@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Properties } from '@/components'
+import { Address, Copy, Properties } from '@/components'
 
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   logs,
@@ -19,6 +19,7 @@ const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
                     address={log.address}
                     type="account"
                     isShorten={false}
+                    isCopy
                   />
                 ),
               },
@@ -34,7 +35,14 @@ const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
                       <ul>
                         {log.topics.map((topic, tIdx) => (
                           <li key={tIdx}>
-                            [{tIdx}] {topic}
+                            [{tIdx}]{' '}
+                            <Address
+                              type="account"
+                              address={topic}
+                              isLink={false}
+                              isShorten={false}
+                              isCopy
+                            />
                           </li>
                         ))}
                       </ul>

@@ -8,10 +8,11 @@ import styles from './Address.module.scss'
 
 const Address: FC<AddressProps> = ({
   address,
-  type,
+  type = 'common',
   className,
   isShorten = true,
   isCopy,
+  isLink = true,
 }) => {
   const values = AddressValues[type]
 
@@ -27,12 +28,30 @@ const Address: FC<AddressProps> = ({
         }
       : {}
 
+  const linkUrl = !!isLink && !!values.url ? values.url(address) : null
+  const addressDisplay =
+    isShorten && values.format ? values.format(address) : address
+
   return (
     <span className={clsx(styles.container, className)}>
-      <Link href={values.url(address)} className={styles.link} {...tooltipData}>
-        {isShorten ? values.format(address) : address}
-      </Link>
-      {isCopy && <Copy text={address} className={styles.copy} />}
+      {!!linkUrl && (
+        <Link href={linkUrl} className={styles.link} {...tooltipData}>
+          {addressDisplay}
+        </Link>
+      )}
+
+      {!linkUrl && (
+        <span className={styles.link} {...tooltipData}>
+          {addressDisplay}
+        </span>
+      )}
+
+      {isCopy && (
+        <>
+          {' '}
+          <Copy text={address} className={styles.copy} />
+        </>
+      )}
     </span>
   )
 }

@@ -18,6 +18,7 @@
 
   cursor: pointer;
 
+  &:focus,
   &:hover {
     background: var(--color-button-hover-bg);
     border-color: var(--color-button-hover-border);
@@ -34,11 +35,6 @@
   path {
     fill: currentColor;
   }
-}
-
-.disabled {
-  pointer-events: none;
-  opacity: 0.5;
 }
 
 .sm {
