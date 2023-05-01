@@ -1,9 +1,8 @@
 import { FC } from 'react'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Card, Properties } from '@/components'
+import { Address, Properties } from '@/components'
 
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
-  data,
   logs,
 }) => {
   return (
