@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
-import Comments from '../Comments'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
@@ -15,6 +14,7 @@ import {
   TabPanel,
   DataTable,
   Card,
+  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'

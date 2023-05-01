@@ -5,6 +5,7 @@ import Avatar from './Avatar'
 import Banner from './Banner'
 import Button from './Button'
 import Card from './Card'
+import Comments from './Comments'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
 import Copy from './Copy'
@@ -39,6 +40,7 @@ export {
   Card,
   Copy,
   ConnectButton,
+  Comments,
   ContractView,
   DataTable,
   DateTime,
