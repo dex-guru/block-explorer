@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import clsx from 'clsx'
 import Empty from '../Empty'
 import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE, Pagination } from '../Pagination'
+import { getTotalPages } from '../Pagination/utils'
 import { PerPageSelector } from '../PerPageSelector'
 import { Table } from '../Table'
 import { DataTableProps } from './types'
@@ -10,7 +11,7 @@ import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
-  const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
+  const [currentPerPage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
 
   const { className, total = 0, onPageChange, ...tablePropsRest } = props
 
@@ -23,42 +24,56 @@ export function DataTable<T>(props: DataTableProps<T>) {
     [onPageChange]
   )
 
-  const renderPerPage = useCallback(() => {
-    if (!total) {
-      return null
-    }
+  const totalPages = getTotalPages(total, currentPerPage)
 
-    return (
-      <PerPageSelector
-        onChange={onChangePerPageHandler}
-        defaultPerPage={currentPerPagePage}
-      />
-    )
-  }, [currentPerPagePage, onChangePerPageHandler, total])
+  const handlePageChange = useCallback(
+    (value: number) => {
+      const pageValue = Math.max(1, Math.min(value, total))
+      setCurrentPage(pageValue)
 
-  const renderPagination = useCallback(() => {
-    if (!total || !onPageChange) {
-      return null
-    }
+      if (!onPageChange) {
+        return
+      }
 
-    return (
+      console.log({
+        page: pageValue,
+        first: currentPerPage,
+        skip: currentPerPage * (pageValue - 1),
+      })
+
+      onPageChange({
+        first: currentPerPage,
+        skip: currentPerPage * (pageValue - 1),
+      })
+    },
+    [onPageChange, currentPerPage, total]
+  )
+
+  const selector = total ? (
+    <PerPageSelector
+      onChange={onChangePerPageHandler}
+      defaultPerPage={currentPerPage}
+    />
+  ) : null
+
+  const pagination =
+    total && onPageChange ? (
       <Pagination
-        total={total}
-        perPage={currentPerPagePage}
-        onChange={onPageChange}
+        page={currentPage}
+        total={totalPages}
+        onChange={handlePageChange}
         className={styles.pagination}
-        defaultCurrentPage={currentPage}
-        setdefaultCurrentPage={setCurrentPage}
       />
-    )
-  }, [currentPage, currentPerPagePage, onPageChange, total])
+    ) : null
+
+  const isShowPagination = total > currentPerPage
 
   return (
     <div className={clsx(styles.container, className)}>
-      {total > currentPerPagePage && (
+      {isShowPagination && (
         <div className={styles.header}>
-          {renderPerPage()}
-          {renderPagination()}
+          {selector}
+          {pagination}
         </div>
       )}
       <div className={styles.body}>
@@ -68,10 +83,10 @@ export function DataTable<T>(props: DataTableProps<T>) {
 
         {!!total && <Table {...tablePropsRest} className={styles.table} />}
       </div>
-      {total > currentPerPagePage && (
+      {isShowPagination && (
         <div className={styles.footer}>
-          {renderPerPage()}
-          {renderPagination()}
+          {selector}
+          {pagination}
         </div>
       )}
     </div>
