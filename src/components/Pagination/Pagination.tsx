@@ -24,8 +24,8 @@ export const Pagination: FC<IPaginationProps> = ({
   className,
   page = DEFAULT_FIRST_PAGE,
 }) => {
-  const isMounted = useIsMount()
   const [disabled, setDisabled] = useState(() => getDisabled(page, total))
+  const isMounted = useIsMount()
 
   const doPageChange = useCallback(
     (value: number) => {
