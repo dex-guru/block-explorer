@@ -10,7 +10,11 @@ const CopyToClipboard: FC<CopyProps> = ({
   text,
   onCopy,
   caption,
-}): React.ReactElement => {
+}) => {
+  if (!text) {
+    return null
+  }
+
   const handleClickCopy = (): void => {
     navigator.clipboard.writeText(text)
     onCopy && onCopy()

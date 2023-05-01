@@ -13,9 +13,9 @@ export const getDisabled = (
   page: number
 ): { prev: boolean; first: boolean; last: boolean; next: boolean } => {
   return {
-    first: page === 1,
+    first: page <= 1,
     prev: page <= 1,
     next: page >= total,
-    last: page === total,
+    last: page >= total,
   }
 }
