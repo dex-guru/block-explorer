@@ -14,8 +14,14 @@
 
 .icon {
   composes: icon from '../../styles/_common.scss';
+  composes: muted from '../../styles/_common.scss';
 
   flex: 0 0 auto;
   width: 20px;
   height: 20px;
+}
+
+.prefix,
+.suffix {
+  color: var(--color-neutral);
 }

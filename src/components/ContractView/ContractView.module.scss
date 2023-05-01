@@ -12,19 +12,7 @@
 }
 
 .input {
-  border: 1px var(--color-input-placeholder) solid;
-  background: var(--color-input-bg);
-  border-radius: var(--radii-button);
-  height: 32px;
-  padding: 8px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  transition: 0.25s ease;
-
-  &:focus {
-    border-color: var(--color-input-focus);
-  }
+  composes: input from '../Interactive/Input.module.scss';
 }
 
 .field {

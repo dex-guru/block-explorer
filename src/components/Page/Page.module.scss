@@ -5,6 +5,8 @@
   justify-content: stretch;
   gap: 16px;
   min-width: 320px;
+  background: var(--color-page-bg);
+  color: var(--color-page-text);
 }
 
 .body {
@@ -19,7 +21,7 @@
 
 .header {
   width: 100%;
-  background: var(--color-header-bg);
+  background: var(--color-bg-2);
   position: sticky;
   top: 0;
   z-index: 2;

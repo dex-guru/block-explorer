@@ -19,17 +19,26 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
   },
   {
     accessor: 'miner',
-    render: (data) => (
-      <div className="data-table__data">
-        <div className="value">
-          Miner <Address address={data.miner} type="account" />
+    render: (data) => {
+      const txsCountDisplay = data.transactionCount ? (
+        <Link href={`/txs?block=${data.number}`}>
+          {data.transactionCount} txns
+        </Link>
+      ) : (
+        '0 txns'
+      )
+
+      return (
+        <div className="data-table__data">
+          <div className="value">
+            Miner <Address address={data.miner} type="account" />
+          </div>
+          <small className="value">
+            {txsCountDisplay} in {data.timeDiff} sec
+          </small>
         </div>
-        <small className="value">
-          <Link href="/">{data.transactionCount} txns</Link> in {data.timeDiff}{' '}
-          sec
-        </small>
-      </div>
-    ),
+      )
+    },
   },
   {
     accessor: 'gasUsed',
@@ -46,7 +55,13 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
         }
       )
 
-      return <Label title={`${gasUtilization}%`} type="accent" />
+      return (
+        <Label
+          title={`${gasUtilization}%`}
+          type="accent"
+          tooltip="Gas Utilization"
+        />
+      )
     },
   },
 ]

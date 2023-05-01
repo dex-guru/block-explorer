@@ -7,6 +7,7 @@ import { BlockModel } from '@/__generated__/resolvers-types'
 import {
   Address,
   DateTime,
+  Empty,
   Page,
   Properties,
   TimeAgo,
@@ -16,6 +17,7 @@ import { AddressValues } from '@/components/Address/helpers'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
@@ -26,10 +28,6 @@ interface IBlockProps {
 }
 
 const Block: NextPage<IBlockProps> = ({ data }) => {
-  if (!data) {
-    return <></>
-  }
-
   return (
     <>
       <Head>
@@ -40,126 +38,145 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView
-          title={
-            <>
-              Block <span className={styles.muted}>#{data.number}</span>
-            </>
-          }
-        >
-          <Properties
-            data={[
-              {
-                title: 'Block Height:',
-                value: (
-                  <>
-                    {data.number}{' '}
-                    <Link
-                      href={AddressValues['block'].url(`${data.number - 1}`)}
-                      className={clsx(styles.button, {
-                        [styles.disabled]: data.number < 2,
-                      })}
-                    >
-                      <ArrowLeft className={styles.icon} />
-                    </Link>
-                    <Link
-                      href={AddressValues['block'].url(`${data.number + 1}`)}
-                      className={styles.button}
-                    >
-                      <ArrowRight className={styles.icon} />
-                    </Link>
-                  </>
-                ),
-                tooltip: '?',
-              },
-              { title: 'Status:', value: '', tooltip: '?' },
-              {
-                title: 'Timestamp:',
-                tooltip: '?',
-                value: (
-                  <Value
-                    icon={<StopwatchIcon />}
-                    value={
-                      <>
-                        <TimeAgo timestamp={data.timestamp} />{' '}
-                        <span className={styles.muted}>
-                          (
-                          <DateTime
+        {!data?.number && (
+          <DetailsView title="Block">
+            <Empty icon={<IconEmpty />} title="No TX  was found" />
+          </DetailsView>
+        )}
+
+        {!!data?.number && (
+          <DetailsView
+            title={
+              <>
+                Block <span className={styles.muted}>#{data.number}</span>
+              </>
+            }
+          >
+            <Properties
+              data={[
+                {
+                  title: 'Block Height:',
+                  value: (
+                    <>
+                      {data.number}{' '}
+                      <Link
+                        data-tooltip-content="Previous Block"
+                        data-tooltip-id="app-tooltip"
+                        href={AddressValues['block'].url(`${data.number - 1}`)}
+                        className={clsx(styles.pageTo, {
+                          [styles.disabled]: data.number < 2,
+                        })}
+                      >
+                        <ArrowLeft className={styles.icon} />
+                      </Link>{' '}
+                      <Link
+                        data-tooltip-content="Next Block"
+                        data-tooltip-id="app-tooltip"
+                        href={AddressValues['block'].url(`${data.number + 1}`)}
+                        className={styles.pageTo}
+                      >
+                        <ArrowRight className={styles.icon} />
+                      </Link>
+                    </>
+                  ),
+                  tooltip: '?',
+                },
+                { title: 'Status:', value: '', tooltip: '?' },
+                {
+                  title: 'Timestamp:',
+                  tooltip: '?',
+                  value: (
+                    <Value
+                      icon={<StopwatchIcon />}
+                      value={
+                        <>
+                          <TimeAgo
                             timestamp={data.timestamp}
-                            className={styles.muted}
-                          />
-                          )
-                        </span>
-                      </>
-                    }
-                  />
-                ),
-              },
-              { title: 'Proposed On:', tooltip: '?', value: '' },
-              {
-                title: 'Transactions:',
-                tooltip: '?',
-                value: financialFormat(data.transactionCount),
-              },
-              {
-                title: 'Withdrawals:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Fee Recipient:',
-                tooltip: '?',
-                value: (
-                  <Address
-                    type="account"
-                    address={data.miner}
-                    isShorten={false}
-                  />
-                ),
-              },
-              {
-                title: 'Block Reward:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Total Difficulty:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Size:',
-                tooltip: '?',
-                value: financialFormat(data.size),
-              },
-              {
-                title: 'Gas Used:',
-                tooltip: data.gasUsed,
-                value: financialFormat(data.size),
-              },
-              {
-                title: 'Gas Limit:',
-                tooltip: '?',
-                value: financialFormat(data.gasLimit),
-              },
-              {
-                title: 'Base Fee Per Gas:',
-                tooltip: '?',
-                value: financialFormat(data.baseFeePerGas || 0),
-              },
-              {
-                title: 'Burnt Fees:',
-                tooltip: '?',
-                value: '',
-              },
-              {
-                title: 'Extra Data:',
-                tooltip: '?',
-                value: data.extraData,
-              },
-            ]}
-          />
-        </DetailsView>
+                            showTooltip={false}
+                          />{' '}
+                          <span className={styles.muted}>
+                            (
+                            <DateTime
+                              timestamp={data.timestamp}
+                              className={styles.muted}
+                            />
+                            )
+                          </span>
+                        </>
+                      }
+                    />
+                  ),
+                },
+                { title: 'Proposed On:', tooltip: '?', value: '' },
+                {
+                  title: 'Transactions:',
+                  tooltip: '?',
+                  value: (
+                    <Link href={`/txs?block=${data.number}?`}>
+                      {financialFormat(data.transactionCount)}
+                    </Link>
+                  ),
+                },
+                {
+                  title: 'Withdrawals:',
+                  tooltip: '?',
+                  value: '',
+                },
+                {
+                  title: 'Fee Recipient:',
+                  tooltip: '?',
+                  value: (
+                    <Address
+                      type="account"
+                      address={data.miner}
+                      isShorten={false}
+                    />
+                  ),
+                },
+                {
+                  title: 'Block Reward:',
+                  tooltip: '?',
+                  value: '',
+                },
+                {
+                  title: 'Total Difficulty:',
+                  tooltip: '?',
+                  value: '',
+                },
+                {
+                  title: 'Size:',
+                  tooltip: '?',
+                  value: financialFormat(data.size),
+                },
+                {
+                  title: 'Gas Used:',
+                  tooltip: data.gasUsed,
+                  value: financialFormat(data.size),
+                },
+                {
+                  title: 'Gas Limit:',
+                  tooltip: '?',
+                  value: financialFormat(data.gasLimit),
+                },
+                {
+                  title: 'Base Fee Per Gas:',
+                  tooltip: '?',
+                  value: financialFormat(data.baseFeePerGas || 0),
+                },
+                {
+                  title: 'Burnt Fees:',
+                  tooltip: '?',
+                  value: '',
+                },
+                {
+                  title: 'Extra Data:',
+                  tooltip: '?',
+                  value: data.extraData,
+                },
+              ]}
+            />
+          </DetailsView>
+        )}
       </Page>
     </>
   )

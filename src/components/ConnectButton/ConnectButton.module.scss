@@ -1,0 +1,8 @@
+.button {
+  composes: button from '../Button/Button.module.scss';
+  composes: action from '../Button/Button.module.scss';
+
+  &:first-child {
+    margin-top: 16px;
+  }
+}

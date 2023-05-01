@@ -9,7 +9,16 @@
 .button {
   composes: button from '../components/Button/Button.module.scss';
   composes: sm from '../components/Button/Button.module.scss';
-  display: inline-flex;
+}
+
+.pageTo {
+  --color-pagination-border: var(--color-separator);
+  --color-pagination-text: var(--color-muted);
+  --color-pagination-bg: transparent;
+  --color-pagination-hover: var(--color-accent-a);
+  --color-pagination-hover-text: var(--color-bg-2);
+
+  composes: button from '../components/Pagination/Pagination.module.scss';
 }
 
 .disabled {
@@ -26,4 +35,16 @@
 
 .negative {
   composes: negative from '../styles/_common.scss';
+}
+
+.cardChild {
+  margin: 0 -16px;
+
+  &:first-child {
+    margin-top: -16px;
+  }
+
+  &:last-child {
+    margin-bottom: -16px;
+  }
 }

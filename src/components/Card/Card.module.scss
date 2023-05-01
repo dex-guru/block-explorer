@@ -1,6 +1,10 @@
 .container {
+  --color-card-bg: var(--color-bg-2);
+  --color-card-text: currentColor;
+  --color-card-separator: var(--color-separator);
+
   background: var(--color-card-bg);
-  border-radius: var(--radii-card);
+  border-radius: var(--radii-lg);
   display: flex;
   flex-flow: column;
   position: relative;

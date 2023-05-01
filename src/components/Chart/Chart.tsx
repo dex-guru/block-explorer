@@ -70,8 +70,7 @@ const Chart: FC<ChartProps> = ({
     return null
   }
 
-  const labels = data.map((el) => el[0])
-  const values = data.map((el) => el[1])
+  const values = data.map((el) => el.value)
 
   const diff = zeroBased ? 0 : Math.min(...values) || 0
   const max = (Math.max(...values) || 1) - diff
@@ -102,44 +101,65 @@ const Chart: FC<ChartProps> = ({
             {financialFormatLowValueHighPrecision(Math.max(...values))}
           </div>
         </div>
-        <div className={styles.chart}>
-          <svg
-            preserveAspectRatio="none meet"
-            viewBox={`0 -10 ${data.length - 1} 120`}
-            className={styles.canvas}
-            width="100"
-            height="100"
-          >
-            <path
-              stroke={color}
-              strokeWidth={stroke}
-              fill="none"
-              d={pathDraw}
-              vectorEffect="non-scaling-stroke"
-            />
+        <div className={styles.content}>
+          <div className={styles.chart}>
+            <svg
+              preserveAspectRatio="none meet"
+              viewBox={`0 -10 ${data.length - 1} 120`}
+              className={styles.canvas}
+              width="100"
+              height="100"
+            >
+              <path
+                stroke={color}
+                strokeWidth={stroke}
+                fill="none"
+                d={pathDraw}
+                vectorEffect="non-scaling-stroke"
+              />
 
-            {percentsOfMax.map((point, index) => {
-              return (
-                <rect
-                  key={index}
-                  x={index - 0.5}
-                  y={point - 10}
-                  width="1"
-                  fill="transparent"
-                  height={100 - point + 20}
-                  data-tooltip-id="app-tooltip"
-                  data-tooltip-html={renderToStaticMarkup(
-                    <div className="text">
-                      <Heading size="xs" caption={labels[index]} />
-                      <div className="value">
-                        {financialFormatLowValueHighPrecision(values[index])}
+              {percentsOfMax.map((point, index) => {
+                return (
+                  <rect
+                    key={index}
+                    x={index - 0.5}
+                    y={point - 10}
+                    width="1"
+                    fill="transparent"
+                    height={100 - point + 20}
+                    data-tooltip-id="app-tooltip"
+                    data-tooltip-html={renderToStaticMarkup(
+                      <div className="text">
+                        <Heading
+                          size="xs"
+                          caption={
+                            data[index].tooltipLabel || data[index].label
+                          }
+                        />
+                        <div className="value">
+                          {data[index].tooltipValue ||
+                            financialFormatLowValueHighPrecision(values[index])}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                />
+                    )}
+                  />
+                )
+              })}
+            </svg>
+          </div>
+          <ul className={styles.labels}>
+            {data.map((item, idx) => {
+              if (!(idx % 2)) {
+                return null
+              }
+
+              return (
+                <li className={styles.label} key={idx}>
+                  {item.label}
+                </li>
               )
             })}
-          </svg>
+          </ul>
         </div>
       </div>
     </div>

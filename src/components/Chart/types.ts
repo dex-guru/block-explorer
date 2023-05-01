@@ -1,5 +1,10 @@
 export type ChartCoord = [number, number]
-export type ChartData = [string, number][]
+export type ChartData = {
+  label: string
+  value: number
+  tooltipLabel?: string
+  tooltipValue?: string
+}[]
 export type ChartProps = {
   title?: string
   data: ChartData

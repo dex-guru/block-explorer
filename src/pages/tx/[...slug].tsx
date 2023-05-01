@@ -7,14 +7,17 @@ import { TransactionModel } from '@/__generated__/resolvers-types'
 import {
   Address,
   DateTime,
+  Empty,
   Label,
   Page,
   Properties,
   TimeAgo,
   Value,
 } from '@/components'
+import Copy from '@/components/Copy'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import Separated from '@/components/Separated/Separated'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -26,10 +29,6 @@ interface ITxProps {
 }
 
 const Tx: NextPage<ITxProps> = ({ data }) => {
-  if (!data) {
-    return <></>
-  }
-
   return (
     <>
       <Head>
@@ -41,97 +40,110 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
 
       <Page withSearch>
         <DetailsView title="Transaction Details">
-          <Properties
-            data={[
-              {
-                title: 'Transaction Hash:',
-                tooltip: '?',
-                value: data.hash,
-              },
-              {
-                title: 'Status:',
-                tooltip: '?',
-                value: (
-                  <Value
-                    icon={
-                      !!data.receiptStatus ? (
-                        <IconVerify className={styles.icon} />
-                      ) : undefined
-                    }
-                    value={data.receiptStatus ? 'Success' : 'Failed'}
-                    className={clsx({
-                      [styles.positive]: !!data.receiptStatus,
-                      [styles.negative]: !data.receiptStatus,
-                    })}
-                  />
-                ),
-              },
-              {
-                title: 'Block / Position:',
-                tooltip: '?',
-                value: <Address type="block" address={`${data.blockNumber}`} />,
-              },
-              {
-                title: 'Timestamp:',
-                tooltip: '?',
-                value: (
-                  <Value
-                    icon={<StopwatchIcon className={styles.muted} />}
-                    value={
-                      <>
-                        <TimeAgo timestamp={data.blockTimestamp} />{' '}
-                        <span className={styles.muted}>
-                          (
+          {!data?.hash && (
+            <Empty icon={<IconEmpty />} title="No TX  was found" />
+          )}
+
+          {!!data?.hash && (
+            <Properties
+              data={[
+                {
+                  title: 'Transaction Hash:',
+                  tooltip: '?',
+                  value: (
+                    <>
+                      {data.hash} <Copy text={data.hash} />
+                    </>
+                  ),
+                },
+                {
+                  title: 'Status:',
+                  tooltip: '?',
+                  value: (
+                    <Value
+                      icon={
+                        !!data.receiptStatus ? (
+                          <IconVerify className={styles.icon} />
+                        ) : undefined
+                      }
+                      value={data.receiptStatus ? 'Success' : 'Failed'}
+                      className={clsx({
+                        [styles.positive]: !!data.receiptStatus,
+                        [styles.negative]: !data.receiptStatus,
+                      })}
+                    />
+                  ),
+                },
+                {
+                  title: 'Block / Position:',
+                  tooltip: '?',
+                  value: (
+                    <Address type="block" address={`${data.blockNumber}`} />
+                  ),
+                },
+                {
+                  title: 'Timestamp:',
+                  tooltip: '?',
+                  value: (
+                    <Value
+                      icon={<StopwatchIcon className={styles.muted} />}
+                      value={<TimeAgo timestamp={data.blockTimestamp} />}
+                      suffix={
+                        <>
+                          {' '}
                           <DateTime
                             timestamp={data.blockTimestamp}
                             className={styles.muted}
                           />
-                          )
-                        </span>
-                      </>
-                    }
-                  />
-                ),
-              },
-              {
-                title: 'From / Nonce:',
-                tooltip: '?',
-                value: (
-                  <Separated>
+                        </>
+                      }
+                    />
+                  ),
+                },
+                {
+                  title: 'From / Nonce:',
+                  tooltip: '?',
+                  value: (
+                    <Separated>
+                      <Address
+                        address={data.fromAddress}
+                        type="account"
+                        isShorten={false}
+                        isCopy
+                      />
+                      <Label type="tag" className={labelStyles.success}>
+                        {data.nonce}
+                      </Label>
+                    </Separated>
+                  ),
+                },
+                {
+                  title: 'Interacted With (To):',
+                  tooltip: '?',
+                  value: data.toAddress ? (
                     <Address
-                      address={data.fromAddress}
+                      address={data.toAddress}
                       type="account"
                       isShorten={false}
+                      isCopy
                     />
-                    <Label type="tag" className={labelStyles.success}>
-                      {data.nonce}
-                    </Label>
-                  </Separated>
-                ),
-              },
-              {
-                title: 'Interacted With (To):',
-                tooltip: '?',
-                value: data.toAddress ? (
-                  <Address
-                    address={data.toAddress}
-                    type="account"
-                    isShorten={false}
-                  />
-                ) : null,
-              },
-              {
-                title: 'Value:',
-                tooltip: '?',
-                value: getNormalizedValue(data.value),
-              },
-              {
-                title: 'Transaction Action:',
-                tooltip: '?',
-                value: '',
-              },
-            ]}
-          />
+                  ) : null,
+                },
+                {
+                  title: 'Value:',
+                  tooltip: '?',
+                  value: (
+                    <Value value={getNormalizedValue(data.value)} prefix="$" />
+                  ),
+                },
+                {
+                  title: 'Transaction Action:',
+                  tooltip: '?',
+                  value: '',
+                },
+              ]}
+            />
+          )}
         </DetailsView>
       </Page>
     </>

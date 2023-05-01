@@ -6,7 +6,8 @@
   composes: body from '../Card/Card.module.scss';
 }
 
-.header {
+.header,
+.footer {
   composes: header from '../Card/Card.module.scss';
   display: flex;
   justify-content: space-between;
@@ -23,9 +24,6 @@
 }
 
 .footer {
-  composes: header from '../Card/Card.module.scss';
-  display: flex;
-  justify-content: space-between;
   padding-top: 0;
 }
 

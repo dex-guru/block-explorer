@@ -1,20 +1,32 @@
 .container {
+  --color-input-border: var(--color-bg);
+  --color-input-bg: var(--color-bg);
+  --color-input-placeholder: var(--color-bg-5);
+  --color-search-action: var(--color-accent);
+  --color-search-action-hover: var(--color-accent-a);
+
   display: flex;
   align-items: center;
   gap: 1px;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 640px;
+
+  @media (min-width: 840.1px) {
+    max-width: 640px;
+  }
 }
 
 .combo {
+  composes: input from '../Interactive/Input.module.scss';
+  composes: lg from '../Interactive/Input.module.scss';
+
+  background: var(--color-input-bg);
+
   flex: 1 1 auto;
   display: flex;
   align-items: stretch;
-  background: var(--color-input-bg);
-  border: 1px transparent solid;
-  transition: all 0.25s ease;
 
+  padding: 0;
   border-radius: 8px;
 
   &:not(:first-child) {
@@ -43,10 +55,6 @@
   &:last-child {
     padding-right: 12px;
   }
-
-  &::placeholder {
-    color: var(--color-input-placeholder);
-  }
 }
 
 .actions {
@@ -59,14 +67,14 @@
   composes: button from '../Button/Button.module.scss';
 
   width: 36px;
-  opacity: 0.5;
   background: none;
   border: none;
+  color: var(--color-search-action);
 
   &:focus,
   &:hover {
-    opacity: 1;
     background: none;
     border: none;
+    color: var(--color-search-action-hover);
   }
 }

@@ -1,4 +1,7 @@
 .container {
+  --color-label-bg: var(--color-bg-3);
+  --color-label-text: var(--color-text);
+
   width: max-content;
   display: inline-flex;
   font-weight: 400;
@@ -8,11 +11,14 @@
 }
 
 .accent {
+  --color-label-bg: var(--color-bg-3);
+  --color-label-text: var(--color-text);
+
   height: 32px;
   align-items: center;
   padding-right: 10px;
   border-radius: 0 8px 8px 0;
-  color: var(--color-page-text);
+  color: var(--color-label-text);
   background: var(--color-label-bg);
 
   &:before {
@@ -41,24 +47,22 @@
   padding: 0 8px;
   min-width: 40px;
   justify-content: center;
-  background: var(--color-tag-bg);
-  color: var(--color-tag-text);
-  border-radius: var(--radii-button);
+  border-radius: var(--radii-sm);
 }
 
 .success {
   background: var(--color-positive);
-  color: var(--color-page-text-a);
+  color: var(--color-muted);
 }
 
 .danger {
   background: var(--color-negative);
-  color: var(--color-page-text-a);
+  color: var(--color-muted);
 }
 
 .warn {
   background: #c9b824;
-  color: var(--color-page-text-a);
+  color: var(--color-muted);
 }
 
 .info {
