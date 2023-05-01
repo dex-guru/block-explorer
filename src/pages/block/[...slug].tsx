@@ -185,10 +185,14 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
 export default Block
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
+  const slug = ctx.query.slug as string[]
+  const number = slug[0]
 
-  const { slug } = ctx.query
-  const number = (slug as string[])[0]
+  if (isNaN(Number(number)) && Number(number) !== 0) {
+    return { notFound: true }
+  }
+
+  const apolloClient = initializeApollo({ ctx })
 
   const { data } = await apolloClient.query<{
     blocks: BlockModel[]

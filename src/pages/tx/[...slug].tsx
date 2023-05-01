@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import { isHexString } from '@ethersproject/bytes'
 import clsx from 'clsx'
 import labelStyles from '../../components/Label/Label.module.scss'
 import styles from '../Pages.module.scss'
@@ -153,10 +154,14 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
 export default Tx
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
+  const slug = ctx.query.slug as string[]
+  const hash = slug[0]
 
-  const { slug } = ctx.query
-  const hash = (slug as string[])[0]
+  if (!isHexString(hash)) {
+    return { notFound: true }
+  }
+
+  const apolloClient = initializeApollo({ ctx })
 
   const { data } = await apolloClient.query<{
     transactions: TransactionModel[]
@@ -169,6 +174,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   if (data.transactions.length) {
     transactions = data.transactions[0]
+  } else {
+    return { notFound: true }
   }
 
   return addApolloState(apolloClient, {
