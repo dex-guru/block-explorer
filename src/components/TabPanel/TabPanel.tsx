@@ -8,7 +8,7 @@ const TabPanel = <T,>(props: TabPanelProps<T>): ReactElement => {
   return (
     <div className={clsx(styles.container, props.className)}>
       <div className={styles.header}>
-        <Tabs {...props} className={styles.tabs} />
+        <Tabs {...props} className={clsx(styles.tabs, props.tabsClassName)} />
       </div>
       <div className={styles.body}>{props.children}</div>
     </div>

@@ -6,16 +6,7 @@ import {
   ChainStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Banner,
-  Card,
-  Delta,
-  Grid,
-  Heading,
-  Page,
-  Summary,
-  Table,
-} from '@/components'
+import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
 import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
 import { lastTxsColumns } from '@/components/Table/columns'
@@ -49,7 +40,16 @@ const Index: NextPage<IndexProps> = (props) => {
   const chartData = stats.transactionsCountHistory.map(
     ({ timestamp, value }) => {
       const date = new Date(timestamp * 1000)
-      return [date.toUTCString().replace(' 00:00:00', ''), value]
+      return {
+        value,
+        label: date.toLocaleDateString('en-GB', {
+          timeZone: 'UTC',
+          month: 'short',
+          day: '2-digit',
+        }),
+        tooltipLabel: date.toUTCString().replace(' 00:00:00', ''),
+        tooltipValue: `${financialFormatLowValueHighPrecision(value)} txs`,
+      }
     }
   )
 
@@ -61,18 +61,22 @@ const Index: NextPage<IndexProps> = (props) => {
     {
       title: 'Transactions',
       value: (
-        <>
-          {financialFormatLowValueHighPrecision(stats.transactionsCount)}{' '}
-          <span className="muted">
-            ({financialFormatLowValueHighPrecision(stats.transactionsPerSecond)}
-            txs/sec)
-          </span>
-        </>
+        <Value
+          value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
+          suffix={` ${financialFormatLowValueHighPrecision(
+            stats.transactionsPerSecond
+          )}  txs/sec`}
+        />
       ),
     },
     {
       title: 'Market Cap',
-      value: financialFormatLowValueHighPrecision(stats.marketCap),
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(stats.marketCap)}
+          prefix="$"
+        />
+      ),
     },
     {
       title: 'Token Supply',
@@ -82,9 +86,11 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Token Price',
       value: (
         <>
-          <span className={styles.muted}>$</span>
-          {financialFormat(stats.nativeTokenPriceUsd)}{' '}
-          <Delta value={stats.nativeTokenPriceUsd24hDelta * 100} />
+          <Value
+            value={financialFormat(stats.nativeTokenPriceUsd)}
+            prefix="$"
+            delta={stats.nativeTokenPriceUsd24hDelta * 100}
+          />
         </>
       ),
     },
@@ -100,7 +106,7 @@ const Index: NextPage<IndexProps> = (props) => {
       </Head>
       <Page>
         <Banner>
-          <Search />
+          <Search className={styles.searchMain} />
         </Banner>
 
         {!!stats && (
@@ -129,6 +135,7 @@ const Index: NextPage<IndexProps> = (props) => {
               columns={lastBlocksColumns}
               data={blocks}
               showHeader={false}
+              className={styles.cardChild}
             />
           </Card>
 
@@ -145,6 +152,7 @@ const Index: NextPage<IndexProps> = (props) => {
               columns={lastTxsColumns}
               data={transactions}
               showHeader={false}
+              className={styles.cardChild}
             />
           </Card>
         </Grid>

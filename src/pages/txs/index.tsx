@@ -7,10 +7,11 @@ import {
   TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Delta, DetailsView, Page, Summary } from '@/components'
+import { Delta, DetailsView, Empty, Page, Summary } from '@/components'
 import DataTable from '@/components/DataTable'
 import { txsColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
+import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   CHAIN_STATS,
@@ -29,6 +30,7 @@ interface ITxsProps {
   transactions: TransactionModel[]
   transactionStats: TransactionStatsModel
   chainStats: ChainStatsModel
+  block?: number
 }
 
 const Txs: NextPage<ITxsProps> = (props) => {
@@ -38,9 +40,9 @@ const Txs: NextPage<ITxsProps> = (props) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getTransactions({ variables })
+      getTransactions({ variables: { blockNumber: props.block, ...variables } })
     },
-    [getTransactions]
+    [getTransactions, props.block]
   )
 
   useEffect(() => {
@@ -59,61 +61,77 @@ const Txs: NextPage<ITxsProps> = (props) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title="Transactions">
-          <Summary
-            stats={[
-              {
-                title: 'Transactions Count',
-                value: financialFormatLowValueHighPrecision(
-                  props.chainStats?.transactionsCount || 0
-                ),
-              },
-              {
-                title: 'Transactions per Second',
-                value: financialFormatLowValueHighPrecision(
-                  props.chainStats?.transactionsPerSecond || 0
-                ),
-              },
-              {
-                title: 'Transactions, 24h',
-                value: (
-                  <>
-                    {financialFormatLowValueHighPrecision(
-                      props.transactionStats?.transactions24H
-                    )}{' '}
-                    <Delta
-                      value={props.transactionStats?.transactionsDelta24H * 100}
-                    />
-                  </>
-                ),
-              },
-              {
-                title: 'Network Transactions Fee, 24h',
-                value: (
-                  <>
-                    {getNormalizedValue(
-                      props.transactionStats?.networkTransactionsFee24H
-                    )}{' '}
-                    <Delta
-                      value={
-                        props.transactionStats?.networkTransactionsFeeDelta24H *
-                        100
-                      }
-                    />
-                  </>
-                ),
-              },
-            ]}
-          />
+        <DetailsView
+          title={props.block ? 'Transactions for block' : 'Transactions'}
+          address={`${props.block}`}
+        >
+          {!props.block && (
+            <Summary
+              stats={[
+                {
+                  title: 'Transactions Count',
+                  value: financialFormatLowValueHighPrecision(
+                    props.chainStats?.transactionsCount || 0
+                  ),
+                },
+                {
+                  title: 'Transactions per Second',
+                  value: financialFormatLowValueHighPrecision(
+                    props.chainStats?.transactionsPerSecond || 0
+                  ),
+                },
+                {
+                  title: 'Transactions, 24h',
+                  value: (
+                    <>
+                      {financialFormatLowValueHighPrecision(
+                        props.transactionStats?.transactions24H
+                      )}{' '}
+                      <Delta
+                        value={
+                          props.transactionStats?.transactionsDelta24H * 100
+                        }
+                      />
+                    </>
+                  ),
+                },
+                {
+                  title: 'Network Transactions Fee, 24h',
+                  value: (
+                    <>
+                      {getNormalizedValue(
+                        props.transactionStats?.networkTransactionsFee24H
+                      )}{' '}
+                      <Delta
+                        value={
+                          props.transactionStats
+                            ?.networkTransactionsFeeDelta24H * 100
+                        }
+                      />
+                    </>
+                  ),
+                },
+              ]}
+            />
+          )}
 
-          <DataTable
-            isLoading={loading}
-            columns={txsColumns}
-            data={transactions}
-            total={transactions[0].blockNumber}
-            perPage={perPage[1]}
-            onPageChange={onPaginationChange}
-          />
+          {transactions.length > 0 && (
+            <DataTable
+              isLoading={loading}
+              columns={txsColumns}
+              data={transactions}
+              total={transactions[0].blockNumber}
+              perPage={perPage[1]}
+              onPageChange={onPaginationChange}
+            />
+          )}
+
+          {!transactions.length && (
+            <Empty
+              icon={<IconEmpty />}
+              title="No transactions for this block"
+            />
+          )}
         </DetailsView>
       </Page>
     </>
@@ -125,9 +143,12 @@ export default Txs
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
+  const blocks = ctx.query.block as string
+  const block = blocks && blocks[0] ? parseInt(blocks) : null
+
   const { data: transactions } = await apolloClient.query({
     query: GET_TRANSACTIONS,
-    variables: { first: 10, skip: 0 },
+    variables: { blockNumber: block, first: 10, skip: 0 },
   })
 
   const { data: chainStats } = await apolloClient.query({
@@ -139,6 +160,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   })
 
   return addApolloState(apolloClient, {
-    props: { ...transactions, ...chainStats, ...transactionStats },
+    props: {
+      ...transactions,
+      ...chainStats,
+      ...transactionStats,
+      block,
+    },
   })
 }

@@ -1,15 +1,20 @@
 .container {
+  --color-details-summary: var(--color-bg);
+  --color-details-title: var(--color-bg-6);
+  --color-details-open: var(--color-accent);
+  --color-details-bg: var(--color-bg-2);
+
   position: relative;
   overflow: hidden;
 
   &[open] {
     .body,
     .header {
-      border-color: var(--color-details-active);
+      border-color: var(--color-details-open);
     }
 
     .header {
-      border-radius: var(--radii-card) var(--radii-card) 0 0;
+      border-radius: var(--radii-lg) var(--radii-lg) 0 0;
     }
 
     .body {
@@ -19,7 +24,7 @@
       transform: rotate(0deg);
 
       path {
-        fill: var(--color-details-active);
+        fill: var(--color-details-open);
       }
     }
   }
@@ -28,10 +33,11 @@
 .header {
   border: 1px transparent solid;
   border-bottom: 0;
-  background: var(--color-details-header);
+  background: var(--color-details-summary);
+  color: var(--color-details-title);
   padding: 10px 8px 10px 16px;
   cursor: pointer;
-  border-radius: var(--radii-card);
+  border-radius: var(--radii-lg);
   display: flex;
 
   &::marker {
@@ -47,7 +53,6 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-details-title);
   margin-right: auto;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -58,8 +63,8 @@
   border: 1px transparent solid;
   border-top: 0;
   padding: 15px 15px 23px;
-  background: var(--color-details-body);
-  border-radius: 0 0 var(--radii-card) var(--radii-card);
+  background: var(--color-details-bg);
+  border-radius: 0 0 var(--radii-lg) var(--radii-lg);
   display: flex;
   flex-flow: column;
   gap: 16px;
@@ -72,6 +77,6 @@
   transition: 0.15s ease;
 
   path {
-    fill: var(--color-details-title);
+    fill: var(currentColor);
   }
 }

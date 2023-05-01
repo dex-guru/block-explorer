@@ -1,4 +1,7 @@
 .container {
+  --color-details-view-address: var(--color-muted);
+  --color-details-view-tag-bg: var(--color-bg-2);
+  --color-details-view-tag-text: var(--color-muted);
 }
 
 .header {
@@ -15,10 +18,9 @@
 }
 
 .address {
-  color: var(--color-title-secondary);
+  color: var(--color-details-view-address);
   max-width: 100%;
   word-break: break-all;
-  margin-right: auto;
 }
 
 .tools {
@@ -27,8 +29,8 @@
 }
 
 .tag {
-  background: var(--color-card-bg);
-  color: var(--color-title-secondary);
+  background: var(--color-details-view-tag-bg);
+  color: var(--color-details-view-tag-text);
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;

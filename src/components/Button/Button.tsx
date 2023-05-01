@@ -19,12 +19,13 @@ const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
   ...rest
 }) => {
   const classProp = clsx(
+    styles.button,
     {
       active: !!active,
       disabled: (!to || !href) && disabled,
       hidden: !!hidden,
     },
-    className || styles.button
+    className
   )
 
   const destination = to || href

@@ -1,6 +1,6 @@
 .container {
-  background: var(--color-card-bg);
-  border-radius: var(--radii-card);
+  background: var(--color-bg-2);
+  border-radius: var(--radii-lg);
   display: flex;
   flex-flow: column;
   position: relative;
@@ -33,6 +33,7 @@
   align-items: stretch;
   justify-content: stretch;
   margin-bottom: 8px;
+  order: 2;
 
   svg {
     width: 40px;
@@ -45,9 +46,14 @@
 }
 
 .title {
-  composes: lg from '../Heading/Heading.module.scss';
+  order: 1;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--color-muted);
 }
 
 .subtitle {
-  color: var(--color-title-secondary);
+  order: 3;
+  color: var(--color-muted);
 }

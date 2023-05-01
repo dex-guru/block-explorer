@@ -13,10 +13,9 @@ import {
   Properties,
   TabPanel,
   DataTable,
-  Empty,
+  Card,
 } from '@/components'
 import { useIsMount } from '@/hooks'
-import IconEmpty from '@/images/icons/no-flash.svg'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 
@@ -94,7 +93,6 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
           </Grid>
 
           <TabPanel
-            className="tab-panel"
             tabs={[
               {
                 title: 'Transactions',
@@ -127,26 +125,51 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             {/* Content here should depend on Tab's query param value */}
             {/* Transactions tab */}
             {tab === undefined && (
-              <>
-                {transactions && transactions.length > 0 && (
-                  <DataTable
-                    isLoading={loading}
-                    columns={txsColumns}
-                    data={transactions}
-                    total={transactions[0].blockNumber}
-                    perPage={perPage[1]}
-                    onPageChange={onPaginationChange}
-                  />
-                )}
-
-                {(!transactions || !transactions.length) && (
-                  <Empty
-                    icon={<IconEmpty />}
-                    title="No transactions for this account"
-                  />
-                )}
-              </>
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={transactions || []}
+                total={
+                  transactions && transactions[0] && transactions[0].blockNumber
+                }
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No transactions for this address',
+                }}
+              />
             )}
+
+            {tab === 'internaltx' && (
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={[]}
+                total={0}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No internal transactions for this address',
+                }}
+              />
+            )}
+
+            {tab === 'tokentxns' && (
+              <DataTable
+                isLoading={loading}
+                columns={txsColumns}
+                data={[]}
+                total={0}
+                perPage={perPage[1]}
+                onPageChange={onPaginationChange}
+                empty={{
+                  title: 'No token transactions for this address',
+                }}
+              />
+            )}
+
+            {tab === 'analytics' && <Card>Some analytics here soon</Card>}
+            {tab === 'comments' && <Card>Some comments here soon</Card>}
           </TabPanel>
         </DetailsView>
       </Page>

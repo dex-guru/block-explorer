@@ -7,6 +7,7 @@ import Button from './Button'
 import Card from './Card'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
+import Copy from './Copy'
 import DataTable from './DataTable'
 import DateTime from './DateTime'
 import Delta from './Delta'
@@ -36,6 +37,7 @@ export {
   Banner,
   Button,
   Card,
+  Copy,
   ConnectButton,
   ContractView,
   DataTable,

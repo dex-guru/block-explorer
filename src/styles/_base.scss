@@ -1,11 +1,10 @@
 html {
   margin: 0;
   padding: 0;
-  background: var(--color-page-bg);
-  color: var(--color-page-text);
   font-family: 'IBM Plex Sans Condensed', sans-serif;
   min-width: 320px;
   color-scheme: dark light;
+
   content: '';
 
   @media (prefers-color-scheme: light) {
@@ -23,17 +22,16 @@ body {
 }
 
 a {
-  color: var(--color-link);
   transition: all 0.25s ease;
   text-decoration: none;
-
-  &:hover {
-    color: var(--color-link-hover);
-  }
 }
 
 small {
   font-size: 12px;
   line-height: 20px;
-  color: var(--color-title-secondary);
+}
+
+::selection {
+  background: var(--color-muted);
+  color: var(--color-bg);
 }

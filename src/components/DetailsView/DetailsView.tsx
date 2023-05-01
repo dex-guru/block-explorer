@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import clsx from 'clsx'
+import Copy from '../Copy'
 import Heading from '../Heading'
 import { DetailsViewProps } from './types'
 import styles from './DetaisView.module.scss'
@@ -18,7 +19,10 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!icon && <div className={styles.icon}>{icon}</div>}
         <Heading caption={title} size="lg" className={styles.title} />
         {!!address && (
-          <Heading caption={address} size="lg" className={styles.address} />
+          <>
+            <Heading caption={address} size="lg" className={styles.address} />
+            <Copy text={address} />
+          </>
         )}
         <div className={styles.tools}></div>
         {!!tag && <div className={styles.tag}>{tag}</div>}

@@ -1,106 +1,81 @@
 html {
-  --color-page-bg: #1e242c;
-  --color-page-text: #fff;
-  --color-page-muted: #6d7986;
-
-  --color-header-bg: #181d23;
-
-  --color-button-bg: #1e242c;
-  --color-button-hover: #05fc99;
-  --color-button-text: #fff;
-  --color-button-icon: #a8b4c1;
-
-  --color-accent: #05fc99;
-
-  --color-link: #05fc99;
-  --color-link-hover: #76ffde;
-  --color-link-active: #fff;
-
-  --color-action-bg: #05fc99;
-  --color-action-text: #181d23;
-  --color-action-hover: #76ffde;
-
-  --color-tab-bg: transparent;
-  --color-tab-text: #05fc99;
-  --color-tab-hover: #fff;
-  --color-tab-active: #05fc99;
-
-  --color-submit-bg: #12b886;
-  --color-submit-text: #fff;
-  --color-submit-hover: #76ffde;
-
-  --color-title-primary: #fff;
-  --color-title-secondary: #6d7986;
-
-  --color-label-bg: #2d3642;
-
-  --color-card-bg: #181d23;
-  --color-card-separator: #1e242c;
-
-  --color-separator: #2d3642;
-
-  --color-details-active: #05fc99;
-  --color-details-header: #1e242c;
-  --color-details-body: #181d23;
-  --color-details-text: #fff;
-  --color-details-title: #a8b4c1;
-
-  --color-table-separator: #1e242c;
-  --color-table-row-hover: #1e242c;
-  --color-table-header-bg: #1e242c;
-  --color-table-header-text: #6d7986;
-
-  --color-avatar-bg: #2d3642;
-
-  --color-input-bg: #1e242c;
-  --color-input-text: #fff;
-  --color-input-placeholder: #545c66;
-  --color-input-focus: #05fc99;
-
-  --color-tooltip-bg: #2d3642;
-  --color-tooltip-text: #fff;
-
-  --color-tag-bg: #2d3642;
-  --color-tag-text: #fff;
-  --color-tag-text-a: #f181D23ff;
-
-  --radii-button: 4px;
-  --radii-card: 8px;
+  --color-bg: #1e242c;
+  --color-bg-2: #181d23;
+  --color-bg-3: #2d3642;
+  --color-bg-4: #465160;
+  --color-bg-5: #545c66;
+  --color-bg-6: #a8b4c1;
+  --color-text: #fff;
+  --color-muted: #6d7986;
 
   --color-positive: #12b886;
   --color-negative: #ff646d;
-  --color-neutral: #6d7986;
+  --color-neutral: var(--color-muted);
 
-  // &.theme-light {
-  //   --color-page-bg: #eceff1;
-  //   --color-page-text: #181d23;
+  --color-accent: #9488f0;
+  --color-accent-a: #afa5fb;
 
-  //   --color-header-bg: #fff;
+  --color-page-bg: var(--color-bg);
+  --color-page-text: var(--color-text);
+  --color-page-muted: var(--color-muted);
 
-  //   --color-button-text: #181d23;
+  --color-separator: var(--color-bg-3);
 
-  //   --color-link: #9488f0;
-  //   --color-link-hover: #afa5fb;
-  //   --color-link-active: #181d23;
+  --color-link: var(--color-accent);
+  --color-link-hover: var(--color-accent-a);
+  --color-link-active: var(--color-text);
 
-  //   --color-title-primary: #181d23;
-  //   --color-title-secondary: #6d7986;
+  --color-button-border: var(--color-bg-3);
+  --color-button-hover-border: var(--color-bg-4);
+  --color-button-bg: var(--color-bg-3);
+  --color-button-hover-bg: var(--color-bg-4);
+  --color-button-text: var(--color-text);
+  --color-button-hover-text: var(--color-text);
+  --color-button-icon: var(--color-bg-6);
 
-  //   --color-label-bg: #eceff1;
+  --color-input-bg: transparent;
+  --color-input-border: var(--color-bg-3);
+  --color-input-text: var(--color-text);
+  --color-input-placeholder: var(--color-muted);
+  --color-input-focus: var(--color-accent);
 
-  //   --color-card-bg: #fff;
-  //   --color-card-separator: #eceff1;
+  --radii-sm: 4px;
+  --radii-lg: 8px;
 
-  //   --color-table-separator: #eceff1;
+  --color-tooltip-bg: var(--color-bg-3);
+  --color-tooltip-text: var(--color-text);
 
-  //   --color-avatar-bg: #a8b4c1;
+  background: var(--color-page-bg);
+  color: var(--color-page-text);
 
-  //   --color-input-bg: #eceff1;
-  //   --color-input-text: #000;
-  //   --color-input-placeholder: #a7b2bd;
-  //   --color-input-focus: #6046ff;
+  a {
+    color: var(--color-link);
 
-  //   --color-tooltip-bg: #2d3642;
-  //   --color-tooltip-text: #fff;
-  // }
+    &:focus,
+    &:hover {
+      color: var(--color-link-hover);
+    }
+
+    &:active {
+      color: var(--color-link-active);
+    }
+  }
+
+  small {
+    color: var(--color-muted);
+  }
+
+  &.theme-light {
+    --color-bg: #eceff1;
+    --color-bg-2: #fff;
+    --color-bg-3: #eceff1;
+    --color-bg-4: #465160;
+    --color-bg-5: #545c66;
+    --color-bg-6: #a8b4c1;
+    --color-text: #181d23;
+
+    --color-tooltip-bg: var(--color-bg-5);
+    --color-tooltip-text: var(--color-bg);
+    --color-button-text: var(--color-bg-2);
+  }
 }

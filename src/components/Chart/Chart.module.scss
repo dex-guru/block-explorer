@@ -1,4 +1,9 @@
 .container {
+  --color-chart-title: var(--color-muted);
+  --color-chart-stroke: var(--color-accent);
+  --color-chart-fill: transparent;
+  --color-chart-value: var(--color-muted);
+
   display: flex;
   flex-flow: column;
   gap: 16px;
@@ -9,7 +14,14 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
-  color: var(--color-title-secondary);
+  color: var(--color-chart-title);
+}
+
+.content {
+  flex: 1 0 0;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
 }
 
 .chart {
@@ -26,7 +38,8 @@
   height: 100%;
 
   path {
-    stroke: var(--color-accent);
+    stroke: var(--color-chart-stroke);
+    fill: var(--color-chart-fill);
   }
 }
 
@@ -42,9 +55,31 @@
   justify-content: space-between;
   align-items: flex-end;
 
-  color: var(--color-title-secondary);
+  color: var(--color-chart-value);
 
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+}
+
+.labels {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--color-chart-value);
+  text-align: center;
+}
+
+.label {
+  margin: 0;
+  padding: 0;
+  flex: 1 0 0;
+}
+
+.indicator {
 }

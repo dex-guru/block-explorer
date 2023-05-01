@@ -5,4 +5,5 @@ export type AddressProps = {
   type: AddressType
   className?: string
   isShorten?: boolean
+  isCopy?: boolean
 }

@@ -1,4 +1,7 @@
 .container {
+  --color-avatar-bg: var(--color-bg-3);
+  --color-avatar-text: var(--color-muted);
+
   aspect-ratio: 1;
   display: flex;
   align-items: stretch;
@@ -7,12 +10,12 @@
 
   &[data-letters]:empty {
     &::before {
-      flex: 1 0 0;
+      flex: 0 0 100%;
       content: attr(data-letters);
       display: flex;
       justify-content: center;
       align-items: center;
-      color: var(--color-title-secondary);
+      color: var(--color-avatar-text);
       background: var(--color-avatar-bg);
     }
   }

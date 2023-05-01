@@ -33,11 +33,11 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
         <Button
           key={index}
           className={clsx(
-            styles.tab,
+            item.className,
             {
               [styles.active]: isActive,
             },
-            item.className
+            styles.tab
           )}
           to={item.to}
           caption={item.title}
