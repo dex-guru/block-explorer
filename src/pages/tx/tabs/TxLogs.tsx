@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Copy, Properties } from '@/components'
+import { Address, Properties } from '@/components'
 
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   logs,
