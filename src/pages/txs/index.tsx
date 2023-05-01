@@ -59,7 +59,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
       <Page withSearch>
         <DetailsView
           title={props.block ? 'Transactions for block' : 'Transactions'}
-          address={`${props.block}`}
+          address={props.block?.toString()}
         >
           {!props.block && (
             <Summary
