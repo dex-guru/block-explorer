@@ -1,34 +1,24 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import clsx from 'clsx'
-import labelStyles from '../../components/Label/Label.module.scss'
-import styles from '../Pages.module.scss'
-import { TransactionModel } from '@/__generated__/resolvers-types'
-import {
-  Address,
-  DateTime,
-  Empty,
-  Label,
-  Page,
-  Properties,
-  TimeAgo,
-  Value,
-} from '@/components'
-import Copy from '@/components/Copy'
+import { useRouter } from 'next/router'
+import { TxLogs, TxOverview, TxTrace } from './tabs'
+import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
+import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import Separated from '@/components/Separated/Separated'
 import IconEmpty from '@/images/icons/no-flash.svg'
-import StopwatchIcon from '@/images/icons/stop-watch.svg'
-import IconVerify from '@/images/icons/verified.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
-import { getNormalizedValue } from '@/lib/utils'
+import { GET_TRANSACTION_BY_HASH } from '@/lib/apollo/queries'
 
 interface ITxProps {
   data: TransactionModel | null
+  logs: LogModel[] | null
 }
 
-const Tx: NextPage<ITxProps> = ({ data }) => {
+const Tx: NextPage<ITxProps> = ({ data, logs }) => {
+  const router = useRouter()
+  const { tab } = router.query
+  const pathname = router.asPath.split('?')[0]
+
   return (
     <>
       <Head>
@@ -45,103 +35,28 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
           )}
 
           {!!data?.hash && (
-            <Properties
-              data={[
+            <TabPanel
+              tabs={[
                 {
-                  title: 'Transaction Hash:',
-                  tooltip: '?',
-                  value: (
-                    <>
-                      {data.hash} <Copy text={data.hash} />
-                    </>
-                  ),
-                },
-                {
-                  title: 'Status:',
-                  tooltip: '?',
-                  value: (
-                    <Value
-                      icon={
-                        !!data.receiptStatus ? (
-                          <IconVerify className={styles.icon} />
-                        ) : undefined
-                      }
-                      value={data.receiptStatus ? 'Success' : 'Failed'}
-                      className={clsx({
-                        [styles.positive]: !!data.receiptStatus,
-                        [styles.negative]: !data.receiptStatus,
-                      })}
-                    />
-                  ),
-                },
-                {
-                  title: 'Block / Position:',
-                  tooltip: '?',
-                  value: (
-                    <Address type="block" address={`${data.blockNumber}`} />
-                  ),
-                },
-                {
-                  title: 'Timestamp:',
-                  tooltip: '?',
-                  value: (
-                    <Value
-                      icon={<StopwatchIcon className={styles.muted} />}
-                      value={<TimeAgo timestamp={data.blockTimestamp} />}
-                      suffix={
-                        <>
-                          {' '}
-                          <DateTime
-                            timestamp={data.blockTimestamp}
-                            className={styles.muted}
-                          />
-                        </>
-                      }
-                    />
-                  ),
-                },
-                {
-                  title: 'From / Nonce:',
-                  tooltip: '?',
-                  value: (
-                    <Separated>
-                      <Address
-                        address={data.fromAddress}
-                        type="account"
-                        isShorten={false}
-                        isCopy
-                      />
-                      <Label type="tag" className={labelStyles.success}>
-                        {data.nonce}
-                      </Label>
-                    </Separated>
-                  ),
-                },
-                {
-                  title: 'Interacted With (To):',
-                  tooltip: '?',
-                  value: data.toAddress ? (
-                    <Address
-                      address={data.toAddress}
-                      type="account"
-                      isShorten={false}
-                      isCopy
-                    />
-                  ) : null,
-                },
-                {
-                  title: 'Value:',
-                  tooltip: '?',
-                  value: (
-                    <Value value={getNormalizedValue(data.value)} prefix="$" />
-                  ),
-                },
-                {
-                  title: 'Transaction Action:',
-                  tooltip: '?',
+                  title: 'Overview',
                   value: '',
+                  to: pathname,
+                  content: <TxOverview data={data} />,
+                },
+                {
+                  title: `Logs (${logs?.length || 0})`,
+                  value: 'logs',
+                  to: `${pathname}?tab=logs`,
+                  content: <TxLogs data={data} logs={logs} />,
+                },
+                {
+                  title: 'Trace',
+                  value: 'trace',
+                  to: `${pathname}?tab=trace`,
+                  content: <TxTrace data={data} />,
                 },
               ]}
+              value={tab || ''}
             />
           )}
         </DetailsView>
@@ -160,19 +75,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const { data } = await apolloClient.query<{
     transactions: TransactionModel[]
+    logs: LogModel[]
   }>({
-    query: GET_TRANSACTIONS_BY_HASH,
+    query: GET_TRANSACTION_BY_HASH,
     variables: { hash },
   })
 
-  let transactions: TransactionModel | null = null
-
-  if (data.transactions.length) {
-    transactions = data.transactions[0]
-  }
-
   return addApolloState(apolloClient, {
-    props: { data: transactions },
+    props: {
+      data: data.transactions[0] || null,
+      logs: data.logs || null,
+    },
   })
 }
 

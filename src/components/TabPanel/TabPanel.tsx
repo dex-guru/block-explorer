@@ -5,12 +5,17 @@ import { TabPanelProps } from './types'
 import styles from './TabPanel.module.scss'
 
 const TabPanel = <T,>(props: TabPanelProps<T>): ReactElement => {
+  const content = props.tabs.find((el) => el.value === props.value)?.content
+
   return (
     <div className={clsx(styles.container, props.className)}>
       <div className={styles.header}>
         <Tabs {...props} className={clsx(styles.tabs, props.tabsClassName)} />
       </div>
-      <div className={styles.body}>{props.children}</div>
+      <div className={styles.body}>
+        {content}
+        {props.children}
+      </div>
     </div>
   )
 }
