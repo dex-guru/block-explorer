@@ -13,11 +13,7 @@ import { txsColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import {
-  CHAIN_STATS,
-  GET_TRANSACTIONS,
-  TRANSACTIONS_STATS,
-} from '@/lib/apollo/queries'
+import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import {
   financialFormatLowValueHighPrecision,
   getNormalizedValue,
@@ -120,7 +116,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
               isLoading={loading}
               columns={txsColumns}
               data={transactions}
-              total={transactions[0].blockNumber}
+              total={props.transactionStats.transactionsCount}
               perPage={perPage[1]}
               onPageChange={onPaginationChange}
             />
@@ -146,24 +142,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const blocks = ctx.query.block as string
   const block = blocks && blocks[0] ? parseInt(blocks) : null
 
-  const { data: transactions } = await apolloClient.query({
+  const {
+    data: { transactions, transactionStats, chainStats },
+  } = await apolloClient.query({
     query: GET_TRANSACTIONS,
     variables: { blockNumber: block, first: 10, skip: 0 },
   })
 
-  const { data: chainStats } = await apolloClient.query({
-    query: CHAIN_STATS,
-  })
-
-  const { data: transactionStats } = await apolloClient.query({
-    query: TRANSACTIONS_STATS,
-  })
-
   return addApolloState(apolloClient, {
     props: {
-      ...transactions,
-      ...chainStats,
-      ...transactionStats,
+      transactions,
+      chainStats,
+      transactionStats,
       block,
     },
   })
