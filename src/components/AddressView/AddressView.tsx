@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
+import Comments from '../Comments'
 import { txsColumns } from '../Table/columns'
 import { IAddressViewProps } from './types'
 import {
@@ -169,7 +170,14 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             )}
 
             {tab === 'analytics' && <Card>Some analytics here soon</Card>}
-            {tab === 'comments' && <Card>Some comments here soon</Card>}
+            {tab === 'comments' && (
+              <Card>
+                <Comments
+                  title={`Address ${address}`}
+                  id={`address/${address}`}
+                />
+              </Card>
+            )}
           </TabPanel>
         </DetailsView>
       </Page>
