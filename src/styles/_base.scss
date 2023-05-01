@@ -30,3 +30,8 @@ small {
   font-size: 12px;
   line-height: 20px;
 }
+
+::selection {
+  background: var(--color-muted);
+  color: var(--color-bg);
+}

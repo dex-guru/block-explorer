@@ -55,6 +55,8 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   <>
                     {data.number}{' '}
                     <Link
+                      data-tooltip-content="Previous Block"
+                      data-tooltip-id="app-tooltip"
                       href={AddressValues['block'].url(`${data.number - 1}`)}
                       className={clsx(styles.pageTo, {
                         [styles.disabled]: data.number < 2,
@@ -63,6 +65,8 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <ArrowLeft className={styles.icon} />
                     </Link>{' '}
                     <Link
+                      data-tooltip-content="Next Block"
+                      data-tooltip-id="app-tooltip"
                       href={AddressValues['block'].url(`${data.number + 1}`)}
                       className={styles.pageTo}
                     >
@@ -81,7 +85,10 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                     icon={<StopwatchIcon />}
                     value={
                       <>
-                        <TimeAgo timestamp={data.timestamp} />{' '}
+                        <TimeAgo
+                          timestamp={data.timestamp}
+                          showTooltip={false}
+                        />{' '}
                         <span className={styles.muted}>
                           (
                           <DateTime

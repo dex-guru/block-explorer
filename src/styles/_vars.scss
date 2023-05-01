@@ -65,36 +65,17 @@ html {
     color: var(--color-muted);
   }
 
-  // &.theme-light {
-  //   --color-page-bg: #eceff1;
-  //   --color-page-text: var(--color-bg-2);
+  &.theme-light {
+    --color-bg: #eceff1;
+    --color-bg-2: #fff;
+    --color-bg-3: #eceff1;
+    --color-bg-4: #465160;
+    --color-bg-5: #545c66;
+    --color-bg-6: #a8b4c1;
+    --color-text: #181d23;
 
-  //   --color-header-bg: var(--color-text);
-
-  //   --color-button-text: var(--color-bg-2);
-
-  //   --color-link: #9488f0;
-  //   --color-link-hover: #afa5fb;
-  //   --color-link-active: var(--color-bg-2);
-
-  //   --color-title-primary: var(--color-bg-2);
-  //   --color-title-secondary: var(--color-muted);
-
-  //   --color-label-bg: #eceff1;
-
-  //   --color-card-bg: var(--color-text);
-  //   --color-card-separator: #eceff1;
-
-  //   --color-table-separator: #eceff1;
-
-  //   --color-avatar-bg: var(--color-bg-6);
-
-  //   --color-input-bg: #eceff1;
-  //   --color-input-text: #000;
-  //   --color-input-placeholder: #a7b2bd;
-  //   --color-input-focus: #6046ff;
-
-  //   --color-tooltip-bg: var(--color-bg-3);
-  //   --color-tooltip-text: var(--color-text);
-  // }
+    --color-tooltip-bg: var(--color-bg-5);
+    --color-tooltip-text: var(--color-bg);
+    --color-button-text: var(--color-bg-2);
+  }
 }
