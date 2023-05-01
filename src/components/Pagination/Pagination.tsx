@@ -47,6 +47,14 @@ export const Pagination: FC<IPaginationProps> = ({
   return (
     <div className={clsx(styles.container, className)}>
       <Button
+        caption="First"
+        onClick={() => {
+          doPageChange(1)
+        }}
+        disabled={disabled.prev}
+        className={styles.button}
+      />
+      <Button
         onClick={() => {
           doPageChange(page - 1)
         }}
@@ -54,31 +62,23 @@ export const Pagination: FC<IPaginationProps> = ({
         className={styles.button}
         icon={<ArrowLeft />}
       />
-      <Button
-        caption="First"
-        onClick={() => {
-          doPageChange(1)
-        }}
-        disabled={disabled.first}
-        className={styles.button}
-      />
 
       <span className={styles.counter}>
         Page {financialFormat(page)} of {financialFormat(total)}
       </span>
 
       <Button
-        caption="Last"
-        onClick={() => {
-          doPageChange(total)
-        }}
-        disabled={disabled.last}
-        className={styles.button}
-      />
-      <Button
         icon={<ArrowRight />}
         onClick={() => {
           doPageChange(page + 1)
+        }}
+        disabled={disabled.next}
+        className={styles.button}
+      />
+      <Button
+        caption="Last"
+        onClick={() => {
+          doPageChange(total)
         }}
         disabled={disabled.next}
         className={styles.button}
