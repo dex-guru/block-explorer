@@ -48,3 +48,19 @@
     margin-bottom: -16px;
   }
 }
+
+.grid4 {
+  composes: grid4 from '../components/Grid/Grid.module.scss';
+}
+
+.span2rows {
+  composes: span2rows from '../components/Grid/Grid.module.scss';
+}
+
+.span2cols {
+  composes: span2cols from '../components/Grid/Grid.module.scss';
+}
+
+.valueBig {
+  composes: big from '../components/Value/Value.module.scss';
+}

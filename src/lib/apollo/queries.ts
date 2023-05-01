@@ -241,3 +241,30 @@ export const GET_BLOCKS_BY_NUMBER = gql`
     }
   }
 `
+
+export const GET_CSR_STATS = gql`
+  query CSRStats {
+    csrStats {
+      burned {
+        timestamp
+        value
+      }
+      netEmissions {
+        timestamp
+        value
+      }
+      sumRevenue
+      sumTx
+      sumContracts
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
+  }
+`

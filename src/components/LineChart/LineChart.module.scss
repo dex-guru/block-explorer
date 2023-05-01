@@ -1,0 +1,12 @@
+.container {
+  min-height: 160px;
+  display: flex;
+  height: 75vh !important;
+  user-select: none;
+}
+
+.line {
+  path {
+    stroke-width: 2;
+  }
+}

@@ -8,3 +8,17 @@
     flex-flow: column;
   }
 }
+
+.grid4 {
+  @media (min-width: 1024.1px) {
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+  }
+}
+
+.span2cols {
+  grid-column: span 2;
+}
+
+.span2rows {
+  grid-row: span 2;
+}

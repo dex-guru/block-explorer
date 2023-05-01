@@ -36,6 +36,7 @@
     "swr": "2.1.5",
     "typescript": "5.0.4",
     "uuid": "9.0.0",
+    "victory": "^36.6.10",
     "wagmi": "0.12.12"
   },
   "devDependencies": {
