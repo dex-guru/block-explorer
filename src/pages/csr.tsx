@@ -1,12 +1,14 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
+import { TupleType } from 'typescript'
 import {
   ChainConfigModel,
   CsrStatsModel,
   TimeSeriesChartModel,
 } from '@/__generated__/resolvers-types'
 import { Card, Grid, LineChart, Page, Value } from '@/components'
+import { LineChartSeries } from '@/components/LineChart'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
@@ -21,19 +23,22 @@ const getChartData = (data: TimeSeriesChartModel[]) => {
   return data.map(({ timestamp, value }) => ({ timestamp, value }))
 }
 
+type ChartTuple = { timestamp: number; value: number }
 type TimestampObject = { timestamp: number }
 
 const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
-  const csrStatsSeries = [
+  const csrStatsSeries: (LineChartSeries & { data: ChartTuple[] })[] = [
     {
       id: 'burned',
       color: 'red',
       data: getChartData(csrStats.burned),
+      yAxis: 'left',
     },
     {
       id: 'netEmissions',
       color: 'green',
       data: getChartData(csrStats.netEmissions),
+      yAxis: 'right',
     },
   ]
 

@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { LineChartProps } from './types'
+import { financialFormat } from '@/lib/utils'
 import styles from './LineChart.module.scss'
 
 const LineChart: FC<LineChartProps> = ({ data, series, className }) => {
@@ -23,7 +24,16 @@ const LineChart: FC<LineChartProps> = ({ data, series, className }) => {
       <Chart data={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="label" />
-        <YAxis />
+        <YAxis
+          yAxisId="left"
+          orientation="left"
+          tickFormatter={(value: number) => financialFormat(value)}
+        />
+        <YAxis
+          yAxisId="right"
+          orientation="right"
+          tickFormatter={(value: number) => financialFormat(value)}
+        />
         <Tooltip />
         {series.map((el) => {
           return (
@@ -33,11 +43,12 @@ const LineChart: FC<LineChartProps> = ({ data, series, className }) => {
               dataKey={el.id}
               stroke={el.color}
               dot={false}
+              yAxisId={el.yAxis || 'left'}
             />
           )
         })}
 
-        <Brush dataKey="label" height={30} />
+        <Brush dataKey="label" />
       </Chart>
     </ResponsiveContainer>
   )

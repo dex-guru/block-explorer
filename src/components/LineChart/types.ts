@@ -1,6 +1,7 @@
 export type LineChartSeries = {
   id: string
-  color: string
+  color?: string
+  yAxis?: 'left' | 'right'
 }
 
 export type LineChartProps = {
