@@ -1,8 +1,7 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC } from 'react'
 import clsx from 'clsx'
 import Button from '../Button'
 import { getDisabled } from './utils'
-import { useIsMount } from '@/hooks'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'
 import { financialFormat } from '@/lib/utils'
@@ -11,8 +10,8 @@ import styles from './Pagination.module.scss'
 interface IPaginationProps {
   total: number
   page: number
-  className?: string
   onChange: (page: number) => void
+  className?: string
 }
 
 export const DEFAULT_FIRST_PAGE = 1
@@ -24,39 +23,21 @@ export const Pagination: FC<IPaginationProps> = ({
   className,
   page = DEFAULT_FIRST_PAGE,
 }) => {
-  const [disabled, setDisabled] = useState(() => getDisabled(page, total))
-  const isMounted = useIsMount()
-
-  const doPageChange = useCallback(
-    (value: number) => {
-      const pageValue = Math.max(1, Math.min(value, total))
-
-      setDisabled(getDisabled(total, pageValue))
-
-      onChange(pageValue)
-    },
-    [onChange, total]
-  )
-
-  useEffect(() => {
-    if (isMounted) {
-      setDisabled(getDisabled(total, page))
-    }
-  }, [isMounted, total, page])
+  const disabled = getDisabled(total, page)
 
   return (
     <div className={clsx(styles.container, className)}>
       <Button
         caption="First"
         onClick={() => {
-          doPageChange(1)
+          onChange(1)
         }}
         disabled={disabled.prev}
         className={styles.button}
       />
       <Button
         onClick={() => {
-          doPageChange(page - 1)
+          onChange(page - 1)
         }}
         disabled={disabled.prev}
         className={styles.button}
@@ -70,7 +51,7 @@ export const Pagination: FC<IPaginationProps> = ({
       <Button
         icon={<ArrowRight />}
         onClick={() => {
-          doPageChange(page + 1)
+          onChange(page + 1)
         }}
         disabled={disabled.next}
         className={styles.button}
@@ -78,7 +59,7 @@ export const Pagination: FC<IPaginationProps> = ({
       <Button
         caption="Last"
         onClick={() => {
-          doPageChange(total)
+          onChange(total)
         }}
         disabled={disabled.next}
         className={styles.button}

@@ -35,12 +35,6 @@ export function DataTable<T>(props: DataTableProps<T>) {
         return
       }
 
-      console.log({
-        page: pageValue,
-        first: currentPerPage,
-        skip: currentPerPage * (pageValue - 1),
-      })
-
       onPageChange({
         first: currentPerPage,
         skip: currentPerPage * (pageValue - 1),
