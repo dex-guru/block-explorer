@@ -4,6 +4,7 @@ import Head from 'next/head'
 import {
   BlockModel,
   ChainStatsModel,
+  CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
@@ -30,6 +31,7 @@ interface IndexProps {
   transactions: TransactionModel[]
   blocks: BlockModelWithTimeDiff[]
   chainStats: ChainStatsModel
+  csrStats: CsrStatsModel
 }
 
 const ITEMS_PER_PAGE = 10
@@ -166,7 +168,9 @@ export default Index
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const { data: transactions } = await apolloClient.query({
+  const {
+    data: { transactions },
+  } = await apolloClient.query({
     query: TRANSACTIONS_LAST,
   })
   const { data: blocks } = await apolloClient.query<{ blocks: BlockModel[] }>({
@@ -185,14 +189,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   blocksWithTimeDiff.splice(ITEMS_PER_PAGE, 1)
 
-  const { data: chainStats } = await apolloClient.query({
+  const {
+    data: { chainStats, csrStats },
+  } = await apolloClient.query({
     query: CHAIN_STATS,
   })
 
   return addApolloState(apolloClient, {
     props: {
-      ...transactions,
-      ...chainStats,
+      transactions,
+      chainStats,
+      csrStats,
       blocks: blocksWithTimeDiff,
     },
   })

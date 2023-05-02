@@ -100,6 +100,9 @@ export const CHAIN_STATS = gql`
       volume24hDeltaUsd
       volume24hUsd
     }
+    csrStats {
+      sumRevenue
+    }
   }
 `
 
