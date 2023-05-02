@@ -21,13 +21,15 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
+import { financialFormat, getNormalizedValue } from '@/lib/utils'
 
 interface IBlockProps {
   data: BlockModel | null
 }
 
 const Block: NextPage<IBlockProps> = ({ data }) => {
+  const blockValues = AddressValues['block']
+
   return (
     <>
       <Head>
@@ -62,7 +64,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Previous Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number - 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number - 1}`)
+                            : ''
+                        }
                         className={clsx(styles.pageTo, {
                           [styles.disabled]: data.number < 2,
                         })}
@@ -72,7 +78,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Next Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number + 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number + 1}`)
+                            : ''
+                        }
                         className={styles.pageTo}
                       >
                         <ArrowRight className={styles.icon} />
@@ -81,7 +91,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   ),
                   tooltip: '?',
                 },
-                { title: 'Status:', value: '', tooltip: '?' },
                 {
                   title: 'Timestamp:',
                   tooltip: '?',
@@ -107,7 +116,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                     />
                   ),
                 },
-                { title: 'Proposed On:', tooltip: '?', value: '' },
                 {
                   title: 'Transactions:',
                   tooltip: '?',
@@ -116,11 +124,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       {financialFormat(data.transactionCount)}
                     </Link>
                   ),
-                },
-                {
-                  title: 'Withdrawals:',
-                  tooltip: '?',
-                  value: '',
                 },
                 {
                   title: 'Fee Recipient:',
@@ -134,16 +137,6 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   ),
                 },
                 {
-                  title: 'Block Reward:',
-                  tooltip: '?',
-                  value: '',
-                },
-                {
-                  title: 'Total Difficulty:',
-                  tooltip: '?',
-                  value: '',
-                },
-                {
                   title: 'Size:',
                   tooltip: '?',
                   value: financialFormat(data.size),
@@ -151,7 +144,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 {
                   title: 'Gas Used:',
                   tooltip: data.gasUsed,
-                  value: financialFormat(data.size),
+                  value: financialFormat(data.gasUsed),
                 },
                 {
                   title: 'Gas Limit:',
@@ -161,12 +154,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 {
                   title: 'Base Fee Per Gas:',
                   tooltip: '?',
-                  value: financialFormat(data.baseFeePerGas || 0),
-                },
-                {
-                  title: 'Burnt Fees:',
-                  tooltip: '?',
-                  value: '',
+                  value: getNormalizedValue(data.baseFeePerGas || 0),
                 },
                 {
                   title: 'Extra Data:',
