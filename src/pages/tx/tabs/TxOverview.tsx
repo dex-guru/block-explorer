@@ -4,6 +4,7 @@ import styles from '../../Pages.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import {
   Address,
+  Copy,
   DateTime,
   Label,
   Properties,
