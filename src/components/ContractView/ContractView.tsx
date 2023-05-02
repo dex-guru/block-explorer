@@ -53,7 +53,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
     [getTransactions, address]
   )
 
-  const abi = match?.metadata.output.abi as Abi
+  const abi = (match?.metadata?.output?.abi as Abi) || undefined
   if (!abi) {
     return null
   }
