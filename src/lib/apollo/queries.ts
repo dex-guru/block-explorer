@@ -271,3 +271,17 @@ export const GET_CSR_STATS = gql`
     }
   }
 `
+
+export const GET_ADDRESS_INFO = gql`
+  query GetAddressInfo($address: String!) {
+    address(address: $address) {
+      address
+      addressType
+      assetsCount
+      assetsValueUSD
+      assetsValueUSD24hDelta
+      nativeBalance
+      nativeBalanceUSD
+    }
+  }
+`

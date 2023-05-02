@@ -221,3 +221,12 @@ export const financialFormatLowValueHighPrecision = (
 
   return financialFormat(data, newOptions)
 }
+
+export const isValidBlockNumber = (
+  block: string | string[] | undefined
+): boolean => {
+  if (!block) {
+    return false
+  }
+  return !isNaN(Number(block)) && Number(block) !== 0
+}
