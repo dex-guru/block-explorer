@@ -33,10 +33,7 @@ const sourcifyFetcher: Fetcher<
     const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
     if (res.ok) {
-      return {
-        type: MatchType.FULL_MATCH,
-        metadata: await res.json(),
-      }
+      return await res.json()
     }
   } catch (err) {
     console.info(

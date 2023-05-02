@@ -117,6 +117,7 @@ export const TRANSACTIONS_STATS = gql`
 export const BLOCKS_STATS = gql`
   query BlocksStats {
     blockStats {
+      blocksCount
       burntFees
       lastSafeBlock
       networkUtilization24H
@@ -145,6 +146,26 @@ export const GET_TRANSACTIONS = gql`
       value
       blockHash
     }
+    transactionStats(blockNumber: $blockNumber) {
+      transactionsCount
+      networkTransactionsFee24H
+      networkTransactionsFeeDelta24H
+      transactions24H
+      transactionsDelta24H
+    }
+    chainStats {
+      transactionsCount
+      transactionsPerSecond
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
   }
 `
 
@@ -170,6 +191,24 @@ export const GET_BLOCKS = gql`
       totalDifficulty
       transactionCount
       transactionsRoot
+    }
+    blockStats {
+      blocksCount
+      burntFees
+      lastSafeBlock
+      networkUtilization24H
+    }
+    chainStats {
+      lastBlockNumber
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `
@@ -238,6 +277,20 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       totalDifficulty
       transactionCount
       transactionsRoot
+    }
+  }
+`
+
+export const GET_ADDRESS_INFO = gql`
+  query GetAddressInfo($address: String!) {
+    address(address: $address) {
+      address
+      addressType
+      assetsCount
+      assetsValueUSD
+      assetsValueUSD24hDelta
+      nativeBalance
+      nativeBalanceUSD
     }
   }
 `
