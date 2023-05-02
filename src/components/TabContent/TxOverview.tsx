@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import styles from '../../Pages.module.scss'
+import styles from '../../pages/Pages.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import {
   Address,
