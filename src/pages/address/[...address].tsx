@@ -5,10 +5,10 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { canto } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
-import { TransactionModel } from '@/__generated__/resolvers-types'
+import { AddressModel, TransactionModel } from '@/__generated__/resolvers-types'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { GET_ADDRESS_INFO, GET_TRANSACTIONS } from '@/lib/apollo/queries'
 
 const { chains, provider } = configureChains([canto], [publicProvider()])
 
@@ -24,17 +24,17 @@ const wagmiClient = createClient({
 })
 
 interface AddressPageServerProps {
-  isContract: string
+  address: AddressModel
   transactions?: TransactionModel[]
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
-  isContract,
+  address: addressInfo,
   transactions,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
-
+  const isContract = addressInfo.addressType === 'smart_contract'
   if (!address) {
     return null
   }
@@ -68,17 +68,20 @@ export default AddressPage
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const address = ctx.resolvedUrl.split('?')[0].split('/').pop()
   const tab = ctx.resolvedUrl.split('?')[1]
-  // Fetch data from external API
-  const url = `https://sourcify.dev/server/check-all-by-addresses?addresses=${address}&chainIds=7700`
-  const res = await fetch(url)
-  const data = await res.json()
+  const apolloClient = initializeApollo({ ctx })
 
-  const isContract = data[0].status !== 'false'
-  let result = { props: { isContract } }
+  const { data: addressInfo } = await apolloClient.query({
+    query: GET_ADDRESS_INFO,
+    variables: { address },
+  })
+
+  const addressProps = addApolloState(apolloClient, {
+    props: { ...addressInfo },
+  })
+
+  let result = { props: { ...addressProps.props } }
   // transactions tab
   if (tab === undefined) {
-    const apolloClient = initializeApollo({ ctx })
-
     const { data: transactions } = await apolloClient.query({
       query: GET_TRANSACTIONS,
       variables: { first: 10, skip: 0, address },
