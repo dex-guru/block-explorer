@@ -64,3 +64,16 @@
 .valueBig {
   composes: big from '../components/Value/Value.module.scss';
 }
+
+.chart {
+  &Positive {
+    path {
+      stroke: var(--color-positive);
+    }
+  }
+  &Negative {
+    path {
+      stroke: var(--color-negative);
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import clsx from 'clsx'
-import { TupleType } from 'typescript'
 import {
   ChainConfigModel,
   CsrStatsModel,
@@ -11,7 +10,10 @@ import { Card, Grid, LineChart, Page, Value } from '@/components'
 import { LineChartSeries } from '@/components/LineChart'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+} from '@/lib/utils'
 import styles from './Pages.module.scss'
 
 interface CSRStatsProps {
@@ -33,12 +35,14 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
       color: 'red',
       data: getChartData(csrStats.burned),
       yAxis: 'left',
+      className: styles.chartNegative,
     },
     {
       id: 'netEmissions',
       color: 'green',
       data: getChartData(csrStats.netEmissions),
       yAxis: 'right',
+      className: styles.chartPositive,
     },
   ]
 
@@ -46,17 +50,10 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
 
   csrStatsSeries.forEach((dataset) => {
     dataset.data.forEach((el) => {
-      const date = new Date(el.timestamp * 1000)
-      const dateDisplay = date.toLocaleDateString('en-GB', {
-        timeZone: 'UTC',
-        month: 'short',
-        day: '2-digit',
-      })
-
       objData[el.timestamp] = {
         ...(objData[el.timestamp] || {
           timestamp: el.timestamp,
-          label: dateDisplay,
+          label: el.timestamp,
         }),
         [dataset.id]: el.value,
       }
@@ -107,7 +104,29 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
           </Card>
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
-          <LineChart data={chartData} series={csrStatsSeries} />
+          <LineChart
+            data={chartData}
+            series={csrStatsSeries}
+            options={{
+              axis: {
+                x: {
+                  tickFormatter: (value: number) => {
+                    const date = new Date(value * 1000)
+                    return date.toLocaleDateString('en-GB', {
+                      timeZone: 'UTC',
+                      month: 'short',
+                      year: '2-digit',
+                      day: '2-digit',
+                    })
+                  },
+                },
+                y: {
+                  tickFormatter: (value: number) =>
+                    financialFormat(value, { roundBigNumbersFrom: 'K' }),
+                },
+              },
+            }}
+          />
         </Card>
       </Page>
     </>
