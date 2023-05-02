@@ -28,6 +28,8 @@ interface IBlockProps {
 }
 
 const Block: NextPage<IBlockProps> = ({ data }) => {
+  const blockValues = AddressValues['block']
+
   return (
     <>
       <Head>
@@ -62,7 +64,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Previous Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number - 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number - 1}`)
+                            : ''
+                        }
                         className={clsx(styles.pageTo, {
                           [styles.disabled]: data.number < 2,
                         })}
@@ -72,7 +78,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Next Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number + 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number + 1}`)
+                            : ''
+                        }
                         className={styles.pageTo}
                       >
                         <ArrowRight className={styles.icon} />

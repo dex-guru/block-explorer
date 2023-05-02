@@ -9,9 +9,9 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTION_BY_HASH } from '@/lib/apollo/queries'
 
-const TxOverview = lazy(() => import('./tabs/TxOverview'))
-const TxLogs = lazy(() => import('./tabs/TxLogs'))
-const TxTrace = lazy(() => import('./tabs/TxTrace'))
+const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
+const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
+const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
 
 interface ITxProps {
   data: TransactionModel | null
