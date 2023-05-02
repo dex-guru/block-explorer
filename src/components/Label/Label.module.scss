@@ -61,11 +61,11 @@
 }
 
 .warn {
-  background: #c9b824;
+  background: var(--color-warn);
   color: var(--color-bg-2);
 }
 
 .info {
-  background: #233950;
-  color: #46a6ff;
+  background: var(--color-info);
+  color: var(--color-bg-2);
 }

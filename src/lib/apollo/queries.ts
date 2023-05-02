@@ -214,14 +214,21 @@ export const GET_TRANSACTION_BY_HASH = gql`
       value
     }
     logs(transactionHash: $hash) {
-      logIndex
       address
       blockHash
       blockNumber
       data
+      eventName
+      logIndex
       topics
       transactionHash
       transactionIndex
+      decodedInput {
+        isIndexed
+        name
+        type
+        value
+      }
     }
   }
 `
