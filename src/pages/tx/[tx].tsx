@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { isHexString } from '@ethersproject/bytes'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
 import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
@@ -84,22 +85,31 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
 export default Tx
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
+  const { tx } = ctx.query
 
-  const { slug } = ctx.query
-  const hash = (slug as string[])[0]
+  if (!isHexString(tx)) {
+    return { notFound: true }
+  }
+
+  const apolloClient = initializeApollo({ ctx })
 
   const { data } = await apolloClient.query<{
     transactions: TransactionModel[]
     logs: LogModel[]
   }>({
     query: GET_TRANSACTION_BY_HASH,
-    variables: { hash },
+    variables: { hash: tx },
   })
+
+  if (!data) {
+    return { notFound: true }
+  }
+
+  const transactions = data.transactions[0] || null
 
   return addApolloState(apolloClient, {
     props: {
-      data: data.transactions[0] || null,
+      data: transactions,
       logs: data.logs || null,
     },
   })
