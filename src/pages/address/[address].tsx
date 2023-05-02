@@ -67,12 +67,9 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { address: addresses, tab } = ctx.query as {
-    address: string[]
-    tab: string
-  }
-  const address = addresses[0]
-  if (!isAddress(address)) {
+  const { address, tab } = ctx.query as { address: string; tab: string }
+
+  if (address && !isAddress(address)) {
     return { notFound: true }
   }
 
