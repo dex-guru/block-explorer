@@ -5,48 +5,22 @@ import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
-const sourcifyIPNS =
-  'k51qzi5uqu5dll0ocge71eudqnrgnogmbr37gsgl12uubsinphjoknl6bbi41p'
-const defaultIpfsGatewayPrefix = `https://ipfs.io/ipns/${sourcifyIPNS}`
-const sourcifyHttpRepoPrefix = `https://repo.sourcify.dev`
+const ipfsGatewayPrefix = 'https://explorer-graph-stage.dexguru.biz/api'
 
-const resolveSourcifySource = (source: SourcifySource) => {
-  if (source === SourcifySource.IPFS_IPNS) {
-    return defaultIpfsGatewayPrefix
-  }
-  if (source === SourcifySource.CENTRAL_SERVER) {
-    return sourcifyHttpRepoPrefix
-  }
-
-  throw new Error(`Unknown Sourcify integration source code: ${source}`)
+export const sourcifyPath = (address: string, chainId: number) => {
+  return `${ipfsGatewayPrefix}/${chainId}/${address}`
 }
 
-/**
- * Builds a complete Sourcify metadata.json URL given the contract address
- * and chain.
- */
-export const sourcifyMetadata = (
-  address: string,
-  chainId: number,
-  source: SourcifySource,
-  type: MatchType
-) => {
-  const mathchType =
-    type === MatchType.FULL_MATCH ? 'full_match' : 'partial_match'
-  const sourcifySource = resolveSourcifySource(source)
-  return `${sourcifySource}/contracts/${mathchType}/${chainId}/${address}/metadata.json`
+export const sourcifyMetadata = (address: string, chainId: number) => {
+  return `${sourcifyPath(address, chainId)}/metadata.json`
 }
 
 export const sourcifySourceFile = (
   address: string,
   chainId: number,
-  filepath: string,
-  source: SourcifySource,
-  type: MatchType
+  filepath: string
 ) =>
-  `${resolveSourcifySource(source)}/contracts/${
-    type === MatchType.FULL_MATCH ? 'full_match' : 'partial_match'
-  }/${chainId}/${address}/sources/${filepath}`
+  `${sourcifyPath(address, chainId)}/${chainId}/${address}/sources/${filepath}`
 
 const sourcifyFetcher: Fetcher<
   Match | null | undefined,
@@ -56,12 +30,7 @@ const sourcifyFetcher: Fetcher<
 > = async ([_, address, chainId, sourcifySource]) => {
   // Try full match
   try {
-    const url = sourcifyMetadata(
-      address,
-      chainId,
-      sourcifySource,
-      MatchType.FULL_MATCH
-    )
+    const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
     if (res.ok) {
       return {
@@ -77,12 +46,7 @@ const sourcifyFetcher: Fetcher<
 
   // Fallback to try partial match
   try {
-    const url = sourcifyMetadata(
-      address,
-      chainId,
-      sourcifySource,
-      MatchType.PARTIAL_MATCH
-    )
+    const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
     if (res.ok) {
       return {
@@ -129,17 +93,13 @@ const contractFetcher: Fetcher<string | null, string> = async (url: string) => {
 export const useContract = (
   checksummedAddress: string,
   networkId: number,
-  filename: string,
-  sourcifySource: SourcifySource,
-  type: MatchType
+  filename: string
 ) => {
   const normalizedFilename = filename.replaceAll(/[@:]/g, '_')
   const url = sourcifySourceFile(
     checksummedAddress,
     networkId,
-    normalizedFilename,
-    sourcifySource,
-    type
+    normalizedFilename
   )
 
   const { data, error } = useSWRImmutable(url, contractFetcher)
