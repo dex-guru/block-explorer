@@ -7,12 +7,12 @@ import {
   BlockStatsModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { DetailsView, Page, Summary } from '@/components'
+import { DetailsView, Page, Summary, Value } from '@/components'
 import DataTable from '@/components/DataTable'
 import { blocksColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { BLOCKS_STATS, CHAIN_STATS, GET_BLOCKS } from '@/lib/apollo/queries'
+import { GET_BLOCKS } from '@/lib/apollo/queries'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
@@ -75,8 +75,13 @@ const Txs: NextPage<IBlocksProps> = (props) => {
               },
               {
                 title: 'Network Utilization',
-                value: financialFormatLowValueHighPrecision(
-                  props?.blockStats?.networkUtilization24H
+                value: (
+                  <Value
+                    value={financialFormatLowValueHighPrecision(
+                      props?.blockStats?.networkUtilization24H
+                    )}
+                    suffix="%"
+                  />
                 ),
               },
             ]}
@@ -101,20 +106,14 @@ export default Txs
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const { data: blocks } = await apolloClient.query({
+  const {
+    data: { blocks, blockStats, chainStats, chainConfig },
+  } = await apolloClient.query({
     query: GET_BLOCKS,
     variables: { first: 10, skip: 0 },
   })
 
-  const { data: chainStats } = await apolloClient.query({
-    query: CHAIN_STATS,
-  })
-
-  const { data: blockStats } = await apolloClient.query({
-    query: BLOCKS_STATS,
-  })
-
   return addApolloState(apolloClient, {
-    props: { ...blocks, ...chainStats, ...blockStats },
+    props: { blocks, blockStats, chainStats, chainConfig },
   })
 }
