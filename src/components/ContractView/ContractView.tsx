@@ -21,7 +21,6 @@ import {
   ConnectButton,
   DataTable,
   Card,
-  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
