@@ -213,7 +213,7 @@ export const GET_TRANSACTION_BY_HASH = gql`
       transactionType
       value
     }
-    logs(first: 1000000, transactionHash: $hash) {
+    logs(transactionHash: $hash) {
       logIndex
       address
       blockHash

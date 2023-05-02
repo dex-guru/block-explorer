@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Properties } from '@/components'
+import { Address, Properties, Table } from '@/components'
 
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   logs,
@@ -8,6 +8,11 @@ const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   return (
     <>
       {logs?.map((log) => {
+        const renderedDecoded = log.decodedInput ? (
+          <Table columns={[]} data={log.decodedInput} />
+        ) : (
+          '–'
+        )
         return (
           <Properties
             key={log.logIndex}
@@ -23,10 +28,7 @@ const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
                   />
                 ),
               },
-              {
-                title: 'Block Number',
-                value: <Address address={`${log.blockNumber}`} type="block" />,
-              },
+              { title: 'Decoded', value: renderedDecoded },
               {
                 title: 'Topics',
                 value: log.topics?.length ? (
