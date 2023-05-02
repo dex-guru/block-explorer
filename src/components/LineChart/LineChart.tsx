@@ -42,7 +42,7 @@ const LineChart: FC<LineChartProps> = ({
       height="100%"
       className={clsx(styles.container, className)}
     >
-      <Chart data={data} className={styles.chart}>
+      <Chart data={data} className={styles.chart} height={100} width={100}>
         {options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis dataKey="label" className={styles.axisX} {...options?.axis?.x} />

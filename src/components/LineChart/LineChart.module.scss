@@ -4,13 +4,9 @@
   --color-chart-fill: transparent;
   --color-chart-value: var(--color-muted);
 
-  min-height: 240px;
-  display: flex;
   aspect-ratio: 16/9;
   max-height: 75vh !important;
   user-select: none;
-  flex-flow: column;
-  gap: 16px;
 
   text {
     fill: var(--color-chart-tick);

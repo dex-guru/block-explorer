@@ -21,6 +21,7 @@ const Chart: FC<ChartProps> = ({ title, data, className }) => {
       )}
       <div className={styles.body}>
         <LineChart
+          className={styles.chart}
           data={generateLineChartData(data)}
           series={data}
           options={{
