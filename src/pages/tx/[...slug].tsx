@@ -35,7 +35,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
       <Page withSearch>
         <DetailsView title="Transaction Details">
           {!data?.hash && (
-            <Empty icon={<IconEmpty />} title="No TX  was found" />
+            <Empty icon={<IconEmpty />} title="No TX was found" />
           )}
 
           {!!data?.hash && (
