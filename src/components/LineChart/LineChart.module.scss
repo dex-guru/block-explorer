@@ -1,4 +1,9 @@
 .container {
+  --color-chart-tick: var(--color-muted);
+  --color-chart-stroke: var(--color-accent);
+  --color-chart-fill: transparent;
+  --color-chart-value: var(--color-muted);
+
   min-height: 240px;
   display: flex;
   aspect-ratio: 16/9;
@@ -6,11 +11,18 @@
   user-select: none;
   flex-flow: column;
   gap: 16px;
+
+  text {
+    fill: var(--color-chart-tick);
+  }
+
+  path {
+    stroke: var(--color-accent);
+  }
 }
 
-.chart {
-}
-
-.grid {
-  color: red;
+.line {
+  path {
+    stroke-width: 2;
+  }
 }

@@ -1,14 +1,15 @@
 /* eslint-disable */
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import {
   BlockModel,
+  ChainConfigModel,
   ChainStatsModel,
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
-import { ChartData } from '@/components/Chart'
 import Search from '@/components/Search'
 import { lastTxsColumns } from '@/components/Table/columns'
 import {
@@ -32,6 +33,7 @@ interface IndexProps {
   blocks: BlockModelWithTimeDiff[]
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
+  chainConfig: ChainConfigModel
 }
 
 const ITEMS_PER_PAGE = 10
@@ -39,21 +41,12 @@ const ITEMS_PER_PAGE = 10
 const Index: NextPage<IndexProps> = (props) => {
   const { blocks, chainStats: stats, transactions } = props
 
-  const chartData = stats.transactionsCountHistory.map(
-    ({ timestamp, value }) => {
-      const date = new Date(timestamp * 1000)
-      return {
-        value,
-        label: date.toLocaleDateString('en-GB', {
-          timeZone: 'UTC',
-          month: 'short',
-          day: '2-digit',
-        }),
-        tooltipLabel: date.toUTCString().replace(' 00:00:00', ''),
-        tooltipValue: `${financialFormatLowValueHighPrecision(value)} txs`,
-      }
-    }
-  )
+  const chartData = [
+    {
+      id: 'txHistory',
+      data: stats.transactionsCountHistory,
+    },
+  ]
 
   const statsDisplay = [
     {
@@ -87,13 +80,27 @@ const Index: NextPage<IndexProps> = (props) => {
     {
       title: 'Token Price',
       value: (
-        <>
+        <Value
+          value={financialFormat(stats.nativeTokenPriceUsd)}
+          prefix="$"
+          delta={stats.nativeTokenPriceUsd24hDelta * 100}
+        />
+      ),
+    },
+    {
+      title: 'Total Revenue',
+      value: (
+        <Link href="/csr">
           <Value
-            value={financialFormat(stats.nativeTokenPriceUsd)}
-            prefix="$"
-            delta={stats.nativeTokenPriceUsd24hDelta * 100}
+            value={financialFormatLowValueHighPrecision(
+              props.csrStats.sumRevenue,
+              {
+                decimals: 2,
+              }
+            )}
+            suffix={` ${props.chainConfig.nativeCurrency.symbol}`}
           />
-        </>
+        </Link>
       ),
     },
   ]
@@ -117,7 +124,7 @@ const Index: NextPage<IndexProps> = (props) => {
             charts={[
               {
                 title: 'Ethereum Transaction History in 14 days',
-                data: chartData as ChartData,
+                data: chartData,
               },
             ]}
           />
@@ -190,7 +197,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   blocksWithTimeDiff.splice(ITEMS_PER_PAGE, 1)
 
   const {
-    data: { chainStats, csrStats },
+    data: { chainStats, csrStats, chainConfig },
   } = await apolloClient.query({
     query: CHAIN_STATS,
   })
@@ -200,6 +207,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       transactions,
       chainStats,
       csrStats,
+      chainConfig,
       blocks: blocksWithTimeDiff,
     },
   })

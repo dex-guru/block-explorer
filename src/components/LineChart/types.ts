@@ -1,3 +1,8 @@
+import { Props as XAxisProps } from 'recharts/types/cartesian/XAxis'
+import { Props as YAxisProps } from 'recharts/types/cartesian/YAxis'
+
+export type ChartTuple = { timestamp: number; value: number }
+
 export type LineChartSeries = {
   id: string
   color?: string
@@ -6,15 +11,15 @@ export type LineChartSeries = {
 }
 
 export type LineChartOptions = {
-  grid?: {
-    horizontal?: boolean
-    vertical?: boolean
-  }
+  grid?: boolean
   axis?: {
-    y?: { tickFormatter?: (value: number) => string }
-    x?: { tickFormatter?: (value: number) => string }
+    y?: YAxisProps
+    x?: XAxisProps
   }
+  zoom?: boolean
 }
+
+export type LineChartDataset = LineChartSeries & { data: ChartTuple[] }
 
 export type LineChartProps = {
   data: unknown[]

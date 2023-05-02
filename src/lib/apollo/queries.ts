@@ -103,6 +103,13 @@ export const CHAIN_STATS = gql`
     csrStats {
       sumRevenue
     }
+    chainConfig {
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+    }
   }
 `
 

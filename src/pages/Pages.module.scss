@@ -68,12 +68,12 @@
 .chart {
   &Positive {
     path {
-      stroke: var(--color-positive);
+      stroke: var(--color-positive) !important;
     }
   }
   &Negative {
     path {
-      stroke: var(--color-negative);
+      stroke: var(--color-negative) !important;
     }
   }
 }

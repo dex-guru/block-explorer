@@ -1,13 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import clsx from 'clsx'
 import {
   ChainConfigModel,
   CsrStatsModel,
-  TimeSeriesChartModel,
 } from '@/__generated__/resolvers-types'
 import { Card, Grid, LineChart, Page, Value } from '@/components'
-import { LineChartSeries } from '@/components/LineChart'
+import { LineChartDataset } from '@/components/LineChart'
+import { generateLineChartData } from '@/components/LineChart/utils'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import {
@@ -21,49 +20,23 @@ interface CSRStatsProps {
   csrStats: CsrStatsModel
 }
 
-const getChartData = (data: TimeSeriesChartModel[]) => {
-  return data.map(({ timestamp, value }) => ({ timestamp, value }))
-}
-
-type ChartTuple = { timestamp: number; value: number }
-type TimestampObject = { timestamp: number }
-
 const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
-  const csrStatsSeries: (LineChartSeries & { data: ChartTuple[] })[] = [
+  const csrStatsSeries: LineChartDataset[] = [
     {
       id: 'burned',
       color: 'red',
-      data: getChartData(csrStats.burned),
+      data: csrStats.burned,
       yAxis: 'left',
       className: styles.chartNegative,
     },
     {
       id: 'netEmissions',
       color: 'green',
-      data: getChartData(csrStats.netEmissions),
+      data: csrStats.netEmissions,
       yAxis: 'right',
       className: styles.chartPositive,
     },
   ]
-
-  const objData: Record<number, unknown> = {}
-
-  csrStatsSeries.forEach((dataset) => {
-    dataset.data.forEach((el) => {
-      objData[el.timestamp] = {
-        ...(objData[el.timestamp] || {
-          timestamp: el.timestamp,
-          label: el.timestamp,
-        }),
-        [dataset.id]: el.value,
-      }
-    })
-  })
-
-  const chartData = Object.values(objData).sort(
-    (a, b) =>
-      (a as TimestampObject).timestamp - (b as TimestampObject).timestamp
-  )
 
   return (
     <>
@@ -75,7 +48,6 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
       </Head>
       <Page withSearch>
         <Grid className={styles.grid4}>
-          <Card className={clsx(styles.span2rows, styles.span2cols)} />
           <Card title="Total Revenue">
             <Value
               value={financialFormatLowValueHighPrecision(csrStats.sumRevenue, {
@@ -105,7 +77,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
           <LineChart
-            data={chartData}
+            data={generateLineChartData(csrStatsSeries)}
             series={csrStatsSeries}
             options={{
               axis: {
@@ -119,12 +91,17 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
                       day: '2-digit',
                     })
                   },
+                  axisLine: false,
+                  tickLine: false,
                 },
                 y: {
                   tickFormatter: (value: number) =>
                     financialFormat(value, { roundBigNumbersFrom: 'K' }),
+                  axisLine: false,
+                  tickLine: false,
                 },
               },
+              zoom: true,
             }}
           />
         </Card>

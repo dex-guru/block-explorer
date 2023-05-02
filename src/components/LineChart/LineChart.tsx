@@ -33,6 +33,9 @@ const LineChart: FC<LineChartProps> = ({
     )
   })
 
+  const hasLeftAxis = series.filter((el) => el.yAxis !== 'right')
+  const hasRightAxis = series.filter((el) => el.yAxis === 'right')
+
   return (
     <ResponsiveContainer
       width="100%"
@@ -40,28 +43,34 @@ const LineChart: FC<LineChartProps> = ({
       className={clsx(styles.container, className)}
     >
       <Chart data={data} className={styles.chart}>
-        <CartesianGrid
-          className={styles.grid}
-          horizontal={options?.grid?.horizontal}
-          vertical={options?.grid?.vertical}
-        />
-        <XAxis
-          dataKey="label"
-          className={styles.axisX}
-          tickFormatter={options?.axis?.x?.tickFormatter}
-        />
-        <YAxis
-          className={clsx(styles.axisY, styles.axisYLeft)}
-          yAxisId="left"
-          orientation="left"
-          tickFormatter={options?.axis?.y?.tickFormatter}
-        />
-        <YAxis
-          className={clsx(styles.axisY, styles.axisYRight)}
-          yAxisId="right"
-          orientation="right"
-          tickFormatter={options?.axis?.y?.tickFormatter}
-        />
+        {options?.grid && <CartesianGrid className={styles.grid} />}
+
+        <XAxis dataKey="label" className={styles.axisX} {...options?.axis?.x} />
+
+        {hasLeftAxis && (
+          <YAxis
+            {...options?.axis?.y}
+            className={clsx(
+              styles.axisY,
+              styles.axisYLeft,
+              options?.axis?.y?.className
+            )}
+            yAxisId="left"
+            orientation="left"
+          />
+        )}
+        {hasRightAxis && (
+          <YAxis
+            {...options?.axis?.y}
+            className={clsx(
+              styles.axisY,
+              styles.axisYRight,
+              options?.axis?.y?.className
+            )}
+            yAxisId="right"
+            orientation="right"
+          />
+        )}
         <Tooltip
           labelClassName={styles.tooltipLabel}
           wrapperClassName={styles.tooltip}
@@ -69,13 +78,15 @@ const LineChart: FC<LineChartProps> = ({
 
         {renderedSeries}
 
-        <Brush
-          dataKey="label"
-          className={styles.zoom}
-          tickFormatter={options?.axis?.x?.tickFormatter}
-        >
-          <Chart data={data}>{renderedSeries}</Chart>
-        </Brush>
+        {options?.zoom && (
+          <Brush
+            dataKey="label"
+            className={styles.zoom}
+            tickFormatter={options?.axis?.x?.tickFormatter}
+          >
+            <Chart data={data}>{renderedSeries}</Chart>
+          </Brush>
+        )}
       </Chart>
     </ResponsiveContainer>
   )
