@@ -17,39 +17,29 @@ interface CSRStatsProps {
   csrStats: CsrStatsModel
 }
 
-type TimestampObject = {
-  timestamp: number
+const getChartData = (data: TimeSeriesChartModel[]) => {
+  return data.map(({ timestamp, value }) => ({ timestamp, value }))
 }
 
-const getChartData = (data: TimeSeriesChartModel[]) => {
-  return data.map(({ timestamp, value }) => {
-    const date = new Date(timestamp * 1000)
-    return {
-      timestamp,
-      value,
-      x: date.toLocaleDateString('en-GB', {
-        timeZone: 'UTC',
-        month: 'short',
-        day: '2-digit',
-      }),
-      y: value,
-    }
-  })
-}
+type TimestampObject = { timestamp: number }
 
 const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
-  const csrStatsData = [
+  const csrStatsSeries = [
     {
-      id: 'netEmission',
+      id: 'burned',
+      color: 'red',
+      data: getChartData(csrStats.burned),
+    },
+    {
+      id: 'netEmissions',
       color: 'green',
       data: getChartData(csrStats.netEmissions),
     },
-    { id: 'burned', color: 'red', data: getChartData(csrStats.burned) },
   ]
 
   const objData: Record<number, unknown> = {}
 
-  csrStatsData.forEach((dataset) => {
+  csrStatsSeries.forEach((dataset) => {
     dataset.data.forEach((el) => {
       const date = new Date(el.timestamp * 1000)
       const dateDisplay = date.toLocaleDateString('en-GB', {
@@ -59,10 +49,11 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
       })
 
       objData[el.timestamp] = {
-        ...(objData[el.timestamp] || {}),
+        ...(objData[el.timestamp] || {
+          timestamp: el.timestamp,
+          label: dateDisplay,
+        }),
         [dataset.id]: el.value,
-        timestamp: el.timestamp,
-        label: dateDisplay,
       }
     })
   })
@@ -111,7 +102,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
           </Card>
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
-          <LineChart data={chartData} />
+          <LineChart data={chartData} series={csrStatsSeries} />
         </Card>
       </Page>
     </>

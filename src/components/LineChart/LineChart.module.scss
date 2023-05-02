@@ -1,12 +1,9 @@
 .container {
-  min-height: 160px;
+  min-height: 240px;
   display: flex;
-  height: 75vh !important;
+  aspect-ratio: 16/9;
+  max-height: 75vh !important;
   user-select: none;
-}
-
-.line {
-  path {
-    stroke-width: 2;
-  }
+  flex-flow: column;
+  gap: 16px;
 }

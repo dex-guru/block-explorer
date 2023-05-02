@@ -1,60 +1,45 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import clsx from 'clsx'
 import {
-  VictoryChart,
-  VictoryZoomContainer,
-  VictoryLine,
-  DomainTuple,
-} from 'victory'
+  Brush,
+  LineChart as Chart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
 import { LineChartProps } from './types'
 import styles from './LineChart.module.scss'
 
-type ZoomDomain = { x: DomainTuple; y: DomainTuple }
-
-const LineChart: FC<LineChartProps> = ({ data, className }) => {
-  const [zoom, setZoom] = useState<ZoomDomain>()
-
-  const handleZoom = (domain: ZoomDomain) => {
-    setZoom(domain)
-  }
-
+const LineChart: FC<LineChartProps> = ({ data, series, className }) => {
   return (
-    <VictoryChart
-      width={550}
-      height={300}
-      scale={{ x: 'time' }}
-      containerComponent={
-        <VictoryZoomContainer
-          responsive={true}
-          zoomDimension="x"
-          zoomDomain={zoom}
-          onZoomDomainChange={handleZoom}
-          className={clsx(styles.cotainer, className)}
-        />
-      }
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      className={clsx(styles.container, className)}
     >
-      {data.map((dataset) => {
-        return (
-          <VictoryLine
-            key={dataset.id}
-            interpolation="monotoneX"
-            style={{
-              data: { stroke: dataset.color },
-            }}
-            data={[
-              { x: new Date(1982, 1, 1), y: 125 },
-              { x: new Date(1987, 1, 1), y: 257 },
-              { x: new Date(1993, 1, 1), y: 345 },
-              { x: new Date(1997, 1, 1), y: 515 },
-              { x: new Date(2001, 1, 1), y: 132 },
-              { x: new Date(2005, 1, 1), y: 305 },
-              { x: new Date(2011, 1, 1), y: 270 },
-              { x: new Date(2015, 1, 1), y: 470 },
-            ]}
-          />
-        )
-      })}
-    </VictoryChart>
+      <Chart data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="label" />
+        <YAxis />
+        <Tooltip />
+        {series.map((el) => {
+          return (
+            <Line
+              key={el.id}
+              type="monotone"
+              dataKey={el.id}
+              stroke={el.color}
+              dot={false}
+            />
+          )
+        })}
+
+        <Brush dataKey="label" height={30} />
+      </Chart>
+    </ResponsiveContainer>
   )
 }
 

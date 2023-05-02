@@ -29,14 +29,15 @@
     "lodash": "4.17.21",
     "next": "13.3.1",
     "react": "18.2.0",
+    "react-charts": "^3.0.0-beta.54",
     "react-dom": "18.2.0",
     "react-hook-form": "7.43.9",
     "react-syntax-highlighter": "15.5.0",
     "react-tooltip": "5.11.1",
+    "recharts": "^2.5.0",
     "swr": "2.1.5",
     "typescript": "5.0.4",
     "uuid": "9.0.0",
-    "victory": "^36.6.10",
     "wagmi": "0.12.12"
   },
   "devDependencies": {

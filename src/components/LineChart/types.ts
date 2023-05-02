@@ -1,10 +1,10 @@
-export type LineChartDataSeries = {
+export type LineChartSeries = {
   id: string
   color: string
-  data: { x: string; y: number }[]
 }
 
 export type LineChartProps = {
-  data: LineChartDataSeries[]
+  data: unknown[]
+  series: LineChartSeries[]
   className?: string
 }
