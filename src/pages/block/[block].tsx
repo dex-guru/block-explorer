@@ -21,7 +21,7 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
+import { financialFormat, isValidBlockNumber } from '@/lib/utils'
 
 interface IBlockProps {
   data: BlockModel | null
@@ -185,10 +185,9 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
 export default Block
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const slug = ctx.query.slug as string[]
-  const number = slug[0]
+  const { block } = ctx.query
 
-  if (isNaN(Number(number)) && Number(number) !== 0) {
+  if (!isValidBlockNumber(block)) {
     return { notFound: true }
   }
 
@@ -198,10 +197,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     blocks: BlockModel[]
   }>({
     query: GET_BLOCKS_BY_NUMBER,
-    variables: { number: Number(number) },
+    variables: { block: Number(block) },
   })
 
   let blocks: BlockModel | null = null
+
+  if (!blocks) {
+    return { notFound: true }
+  }
 
   if (data.blocks.length) {
     blocks = data.blocks[0]

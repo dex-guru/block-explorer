@@ -154,10 +154,9 @@ const Tx: NextPage<ITxProps> = ({ data }) => {
 export default Tx
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const slug = ctx.query.slug as string[]
-  const hash = slug[0]
+  const { tx } = ctx.query
 
-  if (!isHexString(hash)) {
+  if (!isHexString(tx)) {
     return { notFound: true }
   }
 
@@ -167,15 +166,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     transactions: TransactionModel[]
   }>({
     query: GET_TRANSACTIONS_BY_HASH,
-    variables: { hash },
+    variables: { hash: tx },
   })
+
+  if (!data) {
+    return { notFound: true }
+  }
 
   let transactions: TransactionModel | null = null
 
   if (data.transactions.length) {
     transactions = data.transactions[0]
-  } else {
-    return { notFound: true }
   }
 
   return addApolloState(apolloClient, {
