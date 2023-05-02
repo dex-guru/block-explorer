@@ -14,7 +14,6 @@ import {
   TabPanel,
   DataTable,
   Card,
-  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'

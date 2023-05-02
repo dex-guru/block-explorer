@@ -21,13 +21,15 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
+import { financialFormat, isValidBlockNumber } from '@/lib/utils'
 
 interface IBlockProps {
   data: BlockModel | null
 }
 
 const Block: NextPage<IBlockProps> = ({ data }) => {
+  const blockValues = AddressValues['block']
+
   return (
     <>
       <Head>
@@ -62,7 +64,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Previous Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number - 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number - 1}`)
+                            : ''
+                        }
                         className={clsx(styles.pageTo, {
                           [styles.disabled]: data.number < 2,
                         })}
@@ -72,7 +78,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       <Link
                         data-tooltip-content="Next Block"
                         data-tooltip-id="app-tooltip"
-                        href={AddressValues['block'].url(`${data.number + 1}`)}
+                        href={
+                          blockValues?.url
+                            ? blockValues?.url(`${data.number + 1}`)
+                            : ''
+                        }
                         className={styles.pageTo}
                       >
                         <ArrowRight className={styles.icon} />
@@ -185,19 +195,26 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
 export default Block
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
+  const { block } = ctx.query
 
-  const { slug } = ctx.query
-  const number = (slug as string[])[0]
+  if (!isValidBlockNumber(block)) {
+    return { notFound: true }
+  }
+
+  const apolloClient = initializeApollo({ ctx })
 
   const { data } = await apolloClient.query<{
     blocks: BlockModel[]
   }>({
     query: GET_BLOCKS_BY_NUMBER,
-    variables: { number: Number(number) },
+    variables: { block: Number(block) },
   })
 
   let blocks: BlockModel | null = null
+
+  if (!blocks) {
+    return { notFound: true }
+  }
 
   if (data.blocks.length) {
     blocks = data.blocks[0]
