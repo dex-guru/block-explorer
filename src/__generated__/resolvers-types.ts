@@ -202,7 +202,7 @@ export type QueryBlockStatsArgs = {
 export type QueryBlocksArgs = {
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  first: Scalars['Int'];
+  first?: Scalars['Int'];
   number?: InputMaybe<Scalars['Int']>;
   skip?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
@@ -257,7 +257,7 @@ export type QueryTransactionsArgs = {
   blockNumber?: InputMaybe<Scalars['Int']>;
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  first: Scalars['Int'];
+  first?: Scalars['Int'];
   hash?: InputMaybe<Scalars['String']>;
   skip?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
