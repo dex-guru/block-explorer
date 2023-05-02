@@ -21,6 +21,7 @@ import {
   ConnectButton,
   DataTable,
   Card,
+  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
@@ -306,7 +307,14 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
 
             {tab === 'analytics' && <Card>Some analytics here soon</Card>}
             {tab === 'events' && <Card>Some events here soon</Card>}
-            {tab === 'comments' && <Card>Some comments here soon</Card>}
+            {tab === 'comments' && (
+              <Card>
+                <Comments
+                  title={`Address ${address}`}
+                  id={`address/${address}`}
+                />
+              </Card>
+            )}
           </TabPanel>
         </DetailsView>
       </Page>

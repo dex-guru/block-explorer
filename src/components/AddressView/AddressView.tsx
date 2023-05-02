@@ -14,6 +14,7 @@ import {
   TabPanel,
   DataTable,
   Card,
+  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
@@ -169,7 +170,14 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
             )}
 
             {tab === 'analytics' && <Card>Some analytics here soon</Card>}
-            {tab === 'comments' && <Card>Some comments here soon</Card>}
+            {tab === 'comments' && (
+              <Card>
+                <Comments
+                  title={`Address ${address}`}
+                  id={`address/${address}`}
+                />
+              </Card>
+            )}
           </TabPanel>
         </DetailsView>
       </Page>

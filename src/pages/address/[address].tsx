@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { isAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
@@ -66,8 +67,11 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const address = ctx.resolvedUrl.split('?')[0].split('/').pop()
-  const tab = ctx.resolvedUrl.split('?')[1]
+    const { address, tab } = ctx.query as { address: string; tab: string }
+
+  if (address && !isAddress(address)) {
+    return { notFound: true }
+  }
   const apolloClient = initializeApollo({ ctx })
 
   const { data: addressInfo } = await apolloClient.query({
