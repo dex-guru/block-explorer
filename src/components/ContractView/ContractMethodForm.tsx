@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount, useChainId } from 'wagmi'
 import { Details, Heading, Button } from '@/components'
 import styles from './ContractView.module.scss'
 
@@ -25,7 +25,7 @@ const ContractMethodForm: FC<IFormProps> = ({
     formState: { errors },
   } = useForm()
   const { address: account } = useAccount()
-  const { chain } = useNetwork()
+  const chain = useChainId()
 
   const [callResult, setCallResult] = useState<unknown>(undefined)
 
@@ -41,13 +41,13 @@ const ContractMethodForm: FC<IFormProps> = ({
         abi,
         functionName: method.name,
         args: methodArgs,
-        chainId: chain?.id || 7700,
+        chainId: chain,
       })
       const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
 
       setCallResult(result)
     },
-    [abi, address, method.name, chain?.id]
+    [abi, address, method.name, chain]
   )
 
   const onWrite = useCallback(
@@ -66,7 +66,7 @@ const ContractMethodForm: FC<IFormProps> = ({
         abi,
         functionName: method.name,
         args: methodArgs,
-        chainId: chain?.id || 7700,
+        chainId: chain,
         overrides: {
           from: account,
           value: ethers.BigNumber.from(value),
@@ -78,7 +78,7 @@ const ContractMethodForm: FC<IFormProps> = ({
 
       setCallResult(result)
     },
-    [abi, account, address, method.name, method.stateMutability, chain?.id]
+    [abi, account, address, method.name, method.stateMutability, chain]
   )
 
   return (
