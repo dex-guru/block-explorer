@@ -58,6 +58,8 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
     return null
   }
 
+  const hasSources = match?.metadata?.sources?.length > 0 || undefined
+
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
@@ -148,7 +150,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
 
               {
                 title: 'Contract',
-                indicator: <IconVerify />,
+                indicator: hasSources && <IconVerify />,
                 value: ['code', 'readContract', 'writeContract'],
                 to: `${pathname}?tab=code`,
               },
@@ -200,7 +202,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                   {['readContract', 'writeContract'].includes(
                     tab as string
                   ) && <ConnectButton />}
-                  {tab === 'code' && <Files match={match} />}
+                  {tab === 'code' && <Files match={match} address={address} />}
                   {tab === 'readContract' && (
                     <>
                       {(abi as Abi)
