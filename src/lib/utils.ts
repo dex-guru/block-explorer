@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
 
-export const getNormalizedValue = (value: number): string => {
+export const getNormalizedValue = (value: number, decimals = 18): string => {
   const result = new BigNumber(value)
 
-  return financialFormatLowValueHighPrecision(result.shiftedBy(-18))
+  return financialFormatLowValueHighPrecision(result.shiftedBy(-decimals))
 }
 
 export const getShortAddress = (address: string): string => {

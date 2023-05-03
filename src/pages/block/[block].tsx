@@ -8,6 +8,7 @@ import {
   Address,
   DateTime,
   Empty,
+  Label,
   Page,
   Properties,
   TimeAgo,
@@ -15,6 +16,7 @@ import {
 } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import Separated from '@/components/Separated/Separated'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
@@ -96,6 +98,15 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   tooltip: '?',
                 },
                 {
+                  title: 'Status:',
+                  tooltip: '',
+                  value: (
+                    <Label type="tag" className={styles.success}>
+                      Finalized
+                    </Label>
+                  ),
+                },
+                {
                   title: 'Timestamp:',
                   tooltip: '?',
                   value: (
@@ -125,7 +136,8 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   tooltip: '?',
                   value: data.transactionCount ? (
                     <Link href={`/txs?block=${data.number}?`}>
-                      {financialFormat(data.transactionCount)}
+                      {financialFormat(data.transactionCount)} transactions in
+                      this block
                     </Link>
                   ) : null,
                 },
@@ -141,6 +153,18 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   ),
                 },
                 {
+                  title: 'Block Reward:',
+                  tooltip: '?',
+                  value: (
+                    <Value
+                      value={getNormalizedValue(
+                        data.gasUsed * data.baseFeePerGas
+                      )}
+                      suffix=" CANTO" // TODO: nativeTOken name
+                    />
+                  ),
+                },
+                {
                   title: 'Size:',
                   tooltip: '?',
                   value: financialFormat(data.size),
@@ -148,7 +172,15 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 {
                   title: 'Gas Used:',
                   tooltip: data.gasUsed,
-                  value: financialFormat(data.gasUsed),
+                  value: (
+                    <>
+                      {financialFormat(data.gasUsed)} |{' '}
+                      <Value
+                        value={(data.gasUsed * 100) / data.gasLimit}
+                        suffix="%"
+                      />
+                    </>
+                  ),
                 },
                 {
                   title: 'Gas Limit:',
@@ -164,6 +196,31 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                   title: 'Extra Data:',
                   tooltip: '?',
                   value: data.extraData,
+                },
+              ]}
+            />
+
+            <Properties
+              data={[
+                {
+                  title: 'Hash: ',
+                  tooltip: '?',
+                  value: data.hash,
+                },
+                {
+                  title: 'Parent Hash: ',
+                  tooltip: '?',
+                  value: data.parentHash,
+                },
+                {
+                  title: 'StateRoot: ',
+                  tooltip: '?',
+                  value: data.stateRoot,
+                },
+                {
+                  title: 'Nonce: ',
+                  tooltip: '?',
+                  value: data.nonce,
                 },
               ]}
             />
@@ -191,8 +248,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     blocks: BlockModel[]
   }>({
     query: GET_BLOCKS_BY_NUMBER,
-    variables: { block: Number(block) },
+    variables: { number: Number(block) },
   })
+
+  console.log(block, blocks)
 
   if (!blocks?.length) {
     return { notFound: true }
