@@ -2,12 +2,13 @@ import { AddressType } from './types'
 import { getShortAddress } from '@/lib/utils'
 
 type AddressValueProps = {
-  format: (address: string) => string
-  url: (address: string) => string
+  format?: (address: string) => string
+  url?: (address: string) => string
   canBeShort?: boolean
 }
 
-export const AddressValues: Record<AddressType, AddressValueProps> = {
+export const AddressValues: Record<AddressType, AddressValueProps | null> = {
+  common: null,
   account: {
     format: (address: string) => {
       return getShortAddress(address)

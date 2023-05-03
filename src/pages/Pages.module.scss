@@ -37,6 +37,22 @@
   composes: negative from '../styles/_common.scss';
 }
 
+.success {
+  composes: success from '../components/Label/Label.module.scss';
+}
+
+.danger {
+  composes: danger from '../components/Label/Label.module.scss';
+}
+
+.warn {
+  composes: warn from '../components/Label/Label.module.scss';
+}
+
+.info {
+  composes: info from '../components/Label/Label.module.scss';
+}
+
 .cardChild {
   margin: 0 -16px;
 

@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { isAddress } from '@ethersproject/address'
+import { getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
@@ -45,22 +46,26 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   }
 
   // if it is a contract - fetch metadata and files from sourcify
-  const normalizedAddress = Array.isArray(address) ? address[0] : address
+  const checksumAddress = Array.isArray(address)
+    ? getAddress(address[0].toLowerCase())
+    : getAddress(address.toLowerCase())
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         {isContract ? (
           <ContractView
-            address={normalizedAddress}
+            address={checksumAddress}
             tab={tab}
             transactions={transactions}
+            addressInfo={addressInfo}
           />
         ) : (
           <AddressView
-            address={normalizedAddress}
+            address={checksumAddress}
             tab={tab}
             transactions={transactions}
+            addressInfo={addressInfo}
           />
         )}
       </RainbowKitProvider>
