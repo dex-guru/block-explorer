@@ -1,9 +1,9 @@
-import { Erc20EventsModel } from '@/__generated__/resolvers-types'
+import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
-export const erc20Columns: IColumn<Erc20EventsModel>[] = [
+export const erc20Columns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'hash',
     title: 'Txn Hash',
