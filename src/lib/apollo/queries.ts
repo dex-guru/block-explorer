@@ -294,3 +294,20 @@ export const GET_ADDRESS_INFO = gql`
     }
   }
 `
+export const GET_ERC721_BY_ADDRESS = gql`
+  query Erc721Events($first: Int, $address: String, $hash: String, $skip: Int) {
+    erc721Events(first: $first, address: $address, hash: $hash, skip: $skip) {
+      data {
+        blockTimestamp
+        fromAddress
+        hash
+        operatorAddress
+        toAddress
+        tokenAddress
+        tokenId
+        value
+      }
+      total
+    }
+  }
+`
