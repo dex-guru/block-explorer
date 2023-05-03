@@ -94,7 +94,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
   })
 
   const isShowResults =
-    !!results?.addresses?.length && !!results?.blocks?.length
+    !!results?.addresses?.length || !!results?.blocks?.length
 
   return (
     <div
