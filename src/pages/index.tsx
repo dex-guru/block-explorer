@@ -187,8 +187,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   })
 
   const blocksWithTimeDiff = blocks.blocks.map((block, index, array) => {
-    if (index !== ITEMS_PER_PAGE) {
-      const timeDiff = block.timestamp - array[10].timestamp
+    if (index < ITEMS_PER_PAGE) {
+      const timeDiff = block.timestamp - array[index + 1].timestamp
       return { ...block, timeDiff }
     }
     return block
