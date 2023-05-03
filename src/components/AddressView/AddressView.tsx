@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, Suspense, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -14,7 +14,6 @@ import {
   TabPanel,
   DataTable,
   Card,
-  Comments,
 } from '@/components'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
@@ -99,86 +98,89 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
                 title: 'Transactions',
                 value: '',
                 to: pathname,
+                content: (
+                  <Suspense>
+                    <DataTable
+                      isLoading={loading}
+                      columns={txsColumns}
+                      data={transactions || []}
+                      total={
+                        transactions &&
+                        transactions[0] &&
+                        transactions[0].blockNumber
+                      }
+                      perPage={perPage[1]}
+                      onPageChange={onPaginationChange}
+                      empty={{
+                        title: 'No transactions for this address',
+                      }}
+                    />
+                  </Suspense>
+                ),
               },
               {
                 title: 'Internal TXns',
                 value: 'internaltx',
                 to: `${pathname}?tab=internaltx`,
+                content: (
+                  <Suspense>
+                    <DataTable
+                      isLoading={loading}
+                      columns={txsColumns}
+                      data={[]}
+                      total={0}
+                      perPage={perPage[1]}
+                      onPageChange={onPaginationChange}
+                      empty={{
+                        title: 'No internal transactions for this address',
+                      }}
+                    />
+                  </Suspense>
+                ),
               },
               {
                 title: 'Erc20 Token TXns',
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
+                content: (
+                  <Suspense>
+                    <DataTable
+                      isLoading={loading}
+                      columns={txsColumns}
+                      data={[]}
+                      total={0}
+                      perPage={perPage[1]}
+                      onPageChange={onPaginationChange}
+                      empty={{
+                        title: 'No token transactions for this address',
+                      }}
+                    />
+                  </Suspense>
+                ),
               },
               {
                 title: 'Analytics',
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
+                content: (
+                  <Suspense>
+                    <Card>Some analytics here soon</Card>
+                  </Suspense>
+                ),
               },
               {
                 title: 'Comments',
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
+                content: (
+                  <Suspense>
+                    <Card>Some comments here soon</Card>
+                  </Suspense>
+                ),
               },
             ]}
-            value={tab}
-          >
-            {/* Content here should depend on Tab's query param value */}
-            {/* Transactions tab */}
-            {tab === undefined && (
-              <DataTable
-                isLoading={loading}
-                columns={txsColumns}
-                data={transactions || []}
-                total={
-                  transactions && transactions[0] && transactions[0].blockNumber
-                }
-                perPage={perPage[1]}
-                onPageChange={onPaginationChange}
-                empty={{
-                  title: 'No transactions for this address',
-                }}
-              />
-            )}
-
-            {tab === 'internaltx' && (
-              <DataTable
-                isLoading={loading}
-                columns={txsColumns}
-                data={[]}
-                total={0}
-                perPage={perPage[1]}
-                onPageChange={onPaginationChange}
-                empty={{
-                  title: 'No internal transactions for this address',
-                }}
-              />
-            )}
-
-            {tab === 'tokentxns' && (
-              <DataTable
-                isLoading={loading}
-                columns={txsColumns}
-                data={[]}
-                total={0}
-                perPage={perPage[1]}
-                onPageChange={onPaginationChange}
-                empty={{
-                  title: 'No token transactions for this address',
-                }}
-              />
-            )}
-
-            {tab === 'analytics' && <Card>Some analytics here soon</Card>}
-            {tab === 'comments' && (
-              <Card>
-                <Comments
-                  title={`Address ${address}`}
-                  id={`address/${address}`}
-                />
-              </Card>
-            )}
-          </TabPanel>
+            value={tab || ''}
+          />
         </DetailsView>
       </Page>
     </>

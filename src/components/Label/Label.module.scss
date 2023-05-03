@@ -52,20 +52,20 @@
 
 .success {
   background: var(--color-positive);
-  color: var(--color-muted);
+  color: var(--color-bg-2);
 }
 
 .danger {
   background: var(--color-negative);
-  color: var(--color-muted);
+  color: var(--color-bg-2);
 }
 
 .warn {
-  background: #c9b824;
-  color: var(--color-muted);
+  background: var(--color-warn);
+  color: var(--color-bg-2);
 }
 
 .info {
-  background: #233950;
-  color: #46a6ff;
+  background: var(--color-info);
+  color: var(--color-bg-2);
 }

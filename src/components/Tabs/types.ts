@@ -11,6 +11,7 @@ export interface Tab<T> {
   onClick?: () => void
   tooltip?: string
   to?: string
+  content?: ReactNode
 }
 
 export interface TabsProps<T> {
