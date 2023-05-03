@@ -45,7 +45,15 @@ const LineChart: FC<LineChartProps> = ({
       <Chart data={data} className={styles.chart} height={100} width={100}>
         {options?.grid && <CartesianGrid className={styles.grid} />}
 
-        <XAxis dataKey="label" className={styles.axisX} {...options?.axis?.x} />
+        <XAxis
+          dataKey="label"
+          {...options?.axis?.x}
+          className={clsx(
+            styles.axisX,
+            styles.axisYLeft,
+            options?.axis?.x?.className
+          )}
+        />
 
         {hasLeftAxis && (
           <YAxis
