@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
