@@ -97,6 +97,14 @@ export type ChainStatsModel = {
   volume24hUsd: Scalars['Decimal'];
 };
 
+export type DecodedInputModel = {
+  __typename?: 'DecodedInputModel';
+  isIndexed: Scalars['Boolean'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['String'];
+};
+
 export type Erc20EventsModel = {
   __typename?: 'ERC20EventsModel';
   amounts: Array<Scalars['Decimal']>;
@@ -134,6 +142,8 @@ export type LogModel = {
   blockHash: Scalars['String'];
   blockNumber: Scalars['Int'];
   data: Scalars['String'];
+  decodedInput?: Maybe<Array<DecodedInputModel>>;
+  eventName?: Maybe<Scalars['String']>;
   logIndex: Scalars['Int'];
   topics: Array<Scalars['String']>;
   transactionHash: Scalars['String'];
@@ -192,7 +202,7 @@ export type QueryBlockStatsArgs = {
 export type QueryBlocksArgs = {
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  first: Scalars['Int'];
+  first?: Scalars['Int'];
   number?: InputMaybe<Scalars['Int']>;
   skip?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
@@ -218,9 +228,10 @@ export type QueryErc721EventsArgs = {
 
 
 export type QueryLogsArgs = {
-  first: Scalars['Int'];
-  skip?: Scalars['Int'];
-  transactionHash: Scalars['String'];
+  address?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  transactionHash?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -246,7 +257,7 @@ export type QueryTransactionsArgs = {
   blockNumber?: InputMaybe<Scalars['Int']>;
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  first: Scalars['Int'];
+  first?: Scalars['Int'];
   hash?: InputMaybe<Scalars['String']>;
   skip?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
@@ -387,6 +398,7 @@ export type ResolversTypes = ResolversObject<{
   ChainConfigModel: ResolverTypeWrapper<ChainConfigModel>;
   ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>;
   Decimal: ResolverTypeWrapper<Scalars['Decimal']>;
+  DecodedInputModel: ResolverTypeWrapper<DecodedInputModel>;
   ERC20EventsModel: ResolverTypeWrapper<Erc20EventsModel>;
   ERC721TransfersModel: ResolverTypeWrapper<Erc721TransfersModel>;
   ExplorerModel: ResolverTypeWrapper<ExplorerModel>;
@@ -413,6 +425,7 @@ export type ResolversParentTypes = ResolversObject<{
   ChainConfigModel: ChainConfigModel;
   ChainStatsModel: ChainStatsModel;
   Decimal: Scalars['Decimal'];
+  DecodedInputModel: DecodedInputModel;
   ERC20EventsModel: Erc20EventsModel;
   ERC721TransfersModel: Erc721TransfersModel;
   ExplorerModel: ExplorerModel;
@@ -515,6 +528,14 @@ export interface DecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
   name: 'Decimal';
 }
 
+export type DecodedInputModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['DecodedInputModel'] = ResolversParentTypes['DecodedInputModel']> = ResolversObject<{
+  isIndexed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Erc20EventsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ERC20EventsModel'] = ResolversParentTypes['ERC20EventsModel']> = ResolversObject<{
   amounts?: Resolver<Array<ResolversTypes['Decimal']>, ParentType, ContextType>;
   blockTimestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -551,6 +572,8 @@ export type LogModelResolvers<ContextType = any, ParentType extends ResolversPar
   blockHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   data?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  decodedInput?: Resolver<Maybe<Array<ResolversTypes['DecodedInputModel']>>, ParentType, ContextType>;
+  eventName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   logIndex?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   topics?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   transactionHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -574,7 +597,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
   erc20Events?: Resolver<Array<ResolversTypes['ERC20EventsModel']>, ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
   erc721Events?: Resolver<Array<ResolversTypes['ERC721TransfersModel']>, ParentType, ContextType, RequireFields<QueryErc721EventsArgs, 'address' | 'first' | 'hash' | 'skip'>>;
-  logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'first' | 'skip' | 'transactionHash'>>;
+  logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'first' | 'skip' | 'transactionHash'>>;
   search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'first' | 'query' | 'skip'>>;
   transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'timestampEnd' | 'timestampStart'>>;
   transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
@@ -641,6 +664,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ChainConfigModel?: ChainConfigModelResolvers<ContextType>;
   ChainStatsModel?: ChainStatsModelResolvers<ContextType>;
   Decimal?: GraphQLScalarType;
+  DecodedInputModel?: DecodedInputModelResolvers<ContextType>;
   ERC20EventsModel?: Erc20EventsModelResolvers<ContextType>;
   ERC721TransfersModel?: Erc721TransfersModelResolvers<ContextType>;
   ExplorerModel?: ExplorerModelResolvers<ContextType>;
