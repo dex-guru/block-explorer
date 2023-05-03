@@ -93,6 +93,8 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
     onChange,
   })
 
+  const isShowResults = results?.addresses?.length && results?.blocks?.length
+
   return (
     <div
       className={clsx(styles.container, { [styles.focus]: isFocus }, className)}
@@ -120,7 +122,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
         </div>
       </form>
 
-      {isOpen && results?.query && (
+      {isOpen && isShowResults && (
         <OutsideClicker onClick={handleHide} className={styles.dropdown}>
           <SearchVariants data={results} className={styles.results} />
         </OutsideClicker>
