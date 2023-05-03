@@ -1,25 +1,53 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
+import { Property } from '../Properties/types'
+import { decodedLogsColumns } from '../Table/columns/decodedLogsColumns'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Empty, Properties } from '@/components'
-import IconEmpty from '@/images/icons/no-flash.svg'
+import { Address, Properties, Table } from '@/components'
+import styles from './TxLogs.module.scss'
+
+const getDecodedText = ({ eventName, decodedInput }: LogModel): ReactNode => {
+  if (!eventName || !decodedInput) {
+    return null
+  }
+
+  const args = decodedInput.map((el, idx) => (
+    <>
+      <span className={styles.type}>{el.type}</span>{' '}
+      {el.isIndexed && <span className={styles.indexed}>indexed</span>}{' '}
+      <span className={styles.name}>{el.name}</span>
+      {idx < decodedInput.length - 1 && ', '}
+    </>
+  ))
+
+  return (
+    <div className={styles.code}>
+      <span className={styles.method}>{eventName}</span>
+      <span className={styles.args}>({args})</span>
+    </div>
+  )
+}
 
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   logs,
 }) => {
-  if (!logs?.length) {
-    return <Empty icon={<IconEmpty />} title="No logs was found" />
-  }
+  const renderLogs = () => {
+    return logs?.map((log) => {
+      const decodedProperty: Property[] = log.decodedInput
+        ? [
+            {
+              title: 'Decoded',
+              value: (
+                <>
+                  {getDecodedText(log)}
 
-  const renderedLogs = logs.map((log) => renderLog(log))
+                  <Table columns={decodedLogsColumns} data={log.decodedInput} />
+                </>
+              ),
+            },
+          ]
+        : []
 
-  return <>{renderedLogs}</>
-}
-
-const renderLog = (log: LogModel) => {
-  return (
-    <Properties
-      key={log.logIndex}
-      data={[
+      const properties = [
         {
           title: 'Address',
           value: (
@@ -31,10 +59,7 @@ const renderLog = (log: LogModel) => {
             />
           ),
         },
-        {
-          title: 'Block Number',
-          value: <Address address={`${log.blockNumber}`} type="block" />,
-        },
+        ...decodedProperty,
         {
           title: 'Topics',
           value: log.topics?.length ? (
@@ -64,9 +89,13 @@ const renderLog = (log: LogModel) => {
           title: 'Log Index',
           value: `${log.logIndex}`,
         },
-      ]}
-    />
-  )
+      ]
+
+      return <Properties key={log.logIndex} data={properties} />
+    })
+  }
+
+  return <>{renderLogs()}</>
 }
 
 export default TxLogs

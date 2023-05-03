@@ -1,0 +1,25 @@
+.code {
+  background: var(--color-bg);
+  padding: 16px;
+}
+
+.method {
+  color: var(--color-negative);
+}
+
+.args {
+  color: var(--color-muted);
+}
+
+.indexed {
+  font-style: italic;
+}
+
+.name {
+  color: var(--color-positive);
+  font-weight: bold;
+}
+
+.type {
+  color: var(--color-info);
+}

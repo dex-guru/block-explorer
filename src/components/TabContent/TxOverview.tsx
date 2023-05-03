@@ -16,98 +16,96 @@ import IconVerify from '@/images/icons/verified.svg'
 import { getNormalizedValue } from '@/lib/utils'
 
 const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
-  return (
-    <Properties
-      data={[
-        {
-          title: 'Transaction Hash:',
-          tooltip: '?',
-          value: <Address address={data.hash} isLink={false} isCopy />,
-        },
-        {
-          title: 'Status:',
-          tooltip: '?',
-          value: (
-            <Value
-              icon={
-                !!data.receiptStatus ? (
-                  <IconVerify className={styles.icon} />
-                ) : undefined
-              }
-              value={data.receiptStatus ? 'Success' : 'Failed'}
-              className={clsx({
-                [styles.positive]: !!data.receiptStatus,
-                [styles.negative]: !data.receiptStatus,
-              })}
-            />
-          ),
-        },
-        {
-          title: 'Block / Position:',
-          tooltip: '?',
-          value: <Address type="block" address={`${data.blockNumber}`} />,
-        },
-        {
-          title: 'Timestamp:',
-          tooltip: '?',
-          value: (
-            <Value
-              icon={<StopwatchIcon className={styles.muted} />}
-              value={<TimeAgo timestamp={data.blockTimestamp} />}
-              suffix={
-                <>
-                  {' '}
-                  <DateTime
-                    timestamp={data.blockTimestamp}
-                    className={styles.muted}
-                  />
-                </>
-              }
-            />
-          ),
-        },
-        {
-          title: 'From / Nonce:',
-          tooltip: '?',
-          value: (
-            <Separated>
-              <Address
-                address={data.fromAddress}
-                type="account"
-                isShorten={false}
-                isCopy
+  const properties = [
+    {
+      title: 'Transaction Hash:',
+      tooltip: '?',
+      value: <Address address={data.hash} isLink={false} isCopy />,
+    },
+    {
+      title: 'Status:',
+      tooltip: '?',
+      value: (
+        <Value
+          icon={
+            !!data.receiptStatus ? (
+              <IconVerify className={styles.icon} />
+            ) : undefined
+          }
+          value={data.receiptStatus ? 'Success' : 'Failed'}
+          className={clsx({
+            [styles.positive]: !!data.receiptStatus,
+            [styles.negative]: !data.receiptStatus,
+          })}
+        />
+      ),
+    },
+    {
+      title: 'Block / Position:',
+      tooltip: '?',
+      value: <Address type="block" address={`${data.blockNumber}`} />,
+    },
+    {
+      title: 'Timestamp:',
+      tooltip: '?',
+      value: (
+        <Value
+          icon={<StopwatchIcon className={styles.muted} />}
+          value={<TimeAgo timestamp={data.blockTimestamp} />}
+          suffix={
+            <>
+              {' '}
+              <DateTime
+                timestamp={data.blockTimestamp}
+                className={styles.muted}
               />
-              <Label type="tag" className={styles.success}>
-                {data.nonce}
-              </Label>
-            </Separated>
-          ),
-        },
-        {
-          title: 'Interacted With (To):',
-          tooltip: '?',
-          value: data.toAddress ? (
-            <Address
-              address={data.toAddress}
-              type="account"
-              isShorten={false}
-              isCopy
-            />
-          ) : null,
-        },
-        {
-          title: 'Value:',
-          tooltip: '?',
-          value: <Value value={getNormalizedValue(data.value)} prefix="$" />,
-        },
-        {
-          title: 'Transaction Action:',
-          tooltip: '?',
-          value: '',
-        },
-      ]}
-    />
-  )
+            </>
+          }
+        />
+      ),
+    },
+    {
+      title: 'From / Nonce:',
+      tooltip: '?',
+      value: (
+        <Separated>
+          <Address
+            address={data.fromAddress}
+            type="account"
+            isShorten={false}
+            isCopy
+          />
+          <Label type="tag" className={styles.success}>
+            {data.nonce}
+          </Label>
+        </Separated>
+      ),
+    },
+    {
+      title: 'Interacted With (To):',
+      tooltip: '?',
+      value: data.toAddress ? (
+        <Address
+          address={data.toAddress}
+          type="account"
+          isShorten={false}
+          isCopy
+        />
+      ) : null,
+    },
+    {
+      title: 'Value:',
+      tooltip: '?',
+      value: <Value value={getNormalizedValue(data.value)} prefix="$" />,
+    },
+    {
+      title: 'Transaction Action:',
+      tooltip: '?',
+      value: '',
+    },
+  ]
+
+  return <Properties data={properties} />
 }
 
 export default TxOverview
