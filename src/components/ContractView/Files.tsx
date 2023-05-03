@@ -1,14 +1,22 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
+import { useProvider } from 'wagmi'
+import Loading from '../Loading'
 import { Property } from '../Properties/types'
-import { Heading, Properties, Details } from '@/components'
+import { Heading, Properties, Details, Code } from '@/components'
 import { Match } from '@/types'
 import styles from './ContractView.module.scss'
 
 export interface IFilesProps {
   match: Match | undefined | null
+  address: string
 }
-const Files: FC<IFilesProps> = ({ match }) => {
+const Files: FC<IFilesProps> = ({ match, address }) => {
+  const hasSources = match?.metadata?.sources || undefined
+  const [bytecode, setBytecode] = useState('')
+  const [isLoadingSources, setIsLoadingSources] = useState(false)
+  const provider = useProvider()
+
   const properties: Property[] = []
   if (match?.metadata?.language) {
     properties.push({
@@ -29,6 +37,18 @@ const Files: FC<IFilesProps> = ({ match }) => {
       ? `Yes with ${match?.metadata?.settings?.optimizer?.runs} runs`
       : 'No',
   })
+
+  useEffect(() => {
+    if (!hasSources) {
+      setIsLoadingSources(true)
+      provider.getCode(address).then((code) => {
+        setIsLoadingSources(false)
+        setBytecode(code)
+      })
+    }
+    // on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -69,6 +89,14 @@ const Files: FC<IFilesProps> = ({ match }) => {
               </Details>
             )
           })}
+        </>
+      )}
+
+      {!hasSources && (
+        <>
+          <Heading size="md">Bytecode</Heading>
+          {isLoadingSources && <Loading />}
+          {bytecode && <Code>{bytecode}</Code>}
         </>
       )}
     </>
