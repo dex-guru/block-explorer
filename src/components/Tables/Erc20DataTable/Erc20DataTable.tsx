@@ -16,7 +16,12 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getErc20({ variables: { walletAddress: address, ...variables } })
+      getErc20({
+        variables: {
+          address,
+          ...variables,
+        },
+      })
     },
     [address, getErc20]
   )
@@ -25,7 +30,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
     getErc20({
       variables: {
         first: PER_PAGE,
-        walletAddress: '0x4a3ad752e6acd95d9ec8133ed7d00d6a934c47d6',
+        address,
         skip: 0,
       },
     })
@@ -39,8 +44,8 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
     <DataTable
       isLoading={loading}
       columns={erc20Columns}
-      data={data?.erc20Events || []}
-      total={100}
+      data={data?.erc20Events?.data || []}
+      total={data?.erc20Events?.total}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{
