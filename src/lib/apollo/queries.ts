@@ -296,8 +296,8 @@ export const GET_ADDRESS_INFO = gql`
 `
 
 export const GET_SEARCH = gql`
-  query GetSearch($address: String!) {
-    search(first: 10, query: $address) {
+  query GetSearch($query: String!) {
+    search(first: 10, query: $query) {
       addresses {
         address
         addressType

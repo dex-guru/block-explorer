@@ -2,35 +2,79 @@ import { FC, FocusEventHandler, useState } from 'react'
 import clsx from 'clsx'
 import { useDebouncedCallback } from 'use-debounce'
 import Button from '../Button'
-import { SearchProps } from './types'
+import OutsideClicker from '../OutsideClicker'
+import SearchVariants from './SearchVariants'
+import { SearchProps, SearchResults } from './types'
+import { TransactionModel } from '@/__generated__/resolvers-types'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import IconQR from '@/images/icons/qr.svg'
 import IconSearch from '@/images/icons/search.svg'
 import { initializeApollo } from '@/lib/apollo/client'
-import { GET_SEARCH } from '@/lib/apollo/queries'
+import { GET_SEARCH, GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
 
 const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
   const [isFocus, setIsFocus] = useState(false)
-  const [variants, setVariants] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [results, setResults] = useState<SearchResults | null>(null)
   const apolloClient = initializeApollo({})
 
-  const getVariants = async (value: string): Promise<string> => {
-    const { data } = await apolloClient.query({
+  const getResults = async (value: string): Promise<SearchResults> => {
+    const {
+      data: { search },
+    } = await apolloClient.query<{ search: SearchResults }>({
       query: GET_SEARCH,
       variables: { query: value },
     })
 
-    return ''
+    return search
   }
 
-  const onChange = useDebouncedCallback((value: string) => {
-    setVariants([])
+  const getTxs = async (vars: {
+    block?: number
+    address?: string
+  }): Promise<TransactionModel[]> => {
+    const {
+      data: { transactions },
+    } = await apolloClient.query({
+      query: GET_TRANSACTIONS,
+      variables: {
+        first: 10,
+        skip: 0,
+        block: vars.block,
+        address: vars.address,
+      },
+    })
 
-    if (value) {
-      getVariants(value)
-    }
-  }, 1500)
+    return transactions
+  }
+
+  const onChange = useDebouncedCallback(
+    async (value: string) => {
+      setResults(null)
+      setIsOpen(false)
+
+      if (!value) {
+        return
+      }
+
+      const search = await getResults(value)
+      setResults(search)
+      setIsOpen(!!search?.query)
+
+      const addresses = search?.addresses
+      const address =
+        addresses && addresses[0] ? addresses[0].address : undefined
+
+      const blocks = search?.blocks
+      const block = blocks && blocks[0] ? blocks[0].number : undefined
+
+      const transactions = await getTxs({ block, address })
+      setResults({ ...search, transactions })
+    },
+    1500,
+    { leading: true }
+  )
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
     setIsFocus(false)
@@ -39,6 +83,10 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
     setIsFocus(true)
+  }
+
+  const handleHide = () => {
+    setIsOpen(false)
   }
 
   const { ref, handleChange, handleSubmit, canSubmit } = useGenericSearch({
@@ -73,7 +121,11 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
         </div>
       </form>
 
-      {!!variants?.length && <div className={styles.variants}></div>}
+      {isOpen && results?.query && (
+        <OutsideClicker onClick={handleHide} className={styles.dropdown}>
+          <SearchVariants data={results} className={styles.results} />
+        </OutsideClicker>
+      )}
     </div>
   )
 }
