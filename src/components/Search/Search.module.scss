@@ -9,7 +9,7 @@
   align-items: center;
   gap: 1px;
   border-radius: 8px;
-  overflow: hidden;
+  position: relative;
 
   @media (min-width: 840.1px) {
     max-width: 640px;

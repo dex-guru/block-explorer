@@ -45,19 +45,30 @@ const doSearch = async (q: string, router: NextRouter) => {
   }
 }
 
-export const useGenericSearch = (): [
-  RefObject<HTMLInputElement>,
-  ChangeEventHandler<HTMLInputElement>,
-  FormEventHandler<HTMLFormElement>
-] => {
-  const [searchString, setSearchString] = useState<string>('')
-  const [canSubmit, setCanSubmit] = useState<boolean>(false)
+export type useGenericSearchProps = {
+  query?: string
+  onChange?: (val: string) => void
+}
+
+export const useGenericSearch = ({
+  query,
+  onChange,
+}: useGenericSearchProps = {}): {
+  ref: RefObject<HTMLInputElement>
+  handleChange: ChangeEventHandler<HTMLInputElement>
+  handleSubmit: FormEventHandler<HTMLFormElement>
+  canSubmit: boolean
+  searchString: string
+} => {
+  const [searchString, setSearchString] = useState<string>(query || '')
+  const [canSubmit, setCanSubmit] = useState<boolean>(searchString.length > 0)
   const router = useRouter()
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const searchTerm = e.target.value.trim()
     setCanSubmit(searchTerm.length > 0)
     setSearchString(searchTerm)
+    onChange && onChange(searchTerm)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -74,5 +85,5 @@ export const useGenericSearch = (): [
 
   const searchRef = useRef<HTMLInputElement>(null)
 
-  return [searchRef, handleChange, handleSubmit]
+  return { ref: searchRef, handleChange, handleSubmit, canSubmit, searchString }
 }

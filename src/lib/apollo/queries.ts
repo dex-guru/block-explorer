@@ -294,3 +294,41 @@ export const GET_ADDRESS_INFO = gql`
     }
   }
 `
+
+export const GET_SEARCH = gql`
+  query GetSearch($address: String!) {
+    search(first: 10, query: $address) {
+      addresses {
+        address
+        addressType
+        assetsCount
+        assetsValueUSD
+        assetsValueUSD24hDelta
+        nativeBalance
+        nativeBalanceUSD
+      }
+      query
+      blocks {
+        baseFeePerGas
+        difficulty
+        extraData
+        gasLimit
+        gasUsed
+        hash
+        logsBloom
+        nonce
+        miner
+        number
+        parentHash
+        receiptsRoot
+        sha3Uncles
+        size
+        stateRoot
+        timestamp
+        totalDifficulty
+        transactionCount
+        transactionsRoot
+      }
+    }
+  }
+`
