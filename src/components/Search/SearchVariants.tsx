@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Address, Label, Table, TimeAgo } from '..'
+import { Address, Label, Table } from '..'
 import clsx from 'clsx'
 import Avatar from '../Avatar'
 import Card from '../Card'
@@ -90,29 +90,6 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.transactions?.length) {
-    const renderedContent = data.transactions?.map((tx) => {
-      return (
-        <li className={styles.item} key={tx.hash}>
-          <Tile
-            className={styles.variant}
-            icon={
-              <Avatar letters="Tx" type="rounded" className={styles.avatar} />
-            }
-            title={
-              <Address
-                address={tx.hash}
-                type="tx"
-                isCopy
-                className={styles.address}
-                isShorten={false}
-              />
-            }
-            postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
-          />
-        </li>
-      )
-    })
-
     tabs.push({
       title: 'Transactions',
       value: 'txs',
