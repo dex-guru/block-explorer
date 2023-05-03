@@ -7,23 +7,23 @@ WORKDIR /app
 # Install Python and other build dependencies
 RUN apk add --no-cache python3 make g++
 
-# Copy the package.json file to the working directory
-COPY package.json ./
+# Copy the package.json, yarn.lock, and other necessary files to the working directory
+COPY package.json yarn.lock ./
 
-# Install the dependencies, including development dependencies for building the app
-RUN npm install
+# Install all dependencies, including development dependencies for building the app
+RUN yarn install
 
 # Copy the rest of the application code to the working directory
 COPY . .
 
 # Build the Next.js application for production
-RUN npm run build
+RUN yarn build
 
 # Remove development dependencies to reduce the image size
-RUN npm prune --production
+RUN yarn install --production
 
 # Expose the port that the application will run on
 EXPOSE 3000
 
 # Start the Next.js application in production mode
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
