@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
+import { Erc20DataTable } from '../Tables/Erc20DataTable/Erc20DataTable'
 import { Erc721DataTable } from '../Tables/Erc721DataTable'
 import { IAddressViewProps } from './types'
 import {
@@ -47,6 +48,8 @@ const AddressView: FC<IAddressViewProps> = ({
     },
     [getTransactions, address]
   )
+
+  console.log('*** render address')
 
   return (
     <>
@@ -134,17 +137,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 to: `${pathname}?tab=tokentxns`,
                 content: (
                   <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={[]}
-                      total={0}
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No token transactions for this address',
-                      }}
-                    />
+                    <Erc20DataTable address={address} />
                   </Suspense>
                 ),
               },
