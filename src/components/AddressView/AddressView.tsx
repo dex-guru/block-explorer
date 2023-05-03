@@ -22,7 +22,12 @@ import { PaginationVariables } from '@/types'
 
 const perPage = [5, 10, 25, 50, 100]
 
-const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
+const AddressView: FC<IAddressViewProps> = ({
+  address,
+  tab,
+  addressInfo,
+  ...props
+}) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const isMount = useIsMount()
@@ -61,36 +66,20 @@ const AddressView: FC<IAddressViewProps> = ({ address, tab, ...props }) => {
               data={[
                 {
                   title: 'Balance:',
-                  value: '😕',
+                  value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Ether Value:',
-                  value: '😕',
+                  title: 'Canto Value:',
+                  value: addressInfo.nativeBalanceUSD,
                 },
                 {
                   title: 'Token:',
-                  value: '😕',
+                  value: addressInfo.assetsValueUSD,
                 },
               ]}
             />
 
-            <Properties
-              data={[
-                {
-                  title: 'More Info:',
-                  value: '😕',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '😕',
-                  value: (
-                    <>
-                      Not Availiable <Link href="/">Login to update</Link>
-                    </>
-                  ),
-                },
-              ]}
-            />
+            <Properties data={[]} />
           </Grid>
 
           <TabPanel

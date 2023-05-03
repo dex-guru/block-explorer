@@ -31,7 +31,12 @@ import { PaginationVariables } from '@/types'
 
 const perPage = [5, 10, 25, 50, 100]
 
-const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
+const ContractView: FC<IContractViewProps> = ({
+  address,
+  tab,
+  addressInfo,
+  ...props
+}) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
@@ -85,34 +90,21 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                 },
                 {
                   title: 'Balance:',
-                  value: '🫠',
+                  value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Ether Value:',
-                  value: '🫠',
+                  title: 'Canto Value:',
+                  value: addressInfo.nativeBalanceUSD,
                 },
                 {
                   title: 'Token:',
-                  value: '🫠',
+                  value: addressInfo.assetsValueUSD,
                 },
               ]}
             />
 
             <Properties
               data={[
-                {
-                  title: 'More Info:',
-                  value: '🫠',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '🫠',
-                  value: (
-                    <>
-                      Not Availiable <Link href="/">Login to update</Link>
-                    </>
-                  ),
-                },
                 {
                   title: 'Contract Creator:',
                   value: (
