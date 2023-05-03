@@ -93,7 +93,8 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
     onChange,
   })
 
-  const isShowResults = results?.addresses?.length && results?.blocks?.length
+  const isShowResults =
+    !!results?.addresses?.length && !!results?.blocks?.length
 
   return (
     <div
