@@ -63,7 +63,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 {
                   title: 'Block Height:',
                   value: (
-                    <>
+                    <div>
                       {data.number}{' '}
                       <Link
                         data-tooltip-content="Previous Block"
@@ -91,7 +91,7 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                       >
                         <ArrowRight className={styles.icon} />
                       </Link>
-                    </>
+                    </div>
                   ),
                   tooltip: '?',
                 },
@@ -123,11 +123,11 @@ const Block: NextPage<IBlockProps> = ({ data }) => {
                 {
                   title: 'Transactions:',
                   tooltip: '?',
-                  value: (
+                  value: data.transactionCount ? (
                     <Link href={`/txs?block=${data.number}?`}>
                       {financialFormat(data.transactionCount)}
                     </Link>
-                  ),
+                  ) : null,
                 },
                 {
                   title: 'Fee Recipient:',
@@ -185,25 +185,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const apolloClient = initializeApollo({ ctx })
 
-  const { data } = await apolloClient.query<{
+  const {
+    data: { blocks },
+  } = await apolloClient.query<{
     blocks: BlockModel[]
   }>({
     query: GET_BLOCKS_BY_NUMBER,
     variables: { block: Number(block) },
   })
 
-  let blocks: BlockModel | null = null
-
-  if (!blocks) {
+  if (!blocks?.length) {
     return { notFound: true }
   }
 
-  if (data.blocks.length) {
-    blocks = data.blocks[0]
-  }
-
   return addApolloState(apolloClient, {
-    props: { data: blocks },
+    props: { data: blocks[0] },
   })
 }
 
