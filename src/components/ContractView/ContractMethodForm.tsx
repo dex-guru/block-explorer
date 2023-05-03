@@ -76,7 +76,7 @@ const ContractMethodForm: FC<IFormProps> = ({
 
       const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
 
-      setCallResult(result)
+      setCallResult(result.toString())
     },
     [abi, account, address, method.name, method.stateMutability, chain]
   )
@@ -123,6 +123,7 @@ const ContractMethodForm: FC<IFormProps> = ({
             type="submit"
             caption={isWrite ? 'Write' : 'Query'}
             className={styles.submit}
+            disabled={!account}
           />
         </>
       </form>

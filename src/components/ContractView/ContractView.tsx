@@ -1,6 +1,5 @@
 import { FC, Suspense, useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
@@ -30,7 +29,12 @@ import { PaginationVariables } from '@/types'
 
 const perPage = [5, 10, 25, 50, 100]
 
-const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
+const ContractView: FC<IContractViewProps> = ({
+  address,
+  tab,
+  addressInfo,
+  ...props
+}) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
@@ -57,6 +61,8 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
     return null
   }
 
+  const hasSources = match?.metadata?.sources || undefined
+
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
@@ -82,34 +88,21 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                 },
                 {
                   title: 'Balance:',
-                  value: '🫠',
+                  value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Ether Value:',
-                  value: '🫠',
+                  title: 'Canto Value:',
+                  value: addressInfo.nativeBalanceUSD,
                 },
                 {
                   title: 'Token:',
-                  value: '🫠',
+                  value: addressInfo.assetsValueUSD,
                 },
               ]}
             />
 
             <Properties
               data={[
-                {
-                  title: 'More Info:',
-                  value: '🫠',
-                },
-                {
-                  title: 'My Name Tag:',
-                  tooltip: '🫠',
-                  value: (
-                    <>
-                      Not Availiable <Link href="/">Login to update</Link>
-                    </>
-                  ),
-                },
                 {
                   title: 'Contract Creator:',
                   value: (
@@ -196,7 +189,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
 
               {
                 title: 'Contract',
-                indicator: <IconVerify />,
+                indicator: hasSources && <IconVerify />,
                 value: ['code', 'readContract', 'writeContract'],
                 to: `${pathname}?tab=code`,
               },
@@ -263,7 +256,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
                   {['readContract', 'writeContract'].includes(
                     tab as string
                   ) && <ConnectButton />}
-                  {tab === 'code' && <Files match={match} />}
+                  {tab === 'code' && <Files match={match} address={address} />}
                   {tab === 'readContract' && (
                     <>
                       {(abi as Abi)
