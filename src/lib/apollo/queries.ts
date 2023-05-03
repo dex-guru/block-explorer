@@ -100,6 +100,16 @@ export const CHAIN_STATS = gql`
       volume24hDeltaUsd
       volume24hUsd
     }
+    csrStats {
+      sumRevenue
+    }
+    chainConfig {
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+    }
   }
 `
 
@@ -277,6 +287,33 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       totalDifficulty
       transactionCount
       transactionsRoot
+    }
+  }
+`
+
+export const GET_CSR_STATS = gql`
+  query CSRStats {
+    csrStats {
+      burned {
+        timestamp
+        value
+      }
+      netEmissions {
+        timestamp
+        value
+      }
+      sumRevenue
+      sumTx
+      sumContracts
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `

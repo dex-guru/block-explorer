@@ -1,5 +1,5 @@
 import Chart from './Chart'
-import { ChartData, ChartProps } from './types'
+import { ChartProps } from './types'
 
-export type { ChartProps, ChartData }
+export type { ChartProps }
 export default Chart

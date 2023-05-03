@@ -31,6 +31,7 @@ import Tile from './Tile'
 import Value from './Value'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
+const LineChart = dynamic(() => import('./LineChart'), { ssr: false })
 
 export {
   Address,
@@ -54,6 +55,7 @@ export {
   Grid,
   Heading,
   Label,
+  LineChart,
   Logo,
   Page,
   Pagination,

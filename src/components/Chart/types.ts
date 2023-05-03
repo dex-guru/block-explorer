@@ -1,13 +1,8 @@
-export type ChartCoord = [number, number]
-export type ChartData = {
-  label: string
-  value: number
-  tooltipLabel?: string
-  tooltipValue?: string
-}[]
+import { LineChartDataset } from '../LineChart'
+
 export type ChartProps = {
   title?: string
-  data: ChartData
+  data: LineChartDataset[]
   color?: string
   stroke?: number
   smooth?: boolean
