@@ -123,6 +123,7 @@ const ContractMethodForm: FC<IFormProps> = ({
             type="submit"
             caption={isWrite ? 'Write' : 'Query'}
             className={styles.submit}
+            disabled={!account}
           />
         </>
       </form>
