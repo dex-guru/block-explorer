@@ -7,11 +7,15 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { canto } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import { AddressModel, TransactionModel } from '@/__generated__/resolvers-types'
+import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_INFO, GET_TRANSACTIONS } from '@/lib/apollo/queries'
 
-const { chains, provider } = configureChains([canto], [publicProvider()])
+const { chains, provider } = configureChains(
+  [canto, cantoTestnet],
+  [publicProvider()]
+)
 
 const { connectors } = getDefaultWallets({
   appName: 'Block Explorer',
@@ -67,7 +71,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-    const { address, tab } = ctx.query as { address: string; tab: string }
+  const { address, tab } = ctx.query as { address: string; tab: string }
 
   if (address && !isAddress(address)) {
     return { notFound: true }
