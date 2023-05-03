@@ -12,7 +12,7 @@ export type SearchResults = {
 }
 
 export type SearchVariantsProps = {
-  data: SearchResults | null
+  data?: SearchResults | null
   className?: string
 }
 

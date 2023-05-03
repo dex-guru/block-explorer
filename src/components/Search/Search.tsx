@@ -1,4 +1,5 @@
-import { FC, FocusEventHandler, useState } from 'react'
+import { FC, FocusEventHandler, useEffect, useState } from 'react'
+import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { useDebouncedCallback } from 'use-debounce'
 import Button from '../Button'
@@ -8,47 +9,34 @@ import { SearchProps, SearchResults } from './types'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import IconQR from '@/images/icons/qr.svg'
 import IconSearch from '@/images/icons/search.svg'
-import { initializeApollo } from '@/lib/apollo/client'
 import { GET_SEARCH } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
 
 const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
   const [isFocus, setIsFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const [results, setResults] = useState<SearchResults | null>(null)
-  const apolloClient = initializeApollo({})
-
-  const getIsShowResults = () => {
-    return (
-      !!results?.addresses?.length ||
-      !!results?.blocks?.length ||
-      !!results?.transactions?.length
-    )
-  }
-
-  const getResults = async (value: string): Promise<SearchResults> => {
-    const {
-      data: { search },
-    } = await apolloClient.query<{ search: SearchResults }>({
-      query: GET_SEARCH,
-      variables: { query: value },
-    })
-
-    return search
-  }
+  const [getSearch, { data, loading }] = useLazyQuery<{
+    search: SearchResults
+  }>(GET_SEARCH)
 
   const onChange = useDebouncedCallback(async (value: string) => {
-    setResults(null)
     setIsOpen(false)
 
     if (!value) {
       return
     }
 
-    const search = await getResults(value)
-    setResults(search)
-    setIsOpen(getIsShowResults())
-  }, 1500)
+    getSearch({ variables: { query: value } })
+  }, 500)
+
+  useEffect(() => {
+    const allowOpen =
+      !!data?.search?.addresses?.length ||
+      !!data?.search?.blocks?.length ||
+      !!data?.search?.transactions?.length
+
+    setIsOpen(allowOpen)
+  }, [data])
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
     setIsFocus(false)
@@ -76,7 +64,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
       <form className={styles.combo} onSubmit={handleSubmit}>
         <input
           ref={ref}
-          className={styles.query}
+          className={clsx(styles.query, { [styles.loading]: loading })}
           type="text"
           placeholder="Search by address / Txn Hash / Block number"
           defaultValue={query}
@@ -95,9 +83,9 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
         </div>
       </form>
 
-      {isOpen && getIsShowResults() && (
+      {isOpen && (
         <OutsideClicker onClick={handleHide} className={styles.dropdown}>
-          <SearchVariants data={results} className={styles.results} />
+          <SearchVariants data={data?.search} className={styles.results} />
         </OutsideClicker>
       )}
     </div>
