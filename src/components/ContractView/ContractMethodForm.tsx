@@ -76,7 +76,7 @@ const ContractMethodForm: FC<IFormProps> = ({
 
       const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
 
-      setCallResult(result)
+      setCallResult(result.toString())
     },
     [abi, account, address, method.name, method.stateMutability, chain]
   )
