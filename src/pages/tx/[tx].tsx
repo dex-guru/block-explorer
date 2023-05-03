@@ -8,7 +8,7 @@ import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_TRANSACTION_BY_HASH } from '@/lib/apollo/queries'
+import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 
 const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
 const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
@@ -97,7 +97,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     transactions: TransactionModel[]
     logs: LogModel[]
   }>({
-    query: GET_TRANSACTION_BY_HASH,
+    query: GET_TRANSACTIONS_BY_HASH,
     variables: { hash: tx },
   })
 
