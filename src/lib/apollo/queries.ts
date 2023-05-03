@@ -227,7 +227,7 @@ export const GET_BLOCKS_SHORT = gql`
   }
 `
 
-export const GET_TRANSACTION_BY_HASH = gql`
+export const GET_TRANSACTIONS_BY_HASH = gql`
   query TransactionByHash($hash: String!) {
     transactions(hash: $hash, first: 1) {
       blockHash
@@ -251,23 +251,6 @@ export const GET_TRANSACTION_BY_HASH = gql`
       transactionIndex
       transactionType
       value
-    }
-    logs(transactionHash: $hash) {
-      address
-      blockHash
-      blockNumber
-      data
-      eventName
-      logIndex
-      topics
-      transactionHash
-      transactionIndex
-      decodedInput {
-        isIndexed
-        name
-        type
-        value
-      }
     }
   }
 `

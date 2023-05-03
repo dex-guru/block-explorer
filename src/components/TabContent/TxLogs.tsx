@@ -30,78 +30,72 @@ const getDecodedText = ({ eventName, decodedInput }: LogModel): ReactNode => {
 const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
   logs,
 }) => {
-  return (
-    <>
-      {logs?.map((log) => {
-        const decodedProperty: Property[] = log.decodedInput
-          ? [
-              {
-                title: 'Decoded',
-                value: (
-                  <>
-                    {getDecodedText(log)}
+  const renderLogs = () => {
+    return logs?.map((log) => {
+      const decodedProperty: Property[] = log.decodedInput
+        ? [
+            {
+              title: 'Decoded',
+              value: (
+                <>
+                  {getDecodedText(log)}
 
-                    <Table
-                      columns={decodedLogsColumns}
-                      data={log.decodedInput}
+                  <Table columns={decodedLogsColumns} data={log.decodedInput} />
+                </>
+              ),
+            },
+          ]
+        : []
+
+      const properties = [
+        {
+          title: 'Address',
+          value: (
+            <Address
+              address={log.address}
+              type="account"
+              isShorten={false}
+              isCopy
+            />
+          ),
+        },
+        ...decodedProperty,
+        {
+          title: 'Topics',
+          value: log.topics?.length ? (
+            <div className="text">
+              <ul>
+                {log.topics.map((topic, tIdx) => (
+                  <li key={tIdx}>
+                    [{tIdx}]{' '}
+                    <Address
+                      type="account"
+                      address={topic}
+                      isLink={false}
+                      isShorten={false}
+                      isCopy
                     />
-                  </>
-                ),
-              },
-            ]
-          : []
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null,
+        },
+        {
+          title: 'Data',
+          value: log.data,
+        },
+        {
+          title: 'Log Index',
+          value: `${log.logIndex}`,
+        },
+      ]
 
-        return (
-          <Properties
-            key={log.logIndex}
-            data={[
-              {
-                title: 'Address',
-                value: (
-                  <Address
-                    address={log.address}
-                    type="account"
-                    isShorten={false}
-                    isCopy
-                  />
-                ),
-              },
-              ...decodedProperty,
-              {
-                title: 'Topics',
-                value: log.topics?.length ? (
-                  <div className="text">
-                    <ul>
-                      {log.topics.map((topic, tIdx) => (
-                        <li key={tIdx}>
-                          [{tIdx}]{' '}
-                          <Address
-                            type="account"
-                            address={topic}
-                            isLink={false}
-                            isShorten={false}
-                            isCopy
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null,
-              },
-              {
-                title: 'Data',
-                value: log.data,
-              },
-              {
-                title: 'Log Index',
-                value: `${log.logIndex}`,
-              },
-            ]}
-          />
-        )
-      })}
-    </>
-  )
+      return <Properties key={log.logIndex} data={properties} />
+    })
+  }
+
+  return <>{renderLogs()}</>
 }
 
 export default TxLogs
