@@ -8,13 +8,15 @@ export const txsColumns: IColumn<TransactionModel>[] = [
     accessor: 'hash',
     title: 'Txn Hash',
     modifier: 'address',
-    render: (data) => <Address address={data.hash} type="tx" />,
+    render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
   {
     accessor: 'blockNumber',
     title: 'Block',
     modifier: 'address',
-    render: (data) => <Address address={`${data.blockNumber}`} type="block" />,
+    render: (data) => (
+      <Address address={`${data.blockNumber}`} type="block" isCopy />
+    ),
   },
   {
     accessor: 'blockTimestamp',
@@ -27,7 +29,7 @@ export const txsColumns: IColumn<TransactionModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" />
+        <Address address={data.fromAddress} type="account" isCopy />
       ) : null,
   },
   {
@@ -36,7 +38,7 @@ export const txsColumns: IColumn<TransactionModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <Address address={data.toAddress} type="account" />
+        <Address address={data.toAddress} type="account" isCopy />
       ) : null,
   },
   {

@@ -298,6 +298,11 @@ export const GET_ADDRESS_INFO = gql`
 export const GET_SEARCH = gql`
   query GetSearch($query: String!) {
     search(first: 10, query: $query) {
+      blocks {
+        transactionCount
+        timestamp
+        number
+      }
       addresses {
         address
         addressType
@@ -307,27 +312,14 @@ export const GET_SEARCH = gql`
         nativeBalance
         nativeBalanceUSD
       }
-      query
-      blocks {
-        baseFeePerGas
-        difficulty
-        extraData
-        gasLimit
-        gasUsed
+      transactions {
         hash
-        logsBloom
-        nonce
-        miner
-        number
-        parentHash
-        receiptsRoot
-        sha3Uncles
-        size
-        stateRoot
-        timestamp
-        totalDifficulty
-        transactionCount
-        transactionsRoot
+        value
+        transactionType
+        blockNumber
+        fromAddress
+        toAddress
+        blockTimestamp
       }
     }
   }

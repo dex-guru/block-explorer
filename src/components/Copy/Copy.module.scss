@@ -6,4 +6,8 @@
   composes: sm from '../Button/Button.module.scss';
 
   padding: 0;
+  margin: {
+    top: -4px;
+    bottom: -4px;
+  }
 }

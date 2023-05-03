@@ -1,5 +1,6 @@
 .container {
   overflow: auto;
+  max-height: 95vh;
 
   --color-table-separator: var(--color-bg);
   --color-table-thead: var(--color-bg);

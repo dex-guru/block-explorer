@@ -1,11 +1,10 @@
 import { FC, useState } from 'react'
-import Link from 'next/link'
-import { Address, Copy, TimeAgo } from '..'
+import { Address, Label, Table, TimeAgo } from '..'
 import clsx from 'clsx'
-import { AddressValues } from '../Address/helpers'
 import Avatar from '../Avatar'
 import Card from '../Card'
 import TabPanel from '../TabPanel'
+import { searchTxsColumns } from '../Table/columns/searchTxsColumns'
 import Tile from '../Tile'
 import { SearchVariantsProps } from './types'
 import styles from './Search.module.scss'
@@ -21,27 +20,30 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
 
   if (data.addresses?.length) {
     const renderedContent = data.addresses?.map((account) => {
-      const addressValues = AddressValues['account']
-
       return (
         <li className={styles.item} key={account.address}>
-          <Link
-            className={styles.link}
-            href={
-              addressValues?.url
-                ? addressValues?.url(account.address || '')
-                : ''
+          <Tile
+            className={styles.variant}
+            icon={
+              <Avatar address={account.address} className={styles.avatar} />
             }
-          >
-            <Tile
-              className={styles.variant}
-              icon={
-                <Avatar address={account.address} className={styles.avatar} />
-              }
-              title={account.address}
-              postfix={account.addressType}
-            />
-          </Link>
+            title={
+              <Address
+                address={account.address}
+                type="account"
+                isCopy
+                isShorten={false}
+                className={styles.address}
+              />
+            }
+            postfix={
+              <Label type="tag" className={styles.tag}>
+                {account.addressType === 'smart_contract'
+                  ? 'Smart Contract'
+                  : 'Address'}
+              </Label>
+            }
+          />
         </li>
       )
     })
@@ -58,23 +60,21 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
 
   if (data.blocks?.length) {
     const renderedContent = data.blocks?.map((block) => {
-      const blockValues = AddressValues['block']
-
       return (
         <li className={styles.item} key={block.number}>
-          <Link
-            className={styles.link}
-            href={
-              blockValues?.url ? blockValues?.url(block.number.toString()) : ''
+          <Tile
+            className={styles.variant}
+            icon={<Avatar letters="Bk" className={styles.avatar} />}
+            title={
+              <Address
+                address={block.number.toString()}
+                type="block"
+                isCopy
+                className={styles.address}
+              />
             }
-          >
-            <Tile
-              className={styles.variant}
-              icon={<Avatar letters="Bk" className={styles.avatar} />}
-              title={block.number}
-              postfix={`${block.transactionCount} txs`}
-            />
-          </Link>
+            postfix={`${block.transactionCount} txs`}
+          />
         </li>
       )
     })
@@ -91,24 +91,24 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
 
   if (data.transactions?.length) {
     const renderedContent = data.transactions?.map((tx) => {
-      const txValues = AddressValues['tx']
-
       return (
         <li className={styles.item} key={tx.hash}>
-          <Link
-            className={styles.link}
-            href={txValues?.url ? txValues?.url(tx.hash) : ''}
-          >
-            <Tile
-              className={styles.variant}
-              icon={
-                <Avatar letters="Tx" type="rounded" className={styles.avatar} />
-              }
-              title={<Address address={tx.hash} type="tx" isLink={false} />}
-              postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
-            />
-          </Link>
-          <Copy text={tx.hash} className={styles.copy} />
+          <Tile
+            className={styles.variant}
+            icon={
+              <Avatar letters="Tx" type="rounded" className={styles.avatar} />
+            }
+            title={
+              <Address
+                address={tx.hash}
+                type="tx"
+                isCopy
+                className={styles.address}
+                isShorten={false}
+              />
+            }
+            postfix={<TimeAgo timestamp={tx.blockTimestamp} />}
+          />
         </li>
       )
     })
@@ -119,7 +119,14 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
       onClick: () => {
         setResultsTab('txs')
       },
-      content: <ul className={styles.list}>{renderedContent}</ul>,
+      content: (
+        <Table
+          className={styles.table}
+          columns={searchTxsColumns}
+          data={data.transactions}
+          showHeader={false}
+        />
+      ),
     })
   }
 

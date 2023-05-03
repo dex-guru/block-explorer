@@ -179,6 +179,10 @@ export type Query = {
   logs: Array<LogModel>;
   /** Search Blocks/Address/Transactions/Logs */
   search: Search;
+  /** Get tokens holdings for address */
+  tokenHoldings: Array<TokenHoldingsModel>;
+  /** Get total stats for token holdings */
+  tokenHoldingsStats?: Maybe<TokenHoldingsStatsModel>;
   /** Get transaction stats */
   transactionStats: TransactionStatsModel;
   /** Get transactions */
@@ -242,6 +246,18 @@ export type QuerySearchArgs = {
 };
 
 
+export type QueryTokenHoldingsArgs = {
+  address: Scalars['String'];
+  first?: Scalars['Int'];
+  skip?: Scalars['Int'];
+};
+
+
+export type QueryTokenHoldingsStatsArgs = {
+  address: Scalars['String'];
+};
+
+
 export type QueryTransactionStatsArgs = {
   address?: InputMaybe<Scalars['String']>;
   blockNumber?: InputMaybe<Scalars['Int']>;
@@ -282,6 +298,26 @@ export type TimeSeriesChartModel = {
   __typename?: 'TimeSeriesChartModel';
   timestamp: Scalars['Int'];
   value: Scalars['Float'];
+};
+
+export type TokenHoldingsModel = {
+  __typename?: 'TokenHoldingsModel';
+  asset: Scalars['String'];
+  change24H: Scalars['Float'];
+  contractAddress: Scalars['String'];
+  logo: Array<Scalars['String']>;
+  price: Scalars['Float'];
+  quantity: Scalars['Float'];
+  symbol: Array<Scalars['String']>;
+  value: Scalars['Float'];
+};
+
+export type TokenHoldingsStatsModel = {
+  __typename?: 'TokenHoldingsStatsModel';
+  change24H: Scalars['Float'];
+  tokenCount: Scalars['Int'];
+  totalNative: Scalars['String'];
+  totalStable: Scalars['String'];
 };
 
 export type TransactionModel = {
@@ -411,6 +447,8 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   TimeSeriesChartModel: ResolverTypeWrapper<TimeSeriesChartModel>;
+  TokenHoldingsModel: ResolverTypeWrapper<TokenHoldingsModel>;
+  TokenHoldingsStatsModel: ResolverTypeWrapper<TokenHoldingsStatsModel>;
   TransactionModel: ResolverTypeWrapper<TransactionModel>;
   TransactionStatsModel: ResolverTypeWrapper<TransactionStatsModel>;
 }>;
@@ -438,6 +476,8 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Subscription: {};
   TimeSeriesChartModel: TimeSeriesChartModel;
+  TokenHoldingsModel: TokenHoldingsModel;
+  TokenHoldingsStatsModel: TokenHoldingsStatsModel;
   TransactionModel: TransactionModel;
   TransactionStatsModel: TransactionStatsModel;
 }>;
@@ -599,6 +639,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   erc721Events?: Resolver<Array<ResolversTypes['ERC721TransfersModel']>, ParentType, ContextType, RequireFields<QueryErc721EventsArgs, 'address' | 'first' | 'hash' | 'skip'>>;
   logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'first' | 'skip' | 'transactionHash'>>;
   search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'first' | 'query' | 'skip'>>;
+  tokenHoldings?: Resolver<Array<ResolversTypes['TokenHoldingsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsArgs, 'address' | 'first' | 'skip'>>;
+  tokenHoldingsStats?: Resolver<Maybe<ResolversTypes['TokenHoldingsStatsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsStatsArgs, 'address'>>;
   transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'timestampEnd' | 'timestampStart'>>;
   transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
 }>;
@@ -619,6 +661,26 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 export type TimeSeriesChartModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TimeSeriesChartModel'] = ResolversParentTypes['TimeSeriesChartModel']> = ResolversObject<{
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TokenHoldingsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TokenHoldingsModel'] = ResolversParentTypes['TokenHoldingsModel']> = ResolversObject<{
+  asset?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  change24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  contractAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  logo?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  symbol?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TokenHoldingsStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TokenHoldingsStatsModel'] = ResolversParentTypes['TokenHoldingsStatsModel']> = ResolversObject<{
+  change24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  tokenCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalNative?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  totalStable?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -674,6 +736,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Search?: SearchResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   TimeSeriesChartModel?: TimeSeriesChartModelResolvers<ContextType>;
+  TokenHoldingsModel?: TokenHoldingsModelResolvers<ContextType>;
+  TokenHoldingsStatsModel?: TokenHoldingsStatsModelResolvers<ContextType>;
   TransactionModel?: TransactionModelResolvers<ContextType>;
   TransactionStatsModel?: TransactionStatsModelResolvers<ContextType>;
 }>;
