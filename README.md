@@ -17,6 +17,15 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Docker
+
+```bash
+docker build . -t blocks-explorer    
+docker run -p 3000:3000 blocks-explorer    
+```
+
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
