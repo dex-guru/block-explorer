@@ -58,7 +58,7 @@ const ContractView: FC<IContractViewProps> = ({ address, tab, ...props }) => {
     return null
   }
 
-  const hasSources = match?.metadata?.sources?.length > 0 || undefined
+  const hasSources = match?.metadata?.sources || undefined
 
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
