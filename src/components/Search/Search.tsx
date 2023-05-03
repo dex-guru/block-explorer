@@ -34,6 +34,10 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
     block?: number
     address?: string
   }): Promise<TransactionModel[]> => {
+    if (!vars.block && !vars.address) {
+      return []
+    }
+
     const {
       data: { transactions },
     } = await apolloClient.query({
@@ -41,7 +45,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
       variables: {
         first: 10,
         skip: 0,
-        block: vars.block,
+        blockNumber: vars.block,
         address: vars.address,
       },
     })
@@ -49,32 +53,27 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
     return transactions
   }
 
-  const onChange = useDebouncedCallback(
-    async (value: string) => {
-      setResults(null)
-      setIsOpen(false)
+  const onChange = useDebouncedCallback(async (value: string) => {
+    setResults(null)
+    setIsOpen(false)
 
-      if (!value) {
-        return
-      }
+    if (!value) {
+      return
+    }
 
-      const search = await getResults(value)
-      setResults(search)
-      setIsOpen(!!search?.query)
+    const search = await getResults(value)
+    setResults(search)
+    setIsOpen(!!search?.query)
 
-      const addresses = search?.addresses
-      const address =
-        addresses && addresses[0] ? addresses[0].address : undefined
+    const addresses = search?.addresses
+    const address = addresses && addresses[0] ? addresses[0].address : undefined
 
-      const blocks = search?.blocks
-      const block = blocks && blocks[0] ? blocks[0].number : undefined
+    const blocks = search?.blocks
+    const block = blocks && blocks[0] ? blocks[0].number : undefined
 
-      const transactions = await getTxs({ block, address })
-      setResults({ ...search, transactions })
-    },
-    1500,
-    { leading: true }
-  )
+    const transactions = await getTxs({ block, address })
+    setResults({ ...search, transactions: transactions })
+  }, 1500)
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
     setIsFocus(false)
