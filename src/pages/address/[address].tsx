@@ -17,7 +17,7 @@ import {
 import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_ADDRESS_INFO, GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 
 const { chains, provider } = configureChains(
   [canto, cantoTestnet],

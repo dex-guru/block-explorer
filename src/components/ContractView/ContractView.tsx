@@ -20,8 +20,6 @@ import {
   ConnectButton,
   Card,
   Value,
-  IconWatch,
-  TimeAgo,
   DateTime,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
