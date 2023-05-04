@@ -1,5 +1,6 @@
 import { FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { getAddress } from '@ethersproject/address'
 import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
@@ -99,7 +100,13 @@ const ContractMethodForm: FC<IFormProps> = ({
                   className={styles.label}
                 />
                 <input
-                  {...register(name)}
+                  {...register(name, {
+                    required: true,
+                    validate:
+                      input.type === 'address'
+                        ? (value) => getAddress(value)
+                        : undefined,
+                  })}
                   className={styles.input}
                   placeholder={`${input.name} (${
                     input.internalType || input.type
