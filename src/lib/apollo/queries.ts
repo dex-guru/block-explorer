@@ -404,6 +404,37 @@ export const GET_ADDRESS_INFO = gql`
     }
   }
 `
+
+export const GET_SEARCH = gql`
+  query GetSearch($query: String!) {
+    search(first: 10, query: $query) {
+      blocks {
+        transactionCount
+        timestamp
+        number
+      }
+      addresses {
+        address
+        addressType
+        assetsCount
+        assetsValueUSD
+        assetsValueUSD24hDelta
+        nativeBalance
+        nativeBalanceUSD
+      }
+      transactions {
+        hash
+        value
+        transactionType
+        blockNumber
+        fromAddress
+        toAddress
+        blockTimestamp
+      }
+    }
+  }
+`
+
 export const GET_ERC721_BY_ADDRESS = gql`
   query Erc721Events($first: Int, $address: String, $hash: String, $skip: Int) {
     erc721Events(first: $first, address: $address, hash: $hash, skip: $skip) {

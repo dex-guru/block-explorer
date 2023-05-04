@@ -4,18 +4,21 @@
   display: flex;
   gap: 12px;
   font-weight: 400;
+  max-width: 100%;
 }
 
 .icon {
+  flex: 0 0 40px;
   width: 40px;
   height: 40px;
 }
 
 .content {
+  flex: 1 0 0;
   display: flex;
   flex-flow: column;
-  gap: 2px;
   justify-content: center;
+  max-width: calc(100% - 56px);
 }
 
 .title {

@@ -22,6 +22,12 @@
   }
 }
 
+.body {
+  flex: 0 1 auto;
+  overflow: auto;
+  overflow: overlay;
+}
+
 .body,
 .footer {
   padding: 16px;
