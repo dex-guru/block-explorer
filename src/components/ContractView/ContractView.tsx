@@ -60,9 +60,6 @@ const ContractView: FC<IContractViewProps> = ({
   )
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
-  if (!abi) {
-    return null
-  }
 
   const hasSources = match?.metadata?.sources || undefined
 
