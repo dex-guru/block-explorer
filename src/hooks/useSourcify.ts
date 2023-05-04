@@ -33,7 +33,10 @@ const sourcifyFetcher: Fetcher<
     const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
     if (res.ok) {
-      return await res.json()
+      return {
+        type: MatchType.FULL_MATCH,
+        metadata: await res.json(),
+      }
     }
   } catch (err) {
     console.info(
@@ -128,7 +131,7 @@ export const useError = (
       return undefined
     }
 
-    const abi = metadata.output.abi
+    const abi = metadata?.output?.abi
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const intf = new Interface(abi as any)
     try {

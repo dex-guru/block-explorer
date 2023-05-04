@@ -21,7 +21,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
   if (match?.metadata?.language) {
     properties.push({
       title: 'Language',
-      value: match?.metadata.language,
+      value: match?.metadata?.language,
     })
   }
   if (match?.metadata?.compiler?.version) {
@@ -53,7 +53,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
   return (
     <>
       <Properties data={properties} />
-      {match?.metadata.output.abi && (
+      {match?.metadata?.output.abi && (
         <>
           <Heading size="md">ABI</Heading>
           <SyntaxHighlighter
@@ -62,16 +62,16 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
             wrapLongLines
             showLineNumbers
           >
-            {JSON.stringify(match?.metadata.output.abi, null, '  ') ?? ''}
+            {JSON.stringify(match?.metadata?.output.abi, null, '  ') ?? ''}
           </SyntaxHighlighter>
         </>
       )}
 
-      {match?.metadata.sources && (
+      {match?.metadata?.sources && (
         <>
           <Heading size="md">Source files</Heading>
-          {Object.keys(match.metadata.sources).map((key) => {
-            const sourcecode = match.metadata.sources[key].content
+          {Object.keys(match.metadata?.sources).map((key) => {
+            const sourcecode = match.metadata?.sources[key].content
             if (!sourcecode) {
               return null
             }
