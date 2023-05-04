@@ -48,7 +48,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
         onChange={onPageChange}
         className={styles.pagination}
         defaultCurrentPage={currentPage}
-        setdefaultCurrentPage={setCurrentPage}
+        setDefaultCurrentPage={setCurrentPage}
       />
     )
   }, [currentPage, currentPerPagePage, onPageChange, total])
