@@ -49,8 +49,6 @@ const AddressView: FC<IAddressViewProps> = ({
     [getTransactions, address]
   )
 
-  console.log('*** render address')
-
   return (
     <>
       <Head>
