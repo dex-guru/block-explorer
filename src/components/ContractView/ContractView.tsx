@@ -1,11 +1,7 @@
-import { FC, Suspense, useCallback, useEffect, useState } from 'react'
+import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
-import { txsColumns } from '../Table/columns'
-import { Erc20DataTable } from '../Tables/Erc20DataTable/Erc20DataTable'
-import { Erc721DataTable } from '../Tables/Erc721DataTable'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -20,44 +16,26 @@ import {
   Files,
   Grid,
   ConnectButton,
-  DataTable,
   Card,
+  Value,
 } from '@/components'
-import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
-import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
-import { PaginationVariables } from '@/types'
+import { financialFormat } from '@/lib/utils'
 
-const perPage = [5, 10, 25, 50, 100]
+const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
+const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
+const Erc721DataTable = lazy(() => import('../Tables/Erc721DataTable'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
   addressInfo,
   chain,
-  ...props
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
-  const isMount = useIsMount()
-  const [transactions, setTransactions] = useState(props.transactions)
-
-  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
-
-  useEffect(() => {
-    if (data && isMount) {
-      setTransactions(data.transactions)
-    }
-  }, [data, isMount])
-
-  const onPaginationChange = useCallback(
-    (variables: PaginationVariables) => {
-      getTransactions({ variables: { ...variables, address } })
-    },
-    [getTransactions, address]
-  )
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
   if (!abi) {
@@ -87,15 +65,25 @@ const ContractView: FC<IContractViewProps> = ({
               title="Contract Overview:"
               data={[
                 {
-                  title: 'Balance:',
-                  value: addressInfo.nativeBalance,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalance)}
+                      suffix={` ${chain.config.nativeCurrency.symbol}`}
+                    />
+                  ),
                 },
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value`,
-                  value: addressInfo.nativeBalanceUSD,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalanceUSD)}
+                      prefix="$"
+                    />
+                  ),
                 },
                 {
-                  title: 'Token:',
+                  title: 'Token holdings:',
                   value: addressInfo.assetsValueUSD,
                 },
               ]}
@@ -107,10 +95,10 @@ const ContractView: FC<IContractViewProps> = ({
                 {
                   title: 'Contract Creator:',
                   value: (
-                    <>
+                    <div>
                       <Address address="🫠" type="account" /> at txn{' '}
                       <Address address="🫠" type="tx" />
-                    </>
+                    </div>
                   ),
                 },
                 {
@@ -129,41 +117,7 @@ const ContractView: FC<IContractViewProps> = ({
                 to: pathname,
                 content: (
                   <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={transactions || []}
-                      total={
-                        transactions &&
-                        transactions[0] &&
-                        transactions[0].blockNumber
-                      }
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No transactions for this contract',
-                      }}
-                    />
-                  </Suspense>
-                ),
-              },
-              {
-                title: 'Internal TXns',
-                value: 'internaltx',
-                to: `${pathname}?tab=internaltx`,
-                content: (
-                  <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={[]}
-                      total={0}
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No internal transactions for this contract',
-                      }}
-                    />
+                    <TxsDataTable address={address} chain={chain} />
                   </Suspense>
                 ),
               },

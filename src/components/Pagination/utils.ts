@@ -3,7 +3,7 @@ export const getTotalPages = (
   currentPerPage: number
 ): number => {
   if (total) {
-    return Math.floor(total / currentPerPage)
+    return Math.ceil(total / currentPerPage)
   }
   return 0
 }
