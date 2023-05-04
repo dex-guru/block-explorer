@@ -1,11 +1,11 @@
 import { FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { isAddress } from '@ethersproject/address'
 import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useAccount, useChainId } from 'wagmi'
 import Loading from '../Loading'
+import { getValidator } from './validators'
 import { Details, Heading, Button } from '@/components'
 import styles from './ContractView.module.scss'
 
@@ -14,27 +14,6 @@ export interface IFormProps {
   abi: Abi
   address: string
   isWrite?: boolean
-}
-
-const addressValidator = (address: string) => {
-  if (!isAddress(address)) {
-    return 'Invalid address'
-  }
-  return true
-}
-
-const boolValidator = (bool: string) => {
-  if (bool === '0' || bool === '1') {
-    return true
-  }
-  return 'Invalid boolean. Should be 0 or 1'
-}
-
-const numberValidator = (number: string) => {
-  if (/\D/.test(number)) {
-    return 'Invalid number'
-  }
-  return true
 }
 
 const ContractMethodForm: FC<IFormProps> = ({
@@ -138,16 +117,7 @@ const ContractMethodForm: FC<IFormProps> = ({
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
             const errorMessage = errors[name]?.message as string
-            let validator = undefined
-            if (input.type === 'bool') {
-              validator = boolValidator
-            }
-            if (input.type === 'address') {
-              validator = addressValidator
-            }
-            if (input.type.includes('int')) {
-              validator = numberValidator
-            }
+            const validator = getValidator(input.type)
 
             return (
               <label key={index} className={styles.field}>
@@ -173,9 +143,14 @@ const ContractMethodForm: FC<IFormProps> = ({
           {method.stateMutability === 'payable' && (
             <label>
               <Heading caption="native token amount (payable)" size="xs" />
-              <input {...register('payable')} />
-              {/* errors will return when field validation fails  */}
-              {errors.exampleRequired && <span>This field is required</span>}
+              <input
+                {...register('payable')}
+                className={styles.input}
+                placeholder="payable"
+              />
+              {errors.payable && (
+                <span>{errors.payable.message?.toString()}</span>
+              )}
             </label>
           )}
           {isLoading && <Loading />}
