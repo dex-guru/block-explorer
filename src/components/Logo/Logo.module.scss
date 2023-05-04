@@ -21,4 +21,14 @@
 
 .link {
   flex: 0 0 auto;
+
+  path {
+    transition: all 0.25s ease;
+  }
+
+  &:hover {
+    path {
+      fill: var(--color-link-hover);
+    }
+  }
 }
