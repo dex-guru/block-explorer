@@ -35,7 +35,7 @@ const sourcifyFetcher: Fetcher<
     if (res.ok) {
       return {
         type: MatchType.FULL_MATCH,
-        metadata: await res.json(),
+        ...(await res.json()),
       }
     }
   } catch (err) {
@@ -51,7 +51,7 @@ const sourcifyFetcher: Fetcher<
     if (res.ok) {
       return {
         type: MatchType.PARTIAL_MATCH,
-        metadata: await res.json(),
+        ...(await res.json()),
       }
     }
     return null

@@ -1,10 +1,11 @@
 import { FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { getAddress } from '@ethersproject/address'
+import { isAddress } from '@ethersproject/address'
 import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useAccount, useChainId } from 'wagmi'
+import Loading from '../Loading'
 import { Details, Heading, Button } from '@/components'
 import styles from './ContractView.module.scss'
 
@@ -14,6 +15,28 @@ export interface IFormProps {
   address: string
   isWrite?: boolean
 }
+
+const addressValidator = (address: string) => {
+  if (!isAddress(address)) {
+    return 'Invalid address'
+  }
+  return true
+}
+
+const boolValidator = (bool: string) => {
+  if (bool === '0' || bool === '1') {
+    return true
+  }
+  return 'Invalid boolean. Should be 0 or 1'
+}
+
+const numberValidator = (number: string) => {
+  if (/\D/.test(number)) {
+    return 'Invalid number'
+  }
+  return true
+}
+
 const ContractMethodForm: FC<IFormProps> = ({
   method,
   address,
@@ -26,6 +49,7 @@ const ContractMethodForm: FC<IFormProps> = ({
     formState: { errors },
   } = useForm()
   const { address: account } = useAccount()
+  const [isLoading, setIsLoading] = useState(false)
   const chain = useChainId()
 
   const [callResult, setCallResult] = useState<unknown>(undefined)
@@ -36,6 +60,8 @@ const ContractMethodForm: FC<IFormProps> = ({
       event?: React.BaseSyntheticEvent
     ) => {
       event?.preventDefault()
+      setCallResult(undefined)
+      setIsLoading(true)
       const methodArgs = Object.values(args)
       const data = await readContract({
         address: address as `0x${string}`,
@@ -47,6 +73,7 @@ const ContractMethodForm: FC<IFormProps> = ({
       const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
 
       setCallResult(result)
+      setIsLoading(false)
     },
     [abi, address, method.name, chain]
   )
@@ -57,6 +84,9 @@ const ContractMethodForm: FC<IFormProps> = ({
       event?: React.BaseSyntheticEvent
     ) => {
       event?.preventDefault()
+      setCallResult(undefined)
+      setIsLoading(true)
+
       let value = '0'
       const methodArgs = Object.values(args)
       if (method.stateMutability === 'payable' && methodArgs.length > 0) {
@@ -78,6 +108,7 @@ const ContractMethodForm: FC<IFormProps> = ({
       const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
 
       setCallResult(result.toString())
+      setIsLoading(false)
     },
     [abi, account, address, method.name, method.stateMutability, chain]
   )
@@ -92,6 +123,18 @@ const ContractMethodForm: FC<IFormProps> = ({
         <>
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
+            const errorMessage = errors[name]?.message as string
+            let validator = undefined
+            if (input.type === 'bool') {
+              validator = boolValidator
+            }
+            if (input.type === 'address') {
+              validator = addressValidator
+            }
+            if (input.type.includes('int')) {
+              validator = numberValidator
+            }
+
             return (
               <label key={index} className={styles.field}>
                 <Heading
@@ -102,18 +145,14 @@ const ContractMethodForm: FC<IFormProps> = ({
                 <input
                   {...register(name, {
                     required: true,
-                    validate:
-                      input.type === 'address'
-                        ? (value) => getAddress(value)
-                        : undefined,
+                    validate: validator,
                   })}
                   className={styles.input}
                   placeholder={`${input.name} (${
                     input.internalType || input.type
                   })`}
                 />
-                {/* errors will return when field validation fails  */}
-                {errors.exampleRequired && <span>This field is required</span>}
+                {errorMessage && <span>{errorMessage}</span>}
               </label>
             )
           })}
@@ -125,6 +164,7 @@ const ContractMethodForm: FC<IFormProps> = ({
               {errors.exampleRequired && <span>This field is required</span>}
             </label>
           )}
+          {isLoading && <Loading />}
           {callResult}
           <Button
             type="submit"
