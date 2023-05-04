@@ -11,13 +11,15 @@ const Separated: FC<SeparatedProps> = ({ children, className }) => {
   return (
     <div className={clsx(styles.container, className)}>
       <ul className={styles.list}>
-        {children?.map((child, idx) => {
-          return (
-            <li className={styles.item} key={idx}>
-              {child}
-            </li>
-          )
-        })}
+        {children
+          ?.filter((child) => !!child)
+          .map((child, idx) => {
+            return (
+              <li className={styles.item} key={idx}>
+                {child}
+              </li>
+            )
+          })}
       </ul>
     </div>
   )

@@ -25,6 +25,7 @@ const AddressView: FC<IAddressViewProps> = ({
   address,
   tab,
   addressInfo,
+  chain,
   ...props
 }) => {
   const router = useRouter()
@@ -68,7 +69,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Canto Value:',
+                  title: `${chain.config.nativeCurrency.symbol} Value`,
                   value: addressInfo.nativeBalanceUSD,
                 },
                 {
@@ -91,7 +92,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={transactions || []}
                       total={
                         transactions &&
@@ -115,7 +116,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}
@@ -135,7 +136,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}

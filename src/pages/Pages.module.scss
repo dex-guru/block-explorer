@@ -19,6 +19,10 @@
   --color-pagination-hover-text: var(--color-bg-2);
 
   composes: button from '../components/Pagination/Pagination.module.scss';
+  margin: {
+    top: -8px;
+    bottom: -8px;
+  }
 }
 
 .disabled {

@@ -3,6 +3,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useLazyQuery } from '@apollo/client'
 import {
+  ChainConfigModel,
   ChainStatsModel,
   TransactionModel,
   TransactionStatsModel,
@@ -26,6 +27,7 @@ interface ITxsProps {
   transactions: TransactionModel[]
   transactionStats: TransactionStatsModel
   chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
   block?: number
 }
 
@@ -114,7 +116,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
           {transactions.length > 0 && (
             <DataTable
               isLoading={loading}
-              columns={txsColumns}
+              columns={txsColumns(props.chainConfig, props.chainStats)}
               data={transactions}
               total={props.transactionStats.transactionsCount}
               perPage={perPage[1]}
@@ -143,7 +145,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const block = blocks && blocks[0] ? parseInt(blocks) : null
 
   const {
-    data: { transactions, transactionStats, chainStats },
+    data: { transactions, transactionStats, chainStats, chainConfig },
   } = await apolloClient.query({
     query: GET_TRANSACTIONS,
     variables: { blockNumber: block, first: 10, skip: 0 },
@@ -153,6 +155,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: {
       transactions,
       chainStats,
+      chainConfig,
       transactionStats,
       block,
     },

@@ -10,7 +10,7 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
     render: (data) => (
       <Tile
         icon={<Avatar letters="Tx" type="rounded" />}
-        title={<Address address={data.hash} type="tx" />}
+        title={<Address address={data.hash} type="tx" isCopy />}
         postfix={<TimeAgo timestamp={data.blockTimestamp} />}
       />
     ),
@@ -20,11 +20,11 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
     render: (data) => (
       <div className="data-table__data">
         <div className="value">
-          From <Address address={data.fromAddress} type="account" />
+          From <Address address={data.fromAddress} type="account" isCopy />
         </div>
         {!!data.toAddress && (
           <div className="value">
-            To <Address address={data.toAddress} type="account" />
+            To <Address address={data.toAddress} type="account" isCopy />
           </div>
         )}
       </div>

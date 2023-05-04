@@ -1,8 +1,12 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
+import { useLazyQuery } from '@apollo/client'
+import Loading from '../Loading'
 import { Property } from '../Properties/types'
 import { decodedLogsColumns } from '../Table/columns/decodedLogsColumns'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Properties, Table } from '@/components'
+import { Address, Card, Empty, Properties, Table } from '@/components'
+import IconEmpty from '@/images/icons/no-flash.svg'
+import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 import styles from './TxLogs.module.scss'
 
 const getDecodedText = ({ eventName, decodedInput }: LogModel): ReactNode => {
@@ -11,12 +15,12 @@ const getDecodedText = ({ eventName, decodedInput }: LogModel): ReactNode => {
   }
 
   const args = decodedInput.map((el, idx) => (
-    <>
+    <span className={styles.arg} key={idx}>
       <span className={styles.type}>{el.type}</span>{' '}
       {el.isIndexed && <span className={styles.indexed}>indexed</span>}{' '}
       <span className={styles.name}>{el.name}</span>
       {idx < decodedInput.length - 1 && ', '}
-    </>
+    </span>
   ))
 
   return (
@@ -27,11 +31,31 @@ const getDecodedText = ({ eventName, decodedInput }: LogModel): ReactNode => {
   )
 }
 
-const TxLogs: FC<{ data: TransactionModel; logs: LogModel[] | null }> = ({
-  logs,
-}) => {
+const TxLogs: FC<{ data: TransactionModel }> = (props) => {
+  const hash = props.data?.hash
+
+  const [getLogs, { data, loading }] = useLazyQuery<{ logs: LogModel[] }>(
+    GET_TRANSACTION_LOGS
+  )
+
+  useEffect(() => {
+    getLogs({ variables: { hash } })
+  }, [getLogs, hash])
+
+  if (!hash || (!loading && !data?.logs?.length)) {
+    return <Empty icon={<IconEmpty />} title="No TX logs was found" />
+  }
+
+  if (hash && loading) {
+    return (
+      <Card>
+        <Loading />
+      </Card>
+    )
+  }
+
   const renderLogs = () => {
-    return logs?.map((log) => {
+    return data?.logs?.map((log) => {
       const decodedProperty: Property[] = log.decodedInput
         ? [
             {
