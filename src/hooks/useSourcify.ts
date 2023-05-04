@@ -128,7 +128,7 @@ export const useError = (
       return undefined
     }
 
-    const abi = metadata.output.abi
+    const abi = metadata?.output?.abi
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const intf = new Interface(abi as any)
     try {
