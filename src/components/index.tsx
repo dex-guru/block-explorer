@@ -19,6 +19,7 @@ import Empty from './Empty'
 import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
+import Loading, { LoadingCard } from './Loading'
 import Logo from './Logo'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
@@ -63,6 +64,8 @@ export {
   Files,
   Grid,
   Heading,
+  Loading,
+  LoadingCard,
   Label,
   LineChart,
   Logo,

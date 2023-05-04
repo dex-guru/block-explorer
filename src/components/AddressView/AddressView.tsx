@@ -1,7 +1,7 @@
 import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Loading from '../Loading'
+import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -25,12 +25,6 @@ const AddressView: FC<IAddressViewProps> = ({
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
-
-  const preloader = (
-    <Card>
-      <Loading />
-    </Card>
-  )
 
   return (
     <>
@@ -73,7 +67,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: '',
                 to: pathname,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <TxsDataTable address={address} />,
                   </Suspense>
                 ),
@@ -84,7 +78,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Erc20DataTable address={address} />
                   </Suspense>
                 ),
@@ -94,7 +88,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'nfttxns',
                 to: `${pathname}?tab=nfttxns`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <NftDataTable address={address} />
                   </Suspense>
                 ),
@@ -104,7 +98,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some analytics here soon</Card>
                   </Suspense>
                 ),
@@ -114,7 +108,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some comments here soon</Card>
                   </Suspense>
                 ),

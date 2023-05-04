@@ -2,10 +2,9 @@ import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { nftColumns } from './columns'
 import Button from '@/components/Button'
-import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
-import Loading from '@/components/Loading'
+import { LoadingCard } from '@/components/Loading'
 import { GET_ERC721_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './NftDataTable.module.scss'
@@ -59,11 +58,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
   }
 
   if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
-    )
+    return <LoadingCard />
   }
 
   return (

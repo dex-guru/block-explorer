@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { useProvider } from 'wagmi'
-import Loading from '../Loading'
+import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'
-import { Heading, Properties, Details, Code, Card } from '@/components'
+import { Heading, Properties, Details, Code } from '@/components'
 import { Match } from '@/types'
 import styles from './ContractView.module.scss'
 
@@ -95,11 +95,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
       {!hasSources && (
         <>
           <Heading size="md">Bytecode</Heading>
-          {isLoadingSources && (
-            <Card>
-              <Loading />
-            </Card>
-          )}
+          {isLoadingSources && <LoadingCard />}
           {bytecode && <Code>{bytecode}</Code>}
         </>
       )}

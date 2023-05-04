@@ -2,7 +2,7 @@ import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
-import Loading from '../Loading'
+import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -48,12 +48,6 @@ const ContractView: FC<IContractViewProps> = ({
 
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
-
-  const preloader = (
-    <Card>
-      <Loading />
-    </Card>
-  )
 
   return (
     <>
@@ -124,13 +118,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: '',
                 to: pathname,
                 content: (
-                  <Suspense
-                    fallback={
-                      <Card>
-                        <Loading />
-                      </Card>
-                    }
-                  >
+                  <Suspense fallback={<LoadingCard />}>
                     <TxsDataTable address={address} />
                   </Suspense>
                 ),
@@ -140,7 +128,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Erc20DataTable address={address} />
                   </Suspense>
                 ),
@@ -151,7 +139,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'nfttxns',
                 to: `${pathname}?tab=nfttxns`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <NftDataTable address={address} />
                   </Suspense>
                 ),
@@ -168,7 +156,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'events',
                 to: `${pathname}?tab=events`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some events here soon</Card>
                   </Suspense>
                 ),
@@ -178,7 +166,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some analytics here soon</Card>
                   </Suspense>
                 ),
@@ -190,7 +178,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
                 content: (
-                  <Suspense fallback={preloader}>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some comments here soon</Card>
                   </Suspense>
                 ),

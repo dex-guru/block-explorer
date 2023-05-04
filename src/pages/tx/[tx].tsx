@@ -9,9 +9,9 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Empty, Page, TabPanel } from '@/components'
+import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import Loading from '@/components/Loading'
+import { LoadingCard } from '@/components/Loading'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
@@ -31,12 +31,6 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
   const router = useRouter()
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
-
-  const preloader = (
-    <Card>
-      <Loading />
-    </Card>
-  )
 
   return (
     <>
@@ -62,7 +56,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   value: '',
                   to: pathname,
                   content: (
-                    <Suspense fallback={preloader}>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxOverview
                         data={data}
                         chainStats={chainStats}
@@ -76,7 +70,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   value: 'logs',
                   to: `${pathname}?tab=logs`,
                   content: (
-                    <Suspense fallback={preloader}>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxLogs data={data} />
                     </Suspense>
                   ),
@@ -86,7 +80,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   value: 'trace',
                   to: `${pathname}?tab=trace`,
                   content: (
-                    <Suspense fallback={preloader}>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxTrace data={data} />
                     </Suspense>
                   ),
