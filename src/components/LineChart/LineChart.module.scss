@@ -1,0 +1,24 @@
+.container {
+  --color-chart-tick: var(--color-muted);
+  --color-chart-stroke: var(--color-accent);
+  --color-chart-fill: transparent;
+  --color-chart-value: var(--color-muted);
+
+  aspect-ratio: 16/9;
+  max-height: 75vh !important;
+  user-select: none;
+
+  text {
+    fill: var(--color-chart-tick);
+  }
+
+  path {
+    stroke: var(--color-accent);
+  }
+}
+
+.line {
+  path {
+    stroke-width: 2;
+  }
+}

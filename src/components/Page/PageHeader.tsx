@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import Link from 'next/link'
 import Logo from '../Logo'
 import Search from '../Search'
 import { PageHeaderProps } from './types'
@@ -8,9 +7,9 @@ import styles from './PageHeader.module.scss'
 const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
   return (
     <header className={styles.container}>
-      <Link className={styles.logo} href="/">
-        <Logo title="canto.explorer" />
-      </Link>
+      <div className={styles.logo}>
+        <Logo title={process.env.explorerName} to="/" />
+      </div>
       {!!withMenu && <div className={styles.menu}></div>}
       {!!withSearch && (
         <div className={styles.search}>

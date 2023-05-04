@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
 import { txsColumns } from '../Table/columns'
+import { Erc721DataTable } from '../Tables/Erc721DataTable'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -183,6 +184,17 @@ const ContractView: FC<IContractViewProps> = ({
                         title: 'No token transactions for this contract',
                       }}
                     />
+                  </Suspense>
+                ),
+              },
+
+              {
+                title: 'Erc721 Token TXns',
+                value: 'tokentxns721',
+                to: `${pathname}?tab=tokentxns721`,
+                content: (
+                  <Suspense>
+                    <Erc721DataTable address={address} />
                   </Suspense>
                 ),
               },

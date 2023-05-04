@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useLazyQuery } from '@apollo/client'
 import { txsColumns } from '../Table/columns'
+import { Erc721DataTable } from '../Tables/Erc721DataTable'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -143,6 +144,16 @@ const AddressView: FC<IAddressViewProps> = ({
                         title: 'No token transactions for this address',
                       }}
                     />
+                  </Suspense>
+                ),
+              },
+              {
+                title: 'Erc721 Token TXns',
+                value: 'tokentxns721',
+                to: `${pathname}?tab=tokentxns721`,
+                content: (
+                  <Suspense>
+                    <Erc721DataTable address={address} />
                   </Suspense>
                 ),
               },

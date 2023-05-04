@@ -35,3 +35,24 @@ small {
   background: var(--color-muted);
   color: var(--color-bg);
 }
+
+.recharts-brush {
+  margin-top: 16px;
+
+  [height] {
+    height: 100px;
+  }
+
+  & > rect {
+    fill: none;
+    stroke: none;
+  }
+
+  .recharts-brush-traveller {
+  }
+
+  .recharts-brush-slide {
+    fill: var(--color-accent);
+    fill-opacity: 0.4;
+  }
+}

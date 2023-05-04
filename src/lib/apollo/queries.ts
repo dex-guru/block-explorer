@@ -100,6 +100,16 @@ export const CHAIN_STATS = gql`
       volume24hDeltaUsd
       volume24hUsd
     }
+    csrStats {
+      sumRevenue
+    }
+    chainConfig {
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+    }
   }
 `
 
@@ -281,6 +291,33 @@ export const GET_BLOCKS_BY_NUMBER = gql`
   }
 `
 
+export const GET_CSR_STATS = gql`
+  query CSRStats {
+    csrStats {
+      burned {
+        timestamp
+        value
+      }
+      netEmissions {
+        timestamp
+        value
+      }
+      sumRevenue
+      sumTx
+      sumContracts
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
+  }
+`
+
 export const GET_ADDRESS_INFO = gql`
   query GetAddressInfo($address: String!) {
     address(address: $address) {
@@ -321,6 +358,24 @@ export const GET_SEARCH = gql`
         toAddress
         blockTimestamp
       }
+    }
+  }
+`
+
+export const GET_ERC721_BY_ADDRESS = gql`
+  query Erc721Events($first: Int, $address: String, $hash: String, $skip: Int) {
+    erc721Events(first: $first, address: $address, hash: $hash, skip: $skip) {
+      data {
+        blockTimestamp
+        fromAddress
+        hash
+        operatorAddress
+        toAddress
+        tokenAddress
+        tokenId
+        value
+      }
+      total
     }
   }
 `

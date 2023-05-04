@@ -25,7 +25,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
           {!!stats && <div className={styles.stats}>{renderStats()}</div>}
           {!!charts && <div className={styles.charts}>{renderCharts()}</div>}
         </div>
-        {Boolean(children) && <div className={styles.body}>{children}</div>}
+        {!!children && <div className={styles.body}>{children}</div>}
       </div>
     </Card>
   )

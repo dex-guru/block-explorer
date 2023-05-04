@@ -2,6 +2,7 @@
 
 const nextConfig = {
   env: {
+    explorerName: 'Canto Explorer',
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
   },
