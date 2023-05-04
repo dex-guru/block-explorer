@@ -421,3 +421,32 @@ export const GET_ERC721_BY_ADDRESS = gql`
     }
   }
 `
+export const GET_ERC20_BY_ADDRESS = gql`
+  query Erc20ByAddress(
+    $first: Int
+    $address: String
+    $skip: Int
+    $walletAddress: String
+    $hash: String
+  ) {
+    erc20Events(
+      address: $address
+      first: $first
+      hash: $hash
+      skip: $skip
+      walletAddress: $walletAddress
+    ) {
+      total
+      data {
+        amounts
+        blockTimestamp
+        eventType
+        fromAddress
+        hash
+        toAddress
+        tokenAddresses
+        tokenSymbols
+      }
+    }
+  }
+`
