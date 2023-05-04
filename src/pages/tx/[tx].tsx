@@ -70,7 +70,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   to: `${pathname}?tab=logs`,
                   content: (
                     <Suspense>
-                      <TxLogs data={data} logs={logs} />
+                      <TxLogs data={data} />
                     </Suspense>
                   ),
                 },
