@@ -18,6 +18,9 @@
 .logo,
 .container:after {
   flex: 0 0 320px;
+  display: flex;
+
+  --color-link: #05fc99;
 }
 
 @media (min-width: 1200px) {
