@@ -12,8 +12,6 @@ import {
   TimeAgo,
   Value,
 } from '..'
-import { defaultAbiCoder } from '@ethersproject/abi'
-import { hexDataSlice } from '@ethersproject/bytes'
 import clsx from 'clsx'
 import styles from '../../pages/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'

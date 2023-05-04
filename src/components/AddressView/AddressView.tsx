@@ -68,7 +68,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Canto Value:',
+                  title: `${chain.config.nativeCurrency.symbol} Value`,
                   value: addressInfo.nativeBalanceUSD,
                 },
                 {
