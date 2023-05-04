@@ -184,7 +184,7 @@ export const GET_TRANSACTIONS = gql`
       value
       blockHash
     }
-    transactionStats(blockNumber: $blockNumber) {
+    transactionStats(address: $address, blockNumber: $blockNumber) {
       transactionsCount
       networkTransactionsFee24H
       networkTransactionsFeeDelta24H

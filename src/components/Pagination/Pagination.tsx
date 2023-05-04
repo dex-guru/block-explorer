@@ -35,52 +35,36 @@ export const Pagination: FC<IPaginationProps> = ({
   const [totalPages, setTotalPages] = useState(() =>
     getTotalPages(total, perPage)
   )
-  const [disabled, setDisabled] = useState(() => getDisabled(total, perPage))
+  const [disabled, setDisabled] = useState(getDisabled(total, currentPage))
+
+  const doChangePage = useCallback(
+    (page: number) => {
+      const toPage = Math.min(totalPages, Math.max(1, page))
+
+      const skip = (toPage - 1) * perPage
+      setDisabled(getDisabled(total, toPage))
+
+      onChange({ first: perPage, skip })
+      setDefaultCurrentPage(toPage)
+    },
+    [totalPages, onChange, perPage, setDefaultCurrentPage, total]
+  )
 
   const getNextHandler = useCallback(() => {
-    const skip = currentPage * perPage
-
-    if (skip + perPage >= total) {
-      setDisabled({ ...disabled, last: true, next: true })
-      setDefaultCurrentPage(total)
-      onChange({ first: perPage, skip: total - perPage })
-      return
-    }
-
-    setDefaultCurrentPage(currentPage + 1)
-    setDisabled({ ...disabled, first: false, prev: false })
-    onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage, setDefaultCurrentPage, total])
+    doChangePage(currentPage + 1)
+  }, [currentPage, doChangePage])
 
   const getPrevHandler = useCallback(() => {
-    const skip = currentPage * perPage - perPage
-
-    if (skip - perPage <= 0) {
-      setDisabled({ ...disabled, prev: true, first: true })
-      setDefaultCurrentPage(DEFAULT_FIRST_PAGE)
-      onChange({ first: perPage, skip: 0 })
-      return
-    }
-
-    setDefaultCurrentPage(currentPage - 1)
-    setDisabled({ ...disabled, last: false, next: false })
-    onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage, setDefaultCurrentPage])
+    doChangePage(currentPage - 1)
+  }, [currentPage, doChangePage])
 
   const getFirstHandler = useCallback(() => {
-    const disabledState = getDisabled(total, perPage)
-    setDisabled({ ...disabledState, prev: true, first: true })
-    setDefaultCurrentPage(DEFAULT_FIRST_PAGE)
-    onChange({ first: perPage, skip: 0 })
-  }, [onChange, perPage, setDefaultCurrentPage, total])
+    doChangePage(1)
+  }, [doChangePage])
 
   const getLastHandler = useCallback(() => {
-    const skip = total - perPage
-    const disabledState = getDisabled(total, perPage)
-    setDisabled({ ...disabledState, last: true, next: true })
-    setDefaultCurrentPage(totalPages)
-    onChange({ first: perPage, skip })
-  }, [onChange, perPage, setDefaultCurrentPage, total, totalPages])
+    doChangePage(totalPages)
+  }, [doChangePage, totalPages])
 
   useEffect(() => {
     if (isMounted) {
@@ -98,16 +82,16 @@ export const Pagination: FC<IPaginationProps> = ({
   return (
     <div className={clsx(styles.container, className)}>
       <Button
+        caption="First"
+        onClick={getFirstHandler}
+        disabled={disabled.prev}
+        className={styles.button}
+      />
+      <Button
         onClick={getPrevHandler}
         disabled={disabled.prev}
         className={styles.button}
         icon={<ArrowLeft />}
-      />
-      <Button
-        caption="First"
-        onClick={getFirstHandler}
-        disabled={disabled.first}
-        className={styles.button}
       />
 
       <span className={styles.counter}>
@@ -115,14 +99,14 @@ export const Pagination: FC<IPaginationProps> = ({
       </span>
 
       <Button
-        caption="Last"
-        onClick={getLastHandler}
-        disabled={disabled.last}
+        icon={<ArrowRight />}
+        onClick={getNextHandler}
+        disabled={disabled.next}
         className={styles.button}
       />
       <Button
-        icon={<ArrowRight />}
-        onClick={getNextHandler}
+        caption="Last"
+        onClick={getLastHandler}
         disabled={disabled.next}
         className={styles.button}
       />

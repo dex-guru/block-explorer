@@ -10,11 +10,11 @@ export const getTotalPages = (
 
 export const getDisabled = (
   total: number,
-  perPage: number
-): { prev: boolean; first: boolean; last: boolean; next: boolean } => {
-  if (total > perPage) {
-    return { prev: true, first: true, last: false, next: false }
+  current: number
+): { prev: boolean; next: boolean } => {
+  if (current < total) {
+    return { prev: false, next: false }
   }
 
-  return { prev: true, first: true, last: true, next: true }
+  return { prev: current < 2, next: current >= total }
 }
