@@ -1,4 +1,6 @@
 import BigNumber from 'bignumber.js'
+import { BlockModel } from '@/__generated__/resolvers-types'
+import { BlockModelWithTimeDiff } from '@/components/Table'
 
 export const getNormalizedValue = (
   value: number | string | BigNumber,
@@ -250,4 +252,25 @@ export const isValidBlockNumber = (
     return false
   }
   return !isNaN(Number(block)) && Number(block) !== 0
+}
+
+export const getBlocksWithTimeDiff = (
+  blocks: BlockModel[] | undefined,
+  perPage: number
+): BlockModelWithTimeDiff[] => {
+  if (!blocks) {
+    return []
+  }
+
+  const blocksWithTimeDiff = blocks.map((block, index, array) => {
+    if (index < perPage) {
+      const timeDiff = block.timestamp - array[index + 1].timestamp
+      return { ...block, timeDiff }
+    }
+    return { ...block, timeDiff: 0 }
+  })
+
+  blocksWithTimeDiff.splice(perPage, 1)
+
+  return blocksWithTimeDiff
 }
