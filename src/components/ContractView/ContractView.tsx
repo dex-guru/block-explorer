@@ -82,11 +82,8 @@ const ContractView: FC<IContractViewProps> = ({
         >
           <Grid>
             <Properties
+              title="Contract Overview:"
               data={[
-                {
-                  title: 'Contract Overview:',
-                  value: '🫠',
-                },
                 {
                   title: 'Balance:',
                   value: addressInfo.nativeBalance,
@@ -103,6 +100,7 @@ const ContractView: FC<IContractViewProps> = ({
             />
 
             <Properties
+              title="Contract Creator:"
               data={[
                 {
                   title: 'Contract Creator:',

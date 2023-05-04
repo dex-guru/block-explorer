@@ -41,7 +41,8 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title="Transaction Details">
+        {' '}
+        <DetailsView title="Transaction " address={data?.hash || undefined}>
           {!data?.hash && (
             <Empty icon={<IconEmpty />} title="No TX was found" />
           )}

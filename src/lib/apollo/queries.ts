@@ -282,6 +282,37 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
   }
 `
 
+export const GET_TRANSACTION_LOGS = gql`
+  query TransactionByHash($hash: String!) {
+    logs(transactionHash: $hash) {
+      address
+      blockHash
+      blockNumber
+      data
+      eventName
+      logIndex
+      topics
+      transactionHash
+      transactionIndex
+      decodedInput {
+        isIndexed
+        name
+        type
+        value
+      }
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
+  }
+`
+
 export const GET_BLOCKS_BY_NUMBER = gql`
   query BlokByNumber($number: Int) {
     blocks(first: 1, number: $number) {
