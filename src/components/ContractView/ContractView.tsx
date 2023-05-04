@@ -34,6 +34,7 @@ const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
   addressInfo,
+  chain,
   ...props
 }) => {
   const router = useRouter()
@@ -82,17 +83,14 @@ const ContractView: FC<IContractViewProps> = ({
         >
           <Grid>
             <Properties
+              title="Contract Overview:"
               data={[
-                {
-                  title: 'Contract Overview:',
-                  value: '🫠',
-                },
                 {
                   title: 'Balance:',
                   value: addressInfo.nativeBalance,
                 },
                 {
-                  title: 'Canto Value:',
+                  title: `${chain.config.nativeCurrency.symbol} Value`,
                   value: addressInfo.nativeBalanceUSD,
                 },
                 {
@@ -103,6 +101,7 @@ const ContractView: FC<IContractViewProps> = ({
             />
 
             <Properties
+              title="Contract Creator:"
               data={[
                 {
                   title: 'Contract Creator:',
@@ -131,7 +130,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={transactions || []}
                       total={
                         transactions &&
@@ -155,7 +154,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}
@@ -175,7 +174,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}

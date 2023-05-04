@@ -3,7 +3,12 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
-import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  ChainStatsModel,
+  LogModel,
+  TransactionModel,
+} from '@/__generated__/resolvers-types'
 import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
@@ -17,9 +22,11 @@ const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
 interface ITxProps {
   data: TransactionModel | null
   logs: LogModel[] | null
+  chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
 }
 
-const Tx: NextPage<ITxProps> = ({ data, logs }) => {
+const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
   const router = useRouter()
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
@@ -34,7 +41,8 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title="Transaction Details">
+        {' '}
+        <DetailsView title="Transaction " address={data?.hash || undefined}>
           {!data?.hash && (
             <Empty icon={<IconEmpty />} title="No TX was found" />
           )}
@@ -48,7 +56,11 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
                   to: pathname,
                   content: (
                     <Suspense>
-                      <TxOverview data={data} />
+                      <TxOverview
+                        data={data}
+                        chainStats={chainStats}
+                        chainConfig={chainConfig}
+                      />
                     </Suspense>
                   ),
                 },
@@ -58,7 +70,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs }) => {
                   to: `${pathname}?tab=logs`,
                   content: (
                     <Suspense>
-                      <TxLogs data={data} logs={logs} />
+                      <TxLogs data={data} />
                     </Suspense>
                   ),
                 },
@@ -96,21 +108,25 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data } = await apolloClient.query<{
     transactions: TransactionModel[]
     logs: LogModel[]
+    chainStats: ChainStatsModel
+    chainConfig: ChainConfigModel
   }>({
     query: GET_TRANSACTIONS_BY_HASH,
     variables: { hash: tx },
   })
 
-  if (!data) {
+  const { transactions, logs, chainConfig, chainStats } = data
+
+  if (!transactions?.length) {
     return { notFound: true }
   }
 
-  const transactions = data.transactions[0] || null
-
   return addApolloState(apolloClient, {
     props: {
-      data: transactions,
-      logs: data.logs || null,
+      data: transactions[0],
+      logs: logs || null,
+      chainConfig: chainConfig || null,
+      chainStats: chainStats || null,
     },
   })
 }

@@ -37,12 +37,6 @@ small {
 }
 
 .recharts-brush {
-  margin-top: 16px;
-
-  [height] {
-    height: 100px;
-  }
-
   & > rect {
     fill: none;
     stroke: none;
@@ -54,5 +48,11 @@ small {
   .recharts-brush-slide {
     fill: var(--color-accent);
     fill-opacity: 0.4;
+  }
+}
+
+.recharts-xAxis {
+  text {
+    font-size: 12px !important;
   }
 }

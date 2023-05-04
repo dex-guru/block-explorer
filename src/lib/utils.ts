@@ -1,9 +1,12 @@
 import BigNumber from 'bignumber.js'
 
-export const getNormalizedValue = (value: number): string => {
+export const getNormalizedValue = (
+  value: number | string | BigNumber,
+  decimals = 18
+): string => {
   const result = new BigNumber(value)
 
-  return financialFormatLowValueHighPrecision(result.shiftedBy(-18))
+  return financialFormatLowValueHighPrecision(result.shiftedBy(-decimals))
 }
 
 export const getShortAddress = (address: string): string => {
@@ -12,6 +15,24 @@ export const getShortAddress = (address: string): string => {
     '$1$2…$4'
   )
   return result
+}
+
+export const hex2ascii = (hex: string | number): string => {
+  if (!hex) {
+    return ''
+  }
+
+  hex = hex.toString().replace(/\s+/gi, '')
+  const stack = []
+
+  for (let i = 0; i < hex.length; i += 2) {
+    const code = parseInt(hex.substr(i, 2), 16)
+    if (!isNaN(code) && code !== 0) {
+      stack.push(String.fromCharCode(code))
+    }
+  }
+
+  return stack.join('')
 }
 
 /**
