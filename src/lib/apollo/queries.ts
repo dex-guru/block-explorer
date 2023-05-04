@@ -166,6 +166,7 @@ export const GET_TRANSACTIONS = gql`
     chainStats {
       transactionsCount
       transactionsPerSecond
+      nativeTokenPriceUsd
     }
     chainConfig {
       shortName
@@ -262,6 +263,22 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       transactionType
       value
     }
+    logs(transactionHash: $hash) {
+      logIndex
+    }
+    chainStats {
+      lastBlockNumber
+      nativeTokenPriceUsd
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
   }
 `
 
@@ -287,6 +304,19 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       totalDifficulty
       transactionCount
       transactionsRoot
+    }
+    chainStats {
+      lastBlockNumber
+      nativeTokenPriceUsd
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `
@@ -328,6 +358,18 @@ export const GET_ADDRESS_INFO = gql`
       assetsValueUSD24hDelta
       nativeBalance
       nativeBalanceUSD
+    }
+    chainStats {
+      nativeTokenPriceUsd
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `

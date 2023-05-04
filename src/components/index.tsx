@@ -24,11 +24,18 @@ import Page from './Page'
 import { Pagination } from './Pagination'
 import Properties from './Properties'
 import Search from './Search'
+import Separated from './Separated'
 import Summary from './Summary'
+import { BlockOverview, TxLogs, TxOverview, TxTrace } from './TabContent'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
 import Tile from './Tile'
 import Value from './Value'
+import IconLeft from '@/images/icons/arrow-left.svg'
+import IconRight from '@/images/icons/arrow-right.svg'
+import IconEmpty from '@/images/icons/no-flash.svg'
+import IconWatch from '@/images/icons/stop-watch.svg'
+import IconVerify from '@/images/icons/verified.svg'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 const LineChart = dynamic(() => import('./LineChart'), { ssr: false })
@@ -39,6 +46,7 @@ export {
   Avatar,
   Banner,
   Button,
+  BlockOverview,
   Card,
   Code,
   Copy,
@@ -60,6 +68,7 @@ export {
   Page,
   Pagination,
   Properties,
+  Separated,
   Summary,
   Search,
   Table,
@@ -67,4 +76,12 @@ export {
   Tile,
   TimeAgo,
   Value,
+  IconLeft,
+  IconRight,
+  IconEmpty,
+  IconWatch,
+  IconVerify,
+  TxOverview,
+  TxLogs,
+  TxTrace,
 }

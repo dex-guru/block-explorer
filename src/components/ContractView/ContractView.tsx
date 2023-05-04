@@ -33,6 +33,7 @@ const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
   addressInfo,
+  chain,
   ...props
 }) => {
   const router = useRouter()
@@ -130,7 +131,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={transactions || []}
                       total={
                         transactions &&
@@ -154,7 +155,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}
@@ -174,7 +175,7 @@ const ContractView: FC<IContractViewProps> = ({
                   <Suspense>
                     <DataTable
                       isLoading={loading}
-                      columns={txsColumns}
+                      columns={txsColumns(chain.config, chain.stats)}
                       data={[]}
                       total={0}
                       perPage={perPage[1]}

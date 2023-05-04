@@ -7,8 +7,8 @@ type AddressValueProps = {
   canBeShort?: boolean
 }
 
-export const AddressValues: Record<AddressType, AddressValueProps | null> = {
-  common: null,
+export const AddressValues: Record<AddressType, AddressValueProps> = {
+  common: {},
   account: {
     format: (address: string) => {
       return getShortAddress(address)

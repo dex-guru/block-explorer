@@ -1,7 +1,12 @@
 import { FC } from 'react'
+import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import styles from '../../pages/Pages.module.scss'
-import { TransactionModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  ChainStatsModel,
+  TransactionModel,
+} from '@/__generated__/resolvers-types'
 import {
   Address,
   Code,
@@ -16,7 +21,13 @@ import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
 
-const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
+const TxOverview: FC<{
+  data: TransactionModel
+  chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
+}> = ({ data, chainConfig, chainStats }) => {
+  const gigaNative = ` G${chainConfig.nativeCurrency.symbol.toLowerCase()}`
+
   const properties = [
     {
       title: 'Transaction Hash:',
@@ -95,19 +106,19 @@ const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
       ) : null,
     },
     {
-      title: 'ERC-20 Tokens Transferred: 2:', // TODO: 2 is tx count
+      title: 'ERC-20 Tokens Transferred: ', // TODO: tx count label
       tooltip: '?',
-      value: <Value value={getNormalizedValue(data.value)} prefix="$" />,
+      value: '', // list erc20 tokens as etherscan
     },
     {
-      title: 'ERC-721 Tokens Transferred:', // TODO: 2 is tx count
+      title: 'ERC-721 Tokens Transferred:', // TODO: tx count label
       tooltip: '?',
-      value: <Value value={getNormalizedValue(data.value)} prefix="$" />,
+      value: '', // list erc721 tokens as etherscan
     },
     {
-      title: 'Transaction Action:', // TODO: swap + burn + mint
+      title: 'Transaction Action:', // TODO: tx count label
       tooltip: '?',
-      value: '',
+      value: '', // TODO: swap + burn + mint
     },
     {
       title: 'Value:',
@@ -120,24 +131,29 @@ const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
       value: (
         <Value
           value={getNormalizedValue(
-            data.receiptCumulativeGasUsed * data.gasPrice // TODO: multiply it to chainsStats.usd
+            new BigNumber(data.receiptCumulativeGasUsed || 0)
+              .multipliedBy(data.gasPrice || 0)
+              .multipliedBy(chainStats.nativeTokenPriceUsd || 0)
           )}
-          suffix=" CANTO" // TODO: in Native price
+          suffix={` ${chainConfig.nativeCurrency.symbol}`}
         />
       ),
     },
     {
-      title: 'Gas Price:', // TODO: swap + burn + mint
+      title: 'Gas Price:',
       tooltip: '?',
       value: (
-        <Value value={getNormalizedValue(data.gasPrice)} suffix={' CANTO'} />
-      ), // TODO chainConfig.tokenName
+        <Value
+          value={getNormalizedValue(data.gasPrice)}
+          suffix={` ${chainConfig.nativeCurrency.symbol}`}
+        />
+      ),
     },
   ]
 
   const detailsProperties = [
     {
-      title: 'Gas Limit & Usage by Txn:', // TODO: swap + burn + mint
+      title: 'Gas Limit & Usage by Txn:',
       tooltip: '?',
       value: (
         <Separated>
@@ -153,37 +169,38 @@ const TxOverview: FC<{ data: TransactionModel }> = ({ data }) => {
       ),
     },
     {
-      title: 'Gas Fees:', // TODO: swap + burn + mint
+      title: 'Gas Fees:',
       tooltip: '?',
       value: (
         <Separated>
           <Value
             prefix="Base: "
-            value={getNormalizedValue(data.gasPrice, 9)}
-            suffix=" Gcanto"
+            value={getNormalizedValue(
+              data.gasPrice,
+              chainConfig.nativeCurrency.decimals - 9
+            )}
+            suffix={gigaNative}
           />
-          {/* // TODO: 9 is toiken decimals - 9 */}
-          {/* // TODO: Gcanto is weiName || nativeTokenName */}
           <Value
             prefix="Max: "
             value={getNormalizedValue(data.maxFeePerGas || 0, 9)}
-            suffix=" Gcanto"
+            suffix={gigaNative}
           />
           <Value
             prefix="Max Priority: "
             value={getNormalizedValue(data.maxPriorityFeePerGas || 0, 9)}
-            suffix=" Gcanto"
+            suffix={gigaNative}
           />
         </Separated>
       ),
     },
     {
-      title: 'Other Attributes:', // TODO: swap + burn + mint
+      title: 'Other Attributes:',
       tooltip: '?',
       value: <Value value={financialFormat(data.transactionIndex)} />,
     },
     {
-      title: 'Input Data:', // TODO: swap + burn + mint
+      title: 'Input Data:',
       tooltip: '?',
       value: <Code>{data.input}</Code>,
     },
