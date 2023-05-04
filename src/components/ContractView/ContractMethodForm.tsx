@@ -63,17 +63,24 @@ const ContractMethodForm: FC<IFormProps> = ({
       setCallResult(undefined)
       setIsLoading(true)
       const methodArgs = Object.values(args)
-      const data = await readContract({
-        address: address as `0x${string}`,
-        abi,
-        functionName: method.name,
-        args: methodArgs,
-        chainId: chain,
-      })
-      const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
+      try {
+        const data = await readContract({
+          address: address as `0x${string}`,
+          abi,
+          functionName: method.name,
+          args: methodArgs,
+          chainId: chain,
+        })
+        const result = ethers.BigNumber.isBigNumber(data)
+          ? data.toString()
+          : data
 
-      setCallResult(result)
-      setIsLoading(false)
+        setCallResult(result)
+        setIsLoading(false)
+      } catch (e) {
+        console.error(e)
+        setIsLoading(false)
+      }
     },
     [abi, address, method.name, chain]
   )
@@ -92,23 +99,30 @@ const ContractMethodForm: FC<IFormProps> = ({
       if (method.stateMutability === 'payable' && methodArgs.length > 0) {
         value = methodArgs.pop() as string // methodArgs isn't empty so it will be never undefined
       }
-      const config = await prepareWriteContract({
-        address: address as `0x${string}`,
-        abi,
-        functionName: method.name,
-        args: methodArgs,
-        chainId: chain,
-        overrides: {
-          from: account,
-          value: ethers.BigNumber.from(value),
-        },
-      })
-      const data = await writeContract<Abi, string, ethers.Signer>(config)
+      try {
+        const config = await prepareWriteContract({
+          address: address as `0x${string}`,
+          abi,
+          functionName: method.name,
+          args: methodArgs,
+          chainId: chain,
+          overrides: {
+            from: account,
+            value: ethers.BigNumber.from(value),
+          },
+        })
+        const data = await writeContract<Abi, string, ethers.Signer>(config)
 
-      const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
+        const result = ethers.BigNumber.isBigNumber(data)
+          ? data.toString()
+          : data
 
-      setCallResult(result.toString())
-      setIsLoading(false)
+        setCallResult(result.toString())
+        setIsLoading(false)
+      } catch (e) {
+        console.error(e)
+        setIsLoading(false)
+      }
     },
     [abi, account, address, method.name, method.stateMutability, chain]
   )
