@@ -1,48 +1,64 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import { erc20Columns } from './columns'
+import { nftColumns } from './columns'
+import Button from '@/components/Button'
 import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
+import Empty from '@/components/Empty'
 import Loading from '@/components/Loading'
 import { GET_ERC721_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+import styles from './NftDataTable.module.scss'
 
 const PER_PAGE = 10
 
-interface IErc20DataTableProps {
-  address: string
+interface INftDataTableProps {
+  address?: string
 }
 
-export const Erc721DataTable: FC<IErc20DataTableProps> = ({ address }) => {
-  const [getErc20, { data, loading, previousData }] = useLazyQuery(
+export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
+  const [getNfts, { data, loading, previousData }] = useLazyQuery(
     GET_ERC721_BY_ADDRESS
   )
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getErc20({
+      getNfts({
         variables: {
           address,
           ...variables,
         },
       })
     },
-    [address, getErc20]
+    [address, getNfts]
   )
 
   useEffect(() => {
-    getErc20({
+    getNfts({
       variables: {
         first: PER_PAGE,
         address,
         skip: 0,
       },
     })
-  }, [address, getErc20])
+  }, [address, getNfts])
 
   const displayData = loading ? previousData : data
 
-  if (!displayData && loading) {
+  if (!data && !loading) {
+    return (
+      <Empty
+        className={styles.error}
+        icon="🙀"
+        title="Error while receiving ERC-20 events"
+        subtitle={address ? `for ${address}` : undefined}
+      >
+        <Button className={styles.retry} caption="Retry?" onClick={getNfts} />
+      </Empty>
+    )
+  }
+
+  if (!previousData && loading) {
     return (
       <Card>
         <Loading />
@@ -53,17 +69,17 @@ export const Erc721DataTable: FC<IErc20DataTableProps> = ({ address }) => {
   return (
     <DataTable
       isLoading={loading}
-      columns={erc20Columns}
+      columns={nftColumns}
       data={displayData?.erc721Events?.data || []}
       total={displayData?.erc721Events?.total}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{
-        title: 'No ERC-721 events',
-        subtitle: `for ${address}`,
+        title: 'No NFT events',
+        subtitle: address ? `for ${address}` : undefined,
       }}
     />
   )
 }
 
-export default Erc721DataTable
+export default NftDataTable

@@ -49,7 +49,9 @@ const TxLogs: FC<{ data: TransactionModel }> = (props) => {
   if (hash && loading) {
     return (
       <Card>
-        <Loading />
+        <Card>
+          <Loading />
+        </Card>
       </Card>
     )
   }

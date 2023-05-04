@@ -113,13 +113,27 @@ export const CHAIN_STATS = gql`
   }
 `
 
-export const TRANSACTIONS_STATS = gql`
+export const GET_TRANSACTIONS_STATS = gql`
   query TransactionsStats {
     transactionStats {
       networkTransactionsFee24H
       networkTransactionsFeeDelta24H
       transactions24H
       transactionsDelta24H
+    }
+    chainStats {
+      transactionsCount
+      transactionsPerSecond
+      nativeTokenPriceUsd
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `
@@ -131,6 +145,20 @@ export const BLOCKS_STATS = gql`
       burntFees
       lastSafeBlock
       networkUtilization24H
+    }
+    chainStats {
+      transactionsCount
+      transactionsPerSecond
+      nativeTokenPriceUsd
+    }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
     }
   }
 `

@@ -2,6 +2,7 @@ import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
+import Loading from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -25,7 +26,7 @@ import { financialFormat } from '@/lib/utils'
 
 const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
 const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
-const Erc721DataTable = lazy(() => import('../Tables/Erc721DataTable'))
+const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -46,6 +47,12 @@ const ContractView: FC<IContractViewProps> = ({
 
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+
+  const preloader = (
+    <Card>
+      <Loading />
+    </Card>
+  )
 
   return (
     <>
@@ -116,29 +123,35 @@ const ContractView: FC<IContractViewProps> = ({
                 value: '',
                 to: pathname,
                 content: (
-                  <Suspense>
-                    <TxsDataTable address={address} chain={chain} />
+                  <Suspense
+                    fallback={
+                      <Card>
+                        <Loading />
+                      </Card>
+                    }
+                  >
+                    <TxsDataTable address={address} />
                   </Suspense>
                 ),
               },
               {
-                title: 'Erc20 Token TXns',
+                title: 'ERC-20 Token TXns',
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Erc20DataTable address={address} />
                   </Suspense>
                 ),
               },
 
               {
-                title: 'Erc721 Token TXns',
-                value: 'tokentxns721',
-                to: `${pathname}?tab=tokentxns721`,
+                title: 'NFT Token TXns',
+                value: 'nfttxns',
+                to: `${pathname}?tab=nfttxns`,
                 content: (
-                  <Suspense>
-                    <Erc721DataTable address={address} />
+                  <Suspense fallback={preloader}>
+                    <NftDataTable address={address} />
                   </Suspense>
                 ),
               },
@@ -154,7 +167,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'events',
                 to: `${pathname}?tab=events`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Card>Some events here soon</Card>
                   </Suspense>
                 ),
@@ -164,7 +177,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Card>Some analytics here soon</Card>
                   </Suspense>
                 ),
@@ -176,7 +189,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Card>Some comments here soon</Card>
                   </Suspense>
                 ),

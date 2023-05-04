@@ -3,27 +3,32 @@ import { useLazyQuery } from '@apollo/client'
 import {
   ChainConfigModel,
   ChainStatsModel,
+  TransactionModel,
+  TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
+import Button from '@/components/Button'
 import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
+import Empty from '@/components/Empty'
 import Loading from '@/components/Loading'
 import { txsColumns } from '@/components/Table'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+import styles from './TxsDataTable.module.scss'
 
 const PER_PAGE = 10
 
 interface ITxsDataTableProps {
-  address: string
-  chain: {
-    stats: ChainStatsModel
-    config: ChainConfigModel
-  }
+  address?: string
 }
 
-export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, chain }) => {
-  const [getTransactions, { data, loading, previousData }] =
-    useLazyQuery(GET_TRANSACTIONS)
+export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
+  const [getTransactions, { data, loading, previousData }] = useLazyQuery<{
+    transactions: TransactionModel[]
+    transactionStats: TransactionStatsModel
+    chainConfig: ChainConfigModel
+    chainStats: ChainStatsModel
+  }>(GET_TRANSACTIONS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -49,7 +54,24 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, chain }) => {
 
   const displayData = loading ? previousData : data
 
-  if (!displayData && loading) {
+  if (!data && !loading) {
+    return (
+      <Empty
+        className={styles.error}
+        icon="🙀"
+        title="Error while receiving ERC-20 events"
+        subtitle={address ? `for ${address}` : undefined}
+      >
+        <Button
+          className={styles.retry}
+          caption="Retry?"
+          onClick={getTransactions}
+        />
+      </Empty>
+    )
+  }
+
+  if (!previousData && loading) {
     return (
       <Card>
         <Loading />
@@ -60,14 +82,14 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, chain }) => {
   return (
     <DataTable
       isLoading={loading}
-      columns={txsColumns(chain.config, chain.stats)}
-      data={displayData?.transactions}
+      columns={txsColumns(displayData?.chainConfig, displayData?.chainStats)}
+      data={displayData?.transactions || []}
       total={displayData?.transactionStats?.transactionsCount}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{
         title: 'No transactions',
-        subtitle: `for ${address}`,
+        subtitle: address ? `for ${address}` : undefined,
       }}
     />
   )

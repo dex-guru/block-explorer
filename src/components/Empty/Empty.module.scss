@@ -1,5 +1,9 @@
 .container {
-  background: var(--color-bg-2);
+  --color-empty-bg: var(--color-bg-2);
+  --color-empty-text: var(--color-muted);
+  --color-empty-icon: var(--color-neutral);
+
+  background: var(--color-empty-bg);
   border-radius: var(--radii-lg);
   display: flex;
   flex-flow: column;
@@ -8,6 +12,11 @@
   align-items: center;
   justify-content: center;
   padding: 48px 16px;
+}
+
+.error {
+  --color-empty-text: var(--color-negative);
+  --color-empty-icon: var(--color-negative);
 }
 
 .header {
@@ -27,12 +36,16 @@
   width: 64px;
   height: 64px;
   padding: 10px;
-  border: 2px var(--color-neutral) solid;
+  border: 2px var(--color-empty-icon) solid;
+  color: var(--color-empty-icon);
   border-radius: 32px;
   display: flex;
   align-items: stretch;
   justify-content: stretch;
   margin-bottom: 8px;
+  font-size: 40px;
+  line-height: 1;
+  text-align: center;
 
   svg {
     width: 40px;
@@ -40,7 +53,7 @@
   }
 
   path {
-    fill: var(--color-neutral);
+    fill: var(--color-empty-icon);
   }
 }
 
@@ -48,11 +61,11 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
-  color: var(--color-muted);
+  color: var(--color-empty-text);
 }
 
 .subtitle {
-  color: var(--color-muted);
+  color: var(--color-empty-text);
   font-weight: 400;
   font-size: 16px;
   line-height: 20px;

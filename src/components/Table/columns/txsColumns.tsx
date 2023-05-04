@@ -10,8 +10,8 @@ import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
 export const txsColumns = (
-  chainConfig: ChainConfigModel,
-  chainStats: ChainStatsModel
+  chainConfig?: ChainConfigModel,
+  chainStats?: ChainStatsModel
 ): IColumn<TransactionModel>[] => [
   {
     accessor: 'hash',
@@ -68,18 +68,22 @@ export const txsColumns = (
           <Value
             value={getNormalizedValue(
               bigValue,
-              chainConfig.nativeCurrency.decimals
+              chainConfig?.nativeCurrency.decimals
             )}
-            suffix={` ${chainConfig.nativeCurrency.symbol}`}
+            suffix={
+              chainConfig?.nativeCurrency.symbol
+                ? ` ${chainConfig?.nativeCurrency.symbol}`
+                : ''
+            }
           />{' '}
           (
           <Value
             prefix="$"
             value={getNormalizedValue(
               bigValue.multipliedBy(
-                Number(chainStats.nativeTokenPriceUsd || 0)
+                Number(chainStats?.nativeTokenPriceUsd || 0)
               ),
-              chainConfig.nativeCurrency.decimals
+              chainConfig?.nativeCurrency.decimals
             )}
           />
           )

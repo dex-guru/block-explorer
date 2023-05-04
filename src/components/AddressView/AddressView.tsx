@@ -1,10 +1,7 @@
-import { FC, Suspense, useCallback, useEffect, useState } from 'react'
+import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useLazyQuery } from '@apollo/client'
-import { txsColumns } from '../Table/columns'
-import { Erc20DataTable } from '../Tables/Erc20DataTable/Erc20DataTable'
-import { Erc721DataTable } from '../Tables/Erc721DataTable'
+import Loading from '../Loading'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -13,40 +10,26 @@ import {
   Page,
   Properties,
   TabPanel,
-  DataTable,
   Card,
 } from '@/components'
-import { useIsMount } from '@/hooks'
-import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
-import { PaginationVariables } from '@/types'
 
-const perPage = [5, 10, 25, 50, 100]
+const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
+const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
+const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
 
 const AddressView: FC<IAddressViewProps> = ({
   address,
   tab,
   addressInfo,
   chain,
-  ...props
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
-  const isMount = useIsMount()
-  const [transactions, setTransactions] = useState(props.transactions)
 
-  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
-
-  useEffect(() => {
-    if (data && isMount) {
-      setTransactions(data.transactions)
-    }
-  }, [data, isMount])
-
-  const onPaginationChange = useCallback(
-    (variables: PaginationVariables) => {
-      getTransactions({ variables: { ...variables, address } })
-    },
-    [getTransactions, address]
+  const preloader = (
+    <Card>
+      <Loading />
+    </Card>
   )
 
   return (
@@ -90,62 +73,29 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: '',
                 to: pathname,
                 content: (
-                  <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={transactions || []}
-                      total={
-                        transactions &&
-                        transactions[0] &&
-                        transactions[0].blockNumber
-                      }
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No transactions for this address',
-                      }}
-                    />
+                  <Suspense fallback={preloader}>
+                    <TxsDataTable address={address} />,
                   </Suspense>
                 ),
               },
+
               {
-                title: 'Internal TXns',
-                value: 'internaltx',
-                to: `${pathname}?tab=internaltx`,
-                content: (
-                  <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={[]}
-                      total={0}
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No internal transactions for this address',
-                      }}
-                    />
-                  </Suspense>
-                ),
-              },
-              {
-                title: 'Erc20 Token TXns',
+                title: 'ERC-20 Token TXns',
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Erc20DataTable address={address} />
                   </Suspense>
                 ),
               },
               {
-                title: 'Erc721 Token TXns',
-                value: 'tokentxns721',
-                to: `${pathname}?tab=tokentxns721`,
+                title: 'NFT Token TXns',
+                value: 'nfttxns',
+                to: `${pathname}?tab=nfttxns`,
                 content: (
-                  <Suspense>
-                    <Erc721DataTable address={address} />
+                  <Suspense fallback={preloader}>
+                    <NftDataTable address={address} />
                   </Suspense>
                 ),
               },
@@ -154,7 +104,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Card>Some analytics here soon</Card>
                   </Suspense>
                 ),
@@ -164,7 +114,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={preloader}>
                     <Card>Some comments here soon</Card>
                   </Suspense>
                 ),

@@ -15,7 +15,7 @@ interface IPaginationProps {
   perPage?: number
   className?: string
   onChange: (variables: PaginationVariables) => void
-  setdefaultCurrentPage: (page: number) => void
+  setDefaultCurrentPage: (page: number) => void
 }
 
 export const DEFAULT_FIRST_PAGE = 1
@@ -26,7 +26,7 @@ export const Pagination: FC<IPaginationProps> = ({
   perPage = DEFAULT_PER_PAGE,
   onChange,
   className,
-  setdefaultCurrentPage,
+  setDefaultCurrentPage,
   defaultCurrentPage = DEFAULT_FIRST_PAGE,
 }) => {
   const isMounted = useIsMount()
@@ -42,45 +42,45 @@ export const Pagination: FC<IPaginationProps> = ({
 
     if (skip + perPage >= total) {
       setDisabled({ ...disabled, last: true, next: true })
-      setdefaultCurrentPage(total)
+      setDefaultCurrentPage(total)
       onChange({ first: perPage, skip: total - perPage })
       return
     }
 
-    setdefaultCurrentPage(currentPage + 1)
+    setDefaultCurrentPage(currentPage + 1)
     setDisabled({ ...disabled, first: false, prev: false })
     onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage, setdefaultCurrentPage, total])
+  }, [currentPage, disabled, onChange, perPage, setDefaultCurrentPage, total])
 
   const getPrevHandler = useCallback(() => {
     const skip = currentPage * perPage - perPage
 
     if (skip - perPage <= 0) {
       setDisabled({ ...disabled, prev: true, first: true })
-      setdefaultCurrentPage(DEFAULT_FIRST_PAGE)
+      setDefaultCurrentPage(DEFAULT_FIRST_PAGE)
       onChange({ first: perPage, skip: 0 })
       return
     }
 
-    setdefaultCurrentPage(currentPage - 1)
+    setDefaultCurrentPage(currentPage - 1)
     setDisabled({ ...disabled, last: false, next: false })
     onChange({ first: perPage, skip })
-  }, [currentPage, disabled, onChange, perPage, setdefaultCurrentPage])
+  }, [currentPage, disabled, onChange, perPage, setDefaultCurrentPage])
 
   const getFirstHandler = useCallback(() => {
     const disabledState = getDisabled(total, perPage)
     setDisabled({ ...disabledState, prev: true, first: true })
-    setdefaultCurrentPage(DEFAULT_FIRST_PAGE)
+    setDefaultCurrentPage(DEFAULT_FIRST_PAGE)
     onChange({ first: perPage, skip: 0 })
-  }, [onChange, perPage, setdefaultCurrentPage, total])
+  }, [onChange, perPage, setDefaultCurrentPage, total])
 
   const getLastHandler = useCallback(() => {
     const skip = total - perPage
     const disabledState = getDisabled(total, perPage)
     setDisabled({ ...disabledState, last: true, next: true })
-    setdefaultCurrentPage(totalPages)
+    setDefaultCurrentPage(totalPages)
     onChange({ first: perPage, skip })
-  }, [onChange, perPage, setdefaultCurrentPage, total, totalPages])
+  }, [onChange, perPage, setDefaultCurrentPage, total, totalPages])
 
   useEffect(() => {
     if (isMounted) {

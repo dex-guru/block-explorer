@@ -1,16 +1,19 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { erc20Columns } from './columns'
+import Button from '@/components/Button'
 import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
+import Empty from '@/components/Empty'
 import Loading from '@/components/Loading'
 import { GET_ERC20_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+import styles from './Erc20DataTable.module.scss'
 
 const PER_PAGE = 10
 
 interface IErc20DataTableProps {
-  address: string
+  address?: string
 }
 
 export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
@@ -41,7 +44,20 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
 
   const displayData = loading ? previousData : data
 
-  if (!displayData && loading) {
+  if (!data && !loading) {
+    return (
+      <Empty
+        className={styles.error}
+        icon="🙀"
+        title="Error while receiving ERC-20 events"
+        subtitle={address ? `for ${address}` : undefined}
+      >
+        <Button className={styles.retry} caption="Retry?" onClick={getErc20} />
+      </Empty>
+    )
+  }
+
+  if (!previousData && loading) {
     return (
       <Card>
         <Loading />
@@ -59,7 +75,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
       onPageChange={onPaginationChange}
       empty={{
         title: 'No ERC-20 events',
-        subtitle: `for ${address}`,
+        subtitle: address ? `for ${address}` : undefined,
       }}
     />
   )
