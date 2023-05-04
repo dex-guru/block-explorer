@@ -1,23 +1,33 @@
+import { getAddress } from '@ethersproject/address'
+import { isAddress } from '@ethersproject/address'
 import { AddressType } from './types'
 import { getShortAddress } from '@/lib/utils'
 
 type AddressValueProps = {
-  format?: (address: string) => string
+  format?: (address: string, shorten?: boolean) => string
   url?: (address: string) => string
   canBeShort?: boolean
 }
 
 export const AddressValues: Record<AddressType, AddressValueProps> = {
   common: {},
+
   account: {
-    format: (address: string) => {
-      return getShortAddress(address)
+    format: (address: string, shorten = true) => {
+      const checkSumAddress = isAddress(address) ? getAddress(address) : address
+
+      if (shorten) {
+        return getShortAddress(checkSumAddress)
+      }
+
+      return checkSumAddress
     },
     url: (address: string) => {
       return `/address/${address}`
     },
     canBeShort: true,
   },
+
   tx: {
     format: (address: string) => {
       return getShortAddress(address)
@@ -27,6 +37,7 @@ export const AddressValues: Record<AddressType, AddressValueProps> = {
     },
     canBeShort: true,
   },
+
   block: {
     format: (address: string) => {
       return address
