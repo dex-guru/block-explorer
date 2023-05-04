@@ -5,6 +5,7 @@ const nextConfig = {
     explorerName: 'Canto Explorer',
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
+    pollInterval: 6000,
   },
   reactStrictMode: true,
   webpack(config) {

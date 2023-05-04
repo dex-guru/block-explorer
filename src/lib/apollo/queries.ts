@@ -432,6 +432,37 @@ export const GET_ADDRESS_INFO = gql`
     }
   }
 `
+
+export const GET_SEARCH = gql`
+  query GetSearch($query: String!) {
+    search(first: 10, query: $query) {
+      blocks {
+        transactionCount
+        timestamp
+        number
+      }
+      addresses {
+        address
+        addressType
+        assetsCount
+        assetsValueUSD
+        assetsValueUSD24hDelta
+        nativeBalance
+        nativeBalanceUSD
+      }
+      transactions {
+        hash
+        value
+        transactionType
+        blockNumber
+        fromAddress
+        toAddress
+        blockTimestamp
+      }
+    }
+  }
+`
+
 export const GET_ERC721_BY_ADDRESS = gql`
   query Erc721Events($first: Int, $address: String, $hash: String, $skip: Int) {
     erc721Events(first: $first, address: $address, hash: $hash, skip: $skip) {
@@ -474,6 +505,57 @@ export const GET_ERC20_BY_ADDRESS = gql`
         toAddress
         tokenAddresses
         tokenSymbols
+      }
+    }
+  }
+`
+
+export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
+  query ExampleQuery($first: Int!, $skip: Int!) {
+    blocks(first: $first, skip: $skip) {
+      hash
+      number
+      miner
+      transactionCount
+      timestamp
+      gasUsed
+      gasLimit
+    }
+    transactions(first: 10, skip: 0) {
+      hash
+      blockHash
+      blockNumber
+      blockTimestamp
+      fromAddress
+      toAddress
+      value
+    }
+    chainStats {
+      lastBlockNumber
+      liquidity24hDelta
+      liquidityUsd
+      marketCap
+      mediumGasPrice
+      nativeTokenPriceUsd
+      nativeTokenPriceUsd24hDelta
+      tokenSupply
+      transactionsCount
+      transactionsPerSecond
+      transactionsCountHistory {
+        timestamp
+        value
+      }
+      volume24hDeltaUsd
+      volume24hUsd
+    }
+    csrStats {
+      sumRevenue
+    }
+    chainConfig {
+      nativeCurrency {
+        decimals
+        name
+        symbol
       }
     }
   }

@@ -20,6 +20,7 @@ import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
 import Logo from './Logo'
+import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
 import Properties from './Properties'
@@ -65,6 +66,7 @@ export {
   Label,
   LineChart,
   Logo,
+  OutsideClicker,
   Page,
   Pagination,
   Properties,

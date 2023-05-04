@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, Label, Tile, TimeAgo } from '@/components'
+import { Address, Avatar, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
 
@@ -11,8 +11,8 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
     accessor: 'hash',
     render: (data) => (
       <Tile
-        letters="Bk"
-        title={<Address address={`${data.number}`} type="block" isCopy />}
+        icon={<Avatar letters="Bk" type="smooth" />}
+        title={<Address address={`${data.number}`} type="block" />}
         postfix={<TimeAgo timestamp={data.timestamp} />}
       />
     ),

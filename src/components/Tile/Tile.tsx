@@ -1,24 +1,12 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import Avatar from '../Avatar'
 import { TileProps } from './types'
 import styles from './Tile.module.scss'
 
-const Tile: FC<TileProps> = ({
-  title,
-  prefix,
-  postfix,
-  letters,
-  avatarType,
-  className,
-}) => {
+const Tile: FC<TileProps> = ({ title, prefix, postfix, icon, className }) => {
   return (
     <div className={clsx(styles.container, className)}>
-      {!!letters && (
-        <div className={styles.icon}>
-          <Avatar letters={letters} type={avatarType} />
-        </div>
-      )}
+      {!!icon && <div className={styles.icon}>{icon}</div>}
       <div className={styles.content}>
         {!!prefix && <small className={styles.subtitle}>{prefix}</small>}{' '}
         <strong className={styles.title}>{title}</strong>{' '}

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import clsx from 'clsx'
 import Copy from '../Copy'
 import Heading from '../Heading'
+import Label from '../Label'
 import { DetailsViewProps } from './types'
 import styles from './DetaisView.module.scss'
 
@@ -25,7 +26,7 @@ const DetailsView: FC<DetailsViewProps> = ({
           </>
         )}
         <div className={styles.tools}></div>
-        {!!tag && <div className={styles.tag}>{tag}</div>}
+        {!!tag && <Label className={styles.tag}>{tag}</Label>}
       </div>
       <div className={styles.body}>{children}</div>
     </div>

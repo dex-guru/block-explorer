@@ -4,6 +4,8 @@ import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useAccount, useChainId } from 'wagmi'
+import Loading from '../Loading'
+import { getValidator } from './validators'
 import { Details, Heading, Button } from '@/components'
 import styles from './ContractView.module.scss'
 
@@ -13,6 +15,7 @@ export interface IFormProps {
   address: string
   isWrite?: boolean
 }
+
 const ContractMethodForm: FC<IFormProps> = ({
   method,
   address,
@@ -25,6 +28,7 @@ const ContractMethodForm: FC<IFormProps> = ({
     formState: { errors },
   } = useForm()
   const { address: account } = useAccount()
+  const [isLoading, setIsLoading] = useState(false)
   const chain = useChainId()
 
   const [callResult, setCallResult] = useState<unknown>(undefined)
@@ -35,17 +39,27 @@ const ContractMethodForm: FC<IFormProps> = ({
       event?: React.BaseSyntheticEvent
     ) => {
       event?.preventDefault()
+      setCallResult(undefined)
+      setIsLoading(true)
       const methodArgs = Object.values(args)
-      const data = await readContract({
-        address: address as `0x${string}`,
-        abi,
-        functionName: method.name,
-        args: methodArgs,
-        chainId: chain,
-      })
-      const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
+      try {
+        const data = await readContract({
+          address: address as `0x${string}`,
+          abi,
+          functionName: method.name,
+          args: methodArgs,
+          chainId: chain,
+        })
+        const result = ethers.BigNumber.isBigNumber(data)
+          ? data.toString()
+          : data
 
-      setCallResult(result)
+        setCallResult(result)
+        setIsLoading(false)
+      } catch (e) {
+        console.error(e)
+        setIsLoading(false)
+      }
     },
     [abi, address, method.name, chain]
   )
@@ -56,27 +70,38 @@ const ContractMethodForm: FC<IFormProps> = ({
       event?: React.BaseSyntheticEvent
     ) => {
       event?.preventDefault()
+      setCallResult(undefined)
+      setIsLoading(true)
+
       let value = '0'
       const methodArgs = Object.values(args)
       if (method.stateMutability === 'payable' && methodArgs.length > 0) {
         value = methodArgs.pop() as string // methodArgs isn't empty so it will be never undefined
       }
-      const config = await prepareWriteContract({
-        address: address as `0x${string}`,
-        abi,
-        functionName: method.name,
-        args: methodArgs,
-        chainId: chain,
-        overrides: {
-          from: account,
-          value: ethers.BigNumber.from(value),
-        },
-      })
-      const data = await writeContract<Abi, string, ethers.Signer>(config)
+      try {
+        const config = await prepareWriteContract({
+          address: address as `0x${string}`,
+          abi,
+          functionName: method.name,
+          args: methodArgs,
+          chainId: chain,
+          overrides: {
+            from: account,
+            value: ethers.BigNumber.from(value),
+          },
+        })
+        const data = await writeContract<Abi, string, ethers.Signer>(config)
 
-      const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
+        const result = ethers.BigNumber.isBigNumber(data)
+          ? data.toString()
+          : data
 
-      setCallResult(result.toString())
+        setCallResult(result.toString())
+        setIsLoading(false)
+      } catch (e) {
+        console.error(e)
+        setIsLoading(false)
+      }
     },
     [abi, account, address, method.name, method.stateMutability, chain]
   )
@@ -91,6 +116,9 @@ const ContractMethodForm: FC<IFormProps> = ({
         <>
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
+            const errorMessage = errors[name]?.message as string
+            const validator = getValidator(input.type)
+
             return (
               <label key={index} className={styles.field}>
                 <Heading
@@ -99,25 +127,33 @@ const ContractMethodForm: FC<IFormProps> = ({
                   className={styles.label}
                 />
                 <input
-                  {...register(name)}
+                  {...register(name, {
+                    required: true,
+                    validate: validator,
+                  })}
                   className={styles.input}
                   placeholder={`${input.name} (${
                     input.internalType || input.type
                   })`}
                 />
-                {/* errors will return when field validation fails  */}
-                {errors.exampleRequired && <span>This field is required</span>}
+                {errorMessage && <span>{errorMessage}</span>}
               </label>
             )
           })}
           {method.stateMutability === 'payable' && (
             <label>
               <Heading caption="native token amount (payable)" size="xs" />
-              <input {...register('payable')} />
-              {/* errors will return when field validation fails  */}
-              {errors.exampleRequired && <span>This field is required</span>}
+              <input
+                {...register('payable')}
+                className={styles.input}
+                placeholder="payable"
+              />
+              {errors.payable && (
+                <span>{errors.payable.message?.toString()}</span>
+              )}
             </label>
           )}
+          {isLoading && <Loading />}
           {callResult}
           <Button
             type="submit"
