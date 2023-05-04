@@ -418,6 +418,11 @@ export const GET_ADDRESS_INFO = gql`
       nativeBalance
       nativeBalanceUSD
     }
+    contractCreator(address: $address) {
+      creatorAddress
+      timestamp
+      txHash
+    }
     chainStats {
       nativeTokenPriceUsd
     }
@@ -464,8 +469,8 @@ export const GET_SEARCH = gql`
 `
 
 export const GET_ERC721_BY_ADDRESS = gql`
-  query Erc721Events($first: Int, $address: String, $hash: String, $skip: Int) {
-    erc721Events(first: $first, address: $address, hash: $hash, skip: $skip) {
+  query nftEvents($first: Int, $address: String, $hash: String, $skip: Int) {
+    nftEvents(first: $first, address: $address, hash: $hash, skip: $skip) {
       data {
         blockTimestamp
         fromAddress

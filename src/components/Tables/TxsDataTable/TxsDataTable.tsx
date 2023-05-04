@@ -12,6 +12,7 @@ import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
 import Loading from '@/components/Loading'
 import { txsColumns } from '@/components/Table'
+import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './TxsDataTable.module.scss'
@@ -29,6 +30,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
     chainConfig: ChainConfigModel
     chainStats: ChainStatsModel
   }>(GET_TRANSACTIONS)
+  const isMount = useIsMount()
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -54,7 +56,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
 
   const displayData = loading ? previousData : data
 
-  if (!data && !loading) {
+  if (isMount && !data && !loading) {
     return (
       <Empty
         className={styles.error}

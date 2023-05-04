@@ -5,6 +5,7 @@ import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
 import { LoadingCard } from '@/components/Loading'
+import { useIsMount } from '@/hooks'
 import { GET_ERC721_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './NftDataTable.module.scss'
@@ -19,6 +20,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
   const [getNfts, { data, loading, previousData }] = useLazyQuery(
     GET_ERC721_BY_ADDRESS
   )
+  const isMount = useIsMount()
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -44,7 +46,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
 
   const displayData = loading ? previousData : data
 
-  if (!data && !loading) {
+  if (isMount && !data && !loading) {
     return (
       <Empty
         className={styles.error}
@@ -65,8 +67,8 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
     <DataTable
       isLoading={loading}
       columns={nftColumns}
-      data={displayData?.erc721Events?.data || []}
-      total={displayData?.erc721Events?.total}
+      data={displayData?.nftEvents?.data || []}
+      total={displayData?.nftEvents?.total}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{

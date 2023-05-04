@@ -97,3 +97,9 @@
     }
   }
 }
+
+.span2Only {
+  &:only-child {
+    grid-column: span 2;
+  }
+}

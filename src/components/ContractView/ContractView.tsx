@@ -2,6 +2,7 @@ import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
+import styles from '../../pages/Pages.module.scss'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
@@ -19,6 +20,9 @@ import {
   ConnectButton,
   Card,
   Value,
+  IconWatch,
+  TimeAgo,
+  DateTime,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -33,6 +37,7 @@ const ContractView: FC<IContractViewProps> = ({
   tab,
   addressInfo,
   chain,
+  contractCreator,
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
@@ -64,6 +69,7 @@ const ContractView: FC<IContractViewProps> = ({
         >
           <Grid>
             <Properties
+              className={styles.span2Only}
               title="Contract Overview:"
               data={[
                 {
@@ -91,24 +97,35 @@ const ContractView: FC<IContractViewProps> = ({
               ]}
             />
 
-            <Properties
-              title="Contract Creator:"
-              data={[
-                {
-                  title: 'Contract Creator:',
-                  value: (
-                    <div>
-                      <Address address="🫠" type="account" /> at txn{' '}
-                      <Address address="🫠" type="tx" />
-                    </div>
-                  ),
-                },
-                {
-                  title: 'Token Tracker:',
-                  value: <>🫠</>,
-                },
-              ]}
-            />
+            {!!contractCreator && (
+              <Properties
+                title="Contract Creator:"
+                data={[
+                  {
+                    title: 'Creator:',
+                    value: (
+                      <div>
+                        <Address
+                          address={contractCreator.creatorAddress}
+                          type="account"
+                          isCopy
+                        />{' '}
+                        at txn{' '}
+                        <Address
+                          address={contractCreator.txHash}
+                          type="tx"
+                          isCopy
+                        />
+                      </div>
+                    ),
+                  },
+                  {
+                    title: 'Timestamp:',
+                    value: <DateTime timestamp={contractCreator.timestamp} />,
+                  },
+                ]}
+              />
+            )}
           </Grid>
 
           <TabPanel

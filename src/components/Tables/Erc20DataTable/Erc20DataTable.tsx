@@ -6,6 +6,7 @@ import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
 import Loading from '@/components/Loading'
+import { useIsMount } from '@/hooks'
 import { GET_ERC20_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './Erc20DataTable.module.scss'
@@ -19,6 +20,7 @@ interface IErc20DataTableProps {
 export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
   const [getErc20, { data, loading, previousData }] =
     useLazyQuery(GET_ERC20_BY_ADDRESS)
+  const isMount = useIsMount()
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
@@ -44,7 +46,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
 
   const displayData = loading ? previousData : data
 
-  if (!data && !loading) {
+  if (isMount && !data && !loading) {
     return (
       <Empty
         className={styles.error}
