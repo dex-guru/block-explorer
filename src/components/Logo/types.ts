@@ -1,1 +1,1 @@
-export type LogoProps = { title?: string }
+export type LogoProps = { title?: string; to?: string }
