@@ -50,7 +50,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
       <Empty
         className={styles.error}
         icon="🙀"
-        title="Error while receiving ERC-20 events"
+        title="Error while receiving NFT events"
         subtitle={address ? `for ${address}` : undefined}
       >
         <Button className={styles.retry} caption="Retry?" onClick={getNfts} />

@@ -59,7 +59,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
       <Empty
         className={styles.error}
         icon="🙀"
-        title="Error while receiving ERC-20 events"
+        title="Error while receiving transactions"
         subtitle={address ? `for ${address}` : undefined}
       >
         <Button
