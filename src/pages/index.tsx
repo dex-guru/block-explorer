@@ -1,7 +1,9 @@
 /* eslint-disable */
+import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useQuery } from '@apollo/client'
 import {
   BlockModel,
   ChainConfigModel,
@@ -20,11 +22,13 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   CHAIN_STATS,
   GET_BLOCKS_SHORT,
+  GET_BLOCKS_TXNS_CHAIN_STATS,
   TRANSACTIONS_LAST,
 } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
+  getBlocksWithTimeDiff,
 } from '@/lib/utils'
 import styles from './Pages.module.scss'
 
@@ -39,7 +43,42 @@ interface IndexProps {
 const ITEMS_PER_PAGE = 10
 
 const Index: NextPage<IndexProps> = (props) => {
-  const { blocks, chainStats: stats, transactions } = props
+  const { chainStats: stats } = props
+  const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
+  const [transactions, setTransactions] = useState<TransactionModel[]>(
+    props.transactions
+  )
+
+  const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(
+    GET_BLOCKS_SHORT,
+    {
+      variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
+      pollInterval: Number(process.env.pollInterval),
+    }
+  )
+
+  useEffect(() => {
+    if (!loading && blocksUpdate) {
+      const blocksWithTimeDiff = getBlocksWithTimeDiff(
+        blocksUpdate.blocks,
+        ITEMS_PER_PAGE
+      )
+
+      setBlocks(blocksWithTimeDiff)
+    }
+  }, [blocksUpdate, loading])
+
+  const { data: transactionsUpdate, loading: transactionsLoading } = useQuery<{
+    transactions: TransactionModel[]
+  }>(TRANSACTIONS_LAST, {
+    pollInterval: Number(process.env.pollInterval),
+  })
+
+  useEffect(() => {
+    if (!transactionsLoading && transactionsUpdate) {
+      setTransactions(transactionsUpdate.transactions)
+    }
+  }, [transactionsUpdate, transactionsLoading])
 
   const chartData = [
     {
@@ -176,31 +215,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
   const {
-    data: { transactions },
+    data: { transactions, blocks, chainStats, csrStats, chainConfig },
   } = await apolloClient.query({
-    query: TRANSACTIONS_LAST,
-  })
-  const { data: blocks } = await apolloClient.query<{ blocks: BlockModel[] }>({
-    query: GET_BLOCKS_SHORT,
+    query: GET_BLOCKS_TXNS_CHAIN_STATS,
     // per_page + 1 - last item needs for time diff
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  const blocksWithTimeDiff = blocks.blocks.map((block, index, array) => {
-    if (index < ITEMS_PER_PAGE) {
-      const timeDiff = block.timestamp - array[index + 1].timestamp
-      return { ...block, timeDiff }
-    }
-    return block
-  })
-
-  blocksWithTimeDiff.splice(ITEMS_PER_PAGE, 1)
-
-  const {
-    data: { chainStats, csrStats, chainConfig },
-  } = await apolloClient.query({
-    query: CHAIN_STATS,
-  })
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(blocks, ITEMS_PER_PAGE)
 
   return addApolloState(apolloClient, {
     props: {
