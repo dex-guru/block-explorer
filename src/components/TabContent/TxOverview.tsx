@@ -240,7 +240,7 @@ const TxOverview: FC<{
   return (
     <>
       <Properties data={properties} />
-      {(!!transfers?.length || !!actions?.length || nftEvents?.length) && (
+      {(!!transfers?.length || !!actions?.length || !!nftEvents?.length) && (
         <Card>
           {!!transfers.length && (
             <Details
