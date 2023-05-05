@@ -8,10 +8,12 @@ const Separated: FC<SeparatedProps> = ({ children, className }) => {
     return null
   }
 
+  const arrayChildren = Array.isArray(children) ? children : [children]
+
   return (
     <div className={clsx(styles.container, className)}>
       <ul className={styles.list}>
-        {children
+        {arrayChildren
           ?.filter((child) => !!child)
           .map((child, idx) => {
             return (

@@ -1,30 +1,28 @@
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import { useLazyQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 import {
   ChainConfigModel,
   ChainStatsModel,
-  TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Delta, DetailsView, Empty, Page, Summary } from '@/components'
-import DataTable from '@/components/DataTable'
-import { txsColumns } from '@/components/Table/columns'
-import { useIsMount } from '@/hooks'
-import IconEmpty from '@/images/icons/no-flash.svg'
+import { Card, Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
+import Loading from '@/components/Loading'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import {
   financialFormatLowValueHighPrecision,
   getNormalizedValue,
 } from '@/lib/utils'
-import { PaginationVariables } from '@/types'
 
-const perPage = [5, 10, 25, 50, 100]
+const TxsDataTable = lazy(() => import('../../components/Tables/TxsDataTable/'))
+const Erc20DataTable = lazy(
+  () => import('../../components/Tables/Erc20DataTable/')
+)
+const NftDataTable = lazy(() => import('../../components/Tables/NftDataTable'))
 
 interface ITxsProps {
-  transactions: TransactionModel[]
   transactionStats: TransactionStatsModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
@@ -32,22 +30,52 @@ interface ITxsProps {
 }
 
 const Txs: NextPage<ITxsProps> = (props) => {
-  const isMount = useIsMount()
-  const [transactions, setTransactions] = useState(props.transactions)
-  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
+  const router = useRouter()
+  const { tab } = router.query
+  const pathname = router.asPath.split('?')[0]
 
-  const onPaginationChange = useCallback(
-    (variables: PaginationVariables) => {
-      getTransactions({ variables: { blockNumber: props.block, ...variables } })
-    },
-    [getTransactions, props.block]
+  const preloader = (
+    <Card>
+      <Loading />
+    </Card>
   )
 
-  useEffect(() => {
-    if (data && isMount) {
-      setTransactions(data.transactions)
-    }
-  }, [data, isMount])
+  const tabs = [
+    {
+      title: 'Transactions',
+      value: '',
+      to: pathname,
+      content: (
+        <Suspense fallback={preloader}>
+          <TxsDataTable />
+        </Suspense>
+      ),
+    },
+    ...(!props.block
+      ? [
+          {
+            title: 'ERC-20 Token TXns',
+            value: 'tokentxns',
+            to: `${pathname}?tab=tokentxns`,
+            content: (
+              <Suspense fallback={preloader}>
+                <Erc20DataTable />
+              </Suspense>
+            ),
+          },
+          {
+            title: 'NFT Token TXns',
+            value: 'nfttxns',
+            to: `${pathname}?tab=nfttxns`,
+            content: (
+              <Suspense fallback={preloader}>
+                <NftDataTable />
+              </Suspense>
+            ),
+          },
+        ]
+      : []),
+  ]
 
   return (
     <>
@@ -113,23 +141,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
             />
           )}
 
-          {transactions.length > 0 && (
-            <DataTable
-              isLoading={loading}
-              columns={txsColumns(props.chainConfig, props.chainStats)}
-              data={transactions}
-              total={props.transactionStats.transactionsCount}
-              perPage={perPage[1]}
-              onPageChange={onPaginationChange}
-            />
-          )}
-
-          {!transactions.length && (
-            <Empty
-              icon={<IconEmpty />}
-              title="No transactions for this block"
-            />
-          )}
+          <TabPanel value={tab || ''} tabs={tabs} />
         </DetailsView>
       </Page>
     </>
@@ -145,15 +157,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const block = blocks && blocks[0] ? parseInt(blocks) : null
 
   const {
-    data: { transactions, transactionStats, chainStats, chainConfig },
+    data: { transactionStats, chainStats, chainConfig },
   } = await apolloClient.query({
-    query: GET_TRANSACTIONS,
-    variables: { blockNumber: block, first: 10, skip: 0 },
+    query: GET_TRANSACTIONS_STATS,
+    variables: { blockNumber: block },
   })
 
   return addApolloState(apolloClient, {
     props: {
-      transactions,
       chainStats,
       chainConfig,
       transactionStats,

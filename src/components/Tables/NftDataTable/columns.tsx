@@ -1,14 +1,14 @@
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import { getNormalizedValue } from '@/lib/utils'
+import { financialFormat } from '@/lib/utils'
 
-export const erc20Columns: IColumn<Erc721TransferModel>[] = [
+export const nftColumns: IColumn<Erc721TransferModel>[] = [
   {
     accessor: 'hash',
     title: 'Txn Hash',
     modifier: 'address',
-    render: (data) => <Address address={data.hash} type="tx" />,
+    render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
   {
     accessor: 'operatorAddress',
@@ -26,7 +26,7 @@ export const erc20Columns: IColumn<Erc721TransferModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" />
+        <Address address={data.fromAddress} type="account" isCopy />
       ) : null,
   },
   {
@@ -35,14 +35,14 @@ export const erc20Columns: IColumn<Erc721TransferModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <Address address={data.toAddress} type="account" />
+        <Address address={data.toAddress} type="account" isCopy />
       ) : null,
   },
   {
     accessor: 'amounts',
     title: 'Amounts',
     type: 'number',
-    render: (data) => getNormalizedValue(data.value),
+    render: (data) => financialFormat(data.value),
   },
   {
     accessor: 'tokenAddress',
@@ -50,7 +50,7 @@ export const erc20Columns: IColumn<Erc721TransferModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <Address address={data.tokenAddress} type="account" />
+        <Address address={data.tokenAddress} type="account" isCopy />
       ) : null,
   },
 ]

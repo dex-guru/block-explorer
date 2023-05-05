@@ -98,6 +98,12 @@
   }
 }
 
+.span2Only {
+  &:only-child {
+    grid-column: span 2;
+  }
+}
+
 .propertyIndicator {
   composes: success from '../components/Label/Label.module.scss';
 
