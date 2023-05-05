@@ -107,7 +107,9 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Market Cap',
       value: (
         <Value
-          value={financialFormatLowValueHighPrecision(stats.marketCap)}
+          value={financialFormatLowValueHighPrecision(stats.marketCap, {
+            decimals: 2,
+          })}
           prefix="$"
         />
       ),

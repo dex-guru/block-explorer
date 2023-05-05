@@ -6,6 +6,8 @@ import { isHexString } from '@ethersproject/bytes'
 import {
   ChainConfigModel,
   ChainStatsModel,
+  Erc20EventModel,
+  Erc721TransferModel,
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -20,13 +22,15 @@ const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
 const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
 
 interface ITxProps {
-  data: TransactionModel | null
-  logs: LogModel[] | null
+  data: TransactionModel
+  logs: LogModel[]
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
+  erc20Events: Erc20EventModel[]
+  nftEvents: Erc721TransferModel[]
 }
 
-const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
+const Tx: NextPage<ITxProps> = (props) => {
   const router = useRouter()
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
@@ -42,12 +46,15 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
 
       <Page withSearch>
         {' '}
-        <DetailsView title="Transaction " address={data?.hash || undefined}>
-          {!data?.hash && (
+        <DetailsView
+          title="Transaction "
+          address={props.data?.hash || undefined}
+        >
+          {!props.data?.hash && (
             <Empty icon={<IconEmpty />} title="No TX was found" />
           )}
 
-          {!!data?.hash && (
+          {!!props.data?.hash && (
             <TabPanel
               tabs={[
                 {
@@ -56,21 +63,17 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   to: pathname,
                   content: (
                     <Suspense>
-                      <TxOverview
-                        data={data}
-                        chainStats={chainStats}
-                        chainConfig={chainConfig}
-                      />
+                      <TxOverview {...props} />
                     </Suspense>
                   ),
                 },
                 {
-                  title: `Logs (${logs?.length || 0})`,
+                  title: `Logs (${props.logs?.length || 0})`,
                   value: 'logs',
                   to: `${pathname}?tab=logs`,
                   content: (
                     <Suspense>
-                      <TxLogs data={data} />
+                      <TxLogs {...props} />
                     </Suspense>
                   ),
                 },
@@ -80,7 +83,7 @@ const Tx: NextPage<ITxProps> = ({ data, logs, chainStats, chainConfig }) => {
                   to: `${pathname}?tab=trace`,
                   content: (
                     <Suspense>
-                      <TxTrace data={data} />
+                      <TxTrace {...props} />
                     </Suspense>
                   ),
                 },
@@ -110,12 +113,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     logs: LogModel[]
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
+    erc20Events: { data: Erc20EventModel[] }
+    nftEvents: { data: Erc721TransferModel[] }
   }>({
     query: GET_TRANSACTIONS_BY_HASH,
     variables: { hash: tx },
   })
 
-  const { transactions, logs, chainConfig, chainStats } = data
+  const {
+    transactions,
+    logs,
+    chainConfig,
+    chainStats,
+    erc20Events: { data: erc20Events },
+    nftEvents: { data: nftEvents },
+  } = data
 
   if (!transactions?.length) {
     return { notFound: true }
@@ -124,9 +136,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return addApolloState(apolloClient, {
     props: {
       data: transactions[0],
-      logs: logs || null,
-      chainConfig: chainConfig || null,
-      chainStats: chainStats || null,
+      logs: logs || [],
+      chainConfig: chainConfig,
+      chainStats: chainStats,
+      erc20Events: erc20Events || [],
+      nftEvents: nftEvents || [],
     },
   })
 }

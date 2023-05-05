@@ -79,7 +79,8 @@ export const txsColumns = (
               bigValue.multipliedBy(
                 Number(chainStats.nativeTokenPriceUsd || 0)
               ),
-              chainConfig.nativeCurrency.decimals
+              chainConfig.nativeCurrency.decimals,
+              { decimals: 2 }
             )}
           />
           )
