@@ -313,6 +313,14 @@ export const GET_TRANSACTION_LOGS = gql`
   }
 `
 
+export const GET_TRANSACTION_TRACES = gql`
+  query TracecByHash($hash: String!) {
+    traces(txHash: $hash) {
+      tracesJSON
+    }
+  }
+`
+
 export const GET_BLOCKS_BY_NUMBER = gql`
   query BlokByNumber($number: Int) {
     blocks(first: 1, number: $number) {
