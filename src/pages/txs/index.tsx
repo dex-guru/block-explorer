@@ -9,6 +9,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import { Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
 import { LoadingCard } from '@/components/Loading'
+import { Tab } from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import {
@@ -36,7 +37,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
 
   const blockQuery = block ? { block: block } : undefined
 
-  const tabs = [
+  const tabs: Tab<string>[] = [
     {
       title: 'Transactions',
       value: '',
