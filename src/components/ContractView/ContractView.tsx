@@ -1,11 +1,9 @@
-import { FC, Suspense, useCallback, useEffect, useState } from 'react'
+import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useLazyQuery } from '@apollo/client'
 import { Abi, AbiFunction } from 'abitype'
-import { txsColumns } from '../Table/columns'
-import { Erc20DataTable } from '../Tables/Erc20DataTable/Erc20DataTable'
-import { Erc721DataTable } from '../Tables/Erc721DataTable'
+import styles from '../../pages/Pages.module.scss'
+import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -20,44 +18,28 @@ import {
   Files,
   Grid,
   ConnectButton,
-  DataTable,
   Card,
+  Value,
+  DateTime,
 } from '@/components'
-import { useIsMount } from '@/hooks'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
-import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
-import { PaginationVariables } from '@/types'
+import { financialFormat } from '@/lib/utils'
 
-const perPage = [5, 10, 25, 50, 100]
+const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
+const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
+const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
   addressInfo,
   chain,
-  ...props
+  contractCreator,
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
-  const isMount = useIsMount()
-  const [transactions, setTransactions] = useState(props.transactions)
-
-  const [getTransactions, { data, loading }] = useLazyQuery(GET_TRANSACTIONS)
-
-  useEffect(() => {
-    if (data && isMount) {
-      setTransactions(data.transactions)
-    }
-  }, [data, isMount])
-
-  const onPaginationChange = useCallback(
-    (variables: PaginationVariables) => {
-      getTransactions({ variables: { ...variables, address } })
-    },
-    [getTransactions, address]
-  )
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
@@ -85,41 +67,63 @@ const ContractView: FC<IContractViewProps> = ({
         >
           <Grid>
             <Properties
+              className={styles.span2Only}
               title="Contract Overview:"
               data={[
                 {
-                  title: 'Balance:',
-                  value: addressInfo.nativeBalance,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalance)}
+                      suffix={` ${chain.config.nativeCurrency.symbol}`}
+                    />
+                  ),
                 },
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value`,
-                  value: addressInfo.nativeBalanceUSD,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalanceUSD)}
+                      prefix="$"
+                    />
+                  ),
                 },
                 {
-                  title: 'Token:',
+                  title: 'Token holdings:',
                   value: addressInfo.assetsValueUSD,
                 },
               ]}
             />
 
-            <Properties
-              title="Contract Creator:"
-              data={[
-                {
-                  title: 'Contract Creator:',
-                  value: (
-                    <>
-                      <Address address="🫠" type="account" /> at txn{' '}
-                      <Address address="🫠" type="tx" />
-                    </>
-                  ),
-                },
-                {
-                  title: 'Token Tracker:',
-                  value: <>🫠</>,
-                },
-              ]}
-            />
+            {!!contractCreator && (
+              <Properties
+                title="Contract Creator:"
+                data={[
+                  {
+                    title: 'Creator:',
+                    value: (
+                      <div>
+                        <Address
+                          address={contractCreator.creatorAddress}
+                          type="account"
+                          isCopy
+                        />{' '}
+                        at txn{' '}
+                        <Address
+                          address={contractCreator.txHash}
+                          type="tx"
+                          isCopy
+                        />
+                      </div>
+                    ),
+                  },
+                  {
+                    title: 'Timestamp:',
+                    value: <DateTime timestamp={contractCreator.timestamp} />,
+                  },
+                ]}
+              />
+            )}
           </Grid>
 
           <TabPanel
@@ -129,63 +133,29 @@ const ContractView: FC<IContractViewProps> = ({
                 value: '',
                 to: pathname,
                 content: (
-                  <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={transactions || []}
-                      total={
-                        transactions &&
-                        transactions[0] &&
-                        transactions[0].blockNumber
-                      }
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No transactions for this contract',
-                      }}
-                    />
+                  <Suspense fallback={<LoadingCard />}>
+                    <TxsDataTable address={address} />
                   </Suspense>
                 ),
               },
               {
-                title: 'Internal TXns',
-                value: 'internaltx',
-                to: `${pathname}?tab=internaltx`,
-                content: (
-                  <Suspense>
-                    <DataTable
-                      isLoading={loading}
-                      columns={txsColumns(chain.config, chain.stats)}
-                      data={[]}
-                      total={0}
-                      perPage={perPage[1]}
-                      onPageChange={onPaginationChange}
-                      empty={{
-                        title: 'No internal transactions for this contract',
-                      }}
-                    />
-                  </Suspense>
-                ),
-              },
-              {
-                title: 'Erc20 Token TXns',
+                title: 'ERC-20 Token TXns',
                 value: 'tokentxns',
                 to: `${pathname}?tab=tokentxns`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={<LoadingCard />}>
                     <Erc20DataTable address={address} />
                   </Suspense>
                 ),
               },
 
               {
-                title: 'Erc721 Token TXns',
-                value: 'tokentxns721',
-                to: `${pathname}?tab=tokentxns721`,
+                title: 'NFT Token TXns',
+                value: 'nfttxns',
+                to: `${pathname}?tab=nfttxns`,
                 content: (
-                  <Suspense>
-                    <Erc721DataTable address={address} />
+                  <Suspense fallback={<LoadingCard />}>
+                    <NftDataTable address={address} />
                   </Suspense>
                 ),
               },
@@ -201,7 +171,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'events',
                 to: `${pathname}?tab=events`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some events here soon</Card>
                   </Suspense>
                 ),
@@ -211,7 +181,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'analytics',
                 to: `${pathname}?tab=analytics`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some analytics here soon</Card>
                   </Suspense>
                 ),
@@ -223,7 +193,7 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'comments',
                 to: `${pathname}?tab=comments`,
                 content: (
-                  <Suspense>
+                  <Suspense fallback={<LoadingCard />}>
                     <Card>Some comments here soon</Card>
                   </Suspense>
                 ),
