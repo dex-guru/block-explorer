@@ -1,0 +1,28 @@
+import { LogModel } from '@/__generated__/resolvers-types'
+import { Address } from '@/components'
+import { LogsView } from '@/components/LogsView'
+import { IColumn } from '@/components/Table/types'
+
+export const logsColumns: IColumn<LogModel>[] = [
+  {
+    accessor: 'hash',
+    title: 'Txn Hash',
+    modifier: 'address',
+    render: (data) => <Address address={data.transactionHash} type="tx" />,
+  },
+  {
+    accessor: 'number',
+    title: 'Block',
+    render: (data) => <Address address={`${data.blockHash}`} type="block" />,
+  },
+
+  {
+    accessor: 'eventName',
+    title: 'Event',
+  },
+  {
+    accessor: 'logs',
+    title: 'Logs',
+    render: (data) => <LogsView key={data.data} log={data} />,
+  },
+]

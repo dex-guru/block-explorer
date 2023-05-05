@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
 import styles from '../../pages/Pages.module.scss'
 import { LoadingCard } from '../Loading'
+import { EventsTable } from '../Tables/EventsTable'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -171,8 +172,8 @@ const ContractView: FC<IContractViewProps> = ({
                 value: 'events',
                 to: `${pathname}?tab=events`,
                 content: (
-                  <Suspense fallback={<LoadingCard />}>
-                    <Card>Some events here soon</Card>
+                  <Suspense>
+                    <EventsTable address={address} />
                   </Suspense>
                 ),
               },

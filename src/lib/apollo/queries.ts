@@ -565,3 +565,25 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
     }
   }
 `
+
+export const GET_LOGS_BY_ADDRESS = gql`
+  query Address($address: String) {
+    logs(address: $address, first: 0, skip: 0) {
+      address
+      blockHash
+      blockNumber
+      data
+      decodedInput {
+        isIndexed
+        name
+        type
+        value
+      }
+      eventName
+      logIndex
+      topics
+      transactionHash
+      transactionIndex
+    }
+  }
+`
