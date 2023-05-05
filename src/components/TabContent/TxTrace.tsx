@@ -42,8 +42,6 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     </Empty>
   )
 
-  console.log(traceData)
-
   if (isNull(traceData)) {
     return renderError()
   }
