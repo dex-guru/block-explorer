@@ -7,29 +7,33 @@ import { CodeFormat, CodeProps } from './types'
 import styles from './Code.module.scss'
 
 const Code: FC<CodeProps> = ({
-  children: initialText,
+  children: initialText = '',
   className,
   isCopy,
   format,
-  defaultFormat = 'hex',
+  defaultFormat = 'ascii',
 }) => {
   const [currentFormat, setCurrentFormat] = useState<CodeFormat>(defaultFormat)
-  const [currentText, setCurrentText] = useState<string>(initialText || '')
+  const [currentText, setCurrentText] = useState<string>(initialText)
 
   useEffect(() => {
     if (currentFormat === 'custom' && format?.decode) {
-      const text = format.decode(initialText || '')
+      const text = format.decode(initialText)
       setCurrentText(text)
-
       return
     }
 
-    const number = new BigNumber(
-      initialText || '',
-      defaultFormat === 'dec' ? 10 : 16
-    )
+    if (['hex', 'dec'].includes(defaultFormat)) {
+      const number = new BigNumber(
+        initialText,
+        defaultFormat === 'dec' ? 10 : 16
+      )
+      setCurrentText(number.toString(currentFormat === 'dec' ? 10 : 16))
+      return
+    }
 
-    setCurrentText(number.toString(currentFormat === 'dec' ? 10 : 16))
+    setCurrentText(initialText)
+    return
   }, [currentFormat, initialText, defaultFormat, format])
 
   const handleClickDec = () => {

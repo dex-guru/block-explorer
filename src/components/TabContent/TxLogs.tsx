@@ -4,7 +4,7 @@ import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'
 import { decodedLogsColumns } from '../Table/columns/decodedLogsColumns'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Empty, Properties, Table } from '@/components'
+import { Address, Code, Empty, Properties, Table } from '@/components'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 import styles from './TxLogs.module.scss'
@@ -84,26 +84,19 @@ const TxLogs: FC<{ data: TransactionModel }> = (props) => {
           title: 'Topics',
           value: log.topics?.length ? (
             <div className="text">
-              <ul>
+              <ol start={0}>
                 {log.topics.map((topic, tIdx) => (
                   <li key={tIdx}>
-                    [{tIdx}]{' '}
-                    <Address
-                      type="account"
-                      address={topic}
-                      isLink={false}
-                      isShorten={false}
-                      isCopy
-                    />
+                    <Code isCopy>{topic}</Code>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
           ) : null,
         },
         {
           title: 'Data',
-          value: log.data,
+          value: <Code isCopy>{log.data}</Code>,
         },
         {
           title: 'Log Index',

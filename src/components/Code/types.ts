@@ -1,4 +1,4 @@
-export type CodeFormat = 'dec' | 'hex' | 'custom'
+export type CodeFormat = 'dec' | 'hex' | 'ascii' | 'custom'
 
 export type CodeProps = {
   children?: string
@@ -8,7 +8,6 @@ export type CodeProps = {
   format?: {
     dec?: boolean
     hex?: boolean
-    ascii?: boolean
     decode?: (value: string) => string
   }
 }

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Link from 'next/link'
 import {
   Address,
+  Code,
   DateTime,
   IconLeft,
   IconRight,
@@ -24,8 +25,6 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   }
 
   const blockValues = AddressValues['block']
-
-  const extraDataDisplay = hex2ascii(data.extraData)
 
   const mainProperties = [
     {
@@ -154,10 +153,9 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       title: 'Extra Data:',
       tooltip: '?',
       value: (
-        <Separated>
-          {!!extraDataDisplay && <span>{extraDataDisplay}</span>}
-          <Address address={data.extraData} isCopy={!!extraDataDisplay} />
-        </Separated>
+        <Code isCopy format={{ hex: true, dec: true, decode: hex2ascii }}>
+          {data.extraData}
+        </Code>
       ),
     },
   ]
