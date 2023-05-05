@@ -1,9 +1,14 @@
-import { TransactionModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  TransactionModel,
+} from '@/__generated__/resolvers-types'
 import { Address, Avatar, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
-export const lastTxsColumns: IColumn<TransactionModel>[] = [
+export const lastTxsColumns = (
+  chainConfig: ChainConfigModel
+): IColumn<TransactionModel>[] => [
   {
     accessor: 'hash',
     title: 'Block',
@@ -38,7 +43,15 @@ export const lastTxsColumns: IColumn<TransactionModel>[] = [
         return <></>
       }
 
-      return <Label title={getNormalizedValue(data.value)} type="accent" />
+      return (
+        <Label
+          title={`${getNormalizedValue(
+            data.value,
+            chainConfig.nativeCurrency.decimals
+          )} ${chainConfig.nativeCurrency.symbol}`}
+          type="accent"
+        />
+      )
     },
   },
 ]
