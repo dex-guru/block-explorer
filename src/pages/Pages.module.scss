@@ -103,3 +103,34 @@
     grid-column: span 2;
   }
 }
+
+.propertyIndicator {
+  composes: success from '../components/Label/Label.module.scss';
+
+  padding: 0 4px;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+
+  vertical-align: baseline;
+}
+
+.tokenValues {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tokenValue {
+  margin: 0;
+  padding: 0;
+}

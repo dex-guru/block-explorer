@@ -294,6 +294,31 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
     logs(transactionHash: $hash) {
       logIndex
     }
+    erc20Events(hash: $hash) {
+      data {
+        fromAddress
+        toAddress
+        tokenAddresses
+        tokenSymbols
+        eventType
+        hash
+        blockTimestamp
+        amounts
+      }
+      total
+    }
+    nftEvents(hash: $hash) {
+      data {
+        blockTimestamp
+        fromAddress
+        hash
+        operatorAddress
+        toAddress
+        tokenAddress
+        tokenId
+        value
+      }
+    }
     chainStats {
       lastBlockNumber
       nativeTokenPriceUsd
@@ -337,6 +362,14 @@ export const GET_TRANSACTION_LOGS = gql`
         symbol
       }
       name
+    }
+  }
+`
+
+export const GET_TRANSACTION_TRACES = gql`
+  query TracecByHash($hash: String!) {
+    traces(txHash: $hash) {
+      tracesJSON
     }
   }
 `

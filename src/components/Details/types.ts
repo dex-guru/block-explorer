@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export type DetailsProps = {
-  title: string
+  title: ReactNode
   isOpen?: boolean
   className?: string
   children?: ReactNode | ReactNode[]

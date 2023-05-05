@@ -1,6 +1,6 @@
 .container {
   --color-details-summary: var(--color-bg);
-  --color-details-title: var(--color-bg-6);
+  --color-details-title: var(--color-muted);
   --color-details-open: var(--color-accent);
   --color-details-bg: var(--color-bg-2);
 
@@ -8,23 +8,19 @@
   overflow: hidden;
 
   &[open] {
-    .body,
-    .header {
+    & > .body,
+    & > .header {
       border-color: var(--color-details-open);
     }
 
-    .header {
+    & > .header {
       border-radius: var(--radii-lg) var(--radii-lg) 0 0;
-    }
+      & > .arrow {
+        transform: rotate(0deg);
 
-    .body {
-    }
-
-    .arrow {
-      transform: rotate(0deg);
-
-      path {
-        fill: var(--color-details-open);
+        path {
+          fill: var(--color-details-open);
+        }
       }
     }
   }
@@ -51,7 +47,7 @@
 
 .title {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
   margin-right: auto;
   overflow: hidden;
