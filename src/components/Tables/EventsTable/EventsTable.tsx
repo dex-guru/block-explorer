@@ -10,7 +10,7 @@ interface IEventsTableProps {
 
 export const EventsTable: FC<IEventsTableProps> = ({ address }) => {
   const { data, loading } = useQuery(GET_LOGS_BY_ADDRESS, {
-    variables: { address },
+    variables: { address: address.toLowerCase() },
   })
 
   if (loading || !data) {

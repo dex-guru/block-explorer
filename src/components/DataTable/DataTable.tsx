@@ -54,7 +54,11 @@ export function DataTable<T>(props: DataTableProps<T>) {
   }, [currentPage, currentPerPagePage, onPageChange, total])
 
   if (!total && !onPageChange) {
-    return <Table {...tablePropsRest} className={styles.table} />
+    return (
+      <div className={clsx(styles.container, className)}>
+        <Table {...tablePropsRest} className={styles.table} />
+      </div>
+    )
   }
 
   return (
