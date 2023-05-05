@@ -9,9 +9,11 @@ const TabPanel = <T,>(props: TabPanelProps<T>): ReactElement => {
 
   return (
     <div className={clsx(styles.container, props.className)}>
-      <div className={styles.header}>
-        <Tabs {...props} className={clsx(styles.tabs, props.tabsClassName)} />
-      </div>
+      {props.tabs.length > 1 && (
+        <div className={styles.header}>
+          <Tabs {...props} className={clsx(styles.tabs, props.tabsClassName)} />
+        </div>
+      )}
       <div className={styles.body}>
         {content}
         {props.children}

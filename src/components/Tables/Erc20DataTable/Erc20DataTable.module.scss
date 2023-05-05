@@ -1,0 +1,31 @@
+.tag {
+  text-transform: capitalize;
+}
+
+.transfer {
+  composes: info from '../../Label/Label.module.scss';
+}
+
+.mint {
+  composes: success from '../../Label/Label.module.scss';
+}
+
+.burn {
+  composes: danger from '../../Label/Label.module.scss';
+}
+
+.swap {
+  composes: warn from '../../Label/Label.module.scss';
+}
+
+.error {
+  composes: error from '../../Empty/Empty.module.scss';
+}
+
+.retry {
+  composes: lg from '../../Button/Button.module.scss';
+  composes: action from '../../Button/Button.module.scss';
+
+  display: block;
+  margin: auto;
+}

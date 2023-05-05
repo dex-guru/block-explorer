@@ -11,12 +11,13 @@ import {
   AddressModel,
   ChainConfigModel,
   ChainStatsModel,
+  ContractCreatorModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_ADDRESS_INFO, GET_TRANSACTIONS } from '@/lib/apollo/queries'
+import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 
 const { chains, provider } = configureChains(
   [canto, cantoTestnet],
@@ -39,6 +40,7 @@ interface AddressPageServerProps {
   transactions?: TransactionModel[]
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
+  contractCreator?: ContractCreatorModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
@@ -46,6 +48,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   transactions,
   chainStats,
   chainConfig,
+  contractCreator,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
@@ -69,6 +72,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
             transactions={transactions}
             addressInfo={addressInfo}
             chain={{ stats: chainStats, config: chainConfig }}
+            contractCreator={contractCreator}
           />
         ) : (
           <AddressView
@@ -87,7 +91,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { address, tab } = ctx.query as { address: string; tab: string }
+  const { address } = ctx.query as { address: string; tab: string }
 
   if (address && !isAddress(address)) {
     return { notFound: true }
@@ -107,21 +111,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: { ...addressInfo },
   })
 
-  let result = { props: { ...addressProps.props } }
-  // transactions tab
-  if (tab === undefined) {
-    const { data: transactions } = await apolloClient.query({
-      query: GET_TRANSACTIONS,
-      variables: { first: 10, skip: 0, address },
-    })
+  const result = { props: { ...addressProps.props } }
 
-    const transactionsProps = addApolloState(apolloClient, {
-      props: { ...transactions },
-    })
+  console.log(result)
 
-    result = { props: { ...result.props, ...transactionsProps.props } }
-  }
-
-  // Pass data to the page via props
   return result
 }

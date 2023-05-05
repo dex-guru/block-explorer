@@ -4,11 +4,15 @@ import { BlockModelWithTimeDiff } from '@/components/Table'
 
 export const getNormalizedValue = (
   value: number | string | BigNumber,
-  decimals = 18
+  decimals = 18,
+  options?: FinancialFormatOptions
 ): string => {
   const result = new BigNumber(value)
 
-  return financialFormatLowValueHighPrecision(result.shiftedBy(-decimals))
+  return financialFormatLowValueHighPrecision(
+    result.shiftedBy(-decimals),
+    options
+  )
 }
 
 export const getShortAddress = (address: string, count = 4): string => {

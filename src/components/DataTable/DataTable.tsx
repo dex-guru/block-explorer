@@ -62,7 +62,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
         </div>
       )}
       <div className={styles.body}>
-        {!total && props.empty && (
+        {!tablePropsRest.isLoading && !total && props.empty && (
           <Empty icon={<IconEmpty />} {...props.empty} />
         )}
 

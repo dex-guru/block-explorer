@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { CardProps } from '../Card'
 
 export type Property = {
-  title: string
+  title: ReactNode
   tooltip?: ReactNode
   value?: ReactNode
 }

@@ -5,7 +5,7 @@ import { getShortAddress } from '@/lib/utils'
 
 type AddressValueProps = {
   format?: (address: string, shorten?: boolean) => string
-  url?: (address: string) => string
+  url?: (address: string, text?: string) => string
   canBeShort?: boolean
 }
 
@@ -44,6 +44,16 @@ export const AddressValues: Record<AddressType, AddressValueProps> = {
     },
     url: (address: string) => {
       return `/block/${address}`
+    },
+    canBeShort: false,
+  },
+
+  token: {
+    format: (address: string) => {
+      return getShortAddress(address)
+    },
+    url: (address: string) => {
+      return `/address/${address}`
     },
     canBeShort: false,
   },
