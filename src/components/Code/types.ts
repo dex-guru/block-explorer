@@ -1,6 +1,14 @@
-import { ReactNode } from 'react'
+export type CodeFormat = 'dec' | 'hex' | 'custom'
 
 export type CodeProps = {
-  children?: ReactNode
+  children?: string
   className?: string
+  isCopy?: boolean
+  defaultFormat?: CodeFormat
+  format?: {
+    dec?: boolean
+    hex?: boolean
+    ascii?: boolean
+    decode?: (value: string) => string
+  }
 }

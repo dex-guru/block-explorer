@@ -30,7 +30,7 @@ import {
 import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
-import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import { financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
 
 const TxOverview: FC<{
   data: TransactionModel
@@ -233,7 +233,11 @@ const TxOverview: FC<{
     {
       title: 'Input Data:',
       tooltip: '?',
-      value: <Code>{data.input}</Code>,
+      value: (
+        <Code defaultFormat="hex" isCopy>
+          {data.input}
+        </Code>
+      ),
     },
   ]
 
