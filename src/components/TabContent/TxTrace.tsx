@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import { isNull } from 'lodash'
-import Loading from '../Loading'
+import { LoadingCard } from '../Loading'
 import Trace from '../Trace'
 import {
   TransactionModel,
@@ -14,7 +13,7 @@ import styles from './TxTrace.module.scss'
 const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
   const hash = data?.hash
 
-  const [getTraces, { data: traceData, loading }] = useLazyQuery<{
+  const [getTraces, { data: traceData, loading, called }] = useLazyQuery<{
     traces: TransactionTraceModel
   }>(GET_TRANSACTION_TRACES)
 
@@ -22,12 +21,8 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     getTraces({ variables: { hash } })
   }, [getTraces, hash])
 
-  if (loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
-    )
+  if (!called || loading) {
+    return <LoadingCard />
   }
 
   const renderEmpty = () => <Empty title="This transaction left no trace" />
@@ -42,7 +37,7 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     </Empty>
   )
 
-  if (isNull(traceData)) {
+  if (called && !traceData) {
     return renderError()
   }
 
@@ -56,16 +51,7 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     tracesObj = JSON.parse(traceData?.traces?.tracesJSON)
   } catch (e) {
     console.error(e)
-    return (
-      <Empty
-        className={styles.error}
-        icon="🙀"
-        title="Error while receiving trace info"
-        subtitle={`for ${hash}`}
-      >
-        <Button className={styles.retry} caption="Retry?" onClick={getTraces} />
-      </Empty>
-    )
+    renderError()
   }
 
   if (!tracesObj) {
