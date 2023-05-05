@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { nftColumns } from './columns'
 import Button from '@/components/Button'
@@ -14,6 +14,7 @@ const PER_PAGE = 10
 
 interface INftDataTableProps {
   address?: string
+  isWalletAddress?: boolean
 }
 
 export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
