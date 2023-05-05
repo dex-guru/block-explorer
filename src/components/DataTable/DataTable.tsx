@@ -70,7 +70,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
           <Empty icon={<IconEmpty />} {...props.empty} />
         )}
 
-        {total && <Table {...tablePropsRest} className={styles.table} />}
+        {!!total && <Table {...tablePropsRest} className={styles.table} />}
       </div>
       {total > currentPerPagePage && (
         <div className={styles.footer}>

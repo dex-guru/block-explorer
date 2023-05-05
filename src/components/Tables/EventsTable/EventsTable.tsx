@@ -23,7 +23,7 @@ export const EventsTable: FC<IEventsTableProps> = ({ address }) => {
       columns={logsColumns}
       data={data.logs}
       empty={{
-        title: 'No events for this address',
+        title: `No events for this ${address}`,
       }}
     />
   )
