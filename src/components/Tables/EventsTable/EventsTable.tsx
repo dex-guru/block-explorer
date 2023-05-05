@@ -28,3 +28,5 @@ export const EventsTable: FC<IEventsTableProps> = ({ address }) => {
     />
   )
 }
+
+export default EventsTable

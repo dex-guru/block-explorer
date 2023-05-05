@@ -30,6 +30,7 @@ import { financialFormat } from '@/lib/utils'
 const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
 const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
 const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
+const EventsTable = lazy(() => import('../Tables/EventsTable'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
