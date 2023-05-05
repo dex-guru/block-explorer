@@ -21,7 +21,7 @@
 
 .tools {
   float: right;
-  margin: 0 0 2px 0.25em;
+  margin: -4px 0 2px 0.25em;
   padding: 2px 0;
   display: flex;
   gap: 4px;
@@ -30,6 +30,10 @@
 
 .group {
   display: flex;
+}
+
+.action {
+  margin: 0;
 }
 
 .groupAction {

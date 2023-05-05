@@ -17,6 +17,11 @@ const Code: FC<CodeProps> = ({
   const [currentText, setCurrentText] = useState<string>(initialText)
 
   useEffect(() => {
+    if (currentFormat === defaultFormat) {
+      setCurrentText(initialText)
+      return
+    }
+
     if (currentFormat === 'custom' && format?.decode) {
       const text = format.decode(initialText)
       setCurrentText(text)
@@ -52,24 +57,24 @@ const Code: FC<CodeProps> = ({
     <div className={clsx(styles.container, className)}>
       {!!currentText && (
         <div className={styles.tools}>
-          {isCopy && <Copy text={currentText} />}
+          {isCopy && <Copy text={currentText} className={styles.action} />}
 
           {!!format && (
             <div className={styles.group}>
-              {!!format.dec && (
+              {!!format.hex && (
                 <Button
                   caption="Hex"
                   onClick={handleClickHex}
-                  className={clsx(styles.groupAction, {
+                  className={clsx(styles.action, styles.groupAction, {
                     [styles.active]: currentFormat === 'hex',
                   })}
                 />
               )}
-              {!!format.hex && (
+              {!!format.dec && (
                 <Button
                   caption="Dec"
                   onClick={handleClickDec}
-                  className={clsx(styles.groupAction, {
+                  className={clsx(styles.action, styles.groupAction, {
                     [styles.active]: currentFormat === 'dec',
                   })}
                 />
@@ -78,7 +83,7 @@ const Code: FC<CodeProps> = ({
                 <Button
                   caption="Decode"
                   onClick={handleClickDecode}
-                  className={clsx(styles.groupAction, {
+                  className={clsx(styles.action, styles.groupAction, {
                     [styles.active]: currentFormat === 'custom',
                   })}
                 />
