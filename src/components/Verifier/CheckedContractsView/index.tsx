@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
-  Create2VerificationInput,
   SendableContract,
-  SessionResponse,
   VerificationInput,
-} from "../../../types";
-import CheckedContract from "./CheckedContract";
+  SessionResponse,
+  Create2VerificationInput,
+} from '../types'
+import CheckedContract from './CheckedContract'
 
 type CheckedContractsViewProps = {
-  checkedContracts: SendableContract[];
-  isHidden: boolean;
+  checkedContracts: SendableContract[]
+  isHidden: boolean
   verifyCheckedContract: (
     sendable: VerificationInput
-  ) => Promise<SessionResponse | undefined>;
+  ) => Promise<SessionResponse | undefined>
   verifyCreate2CheckedContract: (
     sendable: Create2VerificationInput
-  ) => Promise<SessionResponse | undefined>;
+  ) => Promise<SessionResponse | undefined>
   verifyCreate2Compile: (
     verificationId: string
-  ) => Promise<SessionResponse | undefined>;
-};
+  ) => Promise<SessionResponse | undefined>
+}
 
 const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
   checkedContracts,
@@ -28,27 +28,27 @@ const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
   verifyCreate2CheckedContract,
   verifyCreate2Compile,
 }) => {
-  const [collapsed, setCollapsed] = useState<boolean[]>([]);
+  const [collapsed, setCollapsed] = useState<boolean[]>([])
 
   useEffect(() => {
-    const diff = checkedContracts.length - collapsed.length;
+    const diff = checkedContracts.length - collapsed.length
     if (diff > 0) {
-      setCollapsed((prevArr) => prevArr.concat(new Array(diff).fill(true)));
+      setCollapsed((prevArr) => prevArr.concat(new Array(diff).fill(true)))
     }
-  }, [checkedContracts.length, collapsed.length]);
+  }, [checkedContracts.length, collapsed.length])
 
   const collapseAll = () => {
-    setCollapsed(new Array<boolean>(checkedContracts.length).fill(true));
-  };
+    setCollapsed(new Array<boolean>(checkedContracts.length).fill(true))
+  }
 
   const toggleCollapse = (i: number) => {
     setCollapsed((prevCollapsed) => {
-      const tempCollapsed = [...prevCollapsed];
-      tempCollapsed[i] = !tempCollapsed[i];
-      return tempCollapsed;
-    });
-  };
-  if (isHidden) return null;
+      const tempCollapsed = [...prevCollapsed]
+      tempCollapsed[i] = !tempCollapsed[i]
+      return tempCollapsed
+    })
+  }
+  if (isHidden) return null
   return (
     <div className="pt-1 bg-ceruleanBlue-500 flex flex-grow basis-0 rounded-xl mx-2">
       <div
@@ -80,7 +80,7 @@ const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CheckedContractsView;
+export default CheckedContractsView

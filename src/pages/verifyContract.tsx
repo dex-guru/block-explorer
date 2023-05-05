@@ -1,9 +1,28 @@
 /* eslint-disable */
+import { useState, useCallback, useEffect } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import bytes from 'bytes'
 import { Page } from '@/components'
 import CheckedContractsView from '@/components/Verifier/CheckedContractsView'
 import FileUpload from '@/components/Verifier/FileUpload'
+import {
+  ADD_FILES_URL,
+  CREATE2_COMPILE_URL,
+  CREATE2_VERIFY_VALIDATED_URL,
+  RESTART_SESSION_URL,
+  SESSION_DATA_URL,
+  UI_MAX_FILE_SIZE,
+  VERIFY_VALIDATED_URL,
+} from '@/components/Verifier/constants'
+import {
+  SendableContract,
+  IGenericError,
+  SessionResponse,
+  DropzoneFile,
+  VerificationInput,
+  Create2VerificationInput,
+} from '@/components/Verifier/types'
 
 interface IVerifyContractProps {}
 
@@ -13,7 +32,7 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
   const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>(
     []
   )
-  const { errorMessage, setErrorMessage } = useContext(Context)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const fetchAndUpdate = useCallback(
     async (URL: string, fetchOptions?: RequestInit) => {
@@ -63,7 +82,7 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
             }
           </div>
         )
-        setErrorMessage(<ErrorMessage message={e?.message as string} />)
+        setErrorMessage(e?.message)
       }
     },
     [setErrorMessage]
@@ -213,6 +232,9 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
         <div className="text-xs italic mx-2 mt-1 text-gray-400">
           Once a contract is verified it can't be removed from the Sourcify
           repository.
+        </div>
+        <div className="text-xs italic mx-2 mt-1 text-gray-400">
+          {errorMessage}
         </div>
       </Page>
     </>
