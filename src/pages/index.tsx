@@ -43,7 +43,7 @@ interface IndexProps {
 const ITEMS_PER_PAGE = 10
 
 const Index: NextPage<IndexProps> = (props) => {
-  const { chainStats: stats } = props
+  const { chainStats: stats, chainConfig } = props
   const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
   const [transactions, setTransactions] = useState<TransactionModel[]>(
     props.transactions
@@ -107,7 +107,9 @@ const Index: NextPage<IndexProps> = (props) => {
       title: 'Market Cap',
       value: (
         <Value
-          value={financialFormatLowValueHighPrecision(stats.marketCap)}
+          value={financialFormatLowValueHighPrecision(stats.marketCap, {
+            decimals: 2,
+          })}
           prefix="$"
         />
       ),
@@ -197,7 +199,7 @@ const Index: NextPage<IndexProps> = (props) => {
             ]}
           >
             <Table
-              columns={lastTxsColumns}
+              columns={lastTxsColumns(chainConfig)}
               data={transactions}
               showHeader={false}
               className={styles.cardChild}

@@ -2,17 +2,28 @@ import { FC } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import styles from '../../pages/Pages.module.scss'
+import { Property } from '../Properties/types'
+import {
+  erc20ActionColumns,
+  erc20TransfersColumns,
+  nftTransfersColumns,
+} from '../Table'
 import {
   ChainConfigModel,
   ChainStatsModel,
+  Erc20EventModel,
+  Erc721TransferModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import {
   Address,
+  Card,
   Code,
   DateTime,
+  Details,
   Label,
   Properties,
+  Table,
   TimeAgo,
   Value,
 } from '@/components'
@@ -25,15 +36,17 @@ const TxOverview: FC<{
   data: TransactionModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-}> = ({ data, chainConfig, chainStats }) => {
+  erc20Events: Erc20EventModel[]
+  nftEvents: Erc721TransferModel[]
+}> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
   const gigaNative = ` G${chainConfig.nativeCurrency.symbol.toLowerCase()}`
 
-  const properties = [
-    {
-      title: 'Transaction Hash:',
-      tooltip: '?',
-      value: <Address address={data.hash} isLink={false} isCopy />,
-    },
+  const transfers = erc20Events.filter(
+    (event) => event.eventType === 'transfer'
+  )
+  const actions = erc20Events.filter((event) => event.eventType !== 'transfer')
+
+  const properties: Property[] = [
     {
       title: 'Status:',
       tooltip: '?',
@@ -105,48 +118,66 @@ const TxOverview: FC<{
         />
       ) : null,
     },
-    {
-      title: 'ERC-20 Tokens Transferred: ', // TODO: tx count label
-      tooltip: '?',
-      value: '', // list erc20 tokens as etherscan
-    },
-    {
-      title: 'ERC-721 Tokens Transferred:', // TODO: tx count label
-      tooltip: '?',
-      value: '', // list erc721 tokens as etherscan
-    },
-    {
-      title: 'Transaction Action:', // TODO: tx count label
-      tooltip: '?',
-      value: '', // TODO: swap + burn + mint
-    },
+  ]
+
+  const priceProperties = [
     {
       title: 'Value:',
       tooltip: '?',
-      value: <Value value={getNormalizedValue(data.value)} prefix="$" />,
+      value: (
+        <Value
+          value={getNormalizedValue(data.value)}
+          suffix={` ${chainConfig.nativeCurrency.symbol}`}
+        />
+      ),
     },
     {
       title: 'Transaction Fee:',
       tooltip: '',
       value: (
-        <Value
-          value={getNormalizedValue(
-            new BigNumber(data.receiptCumulativeGasUsed || 0)
-              .multipliedBy(data.gasPrice || 0)
-              .multipliedBy(chainStats.nativeTokenPriceUsd || 0)
-          )}
-          suffix={` ${chainConfig.nativeCurrency.symbol}`}
-        />
+        <Separated>
+          <Value
+            value={getNormalizedValue(
+              new BigNumber(data.receiptCumulativeGasUsed || 0).multipliedBy(
+                data.gasPrice || 0
+              ),
+              chainConfig.nativeCurrency.decimals
+            )}
+            suffix={` ${chainConfig.nativeCurrency.symbol}`}
+          />
+          <Value
+            value={getNormalizedValue(
+              new BigNumber(data.receiptCumulativeGasUsed || 0)
+                .multipliedBy(data.gasPrice || 0)
+                .multipliedBy(chainStats.nativeTokenPriceUsd),
+              chainConfig.nativeCurrency.decimals,
+              { decimals: 2 }
+            )}
+            prefix="$"
+          />
+        </Separated>
       ),
     },
     {
       title: 'Gas Price:',
       tooltip: '?',
       value: (
-        <Value
-          value={getNormalizedValue(data.gasPrice)}
-          suffix={` ${chainConfig.nativeCurrency.symbol}`}
-        />
+        <Separated>
+          <Value
+            value={getNormalizedValue(
+              data.gasPrice,
+              chainConfig.nativeCurrency.decimals - 9
+            )}
+            suffix={` ${gigaNative}`}
+          />
+          <Value
+            value={getNormalizedValue(
+              data.gasPrice,
+              chainConfig.nativeCurrency.decimals
+            )}
+            suffix={` ${chainConfig.nativeCurrency.symbol}`}
+          />
+        </Separated>
       ),
     },
   ]
@@ -209,6 +240,53 @@ const TxOverview: FC<{
   return (
     <>
       <Properties data={properties} />
+      {(!!transfers?.length || !!actions?.length || !!nftEvents?.length) && (
+        <Card>
+          {!!transfers.length && (
+            <Details
+              title={
+                <>
+                  ERC-20 Tokens Transferred:{' '}
+                  <Label className={styles.propertyIndicator}>
+                    {erc20Events.length}
+                  </Label>
+                </>
+              }
+            >
+              <Table data={transfers} columns={erc20TransfersColumns} />
+            </Details>
+          )}
+          {!!nftEvents.length && (
+            <Details
+              title={
+                <>
+                  NFT Tokens Transferred:{' '}
+                  <Label className={styles.propertyIndicator}>
+                    {nftEvents.length}
+                  </Label>
+                </>
+              }
+            >
+              <Table data={nftEvents} columns={nftTransfersColumns} />
+            </Details>
+          )}
+          {!!actions.length && (
+            <Details
+              title={
+                <>
+                  Transaction Actions:{' '}
+                  <Label className={styles.propertyIndicator}>
+                    {actions.length}
+                  </Label>
+                </>
+              }
+            >
+              <Table data={actions} columns={erc20ActionColumns} />
+            </Details>
+          )}
+        </Card>
+      )}
+      <Properties data={priceProperties} />
       <Properties data={detailsProperties} />
     </>
   )
