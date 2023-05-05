@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { ButtonProps } from './types'
 import styles from './Button.module.scss'
 
-const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
+const Button: FC<React.HTMLProps<HTMLAnchorElement> & ButtonProps> = ({
   caption,
   icon,
   indicator,
@@ -30,8 +30,6 @@ const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
 
   const destination = to || href
 
-  const isExternalLink = destination?.startsWith('http')
-
   const content = (
     <>
       {!!icon && <span className={styles.icon}>{icon}</span>}
@@ -51,18 +49,8 @@ const Button: FC<React.HTMLProps<HTMLElement> & ButtonProps> = ({
   }
 
   if (destination) {
-    const toCorrectProp = isExternalLink
-      ? { pathname: destination }
-      : destination
-
     return (
-      <Link
-        {...props}
-        href={toCorrectProp}
-        ref={undefined}
-        target={isExternalLink ? '_blank' : undefined}
-        rel={isExternalLink ? 'noopener noreferrer' : undefined}
-      >
+      <Link {...props} href={destination} ref={undefined}>
         {content}
       </Link>
     )
