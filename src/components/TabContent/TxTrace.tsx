@@ -1,46 +1,15 @@
-import { FC, Fragment, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
+import { isNull } from 'lodash'
 import Loading from '../Loading'
+import Trace from '../Trace'
 import {
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
-import { Address, Card, Details, Empty, Value } from '@/components'
+import { Button, Card, Empty } from '@/components'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
-
-type Trace = {
-  from: string
-  gas: string
-  gasUsed: string
-  input: string
-  output: string
-  to: string
-  type: string
-  value: string
-  calls?: Trace[]
-}
-
-const renderTrace = (trace: Trace) => {
-  const content = (
-    <div>
-      From <Address address={trace.from} type="account" />
-      To <Address address={trace.to} type="account" />
-      <Value value={trace.value} />
-    </div>
-  )
-
-  if (trace.calls?.length) {
-    return (
-      <Details title={content}>
-        {trace.calls.map((item, idx) => (
-          <Fragment key={idx}>{renderTrace(item)}</Fragment>
-        ))}
-      </Details>
-    )
-  }
-
-  return content
-}
+import styles from './TxTrace.module.scss'
 
 const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
   const hash = data?.hash
@@ -61,10 +30,26 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     )
   }
 
-  const empty = <Empty title="This transaction left to traces" />
+  const renderEmpty = () => <Empty title="This transaction left no trace" />
+  const renderError = () => (
+    <Empty
+      className={styles.error}
+      icon="🙀"
+      title="Error while receiving trace info"
+      subtitle={`for ${hash}`}
+    >
+      <Button className={styles.retry} caption="Retry?" onClick={getTraces} />
+    </Empty>
+  )
+
+  console.log(traceData)
+
+  if (isNull(traceData)) {
+    return renderError()
+  }
 
   if (!traceData?.traces?.tracesJSON) {
-    return empty
+    return renderEmpty()
   }
 
   let tracesObj = null
@@ -73,13 +58,27 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
     tracesObj = JSON.parse(traceData?.traces?.tracesJSON)
   } catch (e) {
     console.error(e)
+    return (
+      <Empty
+        className={styles.error}
+        icon="🙀"
+        title="Error while receiving trace info"
+        subtitle={`for ${hash}`}
+      >
+        <Button className={styles.retry} caption="Retry?" onClick={getTraces} />
+      </Empty>
+    )
   }
 
   if (!tracesObj) {
-    return empty
+    return renderEmpty()
   }
 
-  return <Card>{renderTrace(tracesObj)}</Card>
+  return (
+    <Card>
+      <Trace data={tracesObj} />
+    </Card>
+  )
 }
 
 export default TxTrace

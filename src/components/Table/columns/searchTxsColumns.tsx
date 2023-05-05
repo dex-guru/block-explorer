@@ -9,7 +9,11 @@ export const searchTxsColumns: IColumn<TransactionModel>[] = [
     modifier: 'address',
     render: (data) => (
       <Tile
-        title={<Address address={data.hash} type="tx" isCopy />}
+        title={
+          <>
+            TXn <Address address={data.hash} type="tx" isCopy />
+          </>
+        }
         postfix={
           <>
             <TimeAgo timestamp={data.blockTimestamp} /> in{' '}
