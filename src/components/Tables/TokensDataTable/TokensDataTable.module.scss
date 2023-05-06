@@ -1,0 +1,35 @@
+.error {
+  composes: error from '../../Empty/Empty.module.scss';
+}
+
+.retry {
+  composes: lg from '../../Button/Button.module.scss';
+  composes: action from '../../Button/Button.module.scss';
+
+  display: block;
+  margin: auto;
+}
+
+.typeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.noimage {
+  color: var(--color-muted);
+}
+
+.valueNativeWithStable {
+  composes: valueNativeWithStable from '../../Table/Table.module.scss';
+}
+
+.label {
+  composes: info from '../../Label/Label.module.scss';
+  font-size: 14px;
+}
+
+.token {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

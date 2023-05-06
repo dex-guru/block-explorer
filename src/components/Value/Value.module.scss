@@ -5,6 +5,11 @@
   max-width: 100%;
 }
 
+.content {
+  flex: 0 1 auto;
+  display: flex;
+}
+
 .value {
   flex: 1 0 0;
   overflow: hidden;
@@ -21,8 +26,13 @@
   height: 20px;
 }
 
+.delta {
+  flex: 0 0 auto;
+}
+
 .prefix,
 .suffix {
+  flex: 0 0 auto;
   color: var(--color-neutral);
 }
 

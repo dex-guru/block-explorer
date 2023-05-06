@@ -34,11 +34,17 @@ import TabPanel from './TabPanel'
 import { Table } from './Table'
 import Tile from './Tile'
 import Value from './Value'
+import IconDown from '@/images/icons/arrow-down.svg'
 import IconLeft from '@/images/icons/arrow-left.svg'
 import IconRight from '@/images/icons/arrow-right.svg'
+import IconContract from '@/images/icons/contract.svg'
+import IconCross from '@/images/icons/cross.svg'
+import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
+import IconQuestion from '@/images/icons/question.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
+import IconWallet from '@/images/icons/wallet.svg'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 const LineChart = dynamic(() => import('./LineChart'), { ssr: false })
@@ -85,9 +91,15 @@ export {
   Value,
   IconLeft,
   IconRight,
+  IconCross,
+  IconDown,
   IconEmpty,
   IconWatch,
+  IconWallet,
+  IconContract,
   IconVerify,
+  IconLiquidityPool,
+  IconQuestion,
   TxOverview,
   TxLogs,
   TxTrace,

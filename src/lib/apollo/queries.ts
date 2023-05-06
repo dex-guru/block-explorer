@@ -445,9 +445,6 @@ export const GET_ADDRESS_INFO = gql`
     address(address: $address) {
       address
       addressType
-      assetsCount
-      assetsValueUSD
-      assetsValueUSD24hDelta
       nativeBalance
       nativeBalanceUSD
     }
@@ -455,6 +452,12 @@ export const GET_ADDRESS_INFO = gql`
       creatorAddress
       timestamp
       txHash
+    }
+    tokenHoldingsStats(address: $address) {
+      change24H
+      tokenCount
+      totalNative
+      totalStable
     }
     chainStats {
       nativeTokenPriceUsd
@@ -467,6 +470,61 @@ export const GET_ADDRESS_INFO = gql`
         symbol
       }
       name
+    }
+  }
+`
+
+export const GET_ADDRESS_TOKENS_STATS = gql`
+  query GetAddressTokens($address: String!) {
+    tokenHoldingsStats(address: $address) {
+      change24H
+      tokenCount
+      totalNative
+      totalStable
+    }
+  }
+`
+
+export const GET_ADDRESS_TOKENS = gql`
+  query GetAddressTokens($address: String!, $first: Int!, $skip: Int!) {
+    tokenHoldings(address: $address, first: $first, skip: $skip) {
+      asset
+      change24H
+      contractAddress
+      logo
+      price
+      quantity
+      symbol
+      value
+    }
+    tokenHoldingsStats(address: $address) {
+      change24H
+      tokenCount
+      totalNative
+      totalStable
+    }
+  }
+`
+
+export const GET_ADDRESS_HOLDERS = gql`
+  query GetAddressHolders($address: String!, $first: Int!, $skip: Int!) {
+    balances(tokenAddress: $address, first: $first, skip: $skip) {
+      address
+      holderType
+      label
+      percentage
+      quantity
+      value
+    }
+    balancesStats(tokenAddress: $address) {
+      fullyDilutedValuation
+      holders
+      holdersChange
+      maxTotalSupply
+      price
+      priceChange
+      priceNative
+      totalTransfers
     }
   }
 `

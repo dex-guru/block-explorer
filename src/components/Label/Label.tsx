@@ -10,7 +10,7 @@ const Label: FC<LabelProps> = ({
   children,
   tooltip,
 }) => {
-  if (!title || !children) {
+  if (!title && !children) {
     return null
   }
 
