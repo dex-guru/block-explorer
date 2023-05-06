@@ -134,3 +134,17 @@
   margin: 0;
   padding: 0;
 }
+
+.txsHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .txsTitle {
+    align-items: flex-start;
+  }
+
+  .txsAction {
+    align-items: flex-end;
+  }
+}

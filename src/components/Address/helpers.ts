@@ -57,4 +57,11 @@ export const AddressValues: Record<AddressType, AddressValueProps> = {
     },
     canBeShort: false,
   },
+
+  cosmos: {
+    format: (address: string) => {
+      return address.slice(0, 50)
+    },
+    canBeShort: true,
+  },
 }
