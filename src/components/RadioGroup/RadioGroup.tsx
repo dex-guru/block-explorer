@@ -29,7 +29,7 @@ export const RadioGroup: FC<IRadioGroupProps> = ({
 
   const itemsEl = items.map((item) => {
     return (
-      <div className={styles['radio_group-item']} key={item.value}>
+      <label key={item.value} htmlFor={item.name}>
         <input
           id={item.name}
           type="radio"
@@ -37,11 +37,12 @@ export const RadioGroup: FC<IRadioGroupProps> = ({
           value={item.value}
           checked={item.value === selectedValue}
           onChange={onOptionChange}
+          className={styles.radioInput}
         />
-        <label htmlFor={item.name}>{item.label ?? item.name}</label>
-      </div>
+        <span className={styles.radioLabel}>{item.label ?? item.name}</span>
+      </label>
     )
   })
 
-  return <div className={styles['radio_group']}>{itemsEl}</div>
+  return <div className={styles.radioGroup}>{itemsEl}</div>
 }
