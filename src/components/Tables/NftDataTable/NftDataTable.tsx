@@ -14,6 +14,7 @@ const PER_PAGE = 10
 
 interface INftDataTableProps {
   address?: string
+  isWalletAddress?: boolean
 }
 
 export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {

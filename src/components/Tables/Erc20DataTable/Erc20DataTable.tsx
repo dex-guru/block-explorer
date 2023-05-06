@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { erc20Columns } from './columns'
 import Button from '@/components/Button'
@@ -15,34 +15,43 @@ const PER_PAGE = 10
 
 interface IErc20DataTableProps {
   address?: string
+  isWalletAddress?: boolean
 }
 
-export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
+export const Erc20DataTable: FC<IErc20DataTableProps> = ({
+  address,
+  isWalletAddress,
+}) => {
   const [getErc20, { data, loading, previousData }] =
     useLazyQuery(GET_ERC20_BY_ADDRESS)
   const isMount = useIsMount()
+
+  const addressVar = useMemo(
+    () => (isWalletAddress ? { walletAddress: address } : { address }),
+    [address, isWalletAddress]
+  )
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
       getErc20({
         variables: {
-          address,
+          ...addressVar,
           ...variables,
         },
       })
     },
-    [address, getErc20]
+    [addressVar, getErc20]
   )
 
   useEffect(() => {
     getErc20({
       variables: {
         first: PER_PAGE,
-        address,
+        ...addressVar,
         skip: 0,
       },
     })
-  }, [address, getErc20])
+  }, [addressVar, getErc20])
 
   const displayData = loading ? previousData : data
 
@@ -54,7 +63,11 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address }) => {
         title="Error while receiving ERC-20 events"
         subtitle={address ? `for ${address}` : undefined}
       >
-        <Button className={styles.retry} caption="Retry?" onClick={getErc20} />
+        <Button
+          className={styles.retry}
+          caption="Retry?"
+          onClick={() => getErc20()}
+        />
       </Empty>
     )
   }
