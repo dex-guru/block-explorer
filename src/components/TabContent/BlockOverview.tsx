@@ -1,5 +1,8 @@
 import { FC } from 'react'
 import Link from 'next/link'
+import clsx from 'clsx'
+import styles from '../../pages/Pages.module.scss'
+import { AddressValues } from '../Address/helpers'
 import {
   Address,
   DateTime,
@@ -11,10 +14,7 @@ import {
   Separated,
   TimeAgo,
   Value,
-} from '..'
-import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
+} from '@/components'
 import { financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
 import { IBlockProps } from '@/pages/block/[block]'
 

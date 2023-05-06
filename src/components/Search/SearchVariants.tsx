@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import { Address, Label, Table } from '..'
 import clsx from 'clsx'
 import Avatar from '../Avatar'
 import Card from '../Card'
@@ -7,6 +6,7 @@ import TabPanel from '../TabPanel'
 import { searchTxsColumns } from '../Table/columns/searchTxsColumns'
 import Tile from '../Tile'
 import { SearchVariantsProps } from './types'
+import { Address, Label, Table } from '@/components'
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
