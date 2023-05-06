@@ -38,7 +38,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
       getTransactions({
         variables: {
           blockNumber: block,
-          address,
+          address: address?.toLowerCase(),
           ...variables,
         },
       })
@@ -52,7 +52,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
         first: PER_PAGE,
         skip: 0,
         blockNumber: block,
-        address,
+        address: address?.toLowerCase(),
       },
     })
   }, [block, address, getTransactions])
