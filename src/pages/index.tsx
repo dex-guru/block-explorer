@@ -189,7 +189,7 @@ const Index: NextPage<IndexProps> = (props) => {
                       { name: 'EVM', value: 'evm' },
                     ]}
                     groupName="tsxType"
-                    value={'evm'}
+                    value="evm"
                     onChange={(value) => {
                       setIsCosmos(value === 'cosmos')
                     }}
