@@ -176,6 +176,7 @@ const Index: NextPage<IndexProps> = (props) => {
               data={blocks}
               showHeader={false}
               className={styles.cardChild}
+              getRowKey={(data) => data.number.toString()}
             />
           </Card>
 

@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { v1 as uuidv1 } from 'uuid'
 import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
@@ -11,10 +10,12 @@ export const useBodyRows = <T,>(options: {
   onRowClick?: (rowData: T) => void
   rowClassName?: string
   isHeader?: boolean
+  getRowKey?: (rowData: T) => string
 }) => {
-  const { columns, data, onRowClick, rowClassName, isHeader } = options
+  const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } =
+    options
 
-  return data.map((dataItem) => {
+  return data.map((dataItem, idx) => {
     const cells = columns.map((column) => {
       const cellData = (dataItem as Record<string, unknown>)[column.accessor]
 
@@ -38,7 +39,7 @@ export const useBodyRows = <T,>(options: {
 
     return (
       <Row
-        key={uuidv1()}
+        key={getRowKey ? getRowKey(dataItem) : idx}
         className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
         onClick={() => onRowClick && onRowClick(dataItem)}
       >

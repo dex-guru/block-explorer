@@ -12,7 +12,7 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
     render: (data) => (
       <Tile
         icon={<Avatar letters="Bk" type="smooth" />}
-        title={<Address address={`${data.number}`} type="block" />}
+        title={<Address address={`${data.number}`} type="block" isCopy />}
         postfix={<TimeAgo timestamp={data.timestamp} />}
       />
     ),
