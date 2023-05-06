@@ -76,6 +76,7 @@ export const CHAIN_CONFIG = gql`
       networkId
       rpc
       shortName
+      message
     }
   }
 `
@@ -109,6 +110,7 @@ export const CHAIN_STATS = gql`
         name
         symbol
       }
+      message
     }
   }
 `
@@ -366,6 +368,14 @@ export const GET_TRANSACTION_LOGS = gql`
   }
 `
 
+export const GET_TRANSACTION_TRACES = gql`
+  query TracecByHash($hash: String!) {
+    traces(txHash: $hash) {
+      tracesJSON
+    }
+  }
+`
+
 export const GET_BLOCKS_BY_NUMBER = gql`
   query BlokByNumber($number: Int) {
     blocks(first: 1, number: $number) {
@@ -586,6 +596,47 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         decimals
         name
         symbol
+      }
+    }
+    cosmos {
+      transactions {
+        blockNumber
+        blockTimestamp
+        hash
+      }
+    }
+  }
+`
+
+export const GET_LOGS_BY_ADDRESS = gql`
+  query Logs($address: String) {
+    logs(address: $address) {
+      address
+      blockHash
+      blockNumber
+      data
+      decodedInput {
+        isIndexed
+        name
+        type
+        value
+      }
+      eventName
+      logIndex
+      topics
+      transactionHash
+      transactionIndex
+    }
+  }
+`
+
+export const GET_COSMOS_TRANSACTIONS = gql`
+  query CosmosTxns {
+    cosmos {
+      transactions {
+        blockNumber
+        blockTimestamp
+        hash
       }
     }
   }

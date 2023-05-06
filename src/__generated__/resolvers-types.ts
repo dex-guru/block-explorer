@@ -22,6 +22,7 @@ export type AddressModel = {
   assetsCount: Scalars['Int'];
   assetsValueUSD: Scalars['Float'];
   assetsValueUSD24hDelta: Scalars['Float'];
+  name?: Maybe<Scalars['String']>;
   nativeBalance: Scalars['Float'];
   nativeBalanceUSD: Scalars['Float'];
 };
@@ -73,6 +74,7 @@ export type ChainConfigModel = {
   explorers: Array<ExplorerModel>;
   faucets: Array<Scalars['String']>;
   infoURL: Scalars['String'];
+  message: Scalars['String'];
   name: Scalars['String'];
   nativeCurrency: NativeCurrencyModel;
   networkId: Scalars['Int'];
@@ -204,6 +206,8 @@ export type Query = {
   /** Get address */
   address: AddressModel;
   /** Get token stats */
+  balances: Array<TokenBalanceModel>;
+  /** Get token stats */
   balancesStats?: Maybe<TokenBalancesStatsModel>;
   /** Get block stats */
   blockStats: BlockStatsModel;
@@ -242,6 +246,13 @@ export type Query = {
 
 export type QueryAddressArgs = {
   address: Scalars['String'];
+};
+
+
+export type QueryBalancesArgs = {
+  first?: Scalars['Int'];
+  skip?: Scalars['Int'];
+  tokenAddress: Scalars['String'];
 };
 
 
@@ -365,15 +376,26 @@ export type TimeSeriesChartModel = {
   value: Scalars['Float'];
 };
 
+export type TokenBalanceModel = {
+  __typename?: 'TokenBalanceModel';
+  address: Scalars['String'];
+  holderType?: Maybe<Scalars['String']>;
+  label?: Maybe<Scalars['String']>;
+  percentage?: Maybe<Scalars['Float']>;
+  quantity: Scalars['Float'];
+  value: Scalars['Float'];
+};
+
 export type TokenBalancesStatsModel = {
   __typename?: 'TokenBalancesStatsModel';
   fullyDilutedValuation?: Maybe<Scalars['Float']>;
   holders?: Maybe<Scalars['Int']>;
   holdersChange?: Maybe<Scalars['Float']>;
   holdersChart: Array<TimeSeriesChartModel>;
-  maxTotalSupply?: Maybe<Scalars['Int']>;
+  maxTotalSupply?: Maybe<Scalars['Float']>;
   price?: Maybe<Scalars['Float']>;
   priceChange?: Maybe<Scalars['Float']>;
+  priceNative?: Maybe<Scalars['Float']>;
   totalTransfers?: Maybe<Scalars['Int']>;
 };
 
@@ -535,6 +557,7 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   TimeSeriesChartModel: ResolverTypeWrapper<TimeSeriesChartModel>;
+  TokenBalanceModel: ResolverTypeWrapper<TokenBalanceModel>;
   TokenBalancesStatsModel: ResolverTypeWrapper<TokenBalancesStatsModel>;
   TokenHoldingsModel: ResolverTypeWrapper<TokenHoldingsModel>;
   TokenHoldingsStatsModel: ResolverTypeWrapper<TokenHoldingsStatsModel>;
@@ -572,6 +595,7 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   Subscription: {};
   TimeSeriesChartModel: TimeSeriesChartModel;
+  TokenBalanceModel: TokenBalanceModel;
   TokenBalancesStatsModel: TokenBalancesStatsModel;
   TokenHoldingsModel: TokenHoldingsModel;
   TokenHoldingsStatsModel: TokenHoldingsStatsModel;
@@ -586,6 +610,7 @@ export type AddressModelResolvers<ContextType = any, ParentType extends Resolver
   assetsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   assetsValueUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   assetsValueUSD24hDelta?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -637,6 +662,7 @@ export type ChainConfigModelResolvers<ContextType = any, ParentType extends Reso
   explorers?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>;
   faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nativeCurrency?: Resolver<ResolversTypes['NativeCurrencyModel'], ParentType, ContextType>;
   networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -770,6 +796,7 @@ export type NativeCurrencyModelResolvers<ContextType = any, ParentType extends R
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   address?: Resolver<ResolversTypes['AddressModel'], ParentType, ContextType, RequireFields<QueryAddressArgs, 'address'>>;
+  balances?: Resolver<Array<ResolversTypes['TokenBalanceModel']>, ParentType, ContextType, RequireFields<QueryBalancesArgs, 'first' | 'skip' | 'tokenAddress'>>;
   balancesStats?: Resolver<Maybe<ResolversTypes['TokenBalancesStatsModel']>, ParentType, ContextType, RequireFields<QueryBalancesStatsArgs, 'tokenAddress'>>;
   blockStats?: Resolver<ResolversTypes['BlockStatsModel'], ParentType, ContextType, RequireFields<QueryBlockStatsArgs, 'blockNumberEnd' | 'blockNumberStart' | 'timestampEnd' | 'timestampStart'>>;
   blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType, RequireFields<QueryBlocksArgs, 'blockNumberEnd' | 'blockNumberStart' | 'first' | 'number' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
@@ -808,14 +835,25 @@ export type TimeSeriesChartModelResolvers<ContextType = any, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type TokenBalanceModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TokenBalanceModel'] = ResolversParentTypes['TokenBalanceModel']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  holderType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  label?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  percentage?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type TokenBalancesStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TokenBalancesStatsModel'] = ResolversParentTypes['TokenBalancesStatsModel']> = ResolversObject<{
   fullyDilutedValuation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   holders?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   holdersChange?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   holdersChart?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>;
-  maxTotalSupply?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  maxTotalSupply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   priceChange?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  priceNative?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   totalTransfers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -903,6 +941,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Search?: SearchResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   TimeSeriesChartModel?: TimeSeriesChartModelResolvers<ContextType>;
+  TokenBalanceModel?: TokenBalanceModelResolvers<ContextType>;
   TokenBalancesStatsModel?: TokenBalancesStatsModelResolvers<ContextType>;
   TokenHoldingsModel?: TokenHoldingsModelResolvers<ContextType>;
   TokenHoldingsStatsModel?: TokenHoldingsStatsModelResolvers<ContextType>;

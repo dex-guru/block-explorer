@@ -7,8 +7,9 @@ import {
   ChainStatsModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
-import Loading from '@/components/Loading'
+import { Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
+import { LoadingCard } from '@/components/Loading'
+import { Tab } from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import {
@@ -29,36 +30,32 @@ interface ITxsProps {
   block?: number
 }
 
-const Txs: NextPage<ITxsProps> = (props) => {
+const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   const router = useRouter()
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
-  const preloader = (
-    <Card>
-      <Loading />
-    </Card>
-  )
+  const blockQuery = block ? { block: block } : undefined
 
-  const tabs = [
+  const tabs: Tab<string>[] = [
     {
       title: 'Transactions',
       value: '',
-      to: pathname,
+      to: { pathname, query: { ...blockQuery } },
       content: (
-        <Suspense fallback={preloader}>
-          <TxsDataTable />
+        <Suspense fallback={<LoadingCard />}>
+          <TxsDataTable block={block} />
         </Suspense>
       ),
     },
-    ...(!props.block
+    ...(!block
       ? [
           {
             title: 'ERC-20 Token TXns',
             value: 'tokentxns',
-            to: `${pathname}?tab=tokentxns`,
+            to: { pathname, query: { tab: 'tokentxns' } },
             content: (
-              <Suspense fallback={preloader}>
+              <Suspense fallback={<LoadingCard />}>
                 <Erc20DataTable />
               </Suspense>
             ),
@@ -66,9 +63,9 @@ const Txs: NextPage<ITxsProps> = (props) => {
           {
             title: 'NFT Token TXns',
             value: 'nfttxns',
-            to: `${pathname}?tab=nfttxns`,
+            to: { pathname, query: { tab: 'nfttxns' } },
             content: (
-              <Suspense fallback={preloader}>
+              <Suspense fallback={<LoadingCard />}>
                 <NftDataTable />
               </Suspense>
             ),
@@ -88,10 +85,10 @@ const Txs: NextPage<ITxsProps> = (props) => {
 
       <Page withSearch>
         <DetailsView
-          title={props.block ? 'Transactions for block' : 'Transactions'}
-          address={props.block?.toString()}
+          title={block ? 'Transactions for block' : 'Transactions'}
+          address={block?.toString()}
         >
-          {!props.block && (
+          {!block && (
             <Summary
               stats={[
                 {

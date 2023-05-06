@@ -21,9 +21,10 @@ const PER_PAGE = 10
 
 interface ITxsDataTableProps {
   address?: string
+  block?: number
 }
 
-export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
+export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
   const [getTransactions, { data, loading, previousData }] = useLazyQuery<{
     transactions: TransactionModel[]
     transactionStats: TransactionStatsModel
@@ -36,33 +37,41 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address }) => {
     (variables: PaginationVariables) => {
       getTransactions({
         variables: {
-          address,
+          blockNumber: block,
+          address: address?.toLowerCase(),
           ...variables,
         },
       })
     },
-    [address, getTransactions]
+    [block, address, getTransactions]
   )
 
   useEffect(() => {
     getTransactions({
       variables: {
         first: PER_PAGE,
-        address,
         skip: 0,
+        blockNumber: block,
+        address: address?.toLowerCase(),
       },
     })
-  }, [address, getTransactions])
+  }, [block, address, getTransactions])
 
   const displayData = loading ? previousData : data
 
   if (isMount && !data && !loading) {
+    const subtitle = address
+      ? `for ${address}`
+      : block
+      ? `for block #${block}`
+      : undefined
+
     return (
       <Empty
         className={styles.error}
         icon="🙀"
         title="Error while receiving transactions"
-        subtitle={address ? `for ${address}` : undefined}
+        subtitle={subtitle}
       >
         <Button
           className={styles.retry}
