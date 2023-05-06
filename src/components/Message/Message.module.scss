@@ -1,0 +1,40 @@
+.container {
+  --color-message-bg: var(--color-info);
+  --color-message-text: var(--color-text);
+
+  display: flex;
+  gap: 8px;
+
+  padding: 10px 16px 10px 8px;
+  border-radius: var(--radii-lg);
+  color: var(--color-message-text);
+  overflow: hidden;
+  position: relative;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+
+  &:before {
+    content: '';
+    background: var(--color-message-bg);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.25;
+  }
+}
+
+.icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  opacity: 0.75;
+}
+
+.body {
+  flex: 1 0 0;
+  position: relative;
+}

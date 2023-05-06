@@ -27,7 +27,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
     (variables: PaginationVariables) => {
       getNfts({
         variables: {
-          address,
+          address: address?.toLowerCase(),
           ...variables,
         },
       })
@@ -39,7 +39,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
     getNfts({
       variables: {
         first: PER_PAGE,
-        address,
+        address: address?.toLowerCase(),
         skip: 0,
       },
     })

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import clsx from 'clsx'
 import Address from '../Address'
-import Code from '../Code'
+import Code, { CodeFormat } from '../Code'
 import Label from '../Label'
 import Properties from '../Properties'
 import { Property } from '../Properties/types'
@@ -45,9 +45,21 @@ const Trace: FC<TraceProps> = ({ data }) => {
     const properties: Property[] = Object.entries(data)
       .filter(([key]) => key !== 'calls')
       .map(([key, value]) => {
+        let defaultFormat: CodeFormat = 'ascii'
+        let format = {}
+
+        if (['gas', 'gasUsed', 'value'].includes(key)) {
+          defaultFormat = 'hex'
+          format = { hex: true, dec: true }
+        }
+
         return {
           title: key,
-          value: <Code>{value.toString()}</Code>,
+          value: (
+            <Code defaultFormat={defaultFormat} format={format}>
+              {value.toString()}
+            </Code>
+          ),
         }
       })
 

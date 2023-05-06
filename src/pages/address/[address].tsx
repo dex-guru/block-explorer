@@ -104,7 +104,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     chainConfig: ChainConfigModel
   }>({
     query: GET_ADDRESS_INFO,
-    variables: { address },
+    variables: { address: address.toLowerCase() },
   })
 
   const addressProps = addApolloState(apolloClient, {

@@ -1,6 +1,7 @@
 import { DecodedInputModel } from '@/__generated__/resolvers-types'
-import Address from '@/components/Address'
+import Code from '@/components/Code'
 import { IColumn } from '@/components/Table/types'
+import { getNormalizedValue } from '@/lib/utils'
 
 export const decodedLogsColumns: IColumn<DecodedInputModel>[] = [
   {
@@ -22,6 +23,23 @@ export const decodedLogsColumns: IColumn<DecodedInputModel>[] = [
   {
     accessor: 'value',
     title: 'Data',
-    render: (data) => <Address address={data.value} isCopy />,
+    render: (data) => {
+      const isAmount = data.name === 'amount'
+
+      const format = isAmount
+        ? {
+            dec: true,
+            decode: (value: string) => {
+              return getNormalizedValue(value)
+            },
+          }
+        : undefined
+
+      return (
+        <Code defaultFormat={isAmount ? 'dec' : 'ascii'} isCopy format={format}>
+          {data.value}
+        </Code>
+      )
+    },
   },
 ]

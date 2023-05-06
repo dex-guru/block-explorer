@@ -1,17 +1,18 @@
+import Code from '../Code'
 import { DecodedInputModel } from '@/__generated__/resolvers-types'
-import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import styles from './LogsView.module.scss'
 
 export const decodedLogsColumns: IColumn<DecodedInputModel>[] = [
   {
     accessor: 'name',
     title: 'Name',
-    render: (data) => data.name,
+    render: (data) => <span className={styles.name}>{data.name}</span>,
   },
   {
     accessor: 'type',
     title: 'Type',
-    render: (data) => data.type,
+    render: (data) => <span className={styles.type}>{data.type}</span>,
   },
   {
     accessor: 'isIndexed',
@@ -22,6 +23,6 @@ export const decodedLogsColumns: IColumn<DecodedInputModel>[] = [
   {
     accessor: 'value',
     title: 'Data',
-    render: (data) => <Address address={data.value} isCopy />,
+    render: (data) => <Code>{data.value}</Code>,
   },
 ]

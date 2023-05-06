@@ -32,10 +32,11 @@ const sourcifyFetcher: Fetcher<
   try {
     const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
+    const data = await res.json()
     if (res.ok) {
       return {
         type: MatchType.FULL_MATCH,
-        ...(await res.json()),
+        metadata: data,
       }
     }
   } catch (err) {
@@ -48,10 +49,11 @@ const sourcifyFetcher: Fetcher<
   try {
     const url = sourcifyMetadata(address, chainId)
     const res = await fetch(url)
+    const data = await res.json()
     if (res.ok) {
       return {
         type: MatchType.PARTIAL_MATCH,
-        ...(await res.json()),
+        metadata: data,
       }
     }
     return null

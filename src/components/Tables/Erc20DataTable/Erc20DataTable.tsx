@@ -27,7 +27,10 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   const isMount = useIsMount()
 
   const addressVar = useMemo(
-    () => (isWalletAddress ? { walletAddress: address } : { address }),
+    () =>
+      isWalletAddress
+        ? { walletAddress: address?.toLowerCase() }
+        : { address: address?.toLowerCase() },
     [address, isWalletAddress]
   )
 

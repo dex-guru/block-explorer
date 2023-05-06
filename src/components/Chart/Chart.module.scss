@@ -8,6 +8,7 @@
   flex-flow: column;
   gap: 16px;
   height: 100%;
+  overflow: hidden;
 }
 
 .title {
@@ -29,7 +30,7 @@
   left: 0;
   top: 0;
   width: 100% !important;
-  height: 100% !important;
+  height: calc(100% + 16px) !important;
 }
 
 .body {
