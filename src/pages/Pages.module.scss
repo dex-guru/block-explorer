@@ -152,4 +152,5 @@
 .tabsInner {
   composes: inner from '../components/Tabs/Tabs.module.scss';
   margin: -6px 0;
+  font-size: 14px;
 }
