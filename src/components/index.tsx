@@ -21,6 +21,7 @@ import Heading from './Heading'
 import Label from './Label'
 import Loading, { LoadingCard } from './Loading'
 import Logo from './Logo'
+import Message from './Message'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
@@ -69,6 +70,7 @@ export {
   Label,
   LineChart,
   Logo,
+  Message,
   OutsideClicker,
   Page,
   Pagination,
