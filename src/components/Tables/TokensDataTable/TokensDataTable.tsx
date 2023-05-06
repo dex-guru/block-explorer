@@ -6,10 +6,9 @@ import {
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
-import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
-import Loading, { LoadingCard } from '@/components/Loading'
+import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
