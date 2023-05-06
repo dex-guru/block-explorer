@@ -48,10 +48,6 @@ const ContractView: FC<IContractViewProps> = ({
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
-  if (!abi) {
-    // return null
-  }
-
   const hasSources = match?.metadata?.sources || undefined
 
   const isSubTab =
@@ -151,7 +147,7 @@ const ContractView: FC<IContractViewProps> = ({
 
               {
                 title: 'Holders',
-                value: 'holders',
+                value: 'balances',
                 to: { pathname, query: { tab: 'balances' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>

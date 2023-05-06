@@ -9,7 +9,7 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
 import Empty from '@/components/Empty'
-import Loading from '@/components/Loading'
+import Loading, { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -80,11 +80,7 @@ export const HoldersDataTable: FC<ITokensDataTableProps> = ({ address }) => {
   }
 
   if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
-    )
+    return <LoadingCard />
   }
 
   return (
