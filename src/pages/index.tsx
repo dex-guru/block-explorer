@@ -8,22 +8,23 @@ import {
   BlockModel,
   ChainConfigModel,
   ChainStatsModel,
+  CosmosTransactionModel,
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
+import { RadioGroup } from '@/components/RadioGroup'
 import Search from '@/components/Search'
-import { lastTxsColumns } from '@/components/Table/columns'
 import {
   BlockModelWithTimeDiff,
   lastBlocksColumns,
 } from '@/components/Table/columns/lastBlocksColumns'
+import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
+import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
-  CHAIN_STATS,
   GET_BLOCKS_SHORT,
   GET_BLOCKS_TXNS_CHAIN_STATS,
-  TRANSACTIONS_LAST,
 } from '@/lib/apollo/queries'
 import {
   financialFormat,
@@ -38,6 +39,7 @@ interface IndexProps {
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
+  cosmosTransactions: CosmosTransactionModel[]
 }
 
 const ITEMS_PER_PAGE = 10
@@ -45,9 +47,8 @@ const ITEMS_PER_PAGE = 10
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
   const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
-  const [transactions, setTransactions] = useState<TransactionModel[]>(
-    props.transactions
-  )
+
+  const [isCosmos, setIsCosmos] = useState(false)
 
   const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(
     GET_BLOCKS_SHORT,
@@ -67,18 +68,6 @@ const Index: NextPage<IndexProps> = (props) => {
       setBlocks(blocksWithTimeDiff)
     }
   }, [blocksUpdate, loading])
-
-  const { data: transactionsUpdate, loading: transactionsLoading } = useQuery<{
-    transactions: TransactionModel[]
-  }>(TRANSACTIONS_LAST, {
-    pollInterval: Number(process.env.pollInterval),
-  })
-
-  useEffect(() => {
-    if (!transactionsLoading && transactionsUpdate) {
-      setTransactions(transactionsUpdate.transactions)
-    }
-  }, [transactionsUpdate, transactionsLoading])
 
   const chartData = [
     {
@@ -190,20 +179,43 @@ const Index: NextPage<IndexProps> = (props) => {
           </Card>
 
           <Card
-            title="Latest Transactions"
-            actions={[
-              {
-                caption: 'View all transactions',
-                to: '/txs',
-              },
-            ]}
+            title={
+              <div className={styles.txsHeader}>
+                <div className={styles.tsxTitle}>Latest Transactions</div>
+                <div className={styles.tsxAction}>
+                  <RadioGroup
+                    items={[
+                      { name: 'Cosmos', value: 'cosmos' },
+                      { name: 'EVM', value: 'evm' },
+                    ]}
+                    groupName={'tsxType'}
+                    value={'evm'}
+                    onChange={(value) => {
+                      setIsCosmos(value === 'cosmos')
+                    }}
+                  />
+                </div>
+              </div>
+            }
+            actions={
+              !isCosmos
+                ? [
+                    {
+                      caption: 'View all transactions',
+                      to: '/txs',
+                    },
+                  ]
+                : []
+            }
           >
-            <Table
-              columns={lastTxsColumns(chainConfig)}
-              data={transactions}
-              showHeader={false}
-              className={styles.cardChild}
-            />
+            {isCosmos ? (
+              <ShortCosmosTxsTable data={props.cosmosTransactions} />
+            ) : (
+              <ShortTxsTable
+                data={props.transactions}
+                chainConfig={chainConfig}
+              />
+            )}
           </Card>
         </Grid>
       </Page>
@@ -217,7 +229,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
   const {
-    data: { transactions, blocks, chainStats, csrStats, chainConfig },
+    data: { transactions, blocks, chainStats, csrStats, chainConfig, cosmos },
   } = await apolloClient.query({
     query: GET_BLOCKS_TXNS_CHAIN_STATS,
     // per_page + 1 - last item needs for time diff
@@ -233,6 +245,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       csrStats,
       chainConfig,
       blocks: blocksWithTimeDiff,
+      cosmosTransactions: cosmos.transactions,
     },
   })
 }

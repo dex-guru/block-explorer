@@ -113,7 +113,5 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const result = { props: { ...addressProps.props } }
 
-  console.log(result)
-
   return result
 }
