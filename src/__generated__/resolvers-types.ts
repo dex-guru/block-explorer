@@ -74,6 +74,7 @@ export type ChainConfigModel = {
   explorers: Array<ExplorerModel>;
   faucets: Array<Scalars['String']>;
   infoURL: Scalars['String'];
+  message: Scalars['String'];
   name: Scalars['String'];
   nativeCurrency: NativeCurrencyModel;
   networkId: Scalars['Int'];
@@ -661,6 +662,7 @@ export type ChainConfigModelResolvers<ContextType = any, ParentType extends Reso
   explorers?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>;
   faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nativeCurrency?: Resolver<ResolversTypes['NativeCurrencyModel'], ParentType, ContextType>;
   networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
