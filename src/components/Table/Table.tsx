@@ -9,6 +9,8 @@ export interface ITableProps<T> {
   className?: string
   showHeader?: boolean
   isLoading?: boolean
+  rowClassName?: string
+  onRowClick?: (rowData: T) => void
 }
 
 export function Table<T>({
@@ -17,10 +19,12 @@ export function Table<T>({
   showHeader = true,
   className,
   isLoading,
+  rowClassName,
+  onRowClick,
 }: ITableProps<T>) {
   const header = useHeader<T>(columns)
 
-  const rows = useBodyRows<T>(columns, data)
+  const rows = useBodyRows<T>({ columns, data, rowClassName, onRowClick })
 
   return (
     <div className={clsx(styles.container, className)}>

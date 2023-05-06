@@ -17,13 +17,15 @@
   padding: 0 8px;
   max-width: 1440px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .header {
   width: 100%;
   background: var(--color-bg-2);
   position: sticky;
-  top: 0;
+  top: -40px;
   z-index: 2;
 }
 

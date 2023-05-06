@@ -21,6 +21,7 @@ import {
 } from '@/components/Table/columns/lastBlocksColumns'
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
+import Tabs from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -183,13 +184,13 @@ const Index: NextPage<IndexProps> = (props) => {
               <div className={styles.txsHeader}>
                 <div className={styles.tsxTitle}>Latest Transactions</div>
                 <div className={styles.tsxAction}>
-                  <RadioGroup
-                    items={[
-                      { name: 'Cosmos', value: 'cosmos' },
-                      { name: 'EVM', value: 'evm' },
+                  <Tabs
+                    tabs={[
+                      { title: 'EVM', value: 'evm' },
+                      { title: 'Cosmos', value: 'cosmos' },
                     ]}
-                    groupName="tsxType"
-                    value="evm"
+                    className={styles.tabsInner}
+                    value={isCosmos ? 'cosmos' : 'evm'}
                     onChange={(value) => {
                       setIsCosmos(value === 'cosmos')
                     }}

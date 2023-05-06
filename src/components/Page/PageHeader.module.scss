@@ -1,16 +1,24 @@
 .container {
-  flex-direction: column;
-}
-
-.row {
-  justify-content: space-between;
   max-width: 1440px;
   margin: 0 auto;
   padding: 8px;
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.main {
+  justify-content: space-between;
+  display: flex;
   gap: 8px 24px;
   align-items: center;
   flex-flow: row wrap;
+
+  @media (min-width: 1200px) {
+    &::after {
+      content: '';
+    }
+  }
 }
 
 .search {
@@ -25,14 +33,6 @@
   display: flex;
 
   --color-link: #05fc99;
-}
-
-@media (min-width: 1200px) {
-  .container {
-    &::after {
-      content: '';
-    }
-  }
 }
 
 @media (max-width: 840px) {

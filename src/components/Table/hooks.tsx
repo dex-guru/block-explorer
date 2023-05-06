@@ -5,13 +5,15 @@ import { Row } from './Row'
 import { IColumn } from './types'
 import styles from './Table.module.scss'
 
-export const useBodyRows = <T,>(
-  columns: IColumn<T>[],
-  data: T[],
-  rowClassName?: string,
-  isHeader?: boolean,
+export const useBodyRows = <T,>(options: {
+  columns: IColumn<T>[]
+  data: T[]
   onRowClick?: (rowData: T) => void
-) => {
+  rowClassName?: string
+  isHeader?: boolean
+}) => {
+  const { columns, data, onRowClick, rowClassName, isHeader } = options
+
   return data.map((dataItem) => {
     const cells = columns.map((column) => {
       const cellData = (dataItem as Record<string, unknown>)[column.accessor]

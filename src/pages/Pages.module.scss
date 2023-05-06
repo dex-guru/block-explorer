@@ -148,3 +148,8 @@
     align-items: flex-end;
   }
 }
+
+.tabsInner {
+  composes: inner from '../components/Tabs/Tabs.module.scss';
+  margin: -6px 0;
+}

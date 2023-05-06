@@ -8,10 +8,8 @@ import styles from './PageHeader.module.scss'
 const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
   return (
     <header className={styles.container}>
-      <div className={styles.row}>
-        <InfoBlock />
-      </div>
-      <div className={styles.row}>
+      <InfoBlock />
+      <div className={styles.main}>
         <div className={styles.logo}>
           <Logo title={process.env.explorerName} to="/" />
         </div>

@@ -8,18 +8,19 @@ const InfoBlock = () => {
   const { data } = useQuery(CHAIN_STATS)
 
   return (
-    <div className={styles.infoBlock}>
+    <div className={styles.container}>
       {data && (
         <>
-          <label>
+          <div className={styles.price}>
             Canto price{' '}
             <Value
               value={financialFormat(data.chainStats.nativeTokenPriceUsd)}
               prefix="$"
               delta={data.chainStats.nativeTokenPriceUsd24hDelta * 100}
             />
-          </label>
-          <label>{data.chainConfig.message}</label>
+          </div>
+
+          <div className={styles.message}>{data.chainConfig.message}</div>
         </>
       )}
     </div>
