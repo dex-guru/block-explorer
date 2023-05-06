@@ -135,6 +135,12 @@
   padding: 0;
 }
 
+.verifyContractFrame {
+  display: block;
+  flex: 1 0 auto;
+  min-height: 600px;
+}
+
 .txsHeader {
   display: flex;
   justify-content: space-between;
