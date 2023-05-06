@@ -1,4 +1,10 @@
-export type AddressType = 'account' | 'tx' | 'block' | 'token' | 'common'
+export type AddressType =
+  | 'account'
+  | 'tx'
+  | 'block'
+  | 'token'
+  | 'common'
+  | 'cosmos'
 
 export type AddressProps = {
   address?: string

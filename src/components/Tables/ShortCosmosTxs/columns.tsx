@@ -8,9 +8,10 @@ export const cosmosTxsColumns = (): IColumn<CosmosTransactionModel>[] => [
     title: 'Block',
     render: (data) => (
       <Tile
-        className="width500"
         icon={<Avatar letters="Tx" type="rounded" />}
-        title={<Address address={data.hash} type="tx" isCopy isLink={false} />}
+        title={
+          <Address address={data.hash} type="cosmos" isCopy isLink={false} />
+        }
         postfix={<TimeAgo timestamp={data.blockTimestamp} />}
       />
     ),
@@ -18,6 +19,8 @@ export const cosmosTxsColumns = (): IColumn<CosmosTransactionModel>[] => [
   {
     accessor: 'number',
     title: 'Block',
-    render: (data) => <Address address={`${data.blockNumber}`} type="block" />,
+    render: (data) => (
+      <Address address={`${data.blockNumber}`} type="block" isLink={false} />
+    ),
   },
 ]
