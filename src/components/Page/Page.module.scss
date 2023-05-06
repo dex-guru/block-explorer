@@ -7,6 +7,7 @@
   min-width: 320px;
   background: var(--color-page-bg);
   color: var(--color-page-text);
+  min-height: 100vh;
 }
 
 .body {
@@ -19,6 +20,7 @@
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  flex: 1 0 auto;
 }
 
 .header {
@@ -27,6 +29,7 @@
   position: sticky;
   top: -40px;
   z-index: 2;
+  flex: 0 0 auto;
 }
 
 .footer {
@@ -34,4 +37,5 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  flex: 0 0 auto;
 }

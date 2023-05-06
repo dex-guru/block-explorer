@@ -27,7 +27,7 @@ const Delta: FC<DeltaProps> = ({ value = 0, className, showZero = false }) => {
         [styles.low]: absValue && displayValue === '0',
       })}
     >
-      <span className="delta__value">{displayValue}%</span>
+      {displayValue}%
     </span>
   )
 }

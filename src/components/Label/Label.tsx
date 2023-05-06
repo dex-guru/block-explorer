@@ -10,6 +10,10 @@ const Label: FC<LabelProps> = ({
   children,
   tooltip,
 }) => {
+  if (!title && !children) {
+    return null
+  }
+
   const tooltipData = tooltip
     ? {
         'data-tooltip-id': 'app-tooltip',

@@ -115,7 +115,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
             data.gasUsed * data.baseFeePerGas,
             chainConfig.nativeCurrency.decimals
           )}
-          suffix={` ${chainConfig.nativeCurrency.symbol}`}
+          suffix={<>&nbsp;${chainConfig.nativeCurrency.symbol}</>}
         />
       ),
     },
@@ -145,7 +145,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       value: (
         <Value
           value={getNormalizedValue(data.baseFeePerGas || 0)}
-          suffix={` ${chainConfig.nativeCurrency.symbol}`}
+          suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
         />
       ),
     },

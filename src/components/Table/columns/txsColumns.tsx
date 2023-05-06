@@ -5,7 +5,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Address, TimeAgo, Value } from '@/components'
+import { Address, Tile, TimeAgo, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
@@ -64,31 +64,36 @@ export const txsColumns = (
       const bigValue = new BigNumber(value)
 
       return (
-        <div>
-          <Value
-            value={getNormalizedValue(
-              bigValue,
-              chainConfig?.nativeCurrency.decimals
-            )}
-            suffix={
-              chainConfig?.nativeCurrency.symbol
-                ? ` ${chainConfig?.nativeCurrency.symbol}`
-                : ''
-            }
-          />{' '}
-          (
-          <Value
-            prefix="$"
-            value={getNormalizedValue(
-              bigValue.multipliedBy(
-                Number(chainStats?.nativeTokenPriceUsd || 0)
-              ),
-              chainConfig?.nativeCurrency.decimals,
-              { decimals: 2 }
-            )}
-          />
-          )
-        </div>
+        <Tile
+          className={styles.valueNativeWithStable}
+          title={
+            <Value
+              value={getNormalizedValue(
+                bigValue,
+                chainConfig?.nativeCurrency.decimals
+              )}
+              suffix={
+                chainConfig?.nativeCurrency.symbol ? (
+                  <>&nbsp;{chainConfig?.nativeCurrency.symbol}</>
+                ) : (
+                  ''
+                )
+              }
+            />
+          }
+          postfix={
+            <Value
+              prefix="$"
+              value={getNormalizedValue(
+                bigValue.multipliedBy(
+                  Number(chainStats?.nativeTokenPriceUsd || 0)
+                ),
+                chainConfig?.nativeCurrency.decimals,
+                { decimals: 2 }
+              )}
+            />
+          }
+        />
       )
     },
   },

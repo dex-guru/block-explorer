@@ -16,6 +16,16 @@ const nextConfig = {
 
     return config
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'assets-stage.dex.guru',
+        port: '',
+        pathname: '/icons/**',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig
