@@ -21,6 +21,11 @@ body {
   min-width: 320px;
 }
 
+::selection {
+  background: var(--color-muted);
+  color: var(--color-bg);
+}
+
 a {
   transition: all 0.25s ease;
   text-decoration: none;
@@ -31,9 +36,8 @@ small {
   line-height: 20px;
 }
 
-::selection {
-  background: var(--color-muted);
-  color: var(--color-bg);
+iframe {
+  display: block;
 }
 
 .recharts-brush {

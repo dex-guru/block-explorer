@@ -21,6 +21,7 @@ import {
   Card,
   Value,
   DateTime,
+  Comments,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -45,7 +46,7 @@ const ContractView: FC<IContractViewProps> = ({
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
   if (!abi) {
-    return null
+    // return null
   }
 
   const hasSources = match?.metadata?.sources || undefined
@@ -195,7 +196,12 @@ const ContractView: FC<IContractViewProps> = ({
                 to: `${pathname}?tab=comments`,
                 content: (
                   <Suspense fallback={<LoadingCard />}>
-                    <Card>Some comments here soon</Card>
+                    <Card>
+                      <Comments
+                        id={`address/${address}`}
+                        title={`Contract ${address}`}
+                      />
+                    </Card>
                   </Suspense>
                 ),
               },
