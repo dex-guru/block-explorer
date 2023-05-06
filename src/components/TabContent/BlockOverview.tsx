@@ -153,7 +153,11 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       title: 'Extra Data:',
       tooltip: '?',
       value: (
-        <Code isCopy format={{ hex: true, dec: true, decode: hex2ascii }}>
+        <Code
+          isCopy
+          defaultFormat="hex"
+          format={{ hex: true, decode: hex2ascii }}
+        >
           {data.extraData}
         </Code>
       ),

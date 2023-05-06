@@ -27,7 +27,7 @@ const TxLogs: FC<{ data: TransactionModel }> = (props) => {
   }
 
   const renderLogs = () => {
-    return data?.logs?.map((log) => <LogsView key={log.data} log={log} />)
+    return data?.logs?.map((log, idx) => <LogsView key={idx} log={log} />)
   }
 
   return <>{renderLogs()}</>
