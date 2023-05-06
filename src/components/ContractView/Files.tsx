@@ -53,6 +53,12 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
   return (
     <>
       <Properties data={properties} />
+      {!match?.metadata?.sources && (
+        <Heading size="sm">
+          Disclaimer: The contract is marked as verified based on our
+          best-educated guess and is not a guarantee.
+        </Heading>
+      )}
       {match?.metadata?.output.abi && (
         <>
           <Heading size="md">ABI</Heading>
