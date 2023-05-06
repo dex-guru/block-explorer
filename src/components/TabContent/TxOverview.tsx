@@ -233,7 +233,11 @@ const TxOverview: FC<{
     {
       title: 'Input Data:',
       tooltip: '?',
-      value: <Code>{data.input}</Code>,
+      value: (
+        <Code defaultFormat="hex" isCopy>
+          {data.input}
+        </Code>
+      ),
     },
   ]
 
