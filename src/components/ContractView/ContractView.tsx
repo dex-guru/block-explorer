@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Abi, AbiFunction } from 'abitype'
 import styles from '../../pages/Pages.module.scss'
+import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
@@ -21,12 +22,14 @@ import {
   Card,
   Value,
   DateTime,
+  Comments,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
 
 const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
+const HoldersDataTable = lazy(() => import('../Tables/HoldersDataTable/'))
 const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
 const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
 const EventsTable = lazy(() => import('../Tables/EventsTable'))
@@ -37,16 +40,13 @@ const ContractView: FC<IContractViewProps> = ({
   addressInfo,
   chain,
   contractCreator,
+  tokenHoldingsStats,
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, 7700)
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
-
-  if (!abi) {
-    return null
-  }
 
   const hasSources = match?.metadata?.sources || undefined
 
@@ -72,11 +72,11 @@ const ContractView: FC<IContractViewProps> = ({
               title="Contract Overview:"
               data={[
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  title: `${chain.config.nativeCurrency.symbol} Balance:`,
                   value: (
                     <Value
                       value={financialFormat(addressInfo.nativeBalance)}
-                      suffix={` ${chain.config.nativeCurrency.symbol}`}
+                      suffix={<>&nbsp;{chain.config.nativeCurrency.symbol}</>}
                     />
                   ),
                 },
@@ -91,7 +91,12 @@ const ContractView: FC<IContractViewProps> = ({
                 },
                 {
                   title: 'Token holdings:',
-                  value: addressInfo.assetsValueUSD,
+                  value: (
+                    <AddressWallet
+                      address={address}
+                      tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
                 },
               ]}
             />
@@ -139,10 +144,22 @@ const ContractView: FC<IContractViewProps> = ({
                   </Suspense>
                 ),
               },
+
+              {
+                title: 'Holders',
+                value: 'balances',
+                to: { pathname, query: { tab: 'balances' } },
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <HoldersDataTable address={address} />
+                  </Suspense>
+                ),
+              },
+
               {
                 title: 'ERC-20 Token TXns',
                 value: 'tokentxns',
-                to: `${pathname}?tab=tokentxns`,
+                to: { pathname, query: { tab: 'tokentxns' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>
                     <Erc20DataTable address={address} />
@@ -153,7 +170,7 @@ const ContractView: FC<IContractViewProps> = ({
               {
                 title: 'NFT Token TXns',
                 value: 'nfttxns',
-                to: `${pathname}?tab=nfttxns`,
+                to: { pathname, query: { tab: 'nfttxns' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>
                     <NftDataTable address={address} />
@@ -170,7 +187,7 @@ const ContractView: FC<IContractViewProps> = ({
               {
                 title: 'Events',
                 value: 'events',
-                to: `${pathname}?tab=events`,
+                to: { pathname, query: { tab: 'events' } },
                 content: (
                   <Suspense>
                     <EventsTable address={address} />
@@ -180,7 +197,7 @@ const ContractView: FC<IContractViewProps> = ({
               {
                 title: 'Analytics',
                 value: 'analytics',
-                to: `${pathname}?tab=analytics`,
+                to: { pathname, query: { tab: 'analytics' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>
                     <Card>Some analytics here soon</Card>
@@ -192,10 +209,15 @@ const ContractView: FC<IContractViewProps> = ({
                 title: 'Comments',
                 indicator: <IconVerify />,
                 value: 'comments',
-                to: `${pathname}?tab=comments`,
+                to: { pathname, query: { tab: 'comments' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>
-                    <Card>Some comments here soon</Card>
+                    <Card>
+                      <Comments
+                        id={`address/${address}`}
+                        title={`Contract ${address}`}
+                      />
+                    </Card>
                   </Suspense>
                 ),
               },

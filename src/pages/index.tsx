@@ -86,9 +86,15 @@ const Index: NextPage<IndexProps> = (props) => {
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
-          suffix={` ${financialFormatLowValueHighPrecision(
-            stats.transactionsPerSecond
-          )}  txs/sec`}
+          suffix={
+            <>
+              &nbsp;
+              {financialFormatLowValueHighPrecision(
+                stats.transactionsPerSecond
+              )}{' '}
+              txs/sec
+            </>
+          }
         />
       ),
     },
@@ -128,7 +134,7 @@ const Index: NextPage<IndexProps> = (props) => {
                 decimals: 2,
               }
             )}
-            suffix={` ${props.chainConfig.nativeCurrency.symbol}`}
+            suffix={<>&nbsp;{props.chainConfig.nativeCurrency.symbol}</>}
           />
         </Link>
       ),

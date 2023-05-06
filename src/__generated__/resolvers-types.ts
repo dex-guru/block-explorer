@@ -415,8 +415,8 @@ export type TokenHoldingsStatsModel = {
   __typename?: 'TokenHoldingsStatsModel';
   change24H: Scalars['Float'];
   tokenCount: Scalars['Int'];
-  totalNative: Scalars['String'];
-  totalStable: Scalars['String'];
+  totalNative: Scalars['Float'];
+  totalStable: Scalars['Float'];
 };
 
 export type TransactionModel = {
@@ -873,8 +873,8 @@ export type TokenHoldingsModelResolvers<ContextType = any, ParentType extends Re
 export type TokenHoldingsStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TokenHoldingsStatsModel'] = ResolversParentTypes['TokenHoldingsStatsModel']> = ResolversObject<{
   change24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   tokenCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalNative?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  totalStable?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  totalNative?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalStable?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

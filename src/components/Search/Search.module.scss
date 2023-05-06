@@ -87,9 +87,9 @@
   top: 100%;
   margin-top: 16px;
 
-  animation: search-dropdown 0.25s ease;
+  animation: dropdown 0.25s ease;
 
-  @keyframes search-dropdown {
+  @keyframes dropdown {
     from {
       opacity: 0;
       transform: translateY(-16px);

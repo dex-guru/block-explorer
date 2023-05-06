@@ -1,5 +1,5 @@
 import { LogModel } from '@/__generated__/resolvers-types'
-import { Address } from '@/components'
+import { Address, Label } from '@/components'
 import { LogsView } from '@/components/LogsView'
 import { IColumn } from '@/components/Table/types'
 
@@ -16,13 +16,14 @@ export const logsColumns: IColumn<LogModel>[] = [
     accessor: 'number',
     title: 'Block',
     render: (data) => (
-      <Address address={`${data.blockHash}`} type="block" isCopy />
+      <Address address={`${data.blockNumber}`} type="block" isCopy />
     ),
   },
 
   {
     accessor: 'eventName',
     title: 'Event',
+    render: (data) => <Label>{data.eventName}</Label>,
   },
   {
     accessor: 'logs',

@@ -53,7 +53,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
               value={financialFormatLowValueHighPrecision(csrStats.sumRevenue, {
                 decimals: 2,
               })}
-              suffix={` ${chainConfig.nativeCurrency.symbol}`}
+              suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
               className={styles.valueBig}
             />
           </Card>

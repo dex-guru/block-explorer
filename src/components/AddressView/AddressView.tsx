@@ -1,6 +1,7 @@
 import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
 import {
@@ -11,7 +12,9 @@ import {
   Properties,
   TabPanel,
   Card,
+  Value,
 } from '@/components'
+import { financialFormat } from '@/lib/utils'
 
 const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
 const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
@@ -22,6 +25,7 @@ const AddressView: FC<IAddressViewProps> = ({
   tab,
   addressInfo,
   chain,
+  tokenHoldingsStats,
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
@@ -43,16 +47,31 @@ const AddressView: FC<IAddressViewProps> = ({
             <Properties
               data={[
                 {
-                  title: 'Balance:',
-                  value: addressInfo.nativeBalance,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalance)}
+                      suffix={<>&nbsp;{chain.config.nativeCurrency.symbol}</>}
+                    />
+                  ),
                 },
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value`,
-                  value: addressInfo.nativeBalanceUSD,
+                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo.nativeBalanceUSD)}
+                      prefix="$"
+                    />
+                  ),
                 },
                 {
-                  title: 'Token:',
-                  value: addressInfo.assetsValueUSD,
+                  title: 'Tokens:',
+                  value: (
+                    <AddressWallet
+                      address={address}
+                      tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
                 },
               ]}
             />
@@ -68,7 +87,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 to: pathname,
                 content: (
                   <Suspense fallback={<LoadingCard />}>
-                    <TxsDataTable address={address} />,
+                    <TxsDataTable address={address} />
                   </Suspense>
                 ),
               },

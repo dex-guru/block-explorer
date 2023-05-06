@@ -16,12 +16,12 @@ const Value: FC<ValueProps> = ({
   return (
     <span className={clsx(styles.container, className)}>
       {!!icon && <span className={styles.icon}>{icon}</span>}
-      <span className={styles.value}>
+      <span className={styles.content}>
         {!!prefix && <span className={styles.prefix}>{prefix}</span>}
         <span className={styles.value}>{value || children}</span>
         {!!suffix && <span className={styles.suffix}>{suffix}</span>}
       </span>
-      {delta && <Delta value={delta} />}
+      {delta && <Delta value={delta} className={styles.delta} />}
     </span>
   )
 }

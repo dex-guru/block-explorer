@@ -127,7 +127,7 @@ const TxOverview: FC<{
       value: (
         <Value
           value={getNormalizedValue(data.value)}
-          suffix={` ${chainConfig.nativeCurrency.symbol}`}
+          suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
         />
       ),
     },
@@ -143,7 +143,7 @@ const TxOverview: FC<{
               ),
               chainConfig.nativeCurrency.decimals
             )}
-            suffix={` ${chainConfig.nativeCurrency.symbol}`}
+            suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
           <Value
             value={getNormalizedValue(
@@ -168,14 +168,14 @@ const TxOverview: FC<{
               data.gasPrice,
               chainConfig.nativeCurrency.decimals - 9
             )}
-            suffix={` ${gigaNative}`}
+            suffix={<>&nbsp;{gigaNative}</>}
           />
           <Value
             value={getNormalizedValue(
               data.gasPrice,
               chainConfig.nativeCurrency.decimals
             )}
-            suffix={` ${chainConfig.nativeCurrency.symbol}`}
+            suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
         </Separated>
       ),

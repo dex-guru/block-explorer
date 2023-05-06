@@ -12,6 +12,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
   ContractCreatorModel,
+  TokenHoldingsStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { cantoTestnet } from '@/chains/cantoTestnet'
@@ -41,6 +42,7 @@ interface AddressPageServerProps {
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
   contractCreator?: ContractCreatorModel
+  tokenHoldingsStats?: TokenHoldingsStatsModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
@@ -49,6 +51,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   chainStats,
   chainConfig,
   contractCreator,
+  tokenHoldingsStats,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
@@ -73,6 +76,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
             addressInfo={addressInfo}
             chain={{ stats: chainStats, config: chainConfig }}
             contractCreator={contractCreator}
+            tokenHoldingsStats={tokenHoldingsStats}
           />
         ) : (
           <AddressView
@@ -81,6 +85,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
             transactions={transactions}
             addressInfo={addressInfo}
             chain={{ stats: chainStats, config: chainConfig }}
+            tokenHoldingsStats={tokenHoldingsStats}
           />
         )}
       </RainbowKitProvider>
@@ -102,6 +107,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     address: AddressModel
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
+    tokenHoldingsStats: TokenHoldingsStatsModel
   }>({
     query: GET_ADDRESS_INFO,
     variables: { address: address.toLowerCase() },

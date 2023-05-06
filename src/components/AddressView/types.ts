@@ -2,6 +2,7 @@ import {
   AddressModel,
   ChainConfigModel,
   ChainStatsModel,
+  TokenHoldingsStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 
@@ -14,4 +15,5 @@ export interface IAddressViewProps {
     stats: ChainStatsModel
     config: ChainConfigModel
   }
+  tokenHoldingsStats?: TokenHoldingsStatsModel
 }
