@@ -23,6 +23,7 @@ import {
   VerificationInput,
   Create2VerificationInput,
 } from '@/components/Verifier/types'
+import styles from './Pages.module.scss'
 
 interface IVerifyContractProps {}
 
@@ -211,31 +212,10 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Page>
-        <div className="flex flex-col md:flex-row flex-grow mt-6">
-          <FileUpload
-            handleFilesAdded={handleFiles}
-            addedFiles={addedFiles}
-            metadataMissing={
-              unusedFiles.length > 0 && checkedContracts.length === 0
-            }
-            restartSession={restartSession}
-            fetchAndUpdate={fetchAndUpdate}
-          />
-          <CheckedContractsView
-            checkedContracts={checkedContracts}
-            isHidden={checkedContracts.length < 1}
-            verifyCheckedContract={verifyCheckedContract}
-            verifyCreate2CheckedContract={verifyCreate2CheckedContract}
-            verifyCreate2Compile={verifyCreate2Compile}
-          />
-        </div>
-        <div className="text-xs italic mx-2 mt-1 text-gray-400">
-          Once a contract is verified it can't be removed from the Sourcify
-          repository.
-        </div>
-        <div className="text-xs italic mx-2 mt-1 text-gray-400">
-          {errorMessage}
-        </div>
+        <iframe
+          src="https://sourcify.dev/#/verifier"
+          className={styles.verifyContractFrame}
+        />
       </Page>
     </>
   )
