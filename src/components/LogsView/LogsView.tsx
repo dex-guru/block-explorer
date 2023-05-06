@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import Address from '../Address'
+import Code from '../Code'
 import Properties from '../Properties'
 import { Property } from '../Properties/types'
 import { Table } from '../Table'
@@ -46,7 +47,7 @@ export const LogsView: FC<ILogsViewProps> = ({ log }) => {
     },
     {
       title: 'Data',
-      value: log.data,
+      value: <Code>{log.data}</Code>,
     },
     {
       title: 'Log Index',

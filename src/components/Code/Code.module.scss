@@ -7,6 +7,8 @@
   background: var(--code-bg);
   padding: 0.5em;
   color: var(--code-text);
+
+  font-size: 14px;
 }
 
 .pre {
@@ -21,7 +23,7 @@
 
 .tools {
   float: right;
-  margin: -4px 0 2px 0.25em;
+  margin: -4px 0 -4px 0.25em;
   padding: 2px 0;
   display: flex;
   gap: 4px;

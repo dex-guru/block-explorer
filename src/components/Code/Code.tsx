@@ -9,7 +9,7 @@ import styles from './Code.module.scss'
 const Code: FC<CodeProps> = ({
   children: initialText = '',
   className,
-  isCopy,
+  isCopy = true,
   format,
   defaultFormat = 'ascii',
 }) => {
@@ -55,7 +55,7 @@ const Code: FC<CodeProps> = ({
 
   return (
     <div className={clsx(styles.container, className)}>
-      {!!currentText && (
+      {!!initialText && (
         <div className={styles.tools}>
           {isCopy && <Copy text={currentText} className={styles.action} />}
 

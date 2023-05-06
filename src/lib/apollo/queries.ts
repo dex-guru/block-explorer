@@ -76,6 +76,7 @@ export const CHAIN_CONFIG = gql`
       networkId
       rpc
       shortName
+      message
     }
   }
 `
@@ -109,6 +110,7 @@ export const CHAIN_STATS = gql`
         name
         symbol
       }
+      message
     }
   }
 `

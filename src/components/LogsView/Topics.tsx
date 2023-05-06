@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import Address from '../Address'
+import Code from '../Code'
+import styles from './Topics.module.scss'
 
 interface ITopicsProps {
   topics: string[]
@@ -11,21 +12,14 @@ export const Topics: FC<ITopicsProps> = ({ topics }) => {
   }
 
   return (
-    <div className="text">
-      <ul>
+    <div className={styles.container}>
+      <ol start={0} className={styles.list}>
         {topics.map((topic, tIdx) => (
-          <li key={tIdx}>
-            [{tIdx}]{' '}
-            <Address
-              type="account"
-              address={topic}
-              isLink={false}
-              isShorten={false}
-              isCopy
-            />
+          <li key={tIdx} className={styles.item}>
+            <Code>{topic}</Code>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   )
 }

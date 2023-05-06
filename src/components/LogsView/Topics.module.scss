@@ -1,0 +1,17 @@
+.list {
+  list-style: none;
+  counter-reset: topicsCounter;
+  margin: 0;
+  padding: 0 0 0 3ch;
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+}
+
+.item {
+  counter-increment: topicsCounter;
+
+  &::marker {
+    content: counter(topicsCounter) '  ';
+  }
+}
