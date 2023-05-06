@@ -8,23 +8,19 @@
   overflow: hidden;
 
   &[open] {
-    .body,
-    .header {
+    & > .body,
+    & > .header {
       border-color: var(--color-details-open);
     }
 
-    .header {
+    & > .header {
       border-radius: var(--radii-lg) var(--radii-lg) 0 0;
-    }
+      & > .arrow {
+        transform: rotate(0deg);
 
-    .body {
-    }
-
-    .arrow {
-      transform: rotate(0deg);
-
-      path {
-        fill: var(--color-details-open);
+        path {
+          fill: var(--color-details-open);
+        }
       }
     }
   }

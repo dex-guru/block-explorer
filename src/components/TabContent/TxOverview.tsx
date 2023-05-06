@@ -248,6 +248,7 @@ const TxOverview: FC<{
         <Card>
           {!!transfers.length && (
             <Details
+              isOpen
               title={
                 <>
                   ERC-20 Tokens Transferred:{' '}
@@ -260,8 +261,10 @@ const TxOverview: FC<{
               <Table data={transfers} columns={erc20TransfersColumns} />
             </Details>
           )}
+
           {!!nftEvents.length && (
             <Details
+              isOpen
               title={
                 <>
                   NFT Tokens Transferred:{' '}
@@ -274,8 +277,10 @@ const TxOverview: FC<{
               <Table data={nftEvents} columns={nftTransfersColumns} />
             </Details>
           )}
+
           {!!actions.length && (
             <Details
+              isOpen
               title={
                 <>
                   Transaction Actions:{' '}

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { UrlObject } from 'url'
 
 export type ButtonSize = 'xl' | 'lg' | 'md' | 'sm' | 'xs'
 
@@ -19,6 +20,6 @@ export interface ButtonProps {
   disabled?: boolean
   hidden?: boolean
   pending?: boolean
-  to?: string
+  to?: string | UrlObject
   onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }
