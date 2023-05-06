@@ -152,7 +152,7 @@ const ContractView: FC<IContractViewProps> = ({
               {
                 title: 'Holders',
                 value: 'holders',
-                to: { pathname, query: { tab: 'holders' } },
+                to: { pathname, query: { tab: 'balances' } },
                 content: (
                   <Suspense fallback={<LoadingCard />}>
                     <HoldersDataTable address={address} />
