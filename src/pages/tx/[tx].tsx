@@ -45,9 +45,8 @@ const Tx: NextPage<ITxProps> = (props) => {
       </Head>
 
       <Page withSearch>
-        {' '}
         <DetailsView
-          title="Transaction "
+          title="Transaction"
           address={props.data?.hash || undefined}
         >
           {!props.data?.hash && (
