@@ -28,7 +28,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   }>(GET_ADDRESS_TOKENS)
 
   useEffect(() => {
-    getTokens({ variables: { address, first: ADRESS_WALLET_LIMIT, skip: 0 } })
+    getTokens({ variables: { address: address?.toLowerCase(), first: ADRESS_WALLET_LIMIT, skip: 0 } })
   }, [getTokens, address])
 
   if (loading) {
