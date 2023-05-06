@@ -3,7 +3,6 @@ import { Interface } from '@ethersproject/abi'
 import { ErrorDescription } from '@ethersproject/abi/lib/interface'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { CheckAllByAddressResult } from '@/components/Verifier/types'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
 const ipfsGatewayPrefix = 'https://explorer-graph-stage.dexguru.biz/api'
@@ -144,26 +143,4 @@ export const useError = (
   }, [metadata, output])
 
   return err
-}
-
-export const checkAllByAddresses = async (
-  addresses: string,
-  chainIds: string
-): Promise<CheckAllByAddressResult[]> => {
-  const response = await fetch(
-    `${ipfsGatewayPrefix}/checkAllByAddresses?addresses=${addresses}&chainIds=${chainIds}`,
-    {
-      method: 'GET',
-    }
-  ).then((res) => {
-    if (!res.ok) {
-      // e.g. HTTP 400 invalid address
-      return res.json().then((json) => {
-        throw new Error(json.message)
-      })
-    }
-    return res.json()
-  })
-
-  return response
 }

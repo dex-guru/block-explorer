@@ -1,8 +1,6 @@
 /* eslint-disable */
-import { useState, useCallback, useEffect } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import bytes from 'bytes'
 import { Page } from '@/components'
 import CheckedContractsView from '@/components/Verifier/CheckedContractsView'
 import FileUpload from '@/components/Verifier/FileUpload'
@@ -33,7 +31,7 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
   const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>(
     []
   )
-  const [errorMessage, setErrorMessage] = useState('')
+  const { errorMessage, setErrorMessage } = useContext(Context)
 
   const fetchAndUpdate = useCallback(
     async (URL: string, fetchOptions?: RequestInit) => {
@@ -83,7 +81,7 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
             }
           </div>
         )
-        setErrorMessage(e?.message)
+        setErrorMessage(<ErrorMessage message={e?.message as string} />)
       }
     },
     [setErrorMessage]
@@ -212,6 +210,28 @@ const VerifyContract: NextPage<IVerifyContractProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Page>
+        <div className="flex flex-col md:flex-row flex-grow mt-6">
+          <FileUpload
+            handleFilesAdded={handleFiles}
+            addedFiles={addedFiles}
+            metadataMissing={
+              unusedFiles.length > 0 && checkedContracts.length === 0
+            }
+            restartSession={restartSession}
+            fetchAndUpdate={fetchAndUpdate}
+          />
+          <CheckedContractsView
+            checkedContracts={checkedContracts}
+            isHidden={checkedContracts.length < 1}
+            verifyCheckedContract={verifyCheckedContract}
+            verifyCreate2CheckedContract={verifyCreate2CheckedContract}
+            verifyCreate2Compile={verifyCreate2Compile}
+          />
+        </div>
+        <div className="text-xs italic mx-2 mt-1 text-gray-400">
+          Once a contract is verified it can't be removed from the Sourcify
+          repository.
+        </div>
         <iframe
           src="https://sourcify.dev/#/verifier"
           className={styles.verifyContractFrame}
