@@ -22,7 +22,7 @@ export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
   })
 
   useEffect(() => {
-    if (!loading && data) {
+    if (!loading && data?.cosmos?.transactions?.length) {
       setcosmosTransactions(data.cosmos.transactions)
     }
   }, [data, loading])
