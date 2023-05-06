@@ -598,6 +598,13 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         symbol
       }
     }
+    cosmos {
+      transactions {
+        blockNumber
+        blockTimestamp
+        hash
+      }
+    }
   }
 `
 
@@ -619,6 +626,18 @@ export const GET_LOGS_BY_ADDRESS = gql`
       topics
       transactionHash
       transactionIndex
+    }
+  }
+`
+
+export const GET_COSMOS_TRANSACTIONS = gql`
+  query CosmosTxns {
+    cosmos {
+      transactions {
+        blockNumber
+        blockTimestamp
+        hash
+      }
     }
   }
 `
