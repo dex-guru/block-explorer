@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { UrlObject } from 'url'
 
 export interface Tab<T> {
   title: string
@@ -10,7 +11,7 @@ export interface Tab<T> {
   className?: string
   onClick?: () => void
   tooltip?: string
-  to?: string
+  to?: string | UrlObject
   content?: ReactNode
 }
 
