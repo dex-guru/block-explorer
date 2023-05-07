@@ -5,6 +5,7 @@ export type ChartTuple = { timestamp: number; value: number }
 
 export type LineChartSeries = {
   id: string
+  name?: string
   color?: string
   yAxis?: 'left' | 'right'
   className?: string

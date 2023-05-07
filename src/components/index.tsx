@@ -42,6 +42,7 @@ import IconChart from '@/images/icons/chart.svg'
 import IconContract from '@/images/icons/contract.svg'
 import IconCross from '@/images/icons/cross.svg'
 import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
+import IconMenu from '@/images/icons/menu.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
@@ -106,6 +107,7 @@ export {
   IconQuestion,
   IconBlock,
   IconTx,
+  IconMenu,
   TxOverview,
   TxLogs,
   TxTrace,
