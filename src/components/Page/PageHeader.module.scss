@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (max-width: 840px) {
+    justify-content: center;
+  }
 }
 
 .main {
@@ -19,6 +23,12 @@
   flex: 1 0 0;
   max-width: 520px;
   min-width: 320px;
+
+  @media (max-width: 720px) {
+    order: 10;
+    flex: 0 0 100%;
+    margin: 0 auto;
+  }
 }
 
 .logo {
@@ -26,23 +36,16 @@
   display: flex;
 
   --color-link: #05fc99;
+
+  @media (max-width: 840px) {
+    flex: 0 0 auto;
+  }
 }
 
 .menu {
   flex: 0 0 320px;
-}
 
-@media (max-width: 840px) {
-  .container {
-    justify-content: center;
-  }
-
-  .logo {
-    flex: 0 0 auto;
-    margin: 0 auto;
-  }
-
-  .menu {
+  @media (max-width: 1024px) {
     flex: 0 0 32px;
     margin-left: auto;
   }

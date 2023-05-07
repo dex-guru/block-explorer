@@ -1,14 +1,13 @@
 import { FC, useState } from 'react'
-import Link from 'next/link'
+import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import { IconCross, IconMenu } from '..'
 import { clsx } from 'clsx'
-import { UrlObject } from 'url'
 import Button from '../Button'
 import styles from './PageMenu.module.scss'
 
 const PageMenu: FC<{
-  links: { caption: string; to: string | UrlObject }[]
+  links: (LinkProps & { caption: string; className?: string })[]
   className?: string
 }> = ({ links, className }) => {
   const router = useRouter()
@@ -33,10 +32,14 @@ const PageMenu: FC<{
           return (
             <li className={styles.item} key={idx}>
               <Link
-                href={link.to}
-                className={clsx(styles.link, {
-                  [styles.active]: router.pathname === '/csr',
-                })}
+                {...link}
+                className={clsx(
+                  styles.link,
+                  {
+                    [styles.active]: router.pathname === link.href,
+                  },
+                  link.className
+                )}
               >
                 {link.caption}
               </Link>

@@ -23,9 +23,17 @@ const PageHeader: FC<PageHeaderProps> = ({ withMenu = true, withSearch }) => {
           <PageMenu
             className={styles.menu}
             links={[
-              { caption: 'Home', to: '/' },
-              { caption: 'CSR', to: '/csr' },
-              { caption: 'Verify Contract', to: '/verifyContract' },
+              { caption: 'Home', href: '/' },
+              { caption: 'CSR', href: '/csr' },
+              { caption: 'Verify Contract', href: '/verifyContract' },
+              {
+                caption: 'API',
+                href: 'https://developers.dex.guru/',
+              },
+              {
+                caption: 'Dex Metrics',
+                href: 'https://dex.guru/markets?chain=canto',
+              },
             ]}
           />
         )}
