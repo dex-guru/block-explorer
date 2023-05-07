@@ -74,8 +74,6 @@ const ContractView: FC<IContractViewProps> = ({
     },
   ]
 
-  console.log(generateLineChartData(holdersSeries))
-
   return (
     <>
       <Head>
