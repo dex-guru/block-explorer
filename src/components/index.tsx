@@ -37,12 +37,15 @@ import Value from './Value'
 import IconDown from '@/images/icons/arrow-down.svg'
 import IconLeft from '@/images/icons/arrow-left.svg'
 import IconRight from '@/images/icons/arrow-right.svg'
+import IconBlock from '@/images/icons/block.svg'
+import IconChart from '@/images/icons/chart.svg'
 import IconContract from '@/images/icons/contract.svg'
 import IconCross from '@/images/icons/cross.svg'
 import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
+import IconTx from '@/images/icons/tx.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 
@@ -91,6 +94,7 @@ export {
   Value,
   IconLeft,
   IconRight,
+  IconChart,
   IconCross,
   IconDown,
   IconEmpty,
@@ -100,6 +104,8 @@ export {
   IconVerify,
   IconLiquidityPool,
   IconQuestion,
+  IconBlock,
+  IconTx,
   TxOverview,
   TxLogs,
   TxTrace,

@@ -1,6 +1,7 @@
 import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { isAddress, getAddress } from '@ethersproject/address'
 import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
@@ -30,10 +31,13 @@ const AddressView: FC<IAddressViewProps> = ({
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
 
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const pageTitle = `Address ${checkSumAddress}`
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
       </Head>
       <Page withSearch>

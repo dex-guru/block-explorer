@@ -3,6 +3,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
   ContractCreatorModel,
+  TokenBalancesStatsModel,
   TokenHoldingsStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -18,4 +19,5 @@ export interface IContractViewProps {
   }
   contractCreator?: ContractCreatorModel
   tokenHoldingsStats?: TokenHoldingsStatsModel
+  balancesStats: TokenBalancesStatsModel
 }

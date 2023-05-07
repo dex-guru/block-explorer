@@ -1,6 +1,7 @@
 import Link from 'next/link'
+import styles from '../../../pages/Pages.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, Avatar, Label, Tile, TimeAgo } from '@/components'
+import { Address, IconBlock, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
 
@@ -11,7 +12,7 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
     accessor: 'hash',
     render: (data) => (
       <Tile
-        icon={<Avatar letters="Bk" type="smooth" />}
+        icon={<IconBlock className={styles.mutedIcon} />}
         title={<Address address={`${data.number}`} type="block" isCopy />}
         postfix={<TimeAgo timestamp={data.timestamp} />}
       />

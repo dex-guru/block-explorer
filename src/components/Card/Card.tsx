@@ -8,7 +8,7 @@ import styles from './Card.module.scss'
 export const Card: FC<CardProps> = ({
   className,
   title,
-  subtitle,
+  header,
   actions,
   children,
 }) => {
@@ -26,14 +26,14 @@ export const Card: FC<CardProps> = ({
 
   return (
     <div className={clsx(styles.container, className)}>
-      {(title || subtitle) && (
+      {(!!title || !!header) && (
         <div className={styles.header}>
           {title && (
             <Heading size="md" className={styles.title}>
               {title}
             </Heading>
           )}
-          {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
+          {!!header && <div className={styles.headerContent}>{header}</div>}
         </div>
       )}
       <div className={styles.body}>{children}</div>

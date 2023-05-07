@@ -8,7 +8,7 @@ import TabPanel from '../TabPanel'
 import { searchTxsColumns } from '../Table/columns/searchTxsColumns'
 import Tile from '../Tile'
 import { SearchVariantsProps } from './types'
-import { Address, Label, Table } from '@/components'
+import { Address, IconBlock, Label, Table } from '@/components'
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
@@ -89,7 +89,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
         >
           <Tile
             className={styles.variant}
-            icon={<Avatar letters="Bk" className={styles.avatar} />}
+            icon={<IconBlock className={styles.avatar} />}
             title={
               <Address
                 address={block.number.toString()}

@@ -19,6 +19,15 @@
   padding: 0 6px;
   height: 32px;
   position: relative;
+  transition: 0.25s ease;
+
+  &:hover {
+    border-color: var(--color-accent);
+  }
+
+  &Open {
+    border-color: var(--color-accent);
+  }
 }
 
 .label {
@@ -30,6 +39,14 @@
 .arrow {
   flex: 0 0 auto;
   margin-left: auto;
+  color: var(--color-muted);
+  transform: none;
+  transition: 0.25s ease;
+
+  &Open {
+    transform: rotate(180deg);
+    color: var(--color-accent);
+  }
 }
 
 .dropdown {
@@ -41,7 +58,7 @@
   left: 0;
   right: 0;
   top: 100%;
-  padding: 8px 0;
+  padding: 0;
   margin-top: 16px;
   background: var(--color-bg-3);
   border-radius: var(--radii-lg);
@@ -73,7 +90,7 @@
 }
 
 .list {
-  padding: 0;
+  padding: 8px 0;
   list-style: none;
   display: flex;
   flex-flow: column;
@@ -108,6 +125,9 @@
   --color-button-border: var(--color-input-border);
   --color-button-bg: transparent;
   --color-button-text: var(--color-muted);
+  --color-button-hover-border: var(--color-accent-a);
+  --color-button-hover-bg: transparent;
+  --color-button-hover-text: var(--color-accent-a);
 }
 
 .wallet {

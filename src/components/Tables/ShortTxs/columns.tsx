@@ -1,8 +1,9 @@
+import styles from '../../../pages/Pages.module.scss'
 import {
   ChainConfigModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Address, Avatar, Label, Tile, TimeAgo } from '@/components'
+import { Address, IconTx, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 
@@ -14,7 +15,7 @@ export const lastTxsColumns = (
     title: 'Block',
     render: (data) => (
       <Tile
-        icon={<Avatar letters="Tx" type="rounded" />}
+        icon={<IconTx className={styles.mutedIcon} />}
         title={<Address address={data.hash} type="tx" isCopy />}
         postfix={<TimeAgo timestamp={data.blockTimestamp} />}
       />

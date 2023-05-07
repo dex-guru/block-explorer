@@ -447,6 +447,7 @@ export const GET_ADDRESS_INFO = gql`
     address(address: $address) {
       address
       addressType
+      name
       nativeBalance
       nativeBalanceUSD
     }
@@ -460,6 +461,16 @@ export const GET_ADDRESS_INFO = gql`
       tokenCount
       totalNative
       totalStable
+    }
+    balancesStats(tokenAddress: $address) {
+      holders
+      maxTotalSupply
+      price
+      priceChange
+      priceNative
+      totalTransfers
+      fullyDilutedValuation
+      holdersChange
     }
     chainStats {
       nativeTokenPriceUsd

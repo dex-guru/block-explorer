@@ -74,10 +74,14 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
       : []),
   ]
 
+  const pageTitle = block
+    ? `Transactions for block ${block?.toString()}`
+    : 'Transactions'
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

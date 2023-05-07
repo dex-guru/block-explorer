@@ -142,10 +142,12 @@ const Index: NextPage<IndexProps> = (props) => {
     },
   ]
 
+  const pageTitle = `${chainConfig.nativeCurrency.name} Block Explorer`
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -160,7 +162,9 @@ const Index: NextPage<IndexProps> = (props) => {
             stats={statsDisplay}
             charts={[
               {
-                title: 'Ethereum Transaction History in 14 days',
+                title: `${
+                  chainConfig.nativeCurrency.name || ''
+                } Transaction History in 14 days`,
                 data: chartData,
               },
             ]}
@@ -187,23 +191,19 @@ const Index: NextPage<IndexProps> = (props) => {
           </Card>
 
           <Card
-            title={
-              <div className={styles.txsHeader}>
-                <div className={styles.tsxTitle}>Latest Transactions</div>
-                <div className={styles.tsxAction}>
-                  <Tabs
-                    tabs={[
-                      { title: 'EVM', value: 'evm' },
-                      { title: 'Cosmos', value: 'cosmos' },
-                    ]}
-                    className={styles.tabsInner}
-                    value={isCosmos ? 'cosmos' : 'evm'}
-                    onChange={(value) => {
-                      setIsCosmos(value === 'cosmos')
-                    }}
-                  />
-                </div>
-              </div>
+            title="Latest Transactions"
+            header={
+              <Tabs
+                tabs={[
+                  { title: 'EVM', value: 'evm' },
+                  { title: 'Cosmos', value: 'cosmos' },
+                ]}
+                className={styles.tabsInner}
+                value={isCosmos ? 'cosmos' : 'evm'}
+                onChange={(value) => {
+                  setIsCosmos(value === 'cosmos')
+                }}
+              />
             }
             actions={
               !isCosmos
