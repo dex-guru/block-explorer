@@ -29,6 +29,8 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   const mainProperties = [
     {
       title: 'Block Height:',
+      tooltip:
+        'Also known as Block Number. The block height, which indicates the length of the blockchain, increases after the addition of the new block.',
       value: (
         <div>
           {data.number}{' '}
@@ -58,11 +60,10 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
           </Link>
         </div>
       ),
-      tooltip: '?',
     },
     {
       title: 'Status:',
-      tooltip: '?',
+      tooltip: 'The finality status of the block. ',
       value: (
         <Value
           icon={<IconVerify className={styles.icon} />}
@@ -73,7 +74,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Timestamp:',
-      tooltip: '?',
+      tooltip: 'The date and time at which a block is produced.',
       value: (
         <Value
           icon={<IconWatch />}
@@ -92,7 +93,8 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Transactions:',
-      tooltip: '?',
+      tooltip:
+        'The number of transactions in the block. Internal transaction is transactions as a result of contract execution that involves Ether value.',
       value: data.transactionCount ? (
         <Link href={`/txs?block=${data.number}?`}>
           {financialFormat(data.transactionCount)} transactions in this block
@@ -101,14 +103,15 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Fee Recipient:',
-      tooltip: '?',
+      tooltip: 'Address receiving fees from transactions in this block',
       value: (
         <Address type="account" address={data.miner} isShorten={false} isCopy />
       ),
     },
     {
       title: 'Block Reward:',
-      tooltip: '?',
+      tooltip:
+        'For each block, the block producer is rewarded with a finite amount of Ether on top of the fees paid for all transactions in the block.',
       value: (
         <Value
           value={getNormalizedValue(
@@ -121,12 +124,14 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Size:',
-      tooltip: '?',
+      tooltip:
+        "The block size is actually determined by the block's gas limit.",
       value: financialFormat(data.size),
     },
     {
       title: 'Gas Used:',
-      tooltip: data.gasUsed,
+      tooltip:
+        'The total gas used in the block and its percentage of gas filled in the block.',
       value: (
         <Separated>
           <div>{financialFormat(data.gasUsed)}</div>
@@ -136,12 +141,13 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Gas Limit:',
-      tooltip: '?',
+      tooltip: 'Total gas limit provided by all transactions in the block.',
       value: financialFormat(data.gasLimit),
     },
     {
       title: 'Base Fee Per Gas:',
-      tooltip: '?',
+      tooltip:
+        'Post-London Upgrade, this represents the minimum gasUsed multiplier required for a tx to be included in a block. ',
       value: (
         <Value
           value={getNormalizedValue(data.baseFeePerGas || 0)}
@@ -151,7 +157,8 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Extra Data:',
-      tooltip: '?',
+      tooltip:
+        'Any data that can be included by the block producer in the block.',
       value: (
         <Code
           isCopy
@@ -167,23 +174,29 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   const extraProperties = [
     {
       title: 'Hash: ',
-      tooltip: '?',
+      tooltip: 'The hash of the block header of the current block.',
       value: <Address address={data.hash} isCopy />,
     },
     {
       title: 'Parent Hash: ',
-      tooltip: '?',
+      tooltip:
+        'The hash of the block from which this block was generated, also known as its parent block.',
       value: <Address address={data.parentHash} isCopy />,
     },
     {
       title: 'StateRoot: ',
-      tooltip: '?',
+      tooltip: 'The root of the state trie',
       value: <Address address={data.stateRoot} isCopy />,
     },
     {
       title: 'Nonce: ',
-      tooltip: '?',
-      value: <Address address={data.nonce} isCopy />,
+      tooltip:
+        'Block nonce is a value used during mining to demonstrate proof of work for a block.',
+      value: (
+        <Code defaultFormat="hex" format={{ dec: true, hex: true }}>
+          {data.nonce}
+        </Code>
+      ),
     },
   ]
 

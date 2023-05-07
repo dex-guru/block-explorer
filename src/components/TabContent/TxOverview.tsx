@@ -49,7 +49,7 @@ const TxOverview: FC<{
   const properties: Property[] = [
     {
       title: 'Status:',
-      tooltip: '?',
+      tooltip: 'The status of the transaction.',
       value: (
         <Value
           icon={
@@ -66,20 +66,21 @@ const TxOverview: FC<{
       ),
     },
     {
-      title: 'Block / Position:',
-      tooltip: '?',
+      title: 'Block:',
+      tooltip:
+        'Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.',
       value: <Address type="block" address={`${data.blockNumber}`} />,
     },
     {
       title: 'Timestamp:',
-      tooltip: '?',
+      tooltip: 'The date and time at which a transaction is produced.',
       value: (
         <Value
           icon={<StopwatchIcon className={styles.muted} />}
           value={<TimeAgo timestamp={data.blockTimestamp} />}
           suffix={
             <>
-              {' '}
+              &nbsp;
               <DateTime
                 timestamp={data.blockTimestamp}
                 className={styles.muted}
@@ -91,7 +92,7 @@ const TxOverview: FC<{
     },
     {
       title: 'From / Nonce:',
-      tooltip: '?',
+      tooltip: 'The sending party of the transaction.',
       value: (
         <Separated>
           <Address
@@ -108,7 +109,8 @@ const TxOverview: FC<{
     },
     {
       title: 'Interacted With (To):',
-      tooltip: '?',
+      tooltip:
+        'The receiving party of the transaction (could be a contract address).',
       value: data.toAddress ? (
         <Address
           address={data.toAddress}
@@ -123,7 +125,8 @@ const TxOverview: FC<{
   const priceProperties = [
     {
       title: 'Value:',
-      tooltip: '?',
+      tooltip:
+        'The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.',
       value: (
         <Value
           value={getNormalizedValue(data.value)}
@@ -133,7 +136,8 @@ const TxOverview: FC<{
     },
     {
       title: 'Transaction Fee:',
-      tooltip: '',
+      tooltip:
+        'Amount paid to the block producer for processing the transaction.',
       value: (
         <Separated>
           <Value
@@ -160,7 +164,8 @@ const TxOverview: FC<{
     },
     {
       title: 'Gas Price:',
-      tooltip: '?',
+      tooltip:
+        'Cost per unit of gas specified for the transaction, in Ether and Gwei. The higher the gas price the higher chance of getting included in a block.',
       value: (
         <Separated>
           <Value
@@ -185,7 +190,8 @@ const TxOverview: FC<{
   const detailsProperties = [
     {
       title: 'Gas Limit & Usage by Txn:',
-      tooltip: '?',
+      tooltip:
+        'Maximum amount of gas allocated for the transaction & the amount eventually used. Normal ETH transfers involve 21,000 gas units while contracts involve higher values.',
       value: (
         <Separated>
           <Value value={financialFormat(data.gas)} />
@@ -201,7 +207,8 @@ const TxOverview: FC<{
     },
     {
       title: 'Gas Fees:',
-      tooltip: '?',
+      tooltip:
+        'Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the block producer respectively.',
       value: (
         <Separated>
           <Value
@@ -227,12 +234,13 @@ const TxOverview: FC<{
     },
     {
       title: 'Other Attributes:',
-      tooltip: '?',
+      tooltip: 'Other data related to this transaction.',
       value: <Value value={financialFormat(data.transactionIndex)} />,
     },
     {
       title: 'Input Data:',
-      tooltip: '?',
+      tooltip:
+        'Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.',
       value: (
         <Code defaultFormat="hex" isCopy>
           {data.input}

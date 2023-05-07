@@ -1,6 +1,5 @@
 export * from './blocksColumns'
 export * from './lastBlocksColumns'
-export * from './lastTxsColumns'
 export * from './txsColumns'
 export * from './erc20TransfersColumns'
 export * from './erc20ActionColumns'

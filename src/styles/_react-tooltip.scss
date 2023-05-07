@@ -15,7 +15,7 @@
   color: var(--color-tooltip-text);
   margin: 0;
   pointer-events: none;
-  max-width: min(320, 100vh);
+  max-width: min(320px, 100vh);
   word-break: break-all;
 
   &[class*=' styles-module_show'] {
