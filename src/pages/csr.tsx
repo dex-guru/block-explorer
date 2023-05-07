@@ -24,14 +24,16 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
   const csrStatsSeries: LineChartDataset[] = [
     {
       id: 'burned',
-      color: 'red',
+      name: 'Burned',
+      color: '#ff646d',
       data: csrStats.burned,
       yAxis: 'left',
       className: styles.chartNegative,
     },
     {
       id: 'netEmissions',
-      color: 'green',
+      name: 'Net Emissions',
+      color: '#12b886',
       data: csrStats.netEmissions,
       yAxis: 'right',
       className: styles.chartPositive,

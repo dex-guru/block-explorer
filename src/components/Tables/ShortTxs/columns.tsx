@@ -13,6 +13,7 @@ export const lastTxsColumns = (
   {
     accessor: 'hash',
     title: 'Block',
+    modifier: 'last-tx-hash',
     render: (data) => (
       <Tile
         icon={<IconTx className={styles.mutedIcon} />}
@@ -39,6 +40,7 @@ export const lastTxsColumns = (
   {
     accessor: 'value',
     type: 'number',
+    modifier: 'last-tx-value',
     render: (data) => {
       if (!data.value || data.value === '0') {
         return <></>

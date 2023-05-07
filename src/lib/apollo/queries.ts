@@ -471,6 +471,10 @@ export const GET_ADDRESS_INFO = gql`
       totalTransfers
       fullyDilutedValuation
       holdersChange
+      holdersChart {
+        timestamp
+        value
+      }
     }
     chainStats {
       nativeTokenPriceUsd

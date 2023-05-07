@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from '../Table.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, TimeAgo } from '@/components'
+import { Address, TimeAgo, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import {
   financialFormat,
@@ -13,18 +13,21 @@ export const blocksColumns: IColumn<BlockModel>[] = [
   {
     accessor: 'number',
     title: 'Block',
+    modifier: 'block-number',
     render: (data) => <Address address={`${data.number}`} type="block" />,
   },
   {
     accessor: 'timestamp',
     title: 'Ago',
     type: 'center',
+    modifier: 'block-ago',
     render: (data) => <TimeAgo timestamp={data.timestamp} />,
   },
   {
     accessor: 'transactionCount',
     title: 'Txn',
     type: 'center',
+    modifier: 'block-txs',
     render: (data) => {
       if (!data.transactionCount) {
         return <span className={styles.muted}>0</span>
@@ -38,11 +41,13 @@ export const blocksColumns: IColumn<BlockModel>[] = [
   {
     accessor: 'feeRecipient',
     title: 'Fee Recipient',
+    modifier: 'block-recipient',
     render: (data) => <Address type="account" address={data.miner} />,
   },
   {
     accessor: 'gasUsed',
     title: 'Gas Used',
+    modifier: 'block-gasUsed',
     render: (data) => {
       if (!data.gasUsed || !data.gasLimit) {
         return <span className={styles.muted}>0</span>
@@ -65,12 +70,16 @@ export const blocksColumns: IColumn<BlockModel>[] = [
     accessor: 'gasLimit',
     title: 'Gas Limit',
     type: 'number',
+    modifier: 'block-gasLimit',
     render: (data) => financialFormatLowValueHighPrecision(data.gasLimit || 0),
   },
   {
     accessor: 'baseFee',
     title: 'Base Fee',
     type: 'number',
-    render: (data) => <>{getNormalizedValue(data.baseFeePerGas || 0)} Gwei</>,
+    modifier: 'block-baseFee',
+    render: (data) => (
+      <Value value={getNormalizedValue(data.baseFeePerGas || 0)} />
+    ),
   },
 ]

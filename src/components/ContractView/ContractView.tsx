@@ -6,6 +6,8 @@ import { isAddress, getAddress } from '@ethersproject/address'
 import { Abi, AbiFunction } from 'abitype'
 import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
+import { LineChartDataset } from '../LineChart'
+import { generateLineChartData } from '../LineChart/utils'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
@@ -27,6 +29,7 @@ import {
   Comments,
   Separated,
   Label,
+  LineChart,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
@@ -71,6 +74,16 @@ const ContractView: FC<IContractViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = `Contract ${checkSumAddress}`
+
+  const holdersSeries: LineChartDataset[] = [
+    {
+      id: 'holders',
+      name: 'Holders',
+      color: '#46a6ff',
+      data: balancesStats.holdersChart || [],
+      yAxis: 'left',
+    },
+  ]
 
   return (
     <>
@@ -172,14 +185,48 @@ const ContractView: FC<IContractViewProps> = ({
                   title: 'Holders:',
                   value: (
                     <div className={styles.holders}>
-                      <Value
-                        value={financialFormat(balancesStats?.holders || 0)}
-                        delta={
-                          balancesStats.holdersChange
-                            ? (balancesStats.holdersChange || 0) * 100
-                            : undefined
-                        }
-                      />
+                      <Separated>
+                        <Value
+                          value={financialFormat(balancesStats?.holders || 0)}
+                          delta={
+                            balancesStats.holdersChange
+                              ? (balancesStats.holdersChange || 0) * 100
+                              : undefined
+                          }
+                        />
+                        <LineChart
+                          className={styles.holdersChart}
+                          data={generateLineChartData(holdersSeries || [])}
+                          series={holdersSeries}
+                          options={{
+                            axis: {
+                              x: {
+                                hide: true,
+                                tickFormatter: (value: number) => {
+                                  const date = new Date(value * 1000)
+                                  return date.toLocaleDateString('en-GB', {
+                                    timeZone: 'UTC',
+                                    month: 'short',
+                                    year: '2-digit',
+                                    day: '2-digit',
+                                  })
+                                },
+                                axisLine: false,
+                                tickLine: false,
+                              },
+                              y: {
+                                hide: true,
+                                tickFormatter: (value: number) =>
+                                  financialFormat(value, {
+                                    roundBigNumbersFrom: 'K',
+                                  }),
+                                axisLine: false,
+                                tickLine: false,
+                              },
+                            },
+                          }}
+                        />
+                      </Separated>
                     </div>
                   ),
                 },
@@ -284,7 +331,6 @@ const ContractView: FC<IContractViewProps> = ({
 
               {
                 title: 'Comments',
-                indicator: <IconVerify />,
                 value: 'comments',
                 to: { pathname, query: { tab: 'comments' } },
                 content: (
