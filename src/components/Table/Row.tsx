@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ForwardedRef, ReactNode, forwardRef } from 'react'
 import clsx from 'clsx'
 import styles from './Table.module.scss'
 
@@ -8,6 +8,13 @@ interface IRowProps {
   onClick?: () => void
 }
 
-export const Row: FC<IRowProps> = ({ children, className }) => {
-  return <tr className={clsx(styles.trow, className)}>{children}</tr>
-}
+export const Row = forwardRef(function Row(
+  props: IRowProps,
+  ref: ForwardedRef<HTMLTableRowElement>
+) {
+  return (
+    <tr ref={ref} className={clsx(styles.trow, props.className)}>
+      {props.children}
+    </tr>
+  )
+})

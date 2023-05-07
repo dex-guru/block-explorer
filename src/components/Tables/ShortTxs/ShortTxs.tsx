@@ -37,6 +37,7 @@ export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
       data={transactions}
       showHeader={false}
       className={styles.cardChild}
+      getRowKey={(data) => data.hash}
     />
   )
 }

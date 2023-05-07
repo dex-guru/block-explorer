@@ -1,3 +1,5 @@
+import { createRef } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import clsx from 'clsx'
 import { Cell } from './Cell'
 import { Row } from './Row'
@@ -37,14 +39,23 @@ export const useBodyRows = <T,>(options: {
       )
     })
 
+    const ref = createRef<HTMLTableRowElement>()
+
     return (
-      <Row
+      <CSSTransition
         key={getRowKey ? getRowKey(dataItem) : idx}
-        className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
-        onClick={() => onRowClick && onRowClick(dataItem)}
+        timeout={500}
+        nodeRef={ref}
+        classNames="item"
       >
-        {cells}
-      </Row>
+        <Row
+          ref={ref}
+          className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
+          onClick={() => onRowClick && onRowClick(dataItem)}
+        >
+          {cells}
+        </Row>
+      </CSSTransition>
     )
   })
 }

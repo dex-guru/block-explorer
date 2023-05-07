@@ -84,3 +84,23 @@ img {
     font-size: 12px !important;
   }
 }
+
+.item-enter {
+  opacity: 0;
+  transform: scale(1, 0.75);
+}
+.item-enter-active {
+  opacity: 1;
+  transform: scale(1.05);
+  transition: opacity 500ms ease-in;
+}
+.item-enter-done {
+  opacity: 1;
+  transform: scale(1);
+}
+.item-exit {
+  display: none;
+}
+.item-exit-active {
+  display: none;
+}

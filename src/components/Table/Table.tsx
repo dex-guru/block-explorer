@@ -1,3 +1,4 @@
+import { TransitionGroup } from 'react-transition-group'
 import clsx from 'clsx'
 import { useBodyRows, useHeader } from './hooks'
 import { IColumn } from './types'
@@ -46,11 +47,12 @@ export function Table<T>({
             {header}
           </thead>
         )}
-        <tbody
+        <TransitionGroup
+          component={'tbody'}
           className={clsx(styles.tbody, { [styles.tbodyLoading]: isLoading })}
         >
           {rows}
-        </tbody>
+        </TransitionGroup>
       </table>
     </div>
   )

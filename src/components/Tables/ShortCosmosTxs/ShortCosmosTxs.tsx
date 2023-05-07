@@ -33,6 +33,7 @@ export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
       data={cosmosTransactions}
       showHeader={false}
       className={styles.cardChild}
+      getRowKey={(data) => data.hash}
     />
   )
 }
