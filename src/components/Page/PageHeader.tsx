@@ -23,6 +23,7 @@ const PageHeader: FC<PageHeaderProps> = ({ withMenu = true, withSearch }) => {
           <PageMenu
             className={styles.menu}
             links={[
+              { caption: 'Home', to: '/' },
               { caption: 'CSR', to: '/csr' },
               { caption: 'Verify Contract', to: '/verifyContract' },
             ]}

@@ -20,6 +20,7 @@ export const cosmosTxsColumns = (): IColumn<CosmosTransactionModel>[] => [
   {
     accessor: 'number',
     title: 'Block',
+    type: 'number',
     render: (data) => (
       <Address address={`${data.blockNumber}`} type="block" isLink={false} />
     ),
