@@ -35,3 +35,29 @@
     fill: green;
   }
 }
+
+.tooltip {
+  background: var(--color-bg-3);
+  padding: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+
+  &List {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+  }
+
+  &List {
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -64,24 +64,26 @@ img {
   }
 }
 
-.recharts-brush {
-  & > rect {
-    fill: none;
-    stroke: none;
+.recharts {
+  &-brush {
+    & > rect {
+      fill: none;
+      stroke: none;
+    }
+
+    & &-slide {
+      fill: var(--color-accent);
+      fill-opacity: 0.4;
+    }
   }
 
-  .recharts-brush-traveller {
+  &-tooltip-wrapper {
   }
 
-  .recharts-brush-slide {
-    fill: var(--color-accent);
-    fill-opacity: 0.4;
-  }
-}
-
-.recharts-xAxis {
-  text {
-    font-size: 12px !important;
+  &-xAxis {
+    text {
+      font-size: 12px !important;
+    }
   }
 }
 

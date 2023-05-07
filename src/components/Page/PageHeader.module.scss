@@ -13,12 +13,6 @@
   gap: 8px 24px;
   align-items: center;
   flex-flow: row wrap;
-
-  @media (min-width: 1200px) {
-    &::after {
-      content: '';
-    }
-  }
 }
 
 .search {
@@ -27,12 +21,15 @@
   min-width: 320px;
 }
 
-.logo,
-.container:after {
+.logo {
   flex: 0 0 320px;
   display: flex;
 
   --color-link: #05fc99;
+}
+
+.menu {
+  flex: 0 0 320px;
 }
 
 @media (max-width: 840px) {
@@ -43,5 +40,10 @@
   .logo {
     flex: 0 0 auto;
     margin: 0 auto;
+  }
+
+  .menu {
+    flex: 0 0 32px;
+    margin-left: auto;
   }
 }

@@ -14,12 +14,15 @@
   height: 40px;
 }
 
-.content {
+.body {
   flex: 1 0 0;
   display: flex;
   flex-flow: column;
   justify-content: center;
-  max-width: calc(100% - 56px);
+
+  &:not(:first-child) {
+    max-width: calc(100% - 56px);
+  }
 }
 
 .title {
@@ -33,4 +36,8 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 20px;
+}
+
+.content {
+  flex: 1 0 0;
 }

@@ -2,10 +2,11 @@ import { FC } from 'react'
 import Logo from '../Logo'
 import Search from '../Search'
 import InfoBlock from './InfoBlock'
+import PageMenu from './PageMenu'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
-const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
+const PageHeader: FC<PageHeaderProps> = ({ withMenu = true, withSearch }) => {
   return (
     <header className={styles.container}>
       <InfoBlock />
@@ -13,11 +14,19 @@ const PageHeader: FC<PageHeaderProps> = ({ withMenu, withSearch }) => {
         <div className={styles.logo}>
           <Logo title={process.env.explorerName} to="/" />
         </div>
-        {!!withMenu && <div className={styles.menu}></div>}
         {!!withSearch && (
           <div className={styles.search}>
             <Search className={styles.searchElement} />
           </div>
+        )}
+        {!!withMenu && (
+          <PageMenu
+            className={styles.menu}
+            links={[
+              { caption: 'CSR', to: '/csr' },
+              { caption: 'Verify Contract', to: '/verifyContract' },
+            ]}
+          />
         )}
         {/* <div className={styles.theme}>
         <ThemeToggle />
