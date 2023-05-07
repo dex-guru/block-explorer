@@ -16,6 +16,7 @@ import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
 import Empty from './Empty'
+import Error from './Error'
 import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
@@ -43,6 +44,7 @@ import IconContract from '@/images/icons/contract.svg'
 import IconCross from '@/images/icons/cross.svg'
 import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
 import IconMenu from '@/images/icons/menu.svg'
+import IconNoData from '@/images/icons/no-data.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
@@ -72,6 +74,7 @@ export {
   Details,
   DetailsView,
   Empty,
+  Error,
   Files,
   Grid,
   Heading,
@@ -108,6 +111,7 @@ export {
   IconBlock,
   IconTx,
   IconMenu,
+  IconNoData,
   TxOverview,
   TxLogs,
   TxTrace,

@@ -96,7 +96,8 @@
 
 .last-block {
   &-number {
-    width: 172px;
+    width: 35%;
+    min-width: 172px;
   }
 
   &-gasUsed {
@@ -106,7 +107,8 @@
 
 .last-tx {
   &-hash {
-    width: 172px;
+    width: 35%;
+    min-width: 172px;
   }
 
   &-value {

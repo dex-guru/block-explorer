@@ -5,11 +5,9 @@ import {
   TokenBalanceModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
-import Button from '@/components/Button'
-import Card from '@/components/Card'
+import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
-import Empty from '@/components/Empty'
-import Loading from '@/components/Loading'
+import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_HOLDERS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -28,27 +26,34 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
   }>(GET_ADDRESS_HOLDERS)
   const isMount = useIsMount()
 
+  const getVariables = useCallback(
+    (vars?: PaginationVariables) => {
+      return {
+        address: address?.toLowerCase(),
+
+        first: PER_PAGE,
+        skip: 0,
+
+        ...vars,
+      }
+    },
+    [address]
+  )
+
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
       getHolders({
-        variables: {
-          address: address?.toLowerCase(),
-          ...variables,
-        },
+        variables: getVariables(variables),
       })
     },
-    [address, getHolders]
+    [getHolders, getVariables]
   )
 
   useEffect(() => {
     getHolders({
-      variables: {
-        first: PER_PAGE,
-        skip: 0,
-        address: address?.toLowerCase(),
-      },
+      variables: getVariables(),
     })
-  }, [address, getHolders])
+  }, [getHolders, getVariables])
 
   const displayData = loading ? previousData : data
 
@@ -56,35 +61,26 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
     const subtitle = address ? `for ${address}` : undefined
 
     return (
-      <Empty
+      <Error
         className={styles.error}
-        icon="🙀"
         title="Error while receiving holders"
         subtitle={subtitle}
-      >
-        <Button
-          className={styles.retry}
-          caption="Retry?"
-          onClick={() =>
-            getHolders({
-              variables: {
-                first: PER_PAGE,
-                skip: 0,
-                address: address?.toLowerCase(),
-              },
-            })
-          }
-        />
-      </Empty>
+        actions={[
+          {
+            className: styles.retry,
+            caption: 'Retry?',
+            onClick: () =>
+              getHolders({
+                variables: getVariables(),
+              }),
+          },
+        ]}
+      />
     )
   }
 
   if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
-    )
+    return <LoadingCard />
   }
 
   const holdersDisplay = displayData?.balances?.filter(

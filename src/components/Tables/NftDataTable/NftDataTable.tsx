@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { nftColumns } from './columns'
-import Button from '@/components/Button'
+import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
-import Empty from '@/components/Empty'
 import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ERC721_BY_ADDRESS } from '@/lib/apollo/queries'
@@ -23,40 +22,54 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
   )
   const isMount = useIsMount()
 
+  const getVariables = useCallback(
+    (vars?: PaginationVariables) => {
+      return {
+        address: address?.toLowerCase(),
+
+        first: PER_PAGE,
+        skip: 0,
+
+        ...vars,
+      }
+    },
+    [address]
+  )
+
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
       getNfts({
-        variables: {
-          address: address?.toLowerCase(),
-          ...variables,
-        },
+        variables: getVariables(variables),
       })
     },
-    [address, getNfts]
+    [getNfts, getVariables]
   )
 
   useEffect(() => {
     getNfts({
-      variables: {
-        first: PER_PAGE,
-        address: address?.toLowerCase(),
-        skip: 0,
-      },
+      variables: getVariables(),
     })
-  }, [address, getNfts])
+  }, [getNfts, getVariables])
 
   const displayData = loading ? previousData : data
 
   if (isMount && !data && !loading) {
     return (
-      <Empty
+      <Error
         className={styles.error}
-        icon="🙀"
         title="Error while receiving NFT events"
         subtitle={address ? `for ${address}` : undefined}
-      >
-        <Button className={styles.retry} caption="Retry?" onClick={getNfts} />
-      </Empty>
+        actions={[
+          {
+            className: styles.retry,
+            caption: 'Retry?',
+            onClick: () =>
+              getNfts({
+                variables: getVariables(),
+              }),
+          },
+        ]}
+      />
     )
   }
 

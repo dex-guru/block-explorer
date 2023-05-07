@@ -1,10 +1,11 @@
 .container {
   --color-empty-bg: var(--color-bg-2);
-  --color-empty-text: var(--color-muted);
-  --color-empty-icon: var(--color-neutral);
+  --color-empty-text: var(--color-bg-4);
+  --color-empty-icon: var(--color-bg-4);
 
   background: var(--color-empty-bg);
   border-radius: var(--radii-lg);
+  color: var(--color-empty-text);
   display: flex;
   flex-flow: column;
   position: relative;
@@ -14,17 +15,12 @@
   padding: 48px 16px;
 }
 
-.error {
-  --color-empty-text: var(--color-negative);
-  --color-empty-icon: var(--color-negative);
-}
-
 .header {
   display: flex;
   flex-flow: column;
-  gap: 8px;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 }
 
 .body {
@@ -42,7 +38,6 @@
   display: flex;
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 8px;
   font-size: 40px;
   line-height: 1;
   text-align: center;
@@ -61,11 +56,11 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 28px;
-  color: var(--color-empty-text);
+  color: var(--color-text);
 }
 
 .subtitle {
-  color: var(--color-empty-text);
+  color: var(--color-neutral);
   font-weight: 400;
   font-size: 16px;
   line-height: 20px;

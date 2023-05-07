@@ -13,9 +13,9 @@ const Empty: FC<EmptyProps> = ({
 }) => {
   return (
     <div className={clsx(styles.container, className)}>
-      {(!!icon || !!title || !!subtitle) && (
+      {!!icon && <div className={styles.icon}>{icon}</div>}
+      {(!!title || !!subtitle) && (
         <div className={styles.header}>
-          {!!icon && <div className={styles.icon}>{icon}</div>}
           {!!title && (
             <Heading size="md" caption={title} className={styles.title} />
           )}
