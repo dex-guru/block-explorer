@@ -50,6 +50,7 @@
 
 .menu {
   flex: 0 0 320px;
+  margin-left: auto;
 
   @media (max-width: 1024px) {
     flex: 0 0 32px;
