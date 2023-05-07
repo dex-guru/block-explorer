@@ -6,6 +6,7 @@ const nextConfig = {
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
+    apiUrl: 'https://explorer-graph-stage.dexguru.biz',
   },
   reactStrictMode: true,
   webpack(config) {

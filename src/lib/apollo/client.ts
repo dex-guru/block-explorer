@@ -22,7 +22,7 @@ type SchemaContext =
 
 function createIsomorphicLink() {
   const httpLink = new HttpLink({
-    uri: 'https://explorer-graph-stage.dexguru.biz/graphql',
+    uri: process.env.apiUrl + '/graphql',
     credentials: 'same-origin',
   })
   return from([httpLink])

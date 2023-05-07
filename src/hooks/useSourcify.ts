@@ -5,7 +5,7 @@ import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
-const ipfsGatewayPrefix = 'https://explorer-graph-stage.dexguru.biz/api'
+const ipfsGatewayPrefix = process.env.apiUrl + '/api'
 
 export const sourcifyPath = (address: string, chainId: number) => {
   return `${ipfsGatewayPrefix}/${chainId}/${address}`
