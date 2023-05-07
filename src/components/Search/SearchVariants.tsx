@@ -1,16 +1,19 @@
 import { FC, useState } from 'react'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import { AddressValues } from '../Address/helpers'
 import Avatar from '../Avatar'
 import Card from '../Card'
 import TabPanel from '../TabPanel'
 import { searchTxsColumns } from '../Table/columns/searchTxsColumns'
 import Tile from '../Tile'
 import { SearchVariantsProps } from './types'
-import { Address, Label, Table } from '@/components'
+import { Address, IconBlock, Label, Table } from '@/components'
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   const [resultsTab, setResultsTab] = useState<string | null>(null)
+  const router = useRouter()
 
   if (!data) {
     return null
@@ -19,9 +22,19 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   const tabs = []
 
   if (data.addresses?.length) {
+    const accountValue = AddressValues['account']
+
     const renderedContent = data.addresses?.map((account) => {
+      const url = accountValue?.url ? accountValue?.url(account.address) : ''
+
       return (
-        <li className={styles.item} key={account.address}>
+        <li
+          className={styles.item}
+          key={account.address}
+          onClick={() => {
+            router.push(url)
+          }}
+        >
           <Tile
             className={styles.variant}
             icon={
@@ -59,12 +72,24 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.blocks?.length) {
+    const blockValue = AddressValues['account']
+
     const renderedContent = data.blocks?.map((block) => {
+      const url = blockValue?.url
+        ? blockValue?.url(block.number.toString())
+        : ''
+
       return (
-        <li className={styles.item} key={block.number}>
+        <li
+          className={styles.item}
+          key={block.number}
+          onClick={() => {
+            router.push(url)
+          }}
+        >
           <Tile
             className={styles.variant}
-            icon={<Avatar letters="Bk" className={styles.avatar} />}
+            icon={<IconBlock className={styles.avatar} />}
             title={
               <Address
                 address={block.number.toString()}
@@ -90,6 +115,8 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.transactions?.length) {
+    const blockValue = AddressValues['account']
+
     tabs.push({
       title: 'Transactions',
       value: 'txs',
@@ -102,6 +129,11 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           columns={searchTxsColumns}
           data={data.transactions}
           showHeader={false}
+          onRowClick={(data) => {
+            if (blockValue?.url) {
+              router.push(blockValue?.url(data.hash))
+            }
+          }}
         />
       ),
     })

@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { isAddress } from '@ethersproject/address'
-import { getAddress } from '@ethersproject/address'
+import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
@@ -12,6 +11,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
   ContractCreatorModel,
+  TokenBalancesStatsModel,
   TokenHoldingsStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -43,6 +43,7 @@ interface AddressPageServerProps {
   chainConfig: ChainConfigModel
   contractCreator?: ContractCreatorModel
   tokenHoldingsStats?: TokenHoldingsStatsModel
+  balancesStats: TokenBalancesStatsModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
@@ -52,6 +53,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   chainConfig,
   contractCreator,
   tokenHoldingsStats,
+  balancesStats,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
@@ -77,6 +79,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
             chain={{ stats: chainStats, config: chainConfig }}
             contractCreator={contractCreator}
             tokenHoldingsStats={tokenHoldingsStats}
+            balancesStats={balancesStats}
           />
         ) : (
           <AddressView
@@ -108,6 +111,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
     tokenHoldingsStats: TokenHoldingsStatsModel
+    balancesStats: TokenBalancesStatsModel
   }>({
     query: GET_ADDRESS_INFO,
     variables: { address: address.toLowerCase() },

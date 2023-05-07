@@ -154,3 +154,24 @@
     align-items: flex-end;
   }
 }
+
+.tabsInner {
+  composes: inner from '../components/Tabs/Tabs.module.scss';
+  margin: -6px 0;
+  font-size: 14px;
+}
+
+.addressWallet {
+  margin: -6px 0 -6px -8px;
+}
+
+.mutedIcon {
+  color: var(--color-bg-4);
+}
+
+.contractName {
+  composes: info from '../components/Label/Label.module.scss';
+  margin: -8px 0;
+  font-size: 16px;
+  font-weight: 500;
+}

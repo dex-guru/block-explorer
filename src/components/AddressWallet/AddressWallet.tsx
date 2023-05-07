@@ -33,7 +33,10 @@ const AddressWallet: FC<AddressWalletProps> = ({
       onClick={handleClose}
     >
       <div className={styles.body}>
-        <div className={styles.stats} onClick={handleClick}>
+        <div
+          className={clsx(styles.stats, { [styles.statsOpen]: isOpen })}
+          onClick={handleClick}
+        >
           <Value
             value={financialFormat(tokenHoldingsStats?.totalStable)}
             prefix="$"
@@ -42,7 +45,9 @@ const AddressWallet: FC<AddressWalletProps> = ({
             {tokenHoldingsStats?.tokenCount}
           </Label>
           {isOpen && <AddressWalletTokens address={address} />}
-          <IconDown className={styles.arrow} />
+          <IconDown
+            className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
+          />
         </div>
         <Button
           className={styles.link}

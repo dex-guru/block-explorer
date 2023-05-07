@@ -59,7 +59,7 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
       <Empty
         className={styles.error}
         icon="🙀"
-        title="Error while receiving transactions"
+        title="Error while receiving holders"
         subtitle={subtitle}
       >
         <Button
@@ -100,7 +100,7 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{
-        title: 'No transactions',
+        title: 'No holders',
         subtitle: address ? `for ${address}` : undefined,
       }}
     />

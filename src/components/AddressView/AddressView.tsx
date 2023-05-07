@@ -1,6 +1,8 @@
 import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { isAddress, getAddress } from '@ethersproject/address'
+import styles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
@@ -30,10 +32,13 @@ const AddressView: FC<IAddressViewProps> = ({
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
 
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const pageTitle = `Address ${checkSumAddress}`
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
       </Head>
       <Page withSearch>
@@ -47,7 +52,7 @@ const AddressView: FC<IAddressViewProps> = ({
             <Properties
               data={[
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  title: `${chain.config.nativeCurrency.symbol} Amount:`,
                   value: (
                     <Value
                       value={financialFormat(addressInfo.nativeBalance)}
@@ -64,10 +69,16 @@ const AddressView: FC<IAddressViewProps> = ({
                     />
                   ),
                 },
+              ]}
+            />
+
+            <Properties
+              data={[
                 {
                   title: 'Tokens:',
                   value: (
                     <AddressWallet
+                      className={styles.addressWallet}
                       address={address}
                       tokenHoldingsStats={tokenHoldingsStats}
                     />
@@ -75,8 +86,6 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
               ]}
             />
-
-            <Properties data={[]} />
           </Grid>
 
           <TabPanel

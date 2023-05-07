@@ -32,3 +32,29 @@
   max-height: 75vh;
   margin: 0;
 }
+
+.holders {
+  display: flex;
+}
+
+.holdersChart {
+  composes: lg from '../Button/Button.module.scss';
+  padding: 0;
+  --color-button-border: var(--color-input-border);
+  --color-button-bg: transparent;
+  --color-button-text: var(--color-muted);
+  --color-button-hover-border: var(--color-accent-a);
+  --color-button-hover-bg: transparent;
+  --color-button-hover-text: var(--color-accent-a);
+
+  margin-left: auto;
+}
+
+.chart {
+  width: 20px;
+  height: 20px;
+}
+
+.tokenStats {
+  font-size: 14px;
+}

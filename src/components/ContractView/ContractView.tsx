@@ -1,8 +1,9 @@
 import { FC, Suspense, lazy } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { isAddress, getAddress } from '@ethersproject/address'
 import { Abi, AbiFunction } from 'abitype'
-import styles from '../../pages/Pages.module.scss'
+import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
@@ -23,10 +24,13 @@ import {
   Value,
   DateTime,
   Comments,
+  Separated,
+  Label,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
+import styles from './ContractView.module.scss'
 
 const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
 const HoldersDataTable = lazy(() => import('../Tables/HoldersDataTable/'))
@@ -41,6 +45,7 @@ const ContractView: FC<IContractViewProps> = ({
   chain,
   contractCreator,
   tokenHoldingsStats,
+  balancesStats,
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
@@ -53,10 +58,13 @@ const ContractView: FC<IContractViewProps> = ({
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const pageTitle = `Contract ${checkSumAddress}`
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
       </Head>
       <Page withSearch>
@@ -68,8 +76,12 @@ const ContractView: FC<IContractViewProps> = ({
         >
           <Grid>
             <Properties
-              className={styles.span2Only}
               title="Contract Overview:"
+              header={
+                <Label className={pageStyles.contractName} type="accent">
+                  {addressInfo.name}
+                </Label>
+              }
               data={[
                 {
                   title: `${chain.config.nativeCurrency.symbol} Balance:`,
@@ -89,47 +101,101 @@ const ContractView: FC<IContractViewProps> = ({
                     />
                   ),
                 },
+
+                ...(contractCreator
+                  ? [
+                      {
+                        title: 'Creator:',
+                        value: (
+                          <div>
+                            <Address
+                              address={contractCreator.creatorAddress}
+                              type="account"
+                              isCopy
+                            />{' '}
+                            at txn{' '}
+                            <Address
+                              address={contractCreator.txHash}
+                              type="tx"
+                              isCopy
+                            />
+                          </div>
+                        ),
+                      },
+                      {
+                        title: 'Timestamp:',
+                        value: (
+                          <DateTime timestamp={contractCreator.timestamp} />
+                        ),
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+
+            <Properties
+              title="Balances:"
+              header={
+                <Value
+                  value={financialFormat(balancesStats.price || 0)}
+                  prefix="Price: $"
+                  delta={
+                    balancesStats.priceChange
+                      ? (balancesStats.priceChange || 0) * 100
+                      : undefined
+                  }
+                />
+              }
+              data={[
                 {
-                  title: 'Token holdings:',
+                  title: 'Token Holdings:',
                   value: (
                     <AddressWallet
                       address={address}
                       tokenHoldingsStats={tokenHoldingsStats}
+                      className={pageStyles.addressWallet}
                     />
                   ),
                 },
+                {
+                  title: 'Holders:',
+                  value: (
+                    <div className={styles.holders}>
+                      <Value
+                        value={financialFormat(balancesStats?.holders || 0)}
+                        delta={
+                          balancesStats.holdersChange
+                            ? (balancesStats.holdersChange || 0) * 100
+                            : undefined
+                        }
+                      />
+                    </div>
+                  ),
+                },
+                {
+                  title: 'FDV / Max Total Supply:',
+                  value: (
+                    <Separated>
+                      <Value
+                        value={financialFormat(
+                          balancesStats?.fullyDilutedValuation || 0
+                        )}
+                        prefix="$"
+                      />
+                      <Value
+                        value={financialFormat(
+                          balancesStats?.maxTotalSupply || 0
+                        )}
+                      />
+                    </Separated>
+                  ),
+                },
+                {
+                  title: 'Total Transfers:',
+                  value: financialFormat(balancesStats?.totalTransfers || 0),
+                },
               ]}
             />
-
-            {!!contractCreator && (
-              <Properties
-                title="Contract Creator:"
-                data={[
-                  {
-                    title: 'Creator:',
-                    value: (
-                      <div>
-                        <Address
-                          address={contractCreator.creatorAddress}
-                          type="account"
-                          isCopy
-                        />{' '}
-                        at txn{' '}
-                        <Address
-                          address={contractCreator.txHash}
-                          type="tx"
-                          isCopy
-                        />
-                      </div>
-                    ),
-                  },
-                  {
-                    title: 'Timestamp:',
-                    value: <DateTime timestamp={contractCreator.timestamp} />,
-                  },
-                ]}
-              />
-            )}
           </Grid>
 
           <TabPanel

@@ -1,18 +1,23 @@
+import { createRef } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import clsx from 'clsx'
-import { v1 as uuidv1 } from 'uuid'
 import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
 import styles from './Table.module.scss'
 
-export const useBodyRows = <T,>(
-  columns: IColumn<T>[],
-  data: T[],
-  rowClassName?: string,
-  isHeader?: boolean,
+export const useBodyRows = <T,>(options: {
+  columns: IColumn<T>[]
+  data: T[]
   onRowClick?: (rowData: T) => void
-) => {
-  return data.map((dataItem) => {
+  rowClassName?: string
+  isHeader?: boolean
+  getRowKey?: (rowData: T) => string
+}) => {
+  const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } =
+    options
+
+  return data.map((dataItem, idx) => {
     const cells = columns.map((column) => {
       const cellData = (dataItem as Record<string, unknown>)[column.accessor]
 
@@ -34,14 +39,23 @@ export const useBodyRows = <T,>(
       )
     })
 
+    const ref = createRef<HTMLTableRowElement>()
+
     return (
-      <Row
-        key={uuidv1()}
-        className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
-        onClick={() => onRowClick && onRowClick(dataItem)}
+      <CSSTransition
+        key={getRowKey ? getRowKey(dataItem) : idx}
+        timeout={500}
+        nodeRef={ref}
+        classNames="item"
       >
-        {cells}
-      </Row>
+        <Row
+          ref={ref}
+          className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
+          onClick={() => onRowClick && onRowClick(dataItem)}
+        >
+          {cells}
+        </Row>
+      </CSSTransition>
     )
   })
 }

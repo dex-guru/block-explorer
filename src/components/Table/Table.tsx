@@ -1,3 +1,4 @@
+import { TransitionGroup } from 'react-transition-group'
 import clsx from 'clsx'
 import { useBodyRows, useHeader } from './hooks'
 import { IColumn } from './types'
@@ -9,6 +10,9 @@ export interface ITableProps<T> {
   className?: string
   showHeader?: boolean
   isLoading?: boolean
+  rowClassName?: string
+  onRowClick?: (rowData: T) => void
+  getRowKey?: (rowData: T) => string
 }
 
 export function Table<T>({
@@ -17,10 +21,19 @@ export function Table<T>({
   showHeader = true,
   className,
   isLoading,
+  rowClassName,
+  onRowClick,
+  getRowKey,
 }: ITableProps<T>) {
   const header = useHeader<T>(columns)
 
-  const rows = useBodyRows<T>(columns, data)
+  const rows = useBodyRows<T>({
+    columns,
+    data,
+    rowClassName,
+    onRowClick,
+    getRowKey,
+  })
 
   return (
     <div className={clsx(styles.container, className)}>
@@ -34,11 +47,12 @@ export function Table<T>({
             {header}
           </thead>
         )}
-        <tbody
+        <TransitionGroup
+          component={'tbody'}
           className={clsx(styles.tbody, { [styles.tbodyLoading]: isLoading })}
         >
           {rows}
-        </tbody>
+        </TransitionGroup>
       </table>
     </div>
   )

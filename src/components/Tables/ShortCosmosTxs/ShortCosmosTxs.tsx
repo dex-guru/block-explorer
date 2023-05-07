@@ -11,7 +11,7 @@ interface IShortCosmosTxsTableProps {
 }
 
 export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
-  const [cosmosTransactions, setcosmosTransactions] = useState<
+  const [cosmosTransactions, setCosmosTransactions] = useState<
     CosmosTransactionModel[]
   >(props.data)
 
@@ -23,7 +23,7 @@ export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
 
   useEffect(() => {
     if (!loading && data?.cosmos?.transactions?.length) {
-      setcosmosTransactions(data.cosmos.transactions)
+      setCosmosTransactions(data.cosmos.transactions)
     }
   }, [data, loading])
 
@@ -33,6 +33,7 @@ export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
       data={cosmosTransactions}
       showHeader={false}
       className={styles.cardChild}
+      getRowKey={(data) => data.hash}
     />
   )
 }

@@ -13,7 +13,6 @@ import {
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
-import { RadioGroup } from '@/components/RadioGroup'
 import Search from '@/components/Search'
 import {
   BlockModelWithTimeDiff,
@@ -21,6 +20,7 @@ import {
 } from '@/components/Table/columns/lastBlocksColumns'
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
+import Tabs from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -141,10 +141,12 @@ const Index: NextPage<IndexProps> = (props) => {
     },
   ]
 
+  const pageTitle = `${chainConfig.nativeCurrency.name} Block Explorer`
+
   return (
     <>
       <Head>
-        <title>Block Explorer</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -159,7 +161,9 @@ const Index: NextPage<IndexProps> = (props) => {
             stats={statsDisplay}
             charts={[
               {
-                title: 'Ethereum Transaction History in 14 days',
+                title: `${
+                  chainConfig.nativeCurrency.name || ''
+                } Transaction History in 14 days`,
                 data: chartData,
               },
             ]}
@@ -181,27 +185,24 @@ const Index: NextPage<IndexProps> = (props) => {
               data={blocks}
               showHeader={false}
               className={styles.cardChild}
+              getRowKey={(data) => data.number.toString()}
             />
           </Card>
 
           <Card
-            title={
-              <div className={styles.txsHeader}>
-                <div className={styles.tsxTitle}>Latest Transactions</div>
-                <div className={styles.tsxAction}>
-                  <RadioGroup
-                    items={[
-                      { name: 'Cosmos', value: 'cosmos' },
-                      { name: 'EVM', value: 'evm' },
-                    ]}
-                    groupName="tsxType"
-                    value="evm"
-                    onChange={(value) => {
-                      setIsCosmos(value === 'cosmos')
-                    }}
-                  />
-                </div>
-              </div>
+            title="Latest Transactions"
+            header={
+              <Tabs
+                tabs={[
+                  { title: 'EVM', value: 'evm' },
+                  { title: 'Cosmos', value: 'cosmos' },
+                ]}
+                className={styles.tabsInner}
+                value={isCosmos ? 'cosmos' : 'evm'}
+                onChange={(value) => {
+                  setIsCosmos(value === 'cosmos')
+                }}
+              />
             }
             actions={
               !isCosmos

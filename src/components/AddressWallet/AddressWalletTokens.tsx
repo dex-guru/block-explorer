@@ -17,7 +17,7 @@ import {
 } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
-const ADRESS_WALLET_LIMIT = 10
+const ADRESS_WALLET_LIMIT = 100
 
 const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   address,
@@ -28,7 +28,13 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   }>(GET_ADDRESS_TOKENS)
 
   useEffect(() => {
-    getTokens({ variables: { address: address?.toLowerCase(), first: ADRESS_WALLET_LIMIT, skip: 0 } })
+    getTokens({
+      variables: {
+        address: address?.toLowerCase(),
+        first: ADRESS_WALLET_LIMIT,
+        skip: 0,
+      },
+    })
   }, [getTokens, address])
 
   if (loading) {

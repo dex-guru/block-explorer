@@ -21,7 +21,7 @@ const PageFooter: FC = () => {
           <IconQuestion />
         </Link>
         <Link
-          href="https://feedback.dex.guru/"
+          href="https://dex.guru/"
           className={clsx(styles.link, styles.backlink)}
         >
           Back to Dex.guru
