@@ -1,4 +1,5 @@
-import { FC, Suspense, lazy } from 'react'
+import { FC, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from '@ethersproject/address'
@@ -35,11 +36,21 @@ import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 
-const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
-const HoldersDataTable = lazy(() => import('../Tables/HoldersDataTable/'))
-const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
-const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
-const EventsTable = lazy(() => import('../Tables/EventsTable'))
+const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
+  ssr: false,
+})
+const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'), {
+  ssr: false,
+})
+const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
+  ssr: false,
+})
+const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
+  ssr: false,
+})
+const EventsTable = dynamic(() => import('../Tables/EventsTable'), {
+  ssr: false,
+})
 
 const ContractView: FC<IContractViewProps> = ({
   address,
