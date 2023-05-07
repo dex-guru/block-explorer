@@ -13,7 +13,6 @@ import {
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
-import { RadioGroup } from '@/components/RadioGroup'
 import Search from '@/components/Search'
 import {
   BlockModelWithTimeDiff,

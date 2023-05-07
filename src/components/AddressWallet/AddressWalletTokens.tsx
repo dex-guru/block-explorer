@@ -4,14 +4,11 @@ import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { AddressValues } from '../Address/helpers'
-import Button from '../Button'
-import Empty from '../Empty'
 import Loading from '../Loading'
 import Tile from '../Tile'
 import Value from '../Value'
 import { AddressWalletTokensProps } from './types'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
-import { useIsMount } from '@/hooks'
 import IconNoImage from '@/images/icons/question.svg'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
@@ -26,8 +23,6 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   address,
   className,
 }) => {
-  const isMount = useIsMount()
-
   const [getTokens, { data, loading }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
   }>(GET_ADDRESS_TOKENS)

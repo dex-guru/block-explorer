@@ -26,8 +26,6 @@ import {
   Comments,
   Separated,
   Label,
-  Button,
-  IconChart,
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'

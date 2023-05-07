@@ -1,4 +1,4 @@
-import { FC, ForwardedRef, ReactNode, forwardRef } from 'react'
+import { ForwardedRef, ReactNode, forwardRef } from 'react'
 import clsx from 'clsx'
 import styles from './Table.module.scss'
 
