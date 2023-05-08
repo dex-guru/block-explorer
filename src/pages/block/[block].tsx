@@ -19,7 +19,7 @@ export interface IBlockProps {
 }
 
 const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
-  const pageTitle = `Block #${data?.number}`
+  const pageTitle = data?.number ? `Block #${data?.number}` : 'No block'
 
   return (
     <>
@@ -33,8 +33,9 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       <Page withSearch>
         <DetailsView title="Block" address={data?.number.toString()}>
           {!data?.number && (
-            <Empty icon={<IconEmpty />} title="No TX  was found" />
+            <Empty icon={<IconEmpty />} title="No block  was found" />
           )}
+
           {!!data?.number && (
             <BlockOverview
               data={data}
@@ -54,7 +55,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { block } = ctx.query
 
   if (!isValidBlockNumber(block)) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   const apolloClient = initializeApollo({ ctx })
@@ -71,7 +74,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { blocks, chainStats, chainConfig } = data
 
   if (!blocks?.length) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   return addApolloState(apolloClient, {

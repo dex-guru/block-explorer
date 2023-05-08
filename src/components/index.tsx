@@ -47,6 +47,7 @@ import IconMenu from '@/images/icons/menu.svg'
 import IconNoData from '@/images/icons/no-data.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import IconQuestion from '@/images/icons/question.svg'
+import IconSearch from '@/images/icons/search.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconTx from '@/images/icons/tx.svg'
 import IconVerify from '@/images/icons/verified.svg'
@@ -112,6 +113,7 @@ export {
   IconTx,
   IconMenu,
   IconNoData,
+  IconSearch,
   TxOverview,
   TxLogs,
   TxTrace,

@@ -35,7 +35,7 @@ const Tx: NextPage<ITxProps> = (props) => {
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
-  const pageTitle = `Transaction ${props.data?.hash}`
+  const pageTitle = `Transaction ${props.data?.hash || 'not found'}`
 
   return (
     <>
@@ -104,7 +104,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { tx } = ctx.query
 
   if (!isHexString(tx)) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   const apolloClient = initializeApollo({ ctx })
@@ -131,7 +133,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = data
 
   if (!transactions?.length) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   return addApolloState(apolloClient, {

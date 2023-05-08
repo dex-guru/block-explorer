@@ -3,7 +3,14 @@ import Head from 'next/head'
 import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
 import { TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
-import { Page, DetailsView, Summary, Value } from '@/components'
+import {
+  Page,
+  DetailsView,
+  Summary,
+  Value,
+  Empty,
+  IconSearch,
+} from '@/components'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -58,13 +65,23 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
       </Head>
 
       <Page withSearch>
-        <DetailsView
-          title="Token Holdings"
-          address={checkSumAddress || undefined}
-        >
-          <Summary stats={stats} />
-          <TokensDataTable address={address} />
-        </DetailsView>
+        {!tokenHoldingsStats && (
+          <Empty
+            icon={<IconSearch />}
+            title={address ? <>No holdings</> : 'No address provided'}
+            subtitle={address ? `for address ${checkSumAddress}` : undefined}
+          />
+        )}
+
+        {!!tokenHoldingsStats && (
+          <DetailsView
+            title="Token Holdings"
+            address={checkSumAddress || undefined}
+          >
+            <Summary stats={stats} />
+            <TokensDataTable address={address} />
+          </DetailsView>
+        )}
       </Page>
     </>
   )
@@ -76,7 +93,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
   if (address && !isAddress(address)) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: { address: address } }
   }
 
   const apolloClient = initializeApollo({ ctx })

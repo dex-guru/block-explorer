@@ -57,22 +57,22 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
-  const isContract = addressInfo.addressType === 'smart_contract'
+  const isContract = addressInfo?.addressType === 'smart_contract'
   if (!address) {
     return null
   }
 
   // if it is a contract - fetch metadata and files from sourcify
-  const checksumAddress = Array.isArray(address)
-    ? getAddress(address[0].toLowerCase())
-    : getAddress(address.toLowerCase())
+  const onlyAddress = (
+    Array.isArray(address) ? address[0] : address
+  ).toLowerCase()
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        {isContract ? (
+        {isContract && (
           <ContractView
-            address={checksumAddress}
+            address={onlyAddress}
             tab={tab}
             transactions={transactions}
             addressInfo={addressInfo}
@@ -81,9 +81,11 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
             tokenHoldingsStats={tokenHoldingsStats}
             balancesStats={balancesStats}
           />
-        ) : (
+        )}
+
+        {!isContract && (
           <AddressView
-            address={checksumAddress}
+            address={onlyAddress}
             tab={tab}
             transactions={transactions}
             addressInfo={addressInfo}
@@ -101,9 +103,12 @@ export default AddressPage
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
-  if (address && !isAddress(address)) {
-    return { notFound: true }
+  if (!isAddress(address)) {
+    ctx.res.statusCode = 404
+
+    return { props: { address: address } }
   }
+
   const apolloClient = initializeApollo({ ctx })
 
   const { data: addressInfo } = await apolloClient.query<{
@@ -116,6 +121,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: GET_ADDRESS_INFO,
     variables: { address: address.toLowerCase() },
   })
+
+  if (!addressInfo?.address?.address) {
+    ctx.res.statusCode = 404
+  }
 
   const addressProps = addApolloState(apolloClient, {
     props: { ...addressInfo },
