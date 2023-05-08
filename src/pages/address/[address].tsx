@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { isAddress, getAddress } from '@ethersproject/address'
+import { isAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
