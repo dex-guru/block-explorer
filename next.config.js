@@ -6,6 +6,7 @@ const nextConfig = {
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
+    gTagManagerId: 'GTM-K8HGVLW',
   },
   reactStrictMode: true,
   webpack(config) {
