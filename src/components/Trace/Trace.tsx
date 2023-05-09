@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import Address from '../Address'
 import Code, { CodeFormat } from '../Code'
@@ -8,11 +9,12 @@ import { Property } from '../Properties/types'
 import Value from '../Value'
 import { TraceProps } from './types'
 import IconArrow from '@/images/icons/arrow-down.svg'
-import { hex2ascii } from '@/lib/utils'
+import { financialFormat } from '@/lib/utils'
 import styles from './Trace.module.scss'
 
 const Trace: FC<TraceProps> = ({ data }) => {
-  const value = hex2ascii(data.value)
+  const decValue = new BigNumber(data.value, 16).toString(10)
+  const displayValue = financialFormat(decValue)
 
   const content = (
     <div className={styles.content}>
@@ -22,20 +24,19 @@ const Trace: FC<TraceProps> = ({ data }) => {
       <span className={clsx(styles.field, styles.address)}>
         <Value
           value={<Address address={data.from} type="account" isCopy />}
-          prefix={'From '}
+          prefix={<>From&nbsp;</>}
         />
       </span>{' '}
       <Label type="tag">&rarr;</Label>{' '}
       <span className={clsx(styles.field, styles.address)}>
         <Value
           value={<Address address={data.to} type="account" isCopy />}
-          prefix={'To '}
+          prefix={<>To&nbsp;</>}
         />
       </span>{' '}
-      {!!value && (
+      {!!data.value && (
         <span className={clsx(styles.field, styles.value)}>
-          for:
-          <Value value={value} />
+          <Value value={displayValue} prefix={<>For&nbsp;</>} />
         </span>
       )}
     </div>
