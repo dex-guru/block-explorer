@@ -14,20 +14,16 @@ import {
 import Heading from '../Heading'
 import styles from './LineChart.module.scss'
 
-const LineChart: FC<LineChartProps> = ({
-  data,
-  series,
-  className,
-  options,
-}) => {
-  const renderedSeries = series.map((el) => {
+const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
+  const renderedSeries = data.map((el) => {
     return (
       <Line
         className={clsx(styles.line, el.className)}
         name={el.name}
         key={el.id}
         type="monotone"
-        dataKey={el.id}
+        dataKey="value"
+        data={el.data}
         stroke={el.color}
         dot={false}
         yAxisId={el.yAxis || 'left'}
@@ -82,8 +78,8 @@ const LineChart: FC<LineChartProps> = ({
     return null
   }
 
-  const hasLeftAxis = series.filter((el) => el.yAxis !== 'right')
-  const hasRightAxis = series.filter((el) => el.yAxis === 'right')
+  const hasLeftAxis = data.filter((el) => el.yAxis !== 'right')
+  const hasRightAxis = data.filter((el) => el.yAxis === 'right')
 
   return (
     <ResponsiveContainer
@@ -95,7 +91,9 @@ const LineChart: FC<LineChartProps> = ({
         {options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
-          dataKey="label"
+          dataKey="timestamp"
+          type="number"
+          domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
           className={clsx(
             styles.axisX,
@@ -106,6 +104,7 @@ const LineChart: FC<LineChartProps> = ({
 
         {hasLeftAxis && (
           <YAxis
+            dataKey="value"
             {...options?.axis?.y}
             className={clsx(
               styles.axisY,

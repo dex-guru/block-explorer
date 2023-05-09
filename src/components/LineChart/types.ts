@@ -3,8 +3,9 @@ import { Props as YAxisProps } from 'recharts/types/cartesian/YAxis'
 
 export type ChartTuple = { timestamp: number; value: number }
 
-export type LineChartSeries = {
+export type LineChartDataset = {
   id: string
+  data: ChartTuple[]
   name?: string
   color?: string
   yAxis?: 'left' | 'right'
@@ -20,11 +21,8 @@ export type LineChartOptions = {
   zoom?: boolean
 }
 
-export type LineChartDataset = LineChartSeries & { data: ChartTuple[] }
-
 export type LineChartProps = {
-  data: unknown[]
-  series: LineChartSeries[]
+  data: LineChartDataset[]
   className?: string
   options?: LineChartOptions
 }

@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import Card from '../Card'
 import LineChart from '../LineChart'
-import { generateLineChartData } from '../LineChart/utils'
 import Tile from '../Tile'
 import { SummaryProps } from './types'
 import { financialFormat } from '@/lib/utils'
@@ -15,8 +14,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
           <div className={styles.chart}>
             <LineChart
               className={chart.className}
-              data={generateLineChartData(chart.data)}
-              series={chart.data}
+              data={chart.data}
               options={{
                 axis: {
                   x: {

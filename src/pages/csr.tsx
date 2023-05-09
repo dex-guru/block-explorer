@@ -79,8 +79,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
           <LineChart
-            data={generateLineChartData(csrStatsSeries)}
-            series={csrStatsSeries}
+            data={csrStatsSeries}
             options={{
               axis: {
                 x: {
