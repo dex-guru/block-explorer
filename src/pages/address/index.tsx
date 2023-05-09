@@ -1,8 +1,19 @@
 import { NextPage } from 'next'
-import { AddressView } from '@/components'
+import Head from 'next/head'
+import { Error, Page } from '@/components'
 
-const AddressIndex: NextPage = () => (
-  <AddressView address="" tab="" addressInfo={null} chain={{}} />
-)
+const AddressIndex: NextPage = () => {
+  return (
+    <>
+      <Head>
+        <title>No address provided</title>
+        <meta name="description" content="Block Explorer" />
+      </Head>
+      <Page withSearch>
+        <Error title="No address provided" />
+      </Page>
+    </>
+  )
+}
 
 export default AddressIndex

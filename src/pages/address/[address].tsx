@@ -38,11 +38,11 @@ const wagmiClient = createClient({
 
 interface AddressPageServerProps {
   address: AddressModel
-  chainStats?: ChainStatsModel
-  chainConfig?: ChainConfigModel
-  contractCreator?: ContractCreatorModel
-  tokenHoldingsStats?: TokenHoldingsStatsModel
-  balancesStats?: TokenBalancesStatsModel
+  chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
+  contractCreator: ContractCreatorModel
+  tokenHoldingsStats: TokenHoldingsStatsModel
+  balancesStats: TokenBalancesStatsModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({

@@ -59,19 +59,11 @@ const AddressView: FC<IAddressViewProps> = ({
         {!addressInfo?.address && isAddress(address) && (
           <Empty
             icon={<IconSearch />}
-            title={
-              address ? (
-                <>Address {checkSumAddress} not&nbsp;found</>
-              ) : (
-                'No address provided'
-              )
-            }
+            title={<>Address {checkSumAddress} not&nbsp;found</>}
           />
         )}
 
-        {(!address || !isAddress(address)) && (
-          <Error title="No correct address provided" />
-        )}
+        {!isAddress(address) && <Error title="No correct address provided" />}
 
         {!!addressInfo?.address && (
           <DetailsView
