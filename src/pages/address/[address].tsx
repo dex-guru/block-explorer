@@ -38,17 +38,15 @@ const wagmiClient = createClient({
 
 interface AddressPageServerProps {
   address: AddressModel
-  transactions?: TransactionModel[]
-  chainStats: ChainStatsModel
-  chainConfig: ChainConfigModel
+  chainStats?: ChainStatsModel
+  chainConfig?: ChainConfigModel
   contractCreator?: ContractCreatorModel
   tokenHoldingsStats?: TokenHoldingsStatsModel
-  balancesStats: TokenBalancesStatsModel
+  balancesStats?: TokenBalancesStatsModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
   address: addressInfo,
-  transactions,
   chainStats,
   chainConfig,
   contractCreator,
@@ -74,7 +72,6 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
           <ContractView
             address={onlyAddress}
             tab={tab}
-            transactions={transactions}
             addressInfo={addressInfo}
             chain={{ stats: chainStats, config: chainConfig }}
             contractCreator={contractCreator}
@@ -87,7 +84,6 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
           <AddressView
             address={onlyAddress}
             tab={tab}
-            transactions={transactions}
             addressInfo={addressInfo}
             chain={{ stats: chainStats, config: chainConfig }}
             tokenHoldingsStats={tokenHoldingsStats}
@@ -106,12 +102,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!isAddress(address)) {
     ctx.res.statusCode = 404
 
-    return { props: { address: address } }
+    return { props: {} }
   }
 
   const apolloClient = initializeApollo({ ctx })
 
-  const { data: addressInfo } = await apolloClient.query<{
+  const { data } = await apolloClient.query<{
     address: AddressModel
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
@@ -122,15 +118,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { address: address.toLowerCase() },
   })
 
-  if (!addressInfo?.address?.address) {
+  if (!data?.address?.address) {
     ctx.res.statusCode = 404
   }
 
-  const addressProps = addApolloState(apolloClient, {
-    props: { ...addressInfo },
+  return addApolloState(apolloClient, {
+    props: { ...data },
   })
-
-  const result = { props: { ...addressProps.props } }
-
-  return result
 }

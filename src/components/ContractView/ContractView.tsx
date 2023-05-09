@@ -80,7 +80,7 @@ const ContractView: FC<IContractViewProps> = ({
       id: 'holders',
       name: 'Holders',
       color: '#46a6ff',
-      data: balancesStats.holdersChart || [],
+      data: balancesStats?.holdersChart || [],
       yAxis: 'left',
     },
   ]
@@ -108,16 +108,16 @@ const ContractView: FC<IContractViewProps> = ({
               }
               data={[
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Balance:`,
+                  title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
                   value: (
                     <Value
                       value={financialFormat(addressInfo.nativeBalance)}
-                      suffix={<>&nbsp;{chain.config.nativeCurrency.symbol}</>}
+                      suffix={<>&nbsp;{chain.config?.nativeCurrency.symbol}</>}
                     />
                   ),
                 },
                 {
-                  title: `${chain.config.nativeCurrency.symbol} Value:`,
+                  title: `${chain?.config?.nativeCurrency.symbol} Value:`,
                   value: (
                     <Value
                       value={financialFormat(addressInfo.nativeBalanceUSD)}
@@ -161,10 +161,10 @@ const ContractView: FC<IContractViewProps> = ({
               title="Balances:"
               header={
                 <Value
-                  value={financialFormat(balancesStats.price || 0)}
+                  value={financialFormat(balancesStats?.price || 0)}
                   prefix="Price: $"
                   delta={
-                    balancesStats.priceChange
+                    balancesStats?.priceChange
                       ? (balancesStats.priceChange || 0) * 100
                       : undefined
                   }
@@ -189,7 +189,7 @@ const ContractView: FC<IContractViewProps> = ({
                         <Value
                           value={financialFormat(balancesStats?.holders || 0)}
                           delta={
-                            balancesStats.holdersChange
+                            balancesStats?.holdersChange
                               ? (balancesStats.holdersChange || 0) * 100
                               : undefined
                           }
