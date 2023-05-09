@@ -9,12 +9,15 @@ import { Property } from '../Properties/types'
 import Value from '../Value'
 import { TraceProps } from './types'
 import IconArrow from '@/images/icons/arrow-down.svg'
-import { financialFormat } from '@/lib/utils'
+import { getNormalizedValue } from '@/lib/utils'
 import styles from './Trace.module.scss'
 
-const Trace: FC<TraceProps> = ({ data }) => {
+const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
   const decValue = new BigNumber(data.value, 16).toString(10)
-  const displayValue = financialFormat(decValue)
+  const displayValue = getNormalizedValue(
+    decValue,
+    chainConfig?.nativeCurrency?.decimals
+  )
 
   const content = (
     <div className={styles.content}>
@@ -27,7 +30,9 @@ const Trace: FC<TraceProps> = ({ data }) => {
           prefix={<>From&nbsp;</>}
         />
       </span>{' '}
-      <Label type="tag">&rarr;</Label>{' '}
+      <Label type="tag" className={styles.direction}>
+        &rarr;
+      </Label>{' '}
       <span className={clsx(styles.field, styles.address)}>
         <Value
           value={<Address address={data.to} type="account" isCopy />}
@@ -76,7 +81,7 @@ const Trace: FC<TraceProps> = ({ data }) => {
             <ul className={styles.list}>
               {data.calls.map((item, idx) => (
                 <li key={idx} className={styles.item}>
-                  <Trace data={item} />
+                  <Trace data={item} chainConfig={chainConfig} />
                 </li>
               ))}
             </ul>

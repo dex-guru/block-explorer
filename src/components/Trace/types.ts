@@ -1,3 +1,5 @@
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
+
 export type Trace = {
   from: string
   gas: string
@@ -10,4 +12,4 @@ export type Trace = {
   calls?: Trace[]
 }
 
-export type TraceProps = { data: Trace }
+export type TraceProps = { data: Trace; chainConfig: ChainConfigModel }
