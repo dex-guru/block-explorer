@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { LineChartProps } from '.'
 import clsx from 'clsx'
 import {
   Brush,
@@ -10,7 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts'
-import { LineChartProps } from './types'
+import Heading from '../Heading'
 import styles from './LineChart.module.scss'
 
 const LineChart: FC<LineChartProps> = ({
@@ -23,6 +24,7 @@ const LineChart: FC<LineChartProps> = ({
     return (
       <Line
         className={clsx(styles.line, el.className)}
+        name={el.name}
         key={el.id}
         type="monotone"
         dataKey={el.id}
@@ -32,6 +34,53 @@ const LineChart: FC<LineChartProps> = ({
       />
     )
   })
+
+  const LineChartTooltip: FC<{
+    active?: boolean
+    label?: unknown
+    payload?: {
+      value?: unknown
+      stroke?: string
+      name?: string
+    }[]
+  }> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const yFormatter = options?.axis?.y?.tickFormatter
+      const xFormatter = options?.axis?.x?.tickFormatter
+
+      const tooltipTitle = xFormatter ? xFormatter(label, 0) : label
+
+      return (
+        <div className={styles.tooltip}>
+          <div className={styles.tooltipHeader}>
+            <Heading size="xs" caption={`${tooltipTitle}`} />
+          </div>
+          <div className={styles.tooltipBody}>
+            <ul className={styles.tooltipList}>
+              {payload.map((item, idx) => {
+                const resultValue = yFormatter
+                  ? yFormatter(item.value, 0)
+                  : item.value
+
+                return (
+                  <li
+                    key={idx}
+                    className={styles.tooltipItem}
+                    style={{ color: item.stroke }}
+                  >
+                    {payload.length > 1 ? `${item.name}: ` : ''}
+                    {`${resultValue}`}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
+      )
+    }
+
+    return null
+  }
 
   const hasLeftAxis = series.filter((el) => el.yAxis !== 'right')
   const hasRightAxis = series.filter((el) => el.yAxis === 'right')
@@ -79,10 +128,7 @@ const LineChart: FC<LineChartProps> = ({
             orientation="right"
           />
         )}
-        <Tooltip
-          labelClassName={styles.tooltipLabel}
-          wrapperClassName={styles.tooltip}
-        />
+        <Tooltip content={<LineChartTooltip />} />
 
         {renderedSeries}
 

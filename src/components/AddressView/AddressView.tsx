@@ -1,4 +1,5 @@
-import { FC, Suspense, lazy } from 'react'
+import { FC, Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from '@ethersproject/address'
@@ -18,9 +19,15 @@ import {
 } from '@/components'
 import { financialFormat } from '@/lib/utils'
 
-const TxsDataTable = lazy(() => import('../Tables/TxsDataTable/'))
-const Erc20DataTable = lazy(() => import('../Tables/Erc20DataTable'))
-const NftDataTable = lazy(() => import('../Tables/NftDataTable'))
+const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
+  ssr: false,
+})
+const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
+  ssr: false,
+})
+const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
+  ssr: false,
+})
 
 const AddressView: FC<IAddressViewProps> = ({
   address,

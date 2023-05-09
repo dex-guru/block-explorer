@@ -9,7 +9,8 @@ export type BlockModelWithTimeDiff = BlockModel & { timeDiff: number }
 
 export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
   {
-    accessor: 'hash',
+    accessor: 'number',
+    modifier: 'last-block-number',
     render: (data) => (
       <Tile
         icon={<IconBlock className={styles.mutedIcon} />}
@@ -44,6 +45,7 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
   {
     accessor: 'gasUsed',
     type: 'number',
+    modifier: 'last-block-gasUsed',
     render: (data) => {
       if (!data.gasUsed || data.gasUsed === '0') {
         return null
