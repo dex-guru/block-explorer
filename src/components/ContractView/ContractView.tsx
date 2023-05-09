@@ -112,7 +112,7 @@ const ContractView: FC<IContractViewProps> = ({
                   value: (
                     <Value
                       value={financialFormat(addressInfo.nativeBalance)}
-                      suffix={<>&nbsp;{chain.config?.nativeCurrency.symbol}</>}
+                      suffix={<>&nbsp;{chain?.config?.nativeCurrency.symbol}</>}
                     />
                   ),
                 },

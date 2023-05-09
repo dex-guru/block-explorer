@@ -13,7 +13,6 @@ import {
   ContractCreatorModel,
   TokenBalancesStatsModel,
   TokenHoldingsStatsModel,
-  TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'

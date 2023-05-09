@@ -15,8 +15,8 @@ import { isValidBlockNumber } from '@/lib/utils'
 export interface IBlockProps {
   block?: string
   data: BlockModel | null
-  chainStats?: ChainStatsModel
-  chainConfig?: ChainConfigModel
+  chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
 }
 
 const Block: NextPage<IBlockProps> = ({
