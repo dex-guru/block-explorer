@@ -39,7 +39,9 @@ const TxOverview: FC<{
   erc20Events: Erc20EventModel[]
   nftEvents: Erc721TransferModel[]
 }> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
-  const gigaNative = ` G${chainConfig.nativeCurrency.symbol.toLowerCase()}`
+  const gigaNative = (
+    <>&nbsp;G${chainConfig.nativeCurrency.symbol.toLowerCase()}</>
+  )
 
   const transfers = erc20Events.filter(
     (event) => event.eventType === 'transfer'
@@ -173,7 +175,7 @@ const TxOverview: FC<{
               data.gasPrice,
               chainConfig.nativeCurrency.decimals - 9
             )}
-            suffix={<>&nbsp;{gigaNative}</>}
+            suffix={gigaNative}
           />
           <Value
             value={getNormalizedValue(
@@ -217,17 +219,17 @@ const TxOverview: FC<{
               data.gasPrice,
               chainConfig.nativeCurrency.decimals - 9
             )}
-            suffix={<>&nbsp;{gigaNative}</>}
+            suffix={gigaNative}
           />
           <Value
             prefix={<>Max&nbsp;</>}
             value={getNormalizedValue(data.maxFeePerGas || 0, 9)}
-            suffix={<>&nbsp;{gigaNative}</>}
+            suffix={gigaNative}
           />
           <Value
             prefix={<>Max Priority&nbsp;</>}
             value={getNormalizedValue(data.maxPriorityFeePerGas || 0, 9)}
-            suffix={<>&nbsp;{gigaNative}</>}
+            suffix={gigaNative}
           />
         </Separated>
       ),
