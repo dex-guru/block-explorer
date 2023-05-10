@@ -373,6 +373,15 @@ export const GET_TRANSACTION_TRACES = gql`
     traces(txHash: $hash) {
       tracesJSON
     }
+    chainConfig {
+      shortName
+      nativeCurrency {
+        decimals
+        name
+        symbol
+      }
+      name
+    }
   }
 `
 
