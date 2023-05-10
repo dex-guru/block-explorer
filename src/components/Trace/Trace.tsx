@@ -19,24 +19,23 @@ const Trace: FC<TraceProps> = ({ data }) => {
       <Label type="tag" className={styles.type}>
         {data.type}
       </Label>{' '}
-      <span className={clsx(styles.field, styles.address)}>
-        <Value
-          value={<Address address={data.from} type="account" isCopy />}
-          prefix={'From '}
-        />
-      </span>{' '}
+      <Value
+        className={clsx(styles.field, styles.address)}
+        value={<Address address={data.from} type="account" isCopy />}
+        prefix={<>From&nbsp;</>}
+      />{' '}
       <Label type="tag">&rarr;</Label>{' '}
-      <span className={clsx(styles.field, styles.address)}>
-        <Value
-          value={<Address address={data.to} type="account" isCopy />}
-          prefix={'To '}
-        />
-      </span>{' '}
+      <Value
+        className={clsx(styles.field, styles.address)}
+        value={<Address address={data.to} type="account" isCopy />}
+        prefix={<>To&nbsp;</>}
+      />{' '}
       {!!value && (
-        <span className={clsx(styles.field, styles.value)}>
-          for:
-          <Value value={value} />
-        </span>
+        <Value
+          className={clsx(styles.field, styles.value)}
+          value={value}
+          prefix={<>For:&nbsp;</>}
+        />
       )}
     </div>
   )

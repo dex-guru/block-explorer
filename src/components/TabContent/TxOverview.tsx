@@ -212,7 +212,7 @@ const TxOverview: FC<{
       value: (
         <Separated>
           <Value
-            prefix="Base: "
+            prefix={<>Base&nbsp;</>}
             value={getNormalizedValue(
               data.gasPrice,
               chainConfig.nativeCurrency.decimals - 9
@@ -220,12 +220,12 @@ const TxOverview: FC<{
             suffix={gigaNative}
           />
           <Value
-            prefix="Max: "
+            prefix={<>Max&nbsp;</>}
             value={getNormalizedValue(data.maxFeePerGas || 0, 9)}
             suffix={gigaNative}
           />
           <Value
-            prefix="Max Priority: "
+            prefix={<>Max Priority&nbsp;</>}
             value={getNormalizedValue(data.maxPriorityFeePerGas || 0, 9)}
             suffix={gigaNative}
           />
