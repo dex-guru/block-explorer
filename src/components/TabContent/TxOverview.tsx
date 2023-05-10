@@ -217,17 +217,17 @@ const TxOverview: FC<{
               data.gasPrice,
               chainConfig.nativeCurrency.decimals - 9
             )}
-            suffix={gigaNative}
+            suffix={<>&nbsp;{gigaNative}</>}
           />
           <Value
             prefix={<>Max&nbsp;</>}
             value={getNormalizedValue(data.maxFeePerGas || 0, 9)}
-            suffix={gigaNative}
+            suffix={<>&nbsp;{gigaNative}</>}
           />
           <Value
             prefix={<>Max Priority&nbsp;</>}
             value={getNormalizedValue(data.maxPriorityFeePerGas || 0, 9)}
-            suffix={gigaNative}
+            suffix={<>&nbsp;{gigaNative}</>}
           />
         </Separated>
       ),
