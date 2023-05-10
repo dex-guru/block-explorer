@@ -40,7 +40,7 @@ const TxOverview: FC<{
   nftEvents: Erc721TransferModel[]
 }> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
   const gigaNative = (
-    <>&nbsp;G${chainConfig.nativeCurrency.symbol.toLowerCase()}</>
+    <>&nbsp;G{chainConfig.nativeCurrency.symbol.toLowerCase()}</>
   )
 
   const transfers = erc20Events.filter(
