@@ -3,6 +3,7 @@ import { useLazyQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import Trace from '../Trace'
 import {
+  ChainConfigModel,
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
@@ -10,7 +11,10 @@ import { Card, Empty, Error } from '@/components'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 
-const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
+const TxTrace: FC<{
+  data: TransactionModel
+  chainConfig: ChainConfigModel
+}> = ({ data, chainConfig }) => {
   const hash = data?.hash
 
   const [getTraces, { data: traceData, loading, called }] = useLazyQuery<{
@@ -64,7 +68,7 @@ const TxTrace: FC<{ data: TransactionModel }> = ({ data }) => {
 
   return (
     <Card>
-      <Trace data={tracesObj} />
+      <Trace data={tracesObj} chainConfig={chainConfig} />
     </Card>
   )
 }

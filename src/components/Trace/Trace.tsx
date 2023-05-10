@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import Address from '../Address'
 import Code, { CodeFormat } from '../Code'
@@ -8,11 +9,15 @@ import { Property } from '../Properties/types'
 import Value from '../Value'
 import { TraceProps } from './types'
 import IconArrow from '@/images/icons/arrow-down.svg'
-import { hex2ascii } from '@/lib/utils'
+import { getNormalizedValue } from '@/lib/utils'
 import styles from './Trace.module.scss'
 
-const Trace: FC<TraceProps> = ({ data }) => {
-  const value = hex2ascii(data.value)
+const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
+  const decValue = new BigNumber(data.value, 16).toString(10)
+  const displayValue = getNormalizedValue(
+    decValue,
+    chainConfig?.nativeCurrency?.decimals
+  )
 
   const content = (
     <div className={styles.content}>
@@ -30,10 +35,10 @@ const Trace: FC<TraceProps> = ({ data }) => {
         value={<Address address={data.to} type="account" isCopy />}
         prefix={<>To&nbsp;</>}
       />{' '}
-      {!!value && (
+      {!!data.value && (
         <Value
           className={clsx(styles.field, styles.value)}
-          value={value}
+          value={displayValue}
           prefix={<>For:&nbsp;</>}
         />
       )}
@@ -74,7 +79,7 @@ const Trace: FC<TraceProps> = ({ data }) => {
             <ul className={styles.list}>
               {data.calls.map((item, idx) => (
                 <li key={idx} className={styles.item}>
-                  <Trace data={item} />
+                  <Trace data={item} chainConfig={chainConfig} />
                 </li>
               ))}
             </ul>
