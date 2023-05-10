@@ -111,3 +111,22 @@
   border-bottom-left-radius: 0;
   border-left: 1px var(--color-accent) solid;
 }
+
+.content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.type {
+  composes: warn from '../Label/Label.module.scss';
+  font-weight: 500;
+}
+
+.direction {
+  composes: info from '../Label/Label.module.scss';
+  padding: {
+    left: 8px;
+    right: 8px;
+  }
+}
