@@ -6,7 +6,7 @@ const nextConfig = {
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
-    apiUrl: 'https://explorer-graph-stage.dexguru.biz',
+    apiUrl: process.env.NEXT_PUBLIC_API_URL,
     gTagManagerId: 'GTM-K8HGVLW',
   },
   reactStrictMode: true,
