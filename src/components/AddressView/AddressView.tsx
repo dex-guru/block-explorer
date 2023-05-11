@@ -17,6 +17,7 @@ import {
   Card,
   Value,
   Empty,
+  Error,
   IconSearch,
 } from '@/components'
 import { financialFormat } from '@/lib/utils'
@@ -42,7 +43,11 @@ const AddressView: FC<IAddressViewProps> = ({
   const pathname = router.asPath.split('?')[0]
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = `Address ${checkSumAddress}`
+  const pageTitle = addressInfo?.address
+    ? `Address ${checkSumAddress}`
+    : isAddress(address)
+    ? `No address ${address}`
+    : 'Not an address'
 
   return (
     <>
@@ -51,20 +56,16 @@ const AddressView: FC<IAddressViewProps> = ({
         <meta name="description" content="Block Explorer" />
       </Head>
       <Page withSearch>
-        {!addressInfo && (
+        {!addressInfo?.address && isAddress(address) && (
           <Empty
             icon={<IconSearch />}
-            title={
-              address ? (
-                <>Address {checkSumAddress}not&nbsp;found</>
-              ) : (
-                'No address provided'
-              )
-            }
+            title={<>Address {checkSumAddress} not&nbsp;found</>}
           />
         )}
 
-        {!!addressInfo && (
+        {!isAddress(address) && <Error title="No correct address provided" />}
+
+        {!!addressInfo?.address && (
           <DetailsView
             icon={<Avatar address={address} />}
             title="Address"
