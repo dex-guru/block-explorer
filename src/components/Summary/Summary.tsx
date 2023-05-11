@@ -3,7 +3,7 @@ import Card from '../Card'
 import LineChart from '../LineChart'
 import Tile from '../Tile'
 import { SummaryProps } from './types'
-import { financialFormat } from '@/lib/utils'
+import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './Summary.module.scss'
 
 const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
@@ -18,15 +18,9 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
               options={{
                 axis: {
                   x: {
-                    tickFormatter: (value: number) => {
-                      const date = new Date(value * 1000)
-                      return date.toLocaleDateString('en-GB', {
-                        timeZone: 'UTC',
-                        month: 'short',
-                        year: '2-digit',
-                        day: '2-digit',
-                      })
-                    },
+                    dataKey: 'timestamp',
+                    type: 'number',
+                    tickFormatter: getShortDate,
                     axisLine: false,
                     tickLine: false,
                   },

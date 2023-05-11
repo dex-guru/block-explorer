@@ -32,7 +32,7 @@ import {
 } from '@/components'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
-import { financialFormat } from '@/lib/utils'
+import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 
 const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
@@ -199,16 +199,10 @@ const ContractView: FC<IContractViewProps> = ({
                           options={{
                             axis: {
                               x: {
+                                type: 'number',
+                                dataKey: 'timestamp',
                                 hide: true,
-                                tickFormatter: (value: number) => {
-                                  const date = new Date(value * 1000)
-                                  return date.toLocaleDateString('en-GB', {
-                                    timeZone: 'UTC',
-                                    month: 'short',
-                                    year: '2-digit',
-                                    day: '2-digit',
-                                  })
-                                },
+                                tickFormatter: getShortDate,
                                 axisLine: false,
                                 tickLine: false,
                               },

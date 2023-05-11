@@ -12,6 +12,7 @@ import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
+  getShortDate,
 } from '@/lib/utils'
 import styles from './Pages.module.scss'
 
@@ -83,15 +84,9 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
             options={{
               axis: {
                 x: {
-                  tickFormatter: (value: number) => {
-                    const date = new Date(value * 1000)
-                    return date.toLocaleDateString('en-GB', {
-                      timeZone: 'UTC',
-                      month: 'short',
-                      year: '2-digit',
-                      day: '2-digit',
-                    })
-                  },
+                  type: 'number',
+                  dataKey: 'timestamp',
+                  tickFormatter: getShortDate,
                   axisLine: false,
                   tickLine: false,
                 },
