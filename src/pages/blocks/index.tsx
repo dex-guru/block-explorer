@@ -24,7 +24,7 @@ interface IBlocksProps {
   chainStats: ChainStatsModel
 }
 
-const Txs: NextPage<IBlocksProps> = (props) => {
+const BlockPage: NextPage<IBlocksProps> = (props) => {
   const isMount = useIsMount()
   const [blocks, setBlocks] = useState(props.blocks)
   const [getBlocks, { data, loading }] = useLazyQuery(GET_BLOCKS)
@@ -101,7 +101,7 @@ const Txs: NextPage<IBlocksProps> = (props) => {
   )
 }
 
-export default Txs
+export default BlockPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })

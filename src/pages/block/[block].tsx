@@ -5,7 +5,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Empty, IconEmpty, Page } from '@/components'
+import { Empty, Error, IconSearch, Page } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -13,13 +13,23 @@ import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
 import { isValidBlockNumber } from '@/lib/utils'
 
 export interface IBlockProps {
+  block?: string
   data: BlockModel | null
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }
 
-const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
-  const pageTitle = data?.number ? `Block #${data?.number}` : 'No block'
+const Block: NextPage<IBlockProps> = ({
+  data,
+  chainConfig,
+  chainStats,
+  block,
+}) => {
+  const pageTitle = data?.number
+    ? `Block #${data?.number}`
+    : isValidBlockNumber(block)
+    ? `No block ${block}`
+    : 'Not a block'
 
   return (
     <>
@@ -31,19 +41,21 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView title="Block" address={data?.number.toString()}>
-          {!data?.number && (
-            <Empty icon={<IconEmpty />} title="No block  was found" />
-          )}
+        {!isValidBlockNumber(block) && <Error title="This is not a block" />}
 
-          {!!data?.number && (
+        {!data?.number && isValidBlockNumber(block) && (
+          <Empty icon={<IconSearch />} title="No block  was found" />
+        )}
+
+        {!!data?.number && (
+          <DetailsView title="Block" address={data?.number.toString()}>
             <BlockOverview
               data={data}
               chainConfig={chainConfig}
               chainStats={chainStats}
             />
-          )}
-        </DetailsView>
+          </DetailsView>
+        )}
       </Page>
     </>
   )
@@ -57,7 +69,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!isValidBlockNumber(block)) {
     ctx.res.statusCode = 404
 
-    return { props: {} }
+    return { props: { block } }
   }
 
   const apolloClient = initializeApollo({ ctx })
@@ -76,11 +88,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (!blocks?.length) {
     ctx.res.statusCode = 404
 
-    return { props: {} }
+    return { props: { block } }
   }
 
   return addApolloState(apolloClient, {
-    props: { data: blocks[0], chainStats, chainConfig },
+    props: { block, data: blocks[0], chainStats, chainConfig },
   })
 }
 
