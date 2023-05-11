@@ -6,7 +6,6 @@ import {
 } from '@/__generated__/resolvers-types'
 import { Card, Grid, LineChart, Page, Value } from '@/components'
 import { LineChartDataset } from '@/components/LineChart'
-import { generateLineChartData } from '@/components/LineChart/utils'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import {

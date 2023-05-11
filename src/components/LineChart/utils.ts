@@ -4,7 +4,7 @@ export const generateLineChartData = (
   series: LineChartDataset[],
   idxKey: unknown
 ) => {
-  const objData: Record<number, unknown> = {}
+  const objData: Record<string | number, unknown> = {}
 
   series.forEach((dataset) => {
     dataset.data.forEach((el) => {
