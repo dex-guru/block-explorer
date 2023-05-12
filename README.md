@@ -24,6 +24,10 @@ docker build . -t blocks-explorer
 docker run -p 3000:3000 blocks-explorer    
 ```
 
+## ENV VARS
+
+set NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexguru.biz/
+for backend API
 
 
 ## Learn More
