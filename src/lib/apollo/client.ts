@@ -13,7 +13,7 @@ import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 

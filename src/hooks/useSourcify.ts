@@ -5,7 +5,7 @@ import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
-const API_URL = process.env.API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 const ipfsGatewayPrefix = API_URL + '/api'
 
 export const sourcifyPath = (address: string, chainId: number) => {
