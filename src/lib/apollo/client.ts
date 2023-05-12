@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMemo } from 'react'
 import {
   ApolloClient,
   from,
@@ -10,7 +12,8 @@ import {
 import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
-import { useMemo } from 'react'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -22,9 +25,10 @@ type SchemaContext =
 
 function createIsomorphicLink() {
   const httpLink = new HttpLink({
-    uri: 'https://explorer-graph-stage.dexguru.biz/graphql',
+    uri: API_URL + '/graphql',
     credentials: 'same-origin',
   })
+
   return from([httpLink])
 }
 
