@@ -8,7 +8,9 @@ const nextConfig = {
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
     gTagManagerId: 'GTM-K8HGVLW',
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
+    API_URL:
+      process.env.NEXT_PUBLIC_API_URL ||
+      'https://explorer-graph-stage.dexguru.biz',
   },
   reactStrictMode: true,
   webpack(config) {
