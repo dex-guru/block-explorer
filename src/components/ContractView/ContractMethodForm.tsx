@@ -29,7 +29,7 @@ const ContractMethodForm: FC<IFormProps> = ({
   } = useForm()
   const { address: account } = useAccount()
   const [isLoading, setIsLoading] = useState(false)
-  const chain = useChainId()
+  const chainId = useChainId()
 
   const [callResult, setCallResult] = useState<unknown>(undefined)
 
@@ -48,7 +48,7 @@ const ContractMethodForm: FC<IFormProps> = ({
           abi,
           functionName: method.name,
           args: methodArgs,
-          chainId: chain,
+          chainId: chainId,
         })
         const result = ethers.BigNumber.isBigNumber(data)
           ? data.toString()
@@ -61,7 +61,7 @@ const ContractMethodForm: FC<IFormProps> = ({
         setIsLoading(false)
       }
     },
-    [abi, address, method.name, chain]
+    [abi, address, method.name, chainId]
   )
 
   const onWrite = useCallback(
@@ -84,7 +84,7 @@ const ContractMethodForm: FC<IFormProps> = ({
           abi,
           functionName: method.name,
           args: methodArgs,
-          chainId: chain,
+          chainId: chainId,
           overrides: {
             from: account,
             value: ethers.BigNumber.from(value),
@@ -103,7 +103,7 @@ const ContractMethodForm: FC<IFormProps> = ({
         setIsLoading(false)
       }
     },
-    [abi, account, address, method.name, method.stateMutability, chain]
+    [abi, account, address, method.name, method.stateMutability, chainId]
   )
 
   return (

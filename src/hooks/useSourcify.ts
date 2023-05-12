@@ -3,6 +3,7 @@ import { Interface } from '@ethersproject/abi'
 import { ErrorDescription } from '@ethersproject/abi/lib/interface'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
+import { CHAIN_ID } from '@/constants'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -115,7 +116,7 @@ export const useContract = (
 export const useHasCode = (
   address: string | undefined
 ): boolean | undefined => {
-  const url = `https://sourcify.dev/server/check-all-by-addresses?addresses=${address}&chainIds=7700`
+  const url = `https://sourcify.dev/server/check-all-by-addresses?addresses=${address}&chainIds=${CHAIN_ID}`
   const { data, error } = useSWRImmutable(url, (fetchUrl: string) =>
     fetch(fetchUrl).then((r) => r.json())
   )

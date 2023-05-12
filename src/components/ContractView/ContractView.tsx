@@ -63,7 +63,7 @@ const ContractView: FC<IContractViewProps> = ({
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
-  const match = useSourcifyMetadata(address, 7700)
+  const match = useSourcifyMetadata(address, CHAIN_ID)
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 

@@ -43,6 +43,7 @@ interface IndexProps {
 }
 
 const ITEMS_PER_PAGE = 10
+console.log('config chain id', process.env.NEXT_PUBLIC_CHAIN_ID)
 
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
