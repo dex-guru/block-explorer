@@ -378,57 +378,59 @@ const ContractView: FC<IContractViewProps> = ({
                   {tab === 'code' && <Files match={match} address={address} />}
                   {tab === 'readContract' && (
                     <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            item.stateMutability === 'view'
-                        )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return contractMethod.inputs.length === 0 ? (
-                            <ContractProperty
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          ) : (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
+                      {!!abi &&
+                        (abi as Abi)
+                          .filter(
+                            (item) =>
+                              item.type === 'function' &&
+                              item.stateMutability === 'view'
                           )
-                        })}
+                          .map((method, index) => {
+                            const contractMethod = method as AbiFunction & {
+                              type: 'function'
+                            }
+                            return contractMethod.inputs.length === 0 ? (
+                              <ContractProperty
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
+                                address={address}
+                                abi={abi}
+                              />
+                            ) : (
+                              <ContractMethodForm
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
+                                address={address}
+                                abi={abi}
+                              />
+                            )
+                          })}
                     </>
                   )}
                   {tab === 'writeContract' && (
                     <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            (item.stateMutability === 'nonpayable' ||
-                              item.stateMutability === 'payable')
-                        )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                              isWrite
-                            />
+                      {!!abi &&
+                        (abi as Abi)
+                          .filter(
+                            (item) =>
+                              item.type === 'function' &&
+                              (item.stateMutability === 'nonpayable' ||
+                                item.stateMutability === 'payable')
                           )
-                        })}
+                          .map((method, index) => {
+                            const contractMethod = method as AbiFunction & {
+                              type: 'function'
+                            }
+                            return (
+                              <ContractMethodForm
+                                key={`${index}-${contractMethod}`}
+                                method={contractMethod}
+                                address={address}
+                                abi={abi}
+                                isWrite
+                              />
+                            )
+                          })}
                     </>
                   )}
                 </TabPanel>

@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  output: 'standalone',
   env: {
     explorerName: 'Canto Explorer',
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
     gTagManagerId: 'GTM-K8HGVLW',
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   reactStrictMode: true,
   webpack(config) {
