@@ -31,6 +31,7 @@ import {
   Label,
   LineChart,
 } from '@/components'
+import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
