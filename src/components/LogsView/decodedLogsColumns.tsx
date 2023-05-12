@@ -12,13 +12,12 @@ export const decodedLogsColumns: IColumn<DecodedInputModel>[] = [
   {
     accessor: 'type',
     title: 'Type',
-    render: (data) => <span className={styles.type}>{data.type}</span>,
-  },
-  {
-    accessor: 'isIndexed',
-    title: 'Indexed?',
-    type: 'center',
-    render: (data) => (data.isIndexed ? 'true' : 'false'),
+    render: (data) => (
+      <>
+        <span className={styles.type}>{data.type}</span>{' '}
+        {data.isIndexed && <span className={styles.indexed}>indexed</span>}
+      </>
+    ),
   },
   {
     accessor: 'value',

@@ -3,19 +3,27 @@ import Head from 'next/head'
 import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
 import { TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
-import { Page, DetailsView, Summary, Value } from '@/components'
+import {
+  Page,
+  DetailsView,
+  Summary,
+  Value,
+  Empty,
+  Error,
+  IconSearch,
+} from '@/components'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 
-interface AddressPageServerProps {
+interface HioldingsPageServerProps {
   address: string
   tokenHoldingsStats?: TokenHoldingsStatsModel
 }
 
-const AddressPage: NextPage<AddressPageServerProps> = ({
+const HoldingsPage: NextPage<HioldingsPageServerProps> = ({
   address,
   tokenHoldingsStats,
 }) => {
@@ -46,7 +54,9 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
     },
   ]
 
-  const pageTitle = `Token Holdings for ${checkSumAddress}`
+  const pageTitle = address
+    ? `Token Holdings for ${checkSumAddress}`
+    : 'No correct address provided'
 
   return (
     <>
@@ -58,25 +68,39 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
       </Head>
 
       <Page withSearch>
-        <DetailsView
-          title="Token Holdings"
-          address={checkSumAddress || undefined}
-        >
-          <Summary stats={stats} />
-          <TokensDataTable address={address} />
-        </DetailsView>
+        {isAddress(address) && (
+          <Empty
+            icon={<IconSearch />}
+            title="No holdings"
+            subtitle={address ? `for address ${checkSumAddress}` : undefined}
+          />
+        )}
+
+        {!isAddress(address) && <Error title="No correct address provided" />}
+
+        {!!tokenHoldingsStats && (
+          <DetailsView
+            title="Token Holdings"
+            address={checkSumAddress || undefined}
+          >
+            <Summary stats={stats} />
+            <TokensDataTable address={address} />
+          </DetailsView>
+        )}
       </Page>
     </>
   )
 }
 
-export default AddressPage
+export default HoldingsPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
   if (address && !isAddress(address)) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: { address: address } }
   }
 
   const apolloClient = initializeApollo({ ctx })
