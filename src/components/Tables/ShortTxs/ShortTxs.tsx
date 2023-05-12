@@ -6,6 +6,7 @@ import {
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
+import { CHAIN_ID } from '@/constants'
 import { TRANSACTIONS_LAST } from '@/lib/apollo/queries'
 import styles from './ShortTxs.module.scss'
 
@@ -23,6 +24,7 @@ export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
     transactions: TransactionModel[]
   }>(TRANSACTIONS_LAST, {
     pollInterval: Number(process.env.pollInterval),
+    variables: { chainId: CHAIN_ID },
   })
 
   useEffect(() => {

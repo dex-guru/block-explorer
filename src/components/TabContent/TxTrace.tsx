@@ -8,6 +8,7 @@ import {
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
 import { Card, Empty, Error } from '@/components'
+import { CHAIN_ID } from '@/constants'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 
@@ -22,7 +23,7 @@ const TxTrace: FC<{
   }>(GET_TRANSACTION_TRACES)
 
   useEffect(() => {
-    getTraces({ variables: { hash } })
+    getTraces({ variables: { hash, chainId: CHAIN_ID } })
   }, [getTraces, hash])
 
   if (!called || loading) {
@@ -39,7 +40,7 @@ const TxTrace: FC<{
         {
           className: styles.retry,
           caption: 'Retry?',
-          onClick: () => getTraces({ variables: { hash } }),
+          onClick: () => getTraces({ variables: { hash, chainId: CHAIN_ID } }),
         },
       ]}
     />

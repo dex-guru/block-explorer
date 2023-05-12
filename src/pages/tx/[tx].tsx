@@ -13,6 +13,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import { CHAIN_ID } from '@/constants'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
@@ -120,7 +121,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     nftEvents: { data: Erc721TransferModel[] }
   }>({
     query: GET_TRANSACTIONS_BY_HASH,
-    variables: { hash: tx },
+    variables: { hash: tx, chainId: CHAIN_ID },
   })
 
   const {

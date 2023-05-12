@@ -21,6 +21,7 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
+import { CHAIN_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -54,7 +55,7 @@ const Index: NextPage<IndexProps> = (props) => {
   const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(
     GET_BLOCKS_SHORT,
     {
-      variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
+      variables: { first: ITEMS_PER_PAGE + 1, skip: 0, chainId: CHAIN_ID },
       pollInterval: Number(process.env.pollInterval),
     }
   )
@@ -241,7 +242,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = await apolloClient.query({
     query: GET_BLOCKS_TXNS_CHAIN_STATS,
     // per_page + 1 - last item needs for time diff
-    variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
+    variables: { first: ITEMS_PER_PAGE + 1, skip: 0, chainId: CHAIN_ID },
   })
 
   const blocksWithTimeDiff = getBlocksWithTimeDiff(blocks, ITEMS_PER_PAGE)

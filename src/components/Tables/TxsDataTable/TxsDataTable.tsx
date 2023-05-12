@@ -11,6 +11,7 @@ import DataTable from '@/components/DataTable'
 import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import { txsColumns } from '@/components/Table'
+import { CHAIN_ID } from '@/constants'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -39,6 +40,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
         skip: 0,
         blockNumber: block,
         address: address?.toLowerCase(),
+        chainId: CHAIN_ID,
 
         ...vars,
       }

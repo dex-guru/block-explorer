@@ -4,6 +4,7 @@ import { erc20Columns } from './columns'
 import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
 import { LoadingCard } from '@/components/Loading'
+import { CHAIN_ID } from '@/constants'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -39,6 +40,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
 
         first: PER_PAGE,
         skip: 0,
+        chainId: CHAIN_ID,
 
         ...vars,
       }

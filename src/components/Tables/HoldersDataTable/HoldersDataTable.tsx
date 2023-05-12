@@ -8,6 +8,7 @@ import {
 import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
 import { LoadingCard } from '@/components/Loading'
+import { CHAIN_ID } from '@/constants'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_HOLDERS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -33,6 +34,7 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
 
         first: PER_PAGE,
         skip: 0,
+        chainId: CHAIN_ID,
 
         ...vars,
       }

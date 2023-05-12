@@ -16,6 +16,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'
+import { CHAIN_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 
@@ -114,7 +115,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     balancesStats: TokenBalancesStatsModel
   }>({
     query: GET_ADDRESS_INFO,
-    variables: { address: address.toLowerCase() },
+    variables: { address: address.toLowerCase(), chainId: CHAIN_ID },
   })
 
   if (!data?.address?.address) {

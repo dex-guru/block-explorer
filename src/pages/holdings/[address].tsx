@@ -14,6 +14,7 @@ import {
 } from '@/components'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
+import { CHAIN_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
@@ -109,7 +110,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     tokenHoldingsStats: TokenHoldingsStatsModel
   }>({
     query: GET_ADDRESS_TOKENS_STATS,
-    variables: { address: address.toLowerCase() },
+    variables: { address: address.toLowerCase(), chainId: CHAIN_ID },
   })
 
   return addApolloState(apolloClient, {

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { useQuery } from '@apollo/client'
 import { logsColumns } from './columns'
 import DataTable from '@/components/DataTable'
+import { CHAIN_ID } from '@/constants'
 import { GET_LOGS_BY_ADDRESS } from '@/lib/apollo/queries'
 
 interface IEventsTableProps {
@@ -10,7 +11,7 @@ interface IEventsTableProps {
 
 export const EventsTable: FC<IEventsTableProps> = ({ address }) => {
   const { data, loading } = useQuery(GET_LOGS_BY_ADDRESS, {
-    variables: { address: address.toLowerCase() },
+    variables: { address: address.toLowerCase(), chainId: CHAIN_ID },
   })
 
   if (loading || !data) {
