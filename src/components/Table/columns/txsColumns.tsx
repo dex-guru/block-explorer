@@ -75,9 +75,7 @@ export const txsColumns = (
               suffix={
                 chainConfig?.nativeCurrency.symbol ? (
                   <>&nbsp;{chainConfig?.nativeCurrency.symbol}</>
-                ) : (
-                  ''
-                )
+                ) : undefined
               }
             />
           }

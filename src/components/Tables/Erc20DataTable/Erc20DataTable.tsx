@@ -1,11 +1,9 @@
 import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { erc20Columns } from './columns'
-import Button from '@/components/Button'
-import Card from '@/components/Card'
+import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
-import Empty from '@/components/Empty'
-import Loading from '@/components/Loading'
+import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -34,53 +32,56 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
     [address, isWalletAddress]
   )
 
+  const getVariables = useCallback(
+    (vars?: PaginationVariables) => {
+      return {
+        ...addressVar,
+
+        first: PER_PAGE,
+        skip: 0,
+
+        ...vars,
+      }
+    },
+    [addressVar]
+  )
+
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
       getErc20({
-        variables: {
-          ...addressVar,
-          ...variables,
-        },
+        variables: getVariables(variables),
       })
     },
-    [addressVar, getErc20]
+    [getErc20, getVariables]
   )
 
   useEffect(() => {
     getErc20({
-      variables: {
-        first: PER_PAGE,
-        ...addressVar,
-        skip: 0,
-      },
+      variables: getVariables(),
     })
-  }, [addressVar, getErc20])
+  }, [getErc20, getVariables])
 
   const displayData = loading ? previousData : data
 
   if (isMount && !data && !loading) {
     return (
-      <Empty
+      <Error
         className={styles.error}
-        icon="🙀"
         title="Error while receiving ERC-20 events"
         subtitle={address ? `for ${address}` : undefined}
-      >
-        <Button
-          className={styles.retry}
-          caption="Retry?"
-          onClick={() => getErc20()}
-        />
-      </Empty>
+        actions={[
+          {
+            className: styles.retry,
+            caption: 'Retry?',
+            onClick: () => getErc20({ variables: getVariables() }),
+          },
+        ]}
+      />
     )
   }
 
   if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
-    )
+    return <LoadingCard />
   }
 
   return (

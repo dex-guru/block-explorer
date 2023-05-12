@@ -30,12 +30,12 @@ interface ITxProps {
   nftEvents: Erc721TransferModel[]
 }
 
-const Tx: NextPage<ITxProps> = (props) => {
+const TxPage: NextPage<ITxProps> = (props) => {
   const router = useRouter()
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
-  const pageTitle = `Transaction ${props.data?.hash}`
+  const pageTitle = `Transaction ${props.data?.hash || 'not found'}`
 
   return (
     <>
@@ -47,15 +47,15 @@ const Tx: NextPage<ITxProps> = (props) => {
       </Head>
 
       <Page withSearch>
-        <DetailsView
-          title="Transaction"
-          address={props.data?.hash || undefined}
-        >
-          {!props.data?.hash && (
-            <Empty icon={<IconEmpty />} title="No TX was found" />
-          )}
+        {!props.data?.hash && (
+          <Empty icon={<IconEmpty />} title="No TX was found" />
+        )}
 
-          {!!props.data?.hash && (
+        {!!props.data?.hash && (
+          <DetailsView
+            title="Transaction"
+            address={props.data?.hash || undefined}
+          >
             <TabPanel
               tabs={[
                 {
@@ -91,20 +91,22 @@ const Tx: NextPage<ITxProps> = (props) => {
               ]}
               value={tab || ''}
             />
-          )}
-        </DetailsView>
+          </DetailsView>
+        )}
       </Page>
     </>
   )
 }
 
-export default Tx
+export default TxPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { tx } = ctx.query
 
   if (!isHexString(tx)) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   const apolloClient = initializeApollo({ ctx })
@@ -131,7 +133,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = data
 
   if (!transactions?.length) {
-    return { notFound: true }
+    ctx.res.statusCode = 404
+
+    return { props: {} }
   }
 
   return addApolloState(apolloClient, {

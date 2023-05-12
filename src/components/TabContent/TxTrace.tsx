@@ -7,7 +7,7 @@ import {
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
-import { Button, Card, Empty } from '@/components'
+import { Card, Empty, Error } from '@/components'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 
@@ -31,14 +31,18 @@ const TxTrace: FC<{
 
   const renderEmpty = () => <Empty title="This transaction left no trace" />
   const renderError = () => (
-    <Empty
+    <Error
       className={styles.error}
-      icon="🙀"
       title="Error while receiving trace info"
       subtitle={`for ${hash}`}
-    >
-      <Button className={styles.retry} caption="Retry?" onClick={getTraces} />
-    </Empty>
+      actions={[
+        {
+          className: styles.retry,
+          caption: 'Retry?',
+          onClick: () => getTraces({ variables: { hash } }),
+        },
+      ]}
+    />
   )
 
   if (called && !traceData) {

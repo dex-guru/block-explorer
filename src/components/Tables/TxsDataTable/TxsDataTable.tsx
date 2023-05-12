@@ -6,10 +6,9 @@ import {
   TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import Button from '@/components/Button'
 import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
-import Empty from '@/components/Empty'
+import Error from '@/components/Error'
 import Loading from '@/components/Loading'
 import { txsColumns } from '@/components/Table'
 import { useIsMount } from '@/hooks'
@@ -33,52 +32,59 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
   }>(GET_TRANSACTIONS)
   const isMount = useIsMount()
 
-  const onPaginationChange = useCallback(
-    (variables: PaginationVariables) => {
-      getTransactions({
-        variables: {
-          blockNumber: block,
-          address: address?.toLowerCase(),
-          ...variables,
-        },
-      })
-    },
-    [block, address, getTransactions]
-  )
-
-  useEffect(() => {
-    getTransactions({
-      variables: {
+  const getVariables = useCallback(
+    (vars?: PaginationVariables) => {
+      return {
         first: PER_PAGE,
         skip: 0,
         blockNumber: block,
         address: address?.toLowerCase(),
-      },
+
+        ...vars,
+      }
+    },
+    [address, block]
+  )
+
+  const onPaginationChange = useCallback(
+    (variables: PaginationVariables) => {
+      getTransactions({
+        variables: getVariables(variables),
+      })
+    },
+    [getTransactions, getVariables]
+  )
+
+  useEffect(() => {
+    getTransactions({
+      variables: getVariables(),
     })
-  }, [block, address, getTransactions])
+  }, [getTransactions, getVariables])
 
   const displayData = loading ? previousData : data
+  const subtitle = address
+    ? `for ${address}`
+    : block
+    ? `for block #${block}`
+    : undefined
 
   if (isMount && !data && !loading) {
-    const subtitle = address
-      ? `for ${address}`
-      : block
-      ? `for block #${block}`
-      : undefined
-
     return (
-      <Empty
+      <Error
         className={styles.error}
-        icon="🙀"
         title="Error while receiving transactions"
         subtitle={subtitle}
-      >
-        <Button
-          className={styles.retry}
-          caption="Retry?"
-          onClick={getTransactions}
-        />
-      </Empty>
+        actions={[
+          {
+            className: styles.retry,
+            caption: 'Retry?',
+            onClick: () =>
+              getTransactions({
+                variables: getVariables(),
+              }),
+          },
+        ]}
+      />
     )
   }
 
@@ -100,7 +106,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
       onPageChange={onPaginationChange}
       empty={{
         title: 'No transactions',
-        subtitle: address ? `for ${address}` : undefined,
+        subtitle: subtitle,
       }}
     />
   )

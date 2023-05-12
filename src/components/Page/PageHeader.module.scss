@@ -17,12 +17,6 @@
   gap: 8px 24px;
   align-items: center;
   flex-flow: row wrap;
-
-  @media (min-width: 1200px) {
-    &::after {
-      content: '';
-    }
-  }
 }
 
 .search {
@@ -50,7 +44,6 @@
 
 .menu {
   flex: 0 0 320px;
-  margin-left: auto;
 
   @media (max-width: 1024px) {
     flex: 0 0 32px;
