@@ -13,9 +13,9 @@ import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
-
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
+
+console.log('process.env.NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
 
@@ -25,7 +25,7 @@ type SchemaContext =
 
 function createIsomorphicLink() {
   const httpLink = new HttpLink({
-    uri: API_URL + '/graphql',
+    uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
     credentials: 'same-origin',
   })
 
