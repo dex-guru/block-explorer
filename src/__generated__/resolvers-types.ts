@@ -69,26 +69,17 @@ export type CsrStatsModel = {
 
 export type ChainConfigModel = {
   __typename?: 'ChainConfigModel';
-  baseUnit: Scalars['String'];
   chain: Scalars['String'];
-  chainColor: Scalars['String'];
   chainId: Scalars['Int'];
   explorers: Array<ExplorerModel>;
   faucets: Array<Scalars['String']>;
-  features: Array<ChainFeatureModel>;
-  icon: Scalars['String'];
   infoURL: Scalars['String'];
-  message?: Maybe<Scalars['String']>;
+  message: Scalars['String'];
   name: Scalars['String'];
   nativeCurrency: NativeCurrencyModel;
   networkId: Scalars['Int'];
   rpc: Array<Scalars['String']>;
   shortName: Scalars['String'];
-};
-
-export type ChainFeatureModel = {
-  __typename?: 'ChainFeatureModel';
-  name: Scalars['String'];
 };
 
 export type ChainStatsModel = {
@@ -208,7 +199,6 @@ export type NativeCurrencyModel = {
   decimals: Scalars['Int'];
   name: Scalars['String'];
   symbol: Scalars['String'];
-  wrappedAddress?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -256,12 +246,10 @@ export type Query = {
 
 export type QueryAddressArgs = {
   address: Scalars['String'];
-  chainId?: Scalars['Int'];
 };
 
 
 export type QueryBalancesArgs = {
-  chainId?: Scalars['Int'];
   first?: Scalars['Int'];
   skip?: Scalars['Int'];
   tokenAddress: Scalars['String'];
@@ -269,7 +257,6 @@ export type QueryBalancesArgs = {
 
 
 export type QueryBalancesStatsArgs = {
-  chainId?: Scalars['Int'];
   tokenAddress: Scalars['String'];
 };
 
@@ -277,7 +264,6 @@ export type QueryBalancesStatsArgs = {
 export type QueryBlockStatsArgs = {
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  chainId?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
   timestampStart?: InputMaybe<Scalars['Int']>;
 };
@@ -286,7 +272,6 @@ export type QueryBlockStatsArgs = {
 export type QueryBlocksArgs = {
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  chainId?: Scalars['Int'];
   first?: Scalars['Int'];
   number?: InputMaybe<Scalars['Int']>;
   skip?: Scalars['Int'];
@@ -295,31 +280,13 @@ export type QueryBlocksArgs = {
 };
 
 
-export type QueryChainConfigArgs = {
-  chainId?: Scalars['Int'];
-};
-
-
-export type QueryChainStatsArgs = {
-  chainId?: Scalars['Int'];
-};
-
-
 export type QueryContractCreatorArgs = {
   address: Scalars['String'];
-  chainId?: Scalars['Int'];
-};
-
-
-export type QueryCosmosArgs = {
-  chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
 };
 
 
 export type QueryErc20EventsArgs = {
   address?: InputMaybe<Scalars['String']>;
-  chainId?: Scalars['Int'];
   first?: InputMaybe<Scalars['Int']>;
   hash?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -329,7 +296,6 @@ export type QueryErc20EventsArgs = {
 
 export type QueryLogsArgs = {
   address?: InputMaybe<Scalars['String']>;
-  chainId?: Scalars['Int'];
   first?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   transactionHash?: InputMaybe<Scalars['String']>;
@@ -338,7 +304,6 @@ export type QueryLogsArgs = {
 
 export type QueryNftEventsArgs = {
   address?: InputMaybe<Scalars['String']>;
-  chainId?: Scalars['Int'];
   first?: InputMaybe<Scalars['Int']>;
   hash?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
@@ -346,7 +311,6 @@ export type QueryNftEventsArgs = {
 
 
 export type QuerySearchArgs = {
-  chainId?: Scalars['Int'];
   first: Scalars['Int'];
   query: Scalars['String'];
   skip?: Scalars['Int'];
@@ -355,7 +319,6 @@ export type QuerySearchArgs = {
 
 export type QueryTokenHoldingsArgs = {
   address: Scalars['String'];
-  chainId?: Scalars['Int'];
   first?: Scalars['Int'];
   skip?: Scalars['Int'];
 };
@@ -363,12 +326,10 @@ export type QueryTokenHoldingsArgs = {
 
 export type QueryTokenHoldingsStatsArgs = {
   address: Scalars['String'];
-  chainId?: Scalars['Int'];
 };
 
 
 export type QueryTracesArgs = {
-  chainId?: Scalars['Int'];
   txHash: Scalars['String'];
 };
 
@@ -378,7 +339,6 @@ export type QueryTransactionStatsArgs = {
   blockNumber?: InputMaybe<Scalars['Int']>;
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  chainId?: Scalars['Int'];
   timestampEnd?: InputMaybe<Scalars['Int']>;
   timestampStart?: InputMaybe<Scalars['Int']>;
 };
@@ -389,7 +349,6 @@ export type QueryTransactionsArgs = {
   blockNumber?: InputMaybe<Scalars['Int']>;
   blockNumberEnd?: InputMaybe<Scalars['Int']>;
   blockNumberStart?: InputMaybe<Scalars['Int']>;
-  chainId?: Scalars['Int'];
   first?: Scalars['Int'];
   hash?: InputMaybe<Scalars['String']>;
   skip?: Scalars['Int'];
@@ -577,7 +536,6 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CSRStatsModel: ResolverTypeWrapper<CsrStatsModel>;
   ChainConfigModel: ResolverTypeWrapper<ChainConfigModel>;
-  ChainFeatureModel: ResolverTypeWrapper<ChainFeatureModel>;
   ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>;
   ContractCreatorModel: ResolverTypeWrapper<ContractCreatorModel>;
   CosmosBlockModel: ResolverTypeWrapper<CosmosBlockModel>;
@@ -616,7 +574,6 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   CSRStatsModel: CsrStatsModel;
   ChainConfigModel: ChainConfigModel;
-  ChainFeatureModel: ChainFeatureModel;
   ChainStatsModel: ChainStatsModel;
   ContractCreatorModel: ContractCreatorModel;
   CosmosBlockModel: CosmosBlockModel;
@@ -700,26 +657,17 @@ export type CsrStatsModelResolvers<ContextType = any, ParentType extends Resolve
 }>;
 
 export type ChainConfigModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainConfigModel'] = ResolversParentTypes['ChainConfigModel']> = ResolversObject<{
-  baseUnit?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chain?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  chainColor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   explorers?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>;
   faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  features?: Resolver<Array<ResolversTypes['ChainFeatureModel']>, ParentType, ContextType>;
-  icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nativeCurrency?: Resolver<ResolversTypes['NativeCurrencyModel'], ParentType, ContextType>;
   networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rpc?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   shortName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ChainFeatureModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainFeatureModel'] = ResolversParentTypes['ChainFeatureModel']> = ResolversObject<{
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -843,30 +791,29 @@ export type NativeCurrencyModelResolvers<ContextType = any, ParentType extends R
   decimals?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  wrappedAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  address?: Resolver<ResolversTypes['AddressModel'], ParentType, ContextType, RequireFields<QueryAddressArgs, 'address' | 'chainId'>>;
-  balances?: Resolver<Array<ResolversTypes['TokenBalanceModel']>, ParentType, ContextType, RequireFields<QueryBalancesArgs, 'chainId' | 'first' | 'skip' | 'tokenAddress'>>;
-  balancesStats?: Resolver<Maybe<ResolversTypes['TokenBalancesStatsModel']>, ParentType, ContextType, RequireFields<QueryBalancesStatsArgs, 'chainId' | 'tokenAddress'>>;
-  blockStats?: Resolver<ResolversTypes['BlockStatsModel'], ParentType, ContextType, RequireFields<QueryBlockStatsArgs, 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'timestampEnd' | 'timestampStart'>>;
-  blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType, RequireFields<QueryBlocksArgs, 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'number' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
-  chainConfig?: Resolver<ResolversTypes['ChainConfigModel'], ParentType, ContextType, RequireFields<QueryChainConfigArgs, 'chainId'>>;
-  chainStats?: Resolver<ResolversTypes['ChainStatsModel'], ParentType, ContextType, RequireFields<QueryChainStatsArgs, 'chainId'>>;
-  contractCreator?: Resolver<Maybe<ResolversTypes['ContractCreatorModel']>, ParentType, ContextType, RequireFields<QueryContractCreatorArgs, 'address' | 'chainId'>>;
-  cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType, RequireFields<QueryCosmosArgs, 'chainId' | 'first'>>;
+  address?: Resolver<ResolversTypes['AddressModel'], ParentType, ContextType, RequireFields<QueryAddressArgs, 'address'>>;
+  balances?: Resolver<Array<ResolversTypes['TokenBalanceModel']>, ParentType, ContextType, RequireFields<QueryBalancesArgs, 'first' | 'skip' | 'tokenAddress'>>;
+  balancesStats?: Resolver<Maybe<ResolversTypes['TokenBalancesStatsModel']>, ParentType, ContextType, RequireFields<QueryBalancesStatsArgs, 'tokenAddress'>>;
+  blockStats?: Resolver<ResolversTypes['BlockStatsModel'], ParentType, ContextType, RequireFields<QueryBlockStatsArgs, 'blockNumberEnd' | 'blockNumberStart' | 'timestampEnd' | 'timestampStart'>>;
+  blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType, RequireFields<QueryBlocksArgs, 'blockNumberEnd' | 'blockNumberStart' | 'first' | 'number' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
+  chainConfig?: Resolver<ResolversTypes['ChainConfigModel'], ParentType, ContextType>;
+  chainStats?: Resolver<ResolversTypes['ChainStatsModel'], ParentType, ContextType>;
+  contractCreator?: Resolver<Maybe<ResolversTypes['ContractCreatorModel']>, ParentType, ContextType, RequireFields<QueryContractCreatorArgs, 'address'>>;
+  cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType>;
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
-  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
-  logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'>>;
-  nftEvents?: Resolver<ResolversTypes['NFTTransfersModel'], ParentType, ContextType, RequireFields<QueryNftEventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>>;
-  search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'chainId' | 'first' | 'query' | 'skip'>>;
-  tokenHoldings?: Resolver<Array<ResolversTypes['TokenHoldingsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsArgs, 'address' | 'chainId' | 'first' | 'skip'>>;
-  tokenHoldingsStats?: Resolver<Maybe<ResolversTypes['TokenHoldingsStatsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsStatsArgs, 'address' | 'chainId'>>;
-  traces?: Resolver<ResolversTypes['TransactionTraceModel'], ParentType, ContextType, RequireFields<QueryTracesArgs, 'chainId' | 'txHash'>>;
-  transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'timestampEnd' | 'timestampStart'>>;
-  transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
+  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
+  logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'first' | 'skip' | 'transactionHash'>>;
+  nftEvents?: Resolver<ResolversTypes['NFTTransfersModel'], ParentType, ContextType, RequireFields<QueryNftEventsArgs, 'address' | 'first' | 'hash' | 'skip'>>;
+  search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'first' | 'query' | 'skip'>>;
+  tokenHoldings?: Resolver<Array<ResolversTypes['TokenHoldingsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsArgs, 'address' | 'first' | 'skip'>>;
+  tokenHoldingsStats?: Resolver<Maybe<ResolversTypes['TokenHoldingsStatsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsStatsArgs, 'address'>>;
+  traces?: Resolver<ResolversTypes['TransactionTraceModel'], ParentType, ContextType, RequireFields<QueryTracesArgs, 'txHash'>>;
+  transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'timestampEnd' | 'timestampStart'>>;
+  transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
 }>;
 
 export type SearchResolvers<ContextType = any, ParentType extends ResolversParentTypes['Search'] = ResolversParentTypes['Search']> = ResolversObject<{
@@ -976,7 +923,6 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   BlockStatsModel?: BlockStatsModelResolvers<ContextType>;
   CSRStatsModel?: CsrStatsModelResolvers<ContextType>;
   ChainConfigModel?: ChainConfigModelResolvers<ContextType>;
-  ChainFeatureModel?: ChainFeatureModelResolvers<ContextType>;
   ChainStatsModel?: ChainStatsModelResolvers<ContextType>;
   ContractCreatorModel?: ContractCreatorModelResolvers<ContextType>;
   CosmosBlockModel?: CosmosBlockModelResolvers<ContextType>;

@@ -6,7 +6,6 @@ import Button from '../Button'
 import OutsideClicker from '../OutsideClicker'
 import SearchVariants from './SearchVariants'
 import { SearchProps, SearchResults } from './types'
-import { CHAIN_ID } from '@/constants'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import IconQR from '@/images/icons/qr.svg'
 import IconSearch from '@/images/icons/search.svg'
@@ -27,7 +26,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
       return
     }
 
-    getSearch({ variables: { query: value, chainId: CHAIN_ID } })
+    getSearch({ variables: { query: value } })
   }, 500)
 
   useEffect(() => {

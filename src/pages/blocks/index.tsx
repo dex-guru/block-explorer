@@ -10,7 +10,6 @@ import {
 import { DetailsView, Page, Summary, Value } from '@/components'
 import DataTable from '@/components/DataTable'
 import { blocksColumns } from '@/components/Table/columns'
-import { CHAIN_ID } from '@/constants'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS } from '@/lib/apollo/queries'
@@ -32,7 +31,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getBlocks({ variables: { ...variables, chainId: CHAIN_ID } })
+      getBlocks({ variables })
     },
     [getBlocks]
   )
@@ -111,7 +110,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     data: { blocks, blockStats, chainStats, chainConfig },
   } = await apolloClient.query({
     query: GET_BLOCKS,
-    variables: { first: 10, skip: 0, chainId: CHAIN_ID },
+    variables: { first: 10, skip: 0 },
   })
 
   return addApolloState(apolloClient, {

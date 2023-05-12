@@ -8,7 +8,6 @@ import {
 import { Empty, Error, IconSearch, Page } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
-import { CHAIN_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
 import { isValidBlockNumber } from '@/lib/utils'
@@ -81,7 +80,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     chainConfig: ChainConfigModel
   }>({
     query: GET_BLOCKS_BY_NUMBER,
-    variables: { number: Number(block), chainId: CHAIN_ID },
+    variables: { number: Number(block) },
   })
 
   const { blocks, chainStats, chainConfig } = data

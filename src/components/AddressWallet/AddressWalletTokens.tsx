@@ -9,7 +9,6 @@ import Tile from '../Tile'
 import Value from '../Value'
 import { AddressWalletTokensProps } from './types'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
-import { CHAIN_ID } from '@/constants'
 import IconNoImage from '@/images/icons/question.svg'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
@@ -34,7 +33,6 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
         address: address?.toLowerCase(),
         first: ADRESS_WALLET_LIMIT,
         skip: 0,
-        chainId: CHAIN_ID,
       },
     })
   }, [getTokens, address])

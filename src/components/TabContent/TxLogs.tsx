@@ -4,7 +4,6 @@ import { LoadingCard } from '../Loading'
 import { LogsView } from '../LogsView'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
 import { Empty } from '@/components'
-import { CHAIN_ID } from '@/constants'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 
@@ -16,7 +15,7 @@ const TxLogs: FC<{ data: TransactionModel }> = (props) => {
   )
 
   useEffect(() => {
-    getLogs({ variables: { hash, chainId: CHAIN_ID } })
+    getLogs({ variables: { hash } })
   }, [getLogs, hash])
 
   if (!hash || (!loading && !data?.logs?.length)) {

@@ -10,7 +10,6 @@ import {
 import { Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
 import { LoadingCard } from '@/components/Loading'
 import { Tab } from '@/components/Tabs'
-import { CHAIN_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import {
@@ -162,7 +161,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     data: { transactionStats, chainStats, chainConfig },
   } = await apolloClient.query({
     query: GET_TRANSACTIONS_STATS,
-    variables: { blockNumber: block, chainId: CHAIN_ID },
+    variables: { blockNumber: block },
   })
 
   return addApolloState(apolloClient, {
