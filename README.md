@@ -20,7 +20,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Docker
 
 ```bash
-docker build . -t blocks-explorer
+docker build --build-arg NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexguru.biz -t block-explorer-guru ./
 docker run -p 3000:3000 -e HOSTNAME='0.0.0.0' -e NEXT_PUBLIC_API_URL="https://explorer-graph-stage.dexguru.biz" blocks-explorer
 ```
 
