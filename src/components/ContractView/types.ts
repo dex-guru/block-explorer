@@ -19,3 +19,8 @@ export interface IContractViewProps {
   tokenHoldingsStats?: TokenHoldingsStatsModel
   balancesStats?: TokenBalancesStatsModel
 }
+
+export interface IContractViewContractTabProps {
+  address: string
+  tab: string | string[]
+}

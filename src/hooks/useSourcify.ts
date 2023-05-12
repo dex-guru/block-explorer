@@ -28,7 +28,7 @@ const sourcifyFetcher: Fetcher<
   ['sourcify', string, number, SourcifySource]
   // this "_" is important for sourcify metadata
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-> = async ([_, address, chainId, sourcifySource]) => {
+> = async ([_, address, chainId]) => {
   // Try full match
   try {
     const url = sourcifyMetadata(address, chainId)

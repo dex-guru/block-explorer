@@ -3,15 +3,12 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from '@ethersproject/address'
-import { Abi, AbiFunction } from 'abitype'
 import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { generateLineChartData } from '../LineChart/utils'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
-import ContractMethodForm from './ContractMethodForm'
-import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
 import {
   Address,
@@ -20,9 +17,7 @@ import {
   Page,
   Properties,
   TabPanel,
-  Files,
   Grid,
-  ConnectButton,
   Card,
   Value,
   DateTime,
@@ -31,7 +26,6 @@ import {
   Label,
   LineChart,
 } from '@/components'
-import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
@@ -51,6 +45,12 @@ const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
 const EventsTable = dynamic(() => import('../Tables/EventsTable'), {
   ssr: false,
 })
+const ContractViewContractTab = dynamic(
+  () => import('./ContractViewContractTab'),
+  {
+    ssr: false,
+  }
+)
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -63,11 +63,6 @@ const ContractView: FC<IContractViewProps> = ({
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
-  const match = useSourcifyMetadata(address, 7700)
-
-  const abi = (match?.metadata?.output?.abi as Abi) || undefined
-
-  const hasSources = match?.metadata?.sources || undefined
 
   const isSubTab =
     tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
@@ -304,7 +299,7 @@ const ContractView: FC<IContractViewProps> = ({
 
               {
                 title: 'Contract',
-                indicator: hasSources && <IconVerify />,
+                indicator: false && <IconVerify />,
                 value: ['code', 'readContract', 'writeContract'],
                 to: `${pathname}?tab=code`,
               },
@@ -372,65 +367,7 @@ const ContractView: FC<IContractViewProps> = ({
                   ]}
                   value={tab}
                 >
-                  {['readContract', 'writeContract'].includes(
-                    tab as string
-                  ) && <ConnectButton />}
-                  {tab === 'code' && <Files match={match} address={address} />}
-                  {tab === 'readContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            item.stateMutability === 'view'
-                        )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return contractMethod.inputs.length === 0 ? (
-                            <ContractProperty
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          ) : (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                            />
-                          )
-                        })}
-                    </>
-                  )}
-                  {tab === 'writeContract' && (
-                    <>
-                      {(abi as Abi)
-                        .filter(
-                          (item) =>
-                            item.type === 'function' &&
-                            (item.stateMutability === 'nonpayable' ||
-                              item.stateMutability === 'payable')
-                        )
-                        .map((method, index) => {
-                          const contractMethod = method as AbiFunction & {
-                            type: 'function'
-                          }
-                          return (
-                            <ContractMethodForm
-                              key={`${index}-${contractMethod}`}
-                              method={contractMethod}
-                              address={address}
-                              abi={abi}
-                              isWrite
-                            />
-                          )
-                        })}
-                    </>
-                  )}
+                  <ContractViewContractTab tab={tab} address={address} />
                 </TabPanel>
               </Card>
             )}
