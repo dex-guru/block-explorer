@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  output: 'standalone',
   env: {
     explorerName: 'Canto Explorer',
     disqusURL: 'http://block-explorer-five.vercel.app/',
