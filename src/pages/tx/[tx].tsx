@@ -46,7 +46,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={props.chainConfig}>
         {!props.data?.hash && (
           <Empty icon={<IconEmpty />} title="No TX was found" />
         )}

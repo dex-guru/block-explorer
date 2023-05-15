@@ -1,8 +1,13 @@
-import { NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Error, Page } from '@/components'
+import { initializeApollo, addApolloState } from '@/lib/apollo/client'
+import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
-const TxIndex: NextPage = () => {
+const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
+  chainConfig,
+}) => {
   return (
     <>
       <Head>
@@ -12,7 +17,7 @@ const TxIndex: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={chainConfig}>
         <Error title="No TX hash was provided" />
       </Page>
     </>
@@ -20,3 +25,19 @@ const TxIndex: NextPage = () => {
 }
 
 export default TxIndex
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApollo({ ctx })
+
+  const {
+    data: { chainConfig },
+  } = await apolloClient.query({
+    query: GET_CHAIN_CONFIG,
+  })
+
+  return addApolloState(apolloClient, {
+    props: {
+      chainConfig,
+    },
+  })
+}

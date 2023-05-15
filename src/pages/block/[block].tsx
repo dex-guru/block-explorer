@@ -40,7 +40,7 @@ const Block: NextPage<IBlockProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={chainConfig}>
         {!isValidBlockNumber(block) && <Error title="This is not a block" />}
 
         {!data?.number && isValidBlockNumber(block) && (

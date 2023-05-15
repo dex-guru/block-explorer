@@ -87,7 +87,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={props.chainConfig}>
         <DetailsView
           title={block ? 'Transactions for block' : 'Transactions'}
           address={block?.toString()}

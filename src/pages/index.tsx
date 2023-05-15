@@ -143,8 +143,7 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     })
 
-  const pageTitle = `${chainConfig.nativeCurrency.name} Block Explorer`
-
+  const pageTitle = `${chainConfig.chain} Block Explorer`
   return (
     <>
       <Head>
@@ -153,7 +152,7 @@ const Index: NextPage<IndexProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page>
+      <Page chainConfig={props.chainConfig}>
         <Banner>
           <Search className={styles.searchMain} />
         </Banner>
@@ -246,7 +245,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   })
 
   const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
-
   return addApolloState(apolloClient, {
     props: {
       transactions: data.transactions,

@@ -1,8 +1,13 @@
-import { NextPage } from 'next'
+import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Page, Error } from '@/components'
+import { initializeApollo, addApolloState } from '@/lib/apollo/client'
+import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
-const BlockIndex: NextPage = () => {
+const BlockIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
+  chainConfig,
+}) => {
   return (
     <>
       <Head>
@@ -12,7 +17,7 @@ const BlockIndex: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={chainConfig}>
         <Error title="No block number provided" />
       </Page>
     </>
@@ -20,3 +25,19 @@ const BlockIndex: NextPage = () => {
 }
 
 export default BlockIndex
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const apolloClient = initializeApollo({ ctx })
+
+  const {
+    data: { chainConfig },
+  } = await apolloClient.query({
+    query: GET_CHAIN_CONFIG,
+  })
+
+  return addApolloState(apolloClient, {
+    props: {
+      chainConfig,
+    },
+  })
+}

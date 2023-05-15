@@ -9,9 +9,9 @@ export interface IAddressViewProps {
   address: string
   tab: string | string[] | undefined
   addressInfo: AddressModel | null
-  chain?: {
-    stats?: ChainStatsModel
-    config?: ChainConfigModel
+  chain: {
+    stats: ChainStatsModel
+    config: ChainConfigModel
   }
   tokenHoldingsStats?: TokenHoldingsStatsModel
 }

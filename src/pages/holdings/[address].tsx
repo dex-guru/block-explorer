@@ -2,7 +2,10 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
-import { TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  TokenHoldingsStatsModel,
+} from '@/__generated__/resolvers-types'
 import {
   Page,
   DetailsView,
@@ -18,14 +21,16 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 
-interface HioldingsPageServerProps {
+interface HoldingsPageServerProps {
   address: string
   tokenHoldingsStats?: TokenHoldingsStatsModel
+  chainConfig: ChainConfigModel
 }
 
-const HoldingsPage: NextPage<HioldingsPageServerProps> = ({
+const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
   address,
   tokenHoldingsStats,
+  chainConfig,
 }) => {
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
@@ -67,7 +72,7 @@ const HoldingsPage: NextPage<HioldingsPageServerProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={chainConfig}>
         {isAddress(address) && (
           <Empty
             icon={<IconSearch />}

@@ -627,10 +627,14 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         : ''
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      chain
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
     }
     ${
@@ -680,3 +684,18 @@ export const GET_COSMOS_TRANSACTIONS = gql`
     }
   }
 `
+
+export const GET_CHAIN_CONFIG = gql`
+query ChainConfig {
+  chainConfig(chainId: ${CHAIN_ID}){
+    chain
+    features{
+      name
+    }
+    nativeCurrency {
+      decimals
+      name
+      symbol
+    }
+  }
+}`

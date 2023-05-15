@@ -55,7 +55,7 @@ const AddressView: FC<IAddressViewProps> = ({
         <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
       </Head>
-      <Page withSearch>
+      <Page withSearch chainConfig={chain.config}>
         {!addressInfo?.address && isAddress(address) && (
           <Empty
             icon={<IconSearch />}

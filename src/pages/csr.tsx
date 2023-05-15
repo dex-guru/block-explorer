@@ -49,7 +49,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page withSearch>
+      <Page withSearch chainConfig={chainConfig}>
         <Grid className={styles.grid4}>
           <Card title="Total Revenue">
             <Value
