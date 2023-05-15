@@ -194,7 +194,7 @@ const Index: NextPage<IndexProps> = (props) => {
           <Card
             title="Latest Transactions"
             header={
-              CHAIN_ID === CHAIN_IDS.CANTO ? (
+              chainConfig.features.some((x) => x.name === 'cosmos') ? (
                 <Tabs
                   tabs={[
                     { title: 'EVM', value: 'evm' },
