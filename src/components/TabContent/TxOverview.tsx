@@ -39,7 +39,7 @@ const TxOverview: FC<{
   erc20Events: Erc20EventModel[]
   nftEvents: Erc721TransferModel[]
 }> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
-  const gigaNative = <>&nbsp;G{chainConfig.gasUnit}</>
+  const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
 
   const transfers = erc20Events.filter(
     (event) => event.eventType === 'transfer'
