@@ -42,7 +42,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
-        <link rel="icon" href={chainConfig.icon} />
+        <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
