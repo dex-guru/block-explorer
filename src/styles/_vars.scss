@@ -25,7 +25,6 @@ html {
 
   --color-link: var(--color-accent);
   --color-link-hover: var(--color-accent-a);
-  --color-link-active: var(--color-text);
 
   --color-button-border: var(--color-bg-3);
   --color-button-hover-border: var(--color-bg-4);
@@ -51,11 +50,11 @@ html {
   color: var(--color-page-text);
 
   a {
-    color: var(--color-link);
+    color: var(--color-accent);
 
     &:focus,
     &:hover {
-      color: var(--color-link-hover);
+      color: var(--color-accent-a);
     }
   }
 

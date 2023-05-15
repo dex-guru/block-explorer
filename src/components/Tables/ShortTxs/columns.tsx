@@ -50,7 +50,8 @@ export const lastTxsColumns = (
         <Label
           title={`${getNormalizedValue(
             data.value,
-            chainConfig.nativeCurrency.decimals
+            chainConfig.nativeCurrency.decimals,
+            { decimals: 7 }
           )} ${chainConfig.nativeCurrency.symbol}`}
           type="accent"
         />

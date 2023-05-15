@@ -69,13 +69,13 @@ export type CsrStatsModel = {
 
 export type ChainConfigModel = {
   __typename?: 'ChainConfigModel';
-  baseUnit: Scalars['String'];
   chain: Scalars['String'];
   chainColor: Scalars['String'];
   chainId: Scalars['Int'];
   explorers: Array<ExplorerModel>;
   faucets: Array<Scalars['String']>;
   features: Array<ChainFeatureModel>;
+  gasUnit: Scalars['String'];
   icon: Scalars['String'];
   infoURL: Scalars['String'];
   message?: Maybe<Scalars['String']>;
@@ -477,6 +477,7 @@ export type TransactionModel = {
   receiptCumulativeGasUsed: Scalars['Decimal'];
   receiptEffectiveGasPrice?: Maybe<Scalars['Decimal']>;
   receiptGasUsed: Scalars['Decimal'];
+  receiptLogsCount?: Maybe<Scalars['Int']>;
   receiptRoot?: Maybe<Scalars['String']>;
   receiptStatus: Scalars['Int'];
   toAddress?: Maybe<Scalars['String']>;
@@ -700,13 +701,13 @@ export type CsrStatsModelResolvers<ContextType = any, ParentType extends Resolve
 }>;
 
 export type ChainConfigModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainConfigModel'] = ResolversParentTypes['ChainConfigModel']> = ResolversObject<{
-  baseUnit?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chain?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chainColor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   explorers?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>;
   faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   features?: Resolver<Array<ResolversTypes['ChainFeatureModel']>, ParentType, ContextType>;
+  gasUnit?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -947,6 +948,7 @@ export type TransactionModelResolvers<ContextType = any, ParentType extends Reso
   receiptCumulativeGasUsed?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   receiptEffectiveGasPrice?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>;
   receiptGasUsed?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  receiptLogsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   receiptRoot?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   receiptStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   toAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

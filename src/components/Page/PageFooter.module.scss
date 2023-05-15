@@ -42,7 +42,7 @@
 }
 
 .link {
-  color: var(--color-link);
+  color: var(--color-accent);
 
   svg {
     display: block;
@@ -51,14 +51,14 @@
   }
 
   path {
-    fill: var(--color-link);
+    fill: var(--color-accent);
   }
 
   &:hover {
-    color: var(--color-link-hover);
+    color: var(--color-accent-a);
 
     path {
-      fill: var(--color-link-hover);
+      fill: var(--color-accent-a);
     }
   }
 }

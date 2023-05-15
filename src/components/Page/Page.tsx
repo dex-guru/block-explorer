@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { CSSProperties, FC } from 'react'
 import PageFooter from './PageFooter'
 import PageHeader from './PageHeader'
 import { PageProps } from './types'
@@ -11,7 +11,14 @@ const Page: FC<PageProps> = ({
   chainConfig,
 }) => {
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={
+        {
+          '--color-accent': chainConfig.chainColor,
+        } as CSSProperties
+      }
+    >
       <div className={styles.header}>
         <PageHeader
           withMenu={withMenu}
