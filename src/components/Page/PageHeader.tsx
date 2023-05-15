@@ -16,11 +16,11 @@ const PageHeader: FC<PageHeaderProps> = ({
     { caption: 'Verify Contract', href: '/verifyContract' },
     {
       caption: 'API',
-      href: 'https://developers.dex.guru/',
+      href: 'https://developers.dex.guru',
     },
     {
       caption: 'Dex Metrics',
-      href: 'https://dex.guru/markets?chain=canto',
+      href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
     },
   ]
   chainConfig.features.some((x) => x.name === 'csr') &&

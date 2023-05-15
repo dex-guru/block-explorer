@@ -1,10 +1,10 @@
+import { useMemo } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { isAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { canto } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 import {
   AddressModel,
@@ -14,26 +14,9 @@ import {
   TokenBalancesStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import { cantoTestnet } from '@/chains/cantoTestnet'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
-
-const { chains, provider } = configureChains(
-  [canto, cantoTestnet],
-  [publicProvider()]
-)
-
-const { connectors } = getDefaultWallets({
-  appName: 'Block Explorer',
-  chains,
-})
-
-const wagmiClient = createClient({
-  autoConnect: true,
-  connectors,
-  provider,
-})
 
 interface AddressPageServerProps {
   address: AddressModel
@@ -52,6 +35,56 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   tokenHoldingsStats,
   balancesStats,
 }) => {
+  const { chains, provider } = useMemo(() => {
+    const currentChain = {
+      id: chainConfig.chainId,
+      name: chainConfig.name,
+      network: chainConfig.shortName,
+      nativeCurrency: chainConfig.nativeCurrency,
+      rpcUrls: {
+        default: {
+          http: chainConfig.rpc,
+        },
+        public: {
+          http: chainConfig.rpc,
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: chainConfig.explorers[0].name,
+          url: chainConfig.explorers[0].url,
+        },
+      },
+    }
+    return configureChains([currentChain], [publicProvider()])
+  }, [
+    chainConfig.chainId,
+    chainConfig.explorers,
+    chainConfig.name,
+    chainConfig.nativeCurrency,
+    chainConfig.rpc,
+    chainConfig.shortName,
+  ])
+
+  const { connectors } = useMemo(
+    () =>
+      getDefaultWallets({
+        appName: 'Block Explorer',
+        chains,
+      }),
+    [chains]
+  )
+
+  const wagmiClient = useMemo(
+    () =>
+      createClient({
+        autoConnect: true,
+        connectors,
+        provider,
+      }),
+    [connectors, provider]
+  )
+
   const router = useRouter()
   const { address, tab } = router.query
   const isContract = addressInfo?.addressType === 'smart_contract'
