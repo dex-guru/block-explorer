@@ -90,6 +90,7 @@ const ContractView: FC<IContractViewProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
+        <link rel="icon" href={chain.config.icon} />
         <meta name="description" content="Block Explorer" />
       </Head>
       <Page withSearch chainConfig={chain.config}>
