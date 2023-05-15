@@ -30,7 +30,11 @@ const PageHeader: FC<PageHeaderProps> = ({
       <InfoBlock chainConfig={chainConfig} />
       <div className={styles.main}>
         <div className={styles.logo}>
-          <Logo title={`${chainConfig.chain} Explorer`} to="/" />
+          <Logo
+            title={`${chainConfig.chain} Explorer`}
+            to="/"
+            url={chainConfig.icon}
+          />
         </div>
         {!!withSearch && (
           <div className={styles.search}>
