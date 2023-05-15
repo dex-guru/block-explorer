@@ -13,6 +13,8 @@ const AddressIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
       <Head>
         <title>No address provided</title>
         <meta name="description" content="Block Explorer" />
+        <link rel="icon" href={chainConfig.icon} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page withSearch chainConfig={chainConfig}>
         <Error title="No address provided" />
