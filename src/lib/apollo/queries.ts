@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { CHAIN_ID } from '@/constants'
+import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 
 export const TRANSACTIONS_LAST = gql`
   query Transactions {
@@ -354,7 +354,7 @@ export const GET_CSR_STATS = gql`
       sumTx
       sumContracts
     }
-    chainConfig(chainId: 7700) {
+    chainConfig(chainId: ${CHAIN_ID}) {
       shortName
       nativeCurrency {
         decimals
@@ -619,8 +619,12 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       volume24hDeltaUsd
       volume24hUsd
     }
-    csrStats {
-      sumRevenue
+    ${
+      CHAIN_ID === CHAIN_IDS.CANTO
+        ? `csrStats {
+        sumRevenue
+      }`
+        : ''
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       nativeCurrency {
@@ -629,12 +633,16 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         symbol
       }
     }
-    cosmos(chainId: ${CHAIN_ID}) {
-      transactions {
-        blockNumber
-        blockTimestamp
-        hash
-      }
+    ${
+      CHAIN_ID === CHAIN_IDS.CANTO
+        ? `cosmos(chainId: ${CHAIN_ID}) {
+        transactions {
+          blockNumber
+          blockTimestamp
+          hash
+        }
+      }`
+        : ''
     }
   }
 `

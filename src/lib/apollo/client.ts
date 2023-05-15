@@ -15,8 +15,6 @@ import isEqual from 'lodash/isEqual'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
-console.log('process.env.NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL)
-
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
 
 type SchemaContext =

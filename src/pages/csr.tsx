@@ -7,6 +7,7 @@ import {
 import { Card, Grid, LineChart, Page, Value } from '@/components'
 import { LineChartDataset } from '@/components/LineChart'
 import { generateLineChartData } from '@/components/LineChart/utils'
+import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import {
@@ -115,18 +116,19 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
 export default CSRStats
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  if (CHAIN_ID !== CHAIN_IDS.CANTO) {
+    return
+  }
   const apolloClient = initializeApollo({ ctx })
 
-  const {
-    data: { csrStats, chainConfig },
-  } = await apolloClient.query({
+  const { data } = await apolloClient.query({
     query: GET_CSR_STATS,
   })
 
   return addApolloState(apolloClient, {
     props: {
-      csrStats,
-      chainConfig,
+      csrStats: data.csrStats || null,
+      chainConfig: data.chainConfig,
     },
   })
 }
