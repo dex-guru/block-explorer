@@ -40,10 +40,14 @@ export const CHAIN_STATS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       message
     }
@@ -65,11 +69,15 @@ export const GET_TRANSACTIONS_STATS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -117,11 +125,15 @@ export const GET_TRANSACTIONS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -162,11 +174,15 @@ export const GET_BLOCKS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -246,11 +262,15 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -278,11 +298,15 @@ export const GET_TRANSACTION_LOGS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -296,11 +320,15 @@ export const GET_TRANSACTION_TRACES = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -336,11 +364,15 @@ export const GET_BLOCKS_BY_NUMBER = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -364,11 +396,15 @@ export const GET_CSR_STATS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -414,11 +450,15 @@ export const GET_ADDRESS_INFO = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       shortName
       nativeCurrency {
         decimals
         name
         symbol
+      }
+      features {
+        name
       }
       name
     }
@@ -638,6 +678,7 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       icon
+      baseUnit
       chain
       nativeCurrency {
         decimals
@@ -700,6 +741,7 @@ export const GET_CHAIN_CONFIG = gql`
 query ChainConfig {
   chainConfig(chainId: ${CHAIN_ID}){
     icon
+    baseUnit
     chain
     features{
       name

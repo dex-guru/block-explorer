@@ -39,9 +39,7 @@ const TxOverview: FC<{
   erc20Events: Erc20EventModel[]
   nftEvents: Erc721TransferModel[]
 }> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
-  const gigaNative = (
-    <>&nbsp;G{chainConfig.nativeCurrency.symbol.toLowerCase()}</>
-  )
+  const gigaNative = <>&nbsp;G{chainConfig.baseUnit}</>
 
   const transfers = erc20Events.filter(
     (event) => event.eventType === 'transfer'
@@ -215,10 +213,7 @@ const TxOverview: FC<{
         <Separated>
           <Value
             prefix={<>Base&nbsp;</>}
-            value={getNormalizedValue(
-              data.gasPrice,
-              chainConfig.nativeCurrency.decimals - 9
-            )}
+            value={getNormalizedValue(data.gasPrice, 9)}
             suffix={gigaNative}
           />
           <Value
