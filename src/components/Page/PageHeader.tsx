@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import Logo from '../Logo'
 import Search from '../Search'
 import InfoBlock from './InfoBlock'
@@ -11,20 +11,24 @@ const PageHeader: FC<PageHeaderProps> = ({
   withSearch,
   withMenu = true,
 }) => {
-  const links = [
-    { caption: 'Home', href: '/' },
-    { caption: 'Verify Contract', href: '/verifyContract' },
-    {
-      caption: 'API',
-      href: 'https://developers.dex.guru',
-    },
-    {
-      caption: 'Dex Metrics',
-      href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
-    },
-  ]
-  chainConfig.features.some((x) => x.name === 'csr') &&
-    links.push({ caption: 'CSR', href: '/csr' })
+  const links = useMemo(() => {
+    const baseLinks = [
+      { caption: 'Home', href: '/' },
+      { caption: 'Verify Contract', href: '/verifyContract' },
+      {
+        caption: 'API',
+        href: 'https://developers.dex.guru',
+      },
+      {
+        caption: 'Dex Metrics',
+        href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
+      },
+    ]
+    chainConfig.features.some((x) => x.name === 'csr') &&
+      baseLinks.push({ caption: 'CSR', href: '/csr' })
+    return baseLinks
+  }, [chainConfig.features, chainConfig.shortName])
+
   return (
     <header className={styles.container}>
       <InfoBlock chainConfig={chainConfig} />
