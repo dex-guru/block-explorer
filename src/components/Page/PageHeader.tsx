@@ -31,7 +31,7 @@ const PageHeader: FC<PageHeaderProps> = ({
       <div className={styles.main}>
         <div className={styles.logo}>
           <Logo
-            title={`${chainConfig.chain} Explorer`}
+            title={`${chainConfig.name} Explorer`}
             to="/"
             url={chainConfig.icon}
           />

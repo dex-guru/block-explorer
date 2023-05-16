@@ -143,7 +143,7 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     })
 
-  const pageTitle = `${chainConfig.chain} Block Explorer`
+  const pageTitle = `${chainConfig.name} Block Explorer`
   return (
     <>
       <Head>
