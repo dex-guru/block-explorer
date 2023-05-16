@@ -13,6 +13,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Decimal: any;
+  Long: any;
 };
 
 export type AddressModel = {
@@ -262,8 +263,8 @@ export type QueryAddressArgs = {
 
 export type QueryBalancesArgs = {
   chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  first?: Scalars['Long'];
+  skip?: Scalars['Long'];
   tokenAddress: Scalars['String'];
 };
 
@@ -275,23 +276,23 @@ export type QueryBalancesStatsArgs = {
 
 
 export type QueryBlockStatsArgs = {
-  blockNumberEnd?: InputMaybe<Scalars['Int']>;
-  blockNumberStart?: InputMaybe<Scalars['Int']>;
-  chainId?: Scalars['Int'];
-  timestampEnd?: InputMaybe<Scalars['Int']>;
-  timestampStart?: InputMaybe<Scalars['Int']>;
+  blockNumberEnd?: InputMaybe<Scalars['Long']>;
+  blockNumberStart?: InputMaybe<Scalars['Long']>;
+  chainId?: Scalars['Long'];
+  timestampEnd?: InputMaybe<Scalars['Long']>;
+  timestampStart?: InputMaybe<Scalars['Long']>;
 };
 
 
 export type QueryBlocksArgs = {
-  blockNumberEnd?: InputMaybe<Scalars['Int']>;
-  blockNumberStart?: InputMaybe<Scalars['Int']>;
+  blockNumberEnd?: InputMaybe<Scalars['Long']>;
+  blockNumberStart?: InputMaybe<Scalars['Long']>;
   chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
-  number?: InputMaybe<Scalars['Int']>;
-  skip?: Scalars['Int'];
-  timestampEnd?: InputMaybe<Scalars['Int']>;
-  timestampStart?: InputMaybe<Scalars['Int']>;
+  first?: Scalars['Long'];
+  number?: InputMaybe<Scalars['Long']>;
+  skip?: Scalars['Long'];
+  timestampEnd?: InputMaybe<Scalars['Long']>;
+  timestampStart?: InputMaybe<Scalars['Long']>;
 };
 
 
@@ -301,7 +302,7 @@ export type QueryChainConfigArgs = {
 
 
 export type QueryChainStatsArgs = {
-  chainId?: Scalars['Int'];
+  chainId?: Scalars['Long'];
 };
 
 
@@ -313,16 +314,16 @@ export type QueryContractCreatorArgs = {
 
 export type QueryCosmosArgs = {
   chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
+  first?: Scalars['Long'];
 };
 
 
 export type QueryErc20EventsArgs = {
   address?: InputMaybe<Scalars['String']>;
   chainId?: Scalars['Int'];
-  first?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Long']>;
   hash?: InputMaybe<Scalars['String']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Long']>;
   walletAddress?: InputMaybe<Scalars['String']>;
 };
 
@@ -330,8 +331,8 @@ export type QueryErc20EventsArgs = {
 export type QueryLogsArgs = {
   address?: InputMaybe<Scalars['String']>;
   chainId?: Scalars['Int'];
-  first?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Long']>;
+  skip?: InputMaybe<Scalars['Long']>;
   transactionHash?: InputMaybe<Scalars['String']>;
 };
 
@@ -339,25 +340,25 @@ export type QueryLogsArgs = {
 export type QueryNftEventsArgs = {
   address?: InputMaybe<Scalars['String']>;
   chainId?: Scalars['Int'];
-  first?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Long']>;
   hash?: InputMaybe<Scalars['String']>;
-  skip?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Long']>;
 };
 
 
 export type QuerySearchArgs = {
   chainId?: Scalars['Int'];
-  first: Scalars['Int'];
+  first: Scalars['Long'];
   query: Scalars['String'];
-  skip?: Scalars['Int'];
+  skip?: Scalars['Long'];
 };
 
 
 export type QueryTokenHoldingsArgs = {
   address: Scalars['String'];
   chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
-  skip?: Scalars['Int'];
+  first?: Scalars['Long'];
+  skip?: Scalars['Long'];
 };
 
 
@@ -375,26 +376,26 @@ export type QueryTracesArgs = {
 
 export type QueryTransactionStatsArgs = {
   address?: InputMaybe<Scalars['String']>;
-  blockNumber?: InputMaybe<Scalars['Int']>;
-  blockNumberEnd?: InputMaybe<Scalars['Int']>;
-  blockNumberStart?: InputMaybe<Scalars['Int']>;
+  blockNumber?: InputMaybe<Scalars['Long']>;
+  blockNumberEnd?: InputMaybe<Scalars['Long']>;
+  blockNumberStart?: InputMaybe<Scalars['Long']>;
   chainId?: Scalars['Int'];
-  timestampEnd?: InputMaybe<Scalars['Int']>;
-  timestampStart?: InputMaybe<Scalars['Int']>;
+  timestampEnd?: InputMaybe<Scalars['Long']>;
+  timestampStart?: InputMaybe<Scalars['Long']>;
 };
 
 
 export type QueryTransactionsArgs = {
   address?: InputMaybe<Scalars['String']>;
-  blockNumber?: InputMaybe<Scalars['Int']>;
-  blockNumberEnd?: InputMaybe<Scalars['Int']>;
-  blockNumberStart?: InputMaybe<Scalars['Int']>;
+  blockNumber?: InputMaybe<Scalars['Long']>;
+  blockNumberEnd?: InputMaybe<Scalars['Long']>;
+  blockNumberStart?: InputMaybe<Scalars['Long']>;
   chainId?: Scalars['Int'];
-  first?: Scalars['Int'];
+  first?: Scalars['Long'];
   hash?: InputMaybe<Scalars['String']>;
-  skip?: Scalars['Int'];
-  timestampEnd?: InputMaybe<Scalars['Int']>;
-  timestampStart?: InputMaybe<Scalars['Int']>;
+  skip?: Scalars['Long'];
+  timestampEnd?: InputMaybe<Scalars['Long']>;
+  timestampStart?: InputMaybe<Scalars['Long']>;
 };
 
 export type Search = {
@@ -593,6 +594,7 @@ export type ResolversTypes = ResolversObject<{
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   LogModel: ResolverTypeWrapper<LogModel>;
+  Long: ResolverTypeWrapper<Scalars['Long']>;
   NFTTransfersModel: ResolverTypeWrapper<NftTransfersModel>;
   NativeCurrencyModel: ResolverTypeWrapper<NativeCurrencyModel>;
   Query: ResolverTypeWrapper<{}>;
@@ -632,6 +634,7 @@ export type ResolversParentTypes = ResolversObject<{
   Float: Scalars['Float'];
   Int: Scalars['Int'];
   LogModel: LogModel;
+  Long: Scalars['Long'];
   NFTTransfersModel: NftTransfersModel;
   NativeCurrencyModel: NativeCurrencyModel;
   Query: {};
@@ -834,6 +837,10 @@ export type LogModelResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
+  name: 'Long';
+}
+
 export type NftTransfersModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['NFTTransfersModel'] = ResolversParentTypes['NFTTransfersModel']> = ResolversObject<{
   data?: Resolver<Array<ResolversTypes['ERC721TransferModel']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -991,6 +998,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ERC721TransferModel?: Erc721TransferModelResolvers<ContextType>;
   ExplorerModel?: ExplorerModelResolvers<ContextType>;
   LogModel?: LogModelResolvers<ContextType>;
+  Long?: GraphQLScalarType;
   NFTTransfersModel?: NftTransfersModelResolvers<ContextType>;
   NativeCurrencyModel?: NativeCurrencyModelResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

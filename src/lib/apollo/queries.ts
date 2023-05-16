@@ -115,8 +115,8 @@ export const GET_TRANSACTIONS_STATS = gql`
 
 export const GET_TRANSACTIONS = gql`
   query Transactions(
-    $first: Int!
-    $skip: Int!
+    $first: Long!
+    $skip: Long!
     $address: String
     $blockNumber: Int
     
@@ -184,7 +184,7 @@ export const GET_TRANSACTIONS = gql`
 `
 
 export const GET_BLOCKS = gql`
-  query Blocks($first: Int!, $skip: Int!) {
+  query Blocks($first: Long!, $skip: Long!) {
     blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       baseFeePerGas
       difficulty
@@ -247,7 +247,7 @@ export const GET_BLOCKS = gql`
 `
 
 export const GET_BLOCKS_SHORT = gql`
-  query Blocks($first: Int!, $skip: Int!) {
+  query Blocks($first: Long!, $skip: Long!) {
     blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       hash
       number
@@ -435,7 +435,7 @@ export const GET_TRANSACTION_TRACES = gql`
 `
 
 export const GET_BLOCKS_BY_NUMBER = gql`
-  query BlokByNumber($number: Int) {
+  query BlokByNumber($number: Long) {
     blocks(first: 1, number: $number, chainId: ${CHAIN_ID}) {
       baseFeePerGas
       difficulty
@@ -620,8 +620,8 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
 export const GET_ADDRESS_TOKENS = gql`
   query GetAddressTokens(
     $address: String!
-    $first: Int!
-    $skip: Int!
+    $first: Long!
+    $skip: Long!
     
   ) {
     tokenHoldings(
@@ -651,8 +651,8 @@ export const GET_ADDRESS_TOKENS = gql`
 export const GET_ADDRESS_HOLDERS = gql`
   query GetAddressHolders(
     $address: String!
-    $first: Int!
-    $skip: Int!
+    $first: Long!
+    $skip: Long!
     
   ) {
     balances(
@@ -713,10 +713,10 @@ export const GET_SEARCH = gql`
 
 export const GET_ERC721_BY_ADDRESS = gql`
   query nftEvents(
-    $first: Int
+    $first: Long
     $address: String
     $hash: String
-    $skip: Int
+    $skip: Long
     
   ) {
     nftEvents(
@@ -742,9 +742,9 @@ export const GET_ERC721_BY_ADDRESS = gql`
 `
 export const GET_ERC20_BY_ADDRESS = gql`
   query Erc20ByAddress(
-    $first: Int
+    $first: Long
     $address: String
-    $skip: Int
+    $skip: Long
     $walletAddress: String
     $hash: String
     
@@ -773,7 +773,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
 `
 
 export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
-  query ExampleQuery($first: Int!, $skip: Int!) {
+  query ExampleQuery($first: Long!, $skip: Long!) {
     blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       hash
       number
