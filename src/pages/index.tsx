@@ -21,6 +21,7 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
+import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -123,7 +124,9 @@ const Index: NextPage<IndexProps> = (props) => {
         />
       ),
     },
-    {
+  ]
+  props.csrStats &&
+    statsDisplay.push({
       title: 'Total Revenue',
       value: (
         <Link href="/csr">
@@ -138,20 +141,18 @@ const Index: NextPage<IndexProps> = (props) => {
           />
         </Link>
       ),
-    },
-  ]
+    })
 
-  const pageTitle = `${chainConfig.nativeCurrency.name} Block Explorer`
-
+  const pageTitle = `${chainConfig.name} Block Explorer`
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
+        <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Page>
+      <Page chainConfig={props.chainConfig}>
         <Banner>
           <Search className={styles.searchMain} />
         </Banner>
@@ -192,17 +193,19 @@ const Index: NextPage<IndexProps> = (props) => {
           <Card
             title="Latest Transactions"
             header={
-              <Tabs
-                tabs={[
-                  { title: 'EVM', value: 'evm' },
-                  { title: 'Cosmos', value: 'cosmos' },
-                ]}
-                className={styles.tabsInner}
-                value={isCosmos ? 'cosmos' : 'evm'}
-                onChange={(value) => {
-                  setIsCosmos(value === 'cosmos')
-                }}
-              />
+              chainConfig.features.some((x) => x.name === 'cosmos') ? (
+                <Tabs
+                  tabs={[
+                    { title: 'EVM', value: 'evm' },
+                    { title: 'Cosmos', value: 'cosmos' },
+                  ]}
+                  className={styles.tabsInner}
+                  value={isCosmos ? 'cosmos' : 'evm'}
+                  onChange={(value) => {
+                    setIsCosmos(value === 'cosmos')
+                  }}
+                />
+              ) : undefined
             }
             actions={
               !isCosmos
@@ -235,24 +238,21 @@ export default Index
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const apolloClient = initializeApollo({ ctx })
 
-  const {
-    data: { transactions, blocks, chainStats, csrStats, chainConfig, cosmos },
-  } = await apolloClient.query({
+  const { data } = await apolloClient.query({
     query: GET_BLOCKS_TXNS_CHAIN_STATS,
     // per_page + 1 - last item needs for time diff
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(blocks, ITEMS_PER_PAGE)
-
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
   return addApolloState(apolloClient, {
     props: {
-      transactions,
-      chainStats,
-      csrStats,
-      chainConfig,
+      transactions: data.transactions,
+      chainStats: data.chainStats,
+      csrStats: data.csrStats || null,
+      chainConfig: data.chainConfig,
       blocks: blocksWithTimeDiff,
-      cosmosTransactions: cosmos.transactions,
+      cosmosTransactions: data?.cosmos?.transactions || null,
     },
   })
 }

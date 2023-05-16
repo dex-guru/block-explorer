@@ -5,6 +5,11 @@
   align-items: center;
 }
 
+.image {
+  width: 36px;
+  height: 36px;
+}
+
 .title {
   font-family: 'IBM Plex Mono';
   font-weight: 500;
@@ -28,7 +33,7 @@
 
   &:hover {
     path {
-      fill: var(--color-link-hover);
+      fill: var(--color-accent-a);
     }
   }
 }

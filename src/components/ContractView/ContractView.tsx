@@ -31,6 +31,7 @@ import {
   Label,
   LineChart,
 } from '@/components'
+import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat } from '@/lib/utils'
@@ -63,7 +64,7 @@ const ContractView: FC<IContractViewProps> = ({
 }) => {
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
-  const match = useSourcifyMetadata(address, 7700)
+  const match = useSourcifyMetadata(address, CHAIN_ID)
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
@@ -89,9 +90,10 @@ const ContractView: FC<IContractViewProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
+        <link rel="icon" href={chain.config.icon} />
         <meta name="description" content="Block Explorer" />
       </Head>
-      <Page withSearch>
+      <Page withSearch chainConfig={chain.config}>
         <DetailsView
           icon={<Avatar address={address} />}
           title="Contract"

@@ -5,6 +5,7 @@ import { useLazyQuery } from '@apollo/client'
 import {
   BlockModel,
   BlockStatsModel,
+  ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
 import { DetailsView, Page, Summary, Value } from '@/components'
@@ -22,6 +23,7 @@ interface IBlocksProps {
   blocks: BlockModel[]
   blockStats: BlockStatsModel
   chainStats: ChainStatsModel
+  chainConfig: ChainConfigModel
 }
 
 const BlockPage: NextPage<IBlocksProps> = (props) => {
@@ -47,11 +49,11 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
       <Head>
         <title>Blocks</title>
         <meta name="description" content="Block Explorer" />
+        <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={props.chainConfig}>
         <DetailsView title="Blocks">
           <Summary
             stats={[

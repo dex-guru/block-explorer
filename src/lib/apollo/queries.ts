@@ -1,49 +1,9 @@
 import { gql } from '@apollo/client'
-
-export const TRANSACTIONS_FIRST_TEN = gql`
-  query Transactions {
-    transactions(first: 10) {
-      hash
-      blockHash
-      blockNumber
-      blockTimestamp
-      fromAddress
-      toAddress
-      value
-    }
-  }
-`
-export const TRANSACTIONS = gql`
-  query TransactionsNextTen($first: Int!) {
-    transactions(first: $first) {
-      hash
-      blockHash
-      blockNumber
-      blockTimestamp
-      fromAddress
-      toAddress
-      value
-    }
-  }
-`
-
-export const BLOCKS_LAST = gql`
-  query Blocks {
-    blocks(first: 10) {
-      hash
-      number
-      miner
-      transactionCount
-      timestamp
-      gasUsed
-      gasLimit
-    }
-  }
-`
+import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 
 export const TRANSACTIONS_LAST = gql`
   query Transactions {
-    transactions(first: 10) {
+    transactions(first: 10, chainId: ${CHAIN_ID}) {
       hash
       blockHash
       blockNumber
@@ -51,39 +11,13 @@ export const TRANSACTIONS_LAST = gql`
       fromAddress
       toAddress
       value
-    }
-  }
-`
-
-export const CHAIN_CONFIG = gql`
-  query ChainConfig {
-    chainConfig {
-      chain
-      chainId
-      faucets
-      infoURL
-      name
-      nativeCurrency {
-        decimals
-        name
-        symbol
-      }
-      explorers {
-        name
-        standard
-        url
-      }
-      networkId
-      rpc
-      shortName
-      message
     }
   }
 `
 
 export const CHAIN_STATS = gql`
   query ChainStats {
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       liquidity24hDelta
       liquidityUsd
@@ -104,63 +38,77 @@ export const CHAIN_STATS = gql`
     csrStats {
       sumRevenue
     }
-    chainConfig {
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      message
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_TRANSACTIONS_STATS = gql`
   query TransactionsStats {
-    transactionStats {
+    transactionStats(chainId: ${CHAIN_ID}) {
       networkTransactionsFee24H
       networkTransactionsFeeDelta24H
       transactions24H
       transactionsDelta24H
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       transactionsCount
       transactionsPerSecond
       nativeTokenPriceUsd
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
-    }
-  }
-`
-
-export const BLOCKS_STATS = gql`
-  query BlocksStats {
-    blockStats {
-      blocksCount
-      burntFees
-      lastSafeBlock
-      networkUtilization24H
-    }
-    chainStats {
-      transactionsCount
-      transactionsPerSecond
-      nativeTokenPriceUsd
-    }
-    chainConfig {
+      networkId
+      rpc
       shortName
-      nativeCurrency {
-        decimals
-        name
-        symbol
-      }
-      name
     }
   }
 `
@@ -171,12 +119,14 @@ export const GET_TRANSACTIONS = gql`
     $skip: Int!
     $address: String
     $blockNumber: Int
+    
   ) {
     transactions(
       first: $first
       skip: $skip
       address: $address
       blockNumber: $blockNumber
+      chainId: ${CHAIN_ID}
     ) {
       blockNumber
       blockTimestamp
@@ -186,33 +136,56 @@ export const GET_TRANSACTIONS = gql`
       value
       blockHash
     }
-    transactionStats(address: $address, blockNumber: $blockNumber) {
+    transactionStats(
+      address: $address
+      blockNumber: $blockNumber
+      chainId: ${CHAIN_ID}
+    ) {
       transactionsCount
       networkTransactionsFee24H
       networkTransactionsFeeDelta24H
       transactions24H
       transactionsDelta24H
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       transactionsCount
       transactionsPerSecond
       nativeTokenPriceUsd
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_BLOCKS = gql`
   query Blocks($first: Int!, $skip: Int!) {
-    blocks(first: $first, skip: $skip) {
+    blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       baseFeePerGas
       difficulty
       extraData
@@ -233,30 +206,49 @@ export const GET_BLOCKS = gql`
       transactionCount
       transactionsRoot
     }
-    blockStats {
+    blockStats(chainId: ${CHAIN_ID}) {
       blocksCount
       burntFees
       lastSafeBlock
       networkUtilization24H
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_BLOCKS_SHORT = gql`
   query Blocks($first: Int!, $skip: Int!) {
-    blocks(first: $first, skip: $skip) {
+    blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       hash
       number
       miner
@@ -270,7 +262,7 @@ export const GET_BLOCKS_SHORT = gql`
 
 export const GET_TRANSACTIONS_BY_HASH = gql`
   query TransactionByHash($hash: String!) {
-    transactions(hash: $hash, first: 1) {
+    transactions(hash: $hash, first: 1, chainId: ${CHAIN_ID}) {
       blockHash
       blockNumber
       blockTimestamp
@@ -293,10 +285,10 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       transactionType
       value
     }
-    logs(transactionHash: $hash) {
+    logs(transactionHash: $hash, chainId: ${CHAIN_ID}) {
       logIndex
     }
-    erc20Events(hash: $hash) {
+    erc20Events(hash: $hash, chainId: ${CHAIN_ID}) {
       data {
         fromAddress
         toAddress
@@ -309,7 +301,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       }
       total
     }
-    nftEvents(hash: $hash) {
+    nftEvents(hash: $hash, chainId: ${CHAIN_ID}) {
       data {
         blockTimestamp
         fromAddress
@@ -321,25 +313,44 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
         value
       }
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       nativeTokenPriceUsd
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_TRANSACTION_LOGS = gql`
   query TransactionByHash($hash: String!) {
-    logs(transactionHash: $hash) {
+    logs(transactionHash: $hash, chainId: ${CHAIN_ID}) {
       address
       blockHash
       blockNumber
@@ -356,38 +367,76 @@ export const GET_TRANSACTION_LOGS = gql`
         value
       }
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_TRANSACTION_TRACES = gql`
   query TracecByHash($hash: String!) {
-    traces(txHash: $hash) {
+    traces(txHash: $hash, chainId: ${CHAIN_ID}) {
       tracesJSON
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_BLOCKS_BY_NUMBER = gql`
   query BlokByNumber($number: Int) {
-    blocks(first: 1, number: $number) {
+    blocks(first: 1, number: $number, chainId: ${CHAIN_ID}) {
       baseFeePerGas
       difficulty
       extraData
@@ -408,18 +457,37 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       transactionCount
       transactionsRoot
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       nativeTokenPriceUsd
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
@@ -439,39 +507,58 @@ export const GET_CSR_STATS = gql`
       sumTx
       sumContracts
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_ADDRESS_INFO = gql`
   query GetAddressInfo($address: String!) {
-    address(address: $address) {
+    address(address: $address, chainId: ${CHAIN_ID}) {
       address
       addressType
       name
       nativeBalance
       nativeBalanceUSD
     }
-    contractCreator(address: $address) {
+    contractCreator(address: $address, chainId: ${CHAIN_ID}) {
       creatorAddress
       timestamp
       txHash
     }
-    tokenHoldingsStats(address: $address) {
+    tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
       tokenCount
       totalNative
       totalStable
     }
-    balancesStats(tokenAddress: $address) {
+    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
       holders
       maxTotalSupply
       price
@@ -485,24 +572,43 @@ export const GET_ADDRESS_INFO = gql`
         value
       }
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       nativeTokenPriceUsd
     }
-    chainConfig {
-      shortName
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
-      name
+      networkId
+      rpc
+      shortName
     }
   }
 `
 
 export const GET_ADDRESS_TOKENS_STATS = gql`
   query GetAddressTokens($address: String!) {
-    tokenHoldingsStats(address: $address) {
+    tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
       tokenCount
       totalNative
@@ -512,8 +618,18 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
 `
 
 export const GET_ADDRESS_TOKENS = gql`
-  query GetAddressTokens($address: String!, $first: Int!, $skip: Int!) {
-    tokenHoldings(address: $address, first: $first, skip: $skip) {
+  query GetAddressTokens(
+    $address: String!
+    $first: Int!
+    $skip: Int!
+    
+  ) {
+    tokenHoldings(
+      address: $address
+      first: $first
+      skip: $skip
+      chainId: ${CHAIN_ID}
+    ) {
       asset
       change24H
       contractAddress
@@ -523,7 +639,7 @@ export const GET_ADDRESS_TOKENS = gql`
       symbol
       value
     }
-    tokenHoldingsStats(address: $address) {
+    tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
       tokenCount
       totalNative
@@ -533,8 +649,18 @@ export const GET_ADDRESS_TOKENS = gql`
 `
 
 export const GET_ADDRESS_HOLDERS = gql`
-  query GetAddressHolders($address: String!, $first: Int!, $skip: Int!) {
-    balances(tokenAddress: $address, first: $first, skip: $skip) {
+  query GetAddressHolders(
+    $address: String!
+    $first: Int!
+    $skip: Int!
+    
+  ) {
+    balances(
+      tokenAddress: $address
+      first: $first
+      skip: $skip
+      chainId: ${CHAIN_ID}
+    ) {
       address
       holderType
       label
@@ -542,7 +668,7 @@ export const GET_ADDRESS_HOLDERS = gql`
       quantity
       value
     }
-    balancesStats(tokenAddress: $address) {
+    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
       fullyDilutedValuation
       holders
       holdersChange
@@ -557,7 +683,7 @@ export const GET_ADDRESS_HOLDERS = gql`
 
 export const GET_SEARCH = gql`
   query GetSearch($query: String!) {
-    search(first: 10, query: $query) {
+    search(first: 10, query: $query, chainId: ${CHAIN_ID}) {
       blocks {
         transactionCount
         timestamp
@@ -586,8 +712,20 @@ export const GET_SEARCH = gql`
 `
 
 export const GET_ERC721_BY_ADDRESS = gql`
-  query nftEvents($first: Int, $address: String, $hash: String, $skip: Int) {
-    nftEvents(first: $first, address: $address, hash: $hash, skip: $skip) {
+  query nftEvents(
+    $first: Int
+    $address: String
+    $hash: String
+    $skip: Int
+    
+  ) {
+    nftEvents(
+      first: $first
+      address: $address
+      hash: $hash
+      skip: $skip
+      chainId: ${CHAIN_ID}
+    ) {
       data {
         blockTimestamp
         fromAddress
@@ -609,6 +747,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
     $skip: Int
     $walletAddress: String
     $hash: String
+    
   ) {
     erc20Events(
       address: $address
@@ -616,6 +755,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
       hash: $hash
       skip: $skip
       walletAddress: $walletAddress
+      chainId: ${CHAIN_ID}
     ) {
       total
       data {
@@ -634,7 +774,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
 
 export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
   query ExampleQuery($first: Int!, $skip: Int!) {
-    blocks(first: $first, skip: $skip) {
+    blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
       hash
       number
       miner
@@ -643,7 +783,7 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       gasUsed
       gasLimit
     }
-    transactions(first: 10, skip: 0) {
+    transactions(first: 10, skip: 0, chainId: ${CHAIN_ID}) {
       hash
       blockHash
       blockNumber
@@ -652,7 +792,7 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       toAddress
       value
     }
-    chainStats {
+    chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       liquidity24hDelta
       liquidityUsd
@@ -670,29 +810,58 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       volume24hDeltaUsd
       volume24hUsd
     }
-    csrStats {
-      sumRevenue
+    ${
+      CHAIN_ID === CHAIN_IDS.CANTO
+        ? `csrStats {
+        sumRevenue
+      }`
+        : ''
     }
-    chainConfig {
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
       nativeCurrency {
         decimals
         name
         symbol
+        wrappedAddress
       }
+      networkId
+      rpc
+      shortName
     }
-    cosmos {
-      transactions {
-        blockNumber
-        blockTimestamp
-        hash
-      }
+    ${
+      CHAIN_ID === CHAIN_IDS.CANTO
+        ? `cosmos(chainId: ${CHAIN_ID}) {
+        transactions {
+          blockNumber
+          blockTimestamp
+          hash
+        }
+      }`
+        : ''
     }
   }
 `
 
 export const GET_LOGS_BY_ADDRESS = gql`
   query Logs($address: String) {
-    logs(address: $address) {
+    logs(address: $address, chainId: ${CHAIN_ID}) {
       address
       blockHash
       blockNumber
@@ -714,7 +883,7 @@ export const GET_LOGS_BY_ADDRESS = gql`
 
 export const GET_COSMOS_TRANSACTIONS = gql`
   query CosmosTxns {
-    cosmos {
+    cosmos(chainId: ${CHAIN_ID}) {
       transactions {
         blockNumber
         blockTimestamp
@@ -723,3 +892,35 @@ export const GET_COSMOS_TRANSACTIONS = gql`
     }
   }
 `
+
+export const GET_CHAIN_CONFIG = gql`
+query ChainConfig {
+  chainConfig(chainId: ${CHAIN_ID}){
+    chain
+    chainColor
+    chainId
+    explorers {
+      name
+      standard
+      url
+    }
+    faucets
+    features {
+      name
+    }
+    gasUnit
+    infoURL
+    message
+    name
+    icon
+    nativeCurrency {
+      decimals
+      name
+      symbol
+      wrappedAddress
+    }
+    networkId
+    rpc
+    shortName
+  }
+}`

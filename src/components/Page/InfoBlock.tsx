@@ -1,10 +1,12 @@
+import { FC } from 'react'
 import { useQuery } from '@apollo/client'
 import Value from '../Value'
+import { InfoBlockProps } from './types'
 import { CHAIN_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './InfoBlock.module.scss'
 
-const InfoBlock = () => {
+const InfoBlock: FC<InfoBlockProps> = ({ chainConfig }) => {
   const { data } = useQuery(CHAIN_STATS)
 
   return (
@@ -12,7 +14,7 @@ const InfoBlock = () => {
       {data && (
         <>
           <div className={styles.price}>
-            Canto price{' '}
+            {chainConfig.nativeCurrency.symbol} price{' '}
             <Value
               value={financialFormat(data.chainStats.nativeTokenPriceUsd)}
               prefix="$"

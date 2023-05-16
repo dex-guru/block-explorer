@@ -11,9 +11,9 @@ export interface IContractViewProps {
   address: string
   tab: string | string[] | undefined
   addressInfo: AddressModel
-  chain?: {
-    stats?: ChainStatsModel
-    config?: ChainConfigModel
+  chain: {
+    stats: ChainStatsModel
+    config: ChainConfigModel
   }
   contractCreator?: ContractCreatorModel
   tokenHoldingsStats?: TokenHoldingsStatsModel

@@ -3,6 +3,7 @@ import { Abi, AbiFunction } from 'abitype'
 import { ethers } from 'ethers'
 import { useContractRead } from 'wagmi'
 import Details from '../Details'
+import { CHAIN_ID } from '@/constants'
 
 export interface IContractPropertyProps {
   method: AbiFunction & { type: 'function' }
@@ -18,7 +19,7 @@ const ContractProperty: FC<IContractPropertyProps> = ({
     address: address as `0x${string}`,
     abi,
     functionName: method.name || '',
-    chainId: 7700,
+    chainId: CHAIN_ID,
   })
   const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
   return (

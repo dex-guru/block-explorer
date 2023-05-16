@@ -53,9 +53,10 @@ const AddressView: FC<IAddressViewProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
+        <link rel="icon" href={chain.config.icon} />
         <meta name="description" content="Block Explorer" />
       </Head>
-      <Page withSearch>
+      <Page withSearch chainConfig={chain.config}>
         {!addressInfo?.address && isAddress(address) && (
           <Empty
             icon={<IconSearch />}

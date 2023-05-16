@@ -83,11 +83,11 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content="Block Explorer" />
+        <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Page withSearch>
+      <Page withSearch chainConfig={props.chainConfig}>
         <DetailsView
           title={block ? 'Transactions for block' : 'Transactions'}
           address={block?.toString()}
