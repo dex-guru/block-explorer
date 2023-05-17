@@ -118,8 +118,7 @@ export const GET_TRANSACTIONS = gql`
     $first: Long!
     $skip: Long!
     $address: String
-    $blockNumber: Int
-    
+    $blockNumber: Long
   ) {
     transactions(
       first: $first
