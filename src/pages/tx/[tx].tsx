@@ -69,7 +69,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   ),
                 },
                 {
-                  title: `Logs (${props.logs?.length || 0})`,
+                  title: `Logs (${props.data.receiptLogsCount || 0})`,
                   value: 'logs',
                   to: `${pathname}?tab=logs`,
                   content: (

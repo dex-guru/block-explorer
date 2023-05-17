@@ -279,13 +279,11 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       receiptGasUsed
       receiptRoot
       receiptStatus
+      receiptLogsCount
       toAddress
       transactionIndex
       transactionType
       value
-    }
-    logs(transactionHash: $hash, chainId: ${CHAIN_ID}) {
-      logIndex
     }
     erc20Events(hash: $hash, chainId: ${CHAIN_ID}) {
       data {

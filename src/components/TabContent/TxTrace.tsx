@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { useLazyQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
-import tabsStyles from '../Tabs/Tabs.module.scss'
 import Trace from '../Trace'
 import {
   ChainConfigModel,
@@ -73,7 +72,8 @@ const TxTrace: FC<{
   return (
     <Card>
       <TabPanel
-        tabsClassName={tabsStyles.inner}
+        className={styles.container}
+        tabsClassName={styles.tabs}
         tabs={[
           {
             title: 'Formatted',
