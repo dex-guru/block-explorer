@@ -1,13 +1,15 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
+import SyntaxHighlighter from 'react-syntax-highlighter'
 import { useLazyQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
+import tabsStyles from '../Tabs/Tabs.module.scss'
 import Trace from '../Trace'
 import {
   ChainConfigModel,
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Empty, Error } from '@/components'
+import { Card, Empty, Error, TabPanel } from '@/components'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 
@@ -20,6 +22,8 @@ const TxTrace: FC<{
   const [getTraces, { data: traceData, loading, called }] = useLazyQuery<{
     traces: TransactionTraceModel
   }>(GET_TRANSACTION_TRACES)
+
+  const [currentTab, setCurrentTab] = useState('formatted')
 
   useEffect(() => {
     getTraces({ variables: { hash } })
@@ -68,7 +72,37 @@ const TxTrace: FC<{
 
   return (
     <Card>
-      <Trace data={tracesObj} chainConfig={chainConfig} />
+      <TabPanel
+        tabsClassName={tabsStyles.inner}
+        tabs={[
+          {
+            title: 'Formatted',
+            value: 'formatted',
+            onClick: () => {
+              setCurrentTab('formatted')
+            },
+            content: <Trace data={tracesObj} chainConfig={chainConfig} />,
+          },
+          {
+            title: 'JSON',
+            value: 'json',
+            onClick: () => {
+              setCurrentTab('json')
+            },
+            content: (
+              <SyntaxHighlighter
+                className={styles.code}
+                language="json"
+                wrapLongLines
+                showLineNumbers
+              >
+                {JSON.stringify(tracesObj, null, 4)}
+              </SyntaxHighlighter>
+            ),
+          },
+        ]}
+        value={currentTab}
+      />
     </Card>
   )
 }

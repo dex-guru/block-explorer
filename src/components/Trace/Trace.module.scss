@@ -21,16 +21,13 @@
 }
 
 .header {
+  padding: 8px 0;
   cursor: pointer;
   display: flex;
   gap: 8px;
 
   &::marker {
     content: none;
-  }
-
-  &:after {
-    content: '';
   }
 }
 
@@ -42,13 +39,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 0 1 auto;
-}
-
-.body {
-  margin-top: 16px;
-  display: flex;
-  flex-flow: column;
-  gap: 8px;
 }
 
 .arrow {
@@ -68,17 +58,16 @@
   list-style: none;
   display: flex;
   flex-flow: column;
-  gap: 8px;
   position: relative;
 
   &::before {
     content: '';
     width: 0;
-    height: 28px;
+    height: 48px;
     position: absolute;
     left: 0;
     top: 0;
-    margin-top: -18px;
+    margin-top: -28px;
     border-left: 1px var(--color-accent) solid;
   }
 }
@@ -89,10 +78,53 @@
   &:before {
     content: '';
     width: 18px;
+    height: 100%;
+    position: absolute;
+    left: -18px;
+    top: 17px;
+    border: 1px var(--color-accent) solid;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  &:last-child {
+    &::before {
+      border-left: 0;
+    }
+  }
+}
+
+.eventsList {
+  margin: 0 0 0 10px;
+  padding: 0 0 0 18px;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 32px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: -6px;
+    border-left: 1px var(--color-accent) solid;
+  }
+}
+
+.eventsItem {
+  position: relative;
+
+  &:before {
+    content: '';
+    width: 18px;
     height: calc(100% + 8px);
     position: absolute;
     left: -18px;
-    top: 10px;
+    top: 26px;
     border: 1px var(--color-accent) solid;
     border-right: 0;
     border-bottom: 0;
@@ -106,10 +138,33 @@
 }
 
 .properties {
-  margin-left: 10px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.eventProperties {
+  border: 1px var(--color-accent) solid;
+}
+
+.inner {
+  margin-left: 10px;
   border-left: 1px var(--color-accent) solid;
+}
+
+.events {
+  padding-left: 16px;
+  margin-left: 10px;
+  border-left: 1px var(--color-accent) solid;
+
+  &:before {
+    content: '';
+    width: 18px;
+    height: calc(100% + 8px);
+    position: absolute;
+    left: 0;
+    top: 18px;
+    border-top: 1px var(--color-accent) solid;
+  }
 }
 
 .content {
@@ -123,10 +178,19 @@
   font-weight: 500;
 }
 
+.info {
+  composes: info from '../Label/Label.module.scss';
+  font-weight: 500;
+}
+
 .direction {
   composes: info from '../Label/Label.module.scss';
   padding: {
     left: 8px;
     right: 8px;
   }
+}
+
+.muted {
+  composes: muted from '../../styles/_common.scss';
 }
