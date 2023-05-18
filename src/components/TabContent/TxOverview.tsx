@@ -203,7 +203,26 @@ const TxOverview: FC<{
         </Separated>
       ),
     },
+
     {
+      title: 'Other Attributes:',
+      tooltip: 'Other data related to this transaction.',
+      value: <Value value={financialFormat(data.transactionIndex)} />,
+    },
+    {
+      title: 'Input Data:',
+      tooltip:
+        'Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.',
+      value: (
+        <Code defaultFormat="hex" isCopy>
+          {data.input}
+        </Code>
+      ),
+    },
+  ]
+
+  chainConfig.features.some((x) => x.name === 'eip1559') &&
+    detailsProperties.splice(1, 0, {
       title: 'Gas Fees:',
       tooltip:
         'Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the block producer respectively.',
@@ -226,23 +245,7 @@ const TxOverview: FC<{
           />
         </Separated>
       ),
-    },
-    {
-      title: 'Other Attributes:',
-      tooltip: 'Other data related to this transaction.',
-      value: <Value value={financialFormat(data.transactionIndex)} />,
-    },
-    {
-      title: 'Input Data:',
-      tooltip:
-        'Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.',
-      value: (
-        <Code defaultFormat="hex" isCopy>
-          {data.input}
-        </Code>
-      ),
-    },
-  ]
+    })
 
   return (
     <>
