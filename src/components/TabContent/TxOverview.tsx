@@ -122,6 +122,10 @@ const TxOverview: FC<{
     },
   ]
 
+  const bigTxFee = new BigNumber(data.receiptGasUsed || 0).multipliedBy(
+    data.receiptEffectiveGasPrice || 0
+  )
+
   const priceProperties = [
     {
       title: 'Value:',
@@ -142,18 +146,14 @@ const TxOverview: FC<{
         <Separated>
           <Value
             value={getNormalizedValue(
-              new BigNumber(data.receiptCumulativeGasUsed || 0).multipliedBy(
-                data.gasPrice || 0
-              ),
+              bigTxFee,
               chainConfig.nativeCurrency.decimals
             )}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
           <Value
             value={getNormalizedValue(
-              new BigNumber(data.receiptCumulativeGasUsed || 0)
-                .multipliedBy(data.gasPrice || 0)
-                .multipliedBy(chainStats.nativeTokenPriceUsd),
+              bigTxFee.multipliedBy(chainStats.nativeTokenPriceUsd),
               chainConfig.nativeCurrency.decimals,
               { decimals: 2 }
             )}
@@ -170,14 +170,14 @@ const TxOverview: FC<{
         <Separated>
           <Value
             value={getNormalizedValue(
-              data.gasPrice,
+              data.receiptEffectiveGasPrice,
               chainConfig.nativeCurrency.decimals - 9
             )}
             suffix={gigaNative}
           />
           <Value
             value={getNormalizedValue(
-              data.gasPrice,
+              data.receiptEffectiveGasPrice,
               chainConfig.nativeCurrency.decimals
             )}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
@@ -195,11 +195,9 @@ const TxOverview: FC<{
       value: (
         <Separated>
           <Value value={financialFormat(data.gas)} />
-          <Value value={financialFormat(data.receiptCumulativeGasUsed)} />
+          <Value value={financialFormat(data.receiptGasUsed)} />
           <Value
-            value={financialFormat(
-              (data.receiptCumulativeGasUsed * 100) / data.gas
-            )}
+            value={financialFormat((data.receiptGasUsed * 100) / data.gas)}
             suffix="%"
           />
         </Separated>
