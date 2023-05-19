@@ -220,8 +220,7 @@ const TxOverview: FC<{
       ),
     },
   ]
-
-  chainConfig.features.some((x) => x.name === 'eip1559') &&
+  chainConfig.features.some((x) => x.name === 'EIP1559') &&
     detailsProperties.splice(1, 0, {
       title: 'Gas Fees:',
       tooltip:
