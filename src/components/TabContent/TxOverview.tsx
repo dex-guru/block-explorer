@@ -258,7 +258,7 @@ const TxOverview: FC<{
                 <>
                   ERC-20 Tokens Transferred:{' '}
                   <Label className={styles.propertyIndicator}>
-                    {erc20Events.length}
+                    {transfers.length}
                   </Label>
                 </>
               }
