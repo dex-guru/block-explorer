@@ -19,9 +19,10 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Docker
 
+Values in `.env.production` file should be prefixed with `APP_NEXT_` so you can override them while running the container!
+
 ```bash
-docker build --build-arg NEXT_PUBLIC_CHAIN_ID=42161 --build-arg NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexgu
-ru.biz  -t expolore-stage-arbitrum .
+docker build -t expolore-stage-arbitrum .
 docker run -p 3000:3000 -e HOSTNAME='0.0.0.0' -e NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexguru.biz -e NEXT_PUBLIC_CHAIN_ID=42161 expolore-stage-arbitrum
 ```
 
@@ -30,6 +31,7 @@ docker run -p 3000:3000 -e HOSTNAME='0.0.0.0' -e NEXT_PUBLIC_API_URL=https://exp
 ```bash
 NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexguru.biz NEXT_PUBLIC_CHAIN_ID=42161 yarn dev
 ```
+
 for backend API and chain
 
 ## Learn More
