@@ -57,8 +57,6 @@ const Code: FC<CodeProps> = ({
     <div className={clsx(styles.container, className)}>
       {!!initialText && (
         <div className={styles.tools}>
-          {isCopy && <Copy text={currentText} className={styles.action} />}
-
           {!!format && (
             <div className={styles.group}>
               {!!format.hex && (
@@ -90,6 +88,8 @@ const Code: FC<CodeProps> = ({
               )}
             </div>
           )}
+
+          {isCopy && <Copy text={currentText} className={styles.action} />}
         </div>
       )}
 

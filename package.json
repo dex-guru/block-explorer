@@ -28,7 +28,7 @@
     "eslint-config-next": "13.3.1",
     "graphql": "16.6.0",
     "lodash": "4.17.21",
-    "next": "13.3.1",
+    "next": "13.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "7.43.9",
@@ -38,7 +38,6 @@
     "recharts": "^2.5.0",
     "swr": "2.1.5",
     "use-debounce": "^9.0.4",
-    "uuid": "9.0.0",
     "wagmi": "0.12.12"
   },
   "devDependencies": {

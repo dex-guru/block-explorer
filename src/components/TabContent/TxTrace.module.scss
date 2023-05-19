@@ -1,0 +1,7 @@
+.container {
+  composes: separated from '../TabPanel/TabPanel.module.scss';
+}
+
+.tabs {
+  composes: inner from '../Tabs/Tabs.module.scss';
+}

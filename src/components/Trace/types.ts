@@ -1,5 +1,14 @@
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 
+export type TraceL2Event = {
+  from: string | null
+  to: string | null
+  purpose: string | null
+  value: string | null
+}
+
+export type TraceL2EventsProps = { title: string; events?: TraceL2Event[] }
+
 export type Trace = {
   from: string
   gas: string
@@ -10,6 +19,11 @@ export type Trace = {
   type: string
   value: string
   calls?: Trace[]
+  beforeEVMTransfers?: TraceL2Event[]
+  afterEVMTransfers?: TraceL2Event[]
 }
 
-export type TraceProps = { data: Trace; chainConfig: ChainConfigModel }
+export type TraceProps = {
+  data: unknown & Trace
+  chainConfig: ChainConfigModel
+}

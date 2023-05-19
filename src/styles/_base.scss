@@ -40,6 +40,12 @@ iframe {
   display: block;
 }
 
+code {
+  * {
+    flex: 0 0 auto;
+  }
+}
+
 img {
   background: none;
   position: relative;

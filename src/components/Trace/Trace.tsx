@@ -1,12 +1,12 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import Address from '../Address'
-import Code, { CodeFormat } from '../Code'
+import Code from '../Code'
 import Label from '../Label'
 import Properties from '../Properties'
-import { Property } from '../Properties/types'
 import Value from '../Value'
+import TraceL2Events from './TraceL2Events'
 import { TraceProps } from './types'
 import IconArrow from '@/images/icons/arrow-down.svg'
 import { getNormalizedValue } from '@/lib/utils'
@@ -45,51 +45,93 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
     </div>
   )
 
-  if (data.calls?.length) {
-    const properties: Property[] = Object.entries(data)
-      .filter(([key]) => key !== 'calls')
-      .map(([key, value]) => {
-        let defaultFormat: CodeFormat = 'ascii'
-        let format = {}
+  const displayAddress = (address: string | null): ReactNode => {
+    if (!address) {
+      return <span className={styles.muted}>–</span>
+    }
 
-        if (['gas', 'gasUsed', 'value'].includes(key)) {
-          defaultFormat = 'hex'
-          format = { hex: true, dec: true }
-        }
-
-        return {
-          title: key,
-          value: (
-            <Code defaultFormat={defaultFormat} format={format}>
-              {value.toString()}
-            </Code>
-          ),
-        }
-      })
-
-    return (
-      <details className={styles.container}>
-        <summary className={styles.header}>
-          <IconArrow className={styles.arrow} />
-          {content}
-        </summary>
-        {data.calls?.length && (
-          <div className={styles.body}>
-            <Properties data={properties} className={styles.properties} />
-            <ul className={styles.list}>
-              {data.calls.map((item, idx) => (
-                <li key={idx} className={styles.item}>
-                  <Trace data={item} chainConfig={chainConfig} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </details>
-    )
+    return <Address type="account" address={address} isShorten={false} isCopy />
   }
 
-  return content
+  const properties = [
+    {
+      title: 'Type',
+      value: data.type,
+    },
+    {
+      title: 'From',
+      value: displayAddress(data.from),
+    },
+    {
+      title: 'To',
+      value: displayAddress(data.from),
+    },
+    {
+      title: 'Value',
+      value: (
+        <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
+          {data.value?.toString()}
+        </Code>
+      ),
+    },
+    {
+      title: 'Gas',
+      value: (
+        <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
+          {data.gas?.toString()}
+        </Code>
+      ),
+    },
+    {
+      title: 'Gas Used',
+      value: (
+        <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
+          {data.gasUsed?.toString()}
+        </Code>
+      ),
+    },
+    {
+      title: 'Input',
+      value: <Code>{data.input?.toString()}</Code>,
+    },
+  ]
+
+  return (
+    <details className={styles.container}>
+      <summary className={styles.header}>
+        <IconArrow className={styles.arrow} />
+        {content}
+      </summary>
+      <div className={styles.body}>
+        <Properties
+          data={properties}
+          className={clsx(styles.properties, {
+            [styles.inner]: !!data.calls?.length,
+          })}
+        />
+
+        <TraceL2Events
+          title="Before EVM Transfers"
+          events={data.beforeEVMTransfers}
+        />
+
+        <TraceL2Events
+          title="After EVM Transfers"
+          events={data.afterEVMTransfers}
+        />
+
+        {!!data.calls?.length && (
+          <ul className={styles.list}>
+            {data.calls.map((item, idx) => (
+              <li key={idx} className={styles.item}>
+                <Trace data={item} chainConfig={chainConfig} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </details>
+  )
 }
 
 export default Trace
