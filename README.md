@@ -19,11 +19,11 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Docker
 
-Don't change `.env.production` file and fill in `.env` file with real `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_CHAIN_ID` variables.
+Values in `.env.production` file should be prefixed with `APP_NEXT_` so you can override them while running the container!
 
 ```bash
 docker build -t expolore-stage-arbitrum .
-docker run -p 3000:3000 -e HOSTNAME='0.0.0.0' --env-file .env expolore-stage-arbitrum
+docker run -p 3000:3000 -e HOSTNAME='0.0.0.0' -e NEXT_PUBLIC_API_URL=https://explorer-graph-stage.dexguru.biz -e NEXT_PUBLIC_CHAIN_ID=42161 expolore-stage-arbitrum
 ```
 
 ## ENV VARS
