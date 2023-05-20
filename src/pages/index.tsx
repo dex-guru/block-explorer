@@ -216,14 +216,12 @@ const Index: NextPage<IndexProps> = (props) => {
                       to: '/txs',
                     },
                   ]
-                : []
+                : undefined
             }
           >
-            {isCosmos ? (
-              <ShortCosmosTxsTable />
-            ) : (
-              <ShortTxsTable chainConfig={chainConfig} />
-            )}
+            {isCosmos && <ShortCosmosTxsTable />}
+
+            {!isCosmos && <ShortTxsTable chainConfig={chainConfig} />}
           </Card>
         </Grid>
       </Page>
