@@ -32,9 +32,14 @@
   height: 20px;
   position: relative;
   opacity: 0.75;
+  object-fit: contain;
 }
 
 .body {
   flex: 1 0 0;
   position: relative;
+}
+
+.danger {
+  --color-message-bg: var(--color-negative);
 }

@@ -770,25 +770,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
 `
 
 export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
-  query ExampleQuery($first: Long!, $skip: Long!) {
-    blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
-      hash
-      number
-      miner
-      transactionCount
-      timestamp
-      gasUsed
-      gasLimit
-    }
-    transactions(first: 10, skip: 0, chainId: ${CHAIN_ID}) {
-      hash
-      blockHash
-      blockNumber
-      blockTimestamp
-      fromAddress
-      toAddress
-      value
-    }
+  query MainPageData {
     chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       liquidity24hDelta
@@ -841,17 +823,6 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       networkId
       rpc
       shortName
-    }
-    ${
-      CHAIN_ID === CHAIN_IDS.CANTO
-        ? `cosmos(chainId: ${CHAIN_ID}) {
-        transactions {
-          blockNumber
-          blockTimestamp
-          hash
-        }
-      }`
-        : ''
     }
   }
 `

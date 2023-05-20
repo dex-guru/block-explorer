@@ -4,6 +4,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
+import clsx from 'clsx'
 import {
   BlockModel,
   ChainConfigModel,
@@ -35,19 +36,17 @@ import {
 import styles from './Pages.module.scss'
 
 interface IndexProps {
-  transactions: TransactionModel[]
-  blocks: BlockModelWithTimeDiff[]
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
   cosmosTransactions: CosmosTransactionModel[]
 }
 
-const ITEMS_PER_PAGE = 10
+export const ITEMS_PER_PAGE = 10
 
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
-  const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
+  const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[] | null>(null)
 
   const [isCosmos, setIsCosmos] = useState(false)
 
@@ -183,10 +182,12 @@ const Index: NextPage<IndexProps> = (props) => {
           >
             <Table
               columns={lastBlocksColumns}
-              data={blocks}
+              data={blocks || [...Array(ITEMS_PER_PAGE)]}
               showHeader={false}
-              className={styles.cardChild}
-              getRowKey={(data) => data.number.toString()}
+              className={clsx(styles.cardChild, {
+                [styles.tablePreloader]: !blocks,
+              })}
+              getRowKey={blocks ? (data) => data?.number.toString() : undefined}
             />
           </Card>
 
@@ -219,12 +220,9 @@ const Index: NextPage<IndexProps> = (props) => {
             }
           >
             {isCosmos ? (
-              <ShortCosmosTxsTable data={props.cosmosTransactions} />
+              <ShortCosmosTxsTable />
             ) : (
-              <ShortTxsTable
-                data={props.transactions}
-                chainConfig={chainConfig}
-              />
+              <ShortTxsTable chainConfig={chainConfig} />
             )}
           </Card>
         </Grid>
@@ -244,14 +242,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
   return addApolloState(apolloClient, {
     props: {
-      transactions: data.transactions,
       chainStats: data.chainStats,
       csrStats: data.csrStats || null,
       chainConfig: data.chainConfig,
-      blocks: blocksWithTimeDiff,
       cosmosTransactions: data?.cosmos?.transactions || null,
     },
   })

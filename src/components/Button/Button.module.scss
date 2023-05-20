@@ -29,6 +29,14 @@
     opacity: 0.5;
     pointer-events: none;
   }
+
+  .icon {
+    & > svg {
+      height: 20px;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
 }
 
 .disabled {
@@ -46,6 +54,12 @@
   height: 24px;
   padding: 0 8px;
   min-width: 24px;
+
+  .icon {
+    & > svg {
+      height: 20px;
+    }
+  }
 }
 
 .md {
@@ -78,6 +92,8 @@
   --color-button-bg: var(--color-accent);
   --color-button-hover-bg: var(--color-accent-a);
   --color-button-icon: var(--color-bg-2);
+  --color-button-text: var(--color-bg-2);
+  --color-button-hover-text: var(--color-bg-2);
 }
 
 .submit {
