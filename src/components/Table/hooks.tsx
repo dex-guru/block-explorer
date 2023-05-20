@@ -19,17 +19,15 @@ export const useBodyRows = <T,>(options: {
 
   return data.map((dataItem, idx) => {
     const cells = columns.map((column) => {
-      const cellData = (dataItem as Record<string, unknown>)[column.accessor]
-
       const className = clsx(
         styles[column.type || 'text'],
         styles[column.modifier || 'default']
       )
 
       const cellDisplay = column.render
-        ? column.render(dataItem, column.placeholder)
-        : cellData
-        ? `${cellData}`
+        ? column.render(dataItem || ({} as T), column.placeholder)
+        : dataItem
+        ? `${(dataItem as Record<string, unknown>)[column.accessor]}`
         : column.placeholder || ''
 
       return (

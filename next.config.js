@@ -25,6 +25,12 @@ const nextConfig = {
         port: '',
         pathname: '/icons/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'assets.dex.guru',
+        port: '',
+        pathname: '/icons/**',
+      },
     ],
   },
 }

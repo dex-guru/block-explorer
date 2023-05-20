@@ -175,3 +175,36 @@
   font-size: 16px;
   font-weight: 500;
 }
+
+.tablePreloader {
+  tr > * {
+    visibility: hidden;
+    pointer-events: none;
+    animation: none;
+  }
+
+  [class*='_icon_'] {
+    visibility: visible;
+  }
+
+  button {
+    display: none;
+  }
+
+  a,
+  [class='value'] {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--radii-sm);
+      background: var(--color-bg);
+      visibility: visible;
+    }
+  }
+}

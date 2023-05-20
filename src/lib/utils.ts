@@ -271,7 +271,7 @@ export const getBlocksWithTimeDiff = (
   }
 
   const blocksWithTimeDiff = blocks.map((block, index, array) => {
-    if (index < perPage) {
+    if (index < Math.min(perPage, array.length - 1)) {
       const timeDiff = block.timestamp - array[index + 1].timestamp
       return { ...block, timeDiff }
     }

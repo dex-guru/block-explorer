@@ -3,7 +3,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 import { useProvider } from 'wagmi'
 import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'
-import { Heading, Properties, Details, Code, Message } from '@/components'
+import { Heading, Properties, Details, Code } from '@/components'
 import { Match } from '@/types'
 import styles from './ContractView.module.scss'
 
@@ -53,12 +53,6 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
   return (
     <>
       <Properties data={properties} />
-      {!match?.metadata?.sources && (
-        <Message>
-          Disclaimer: The contract is marked as verified based on our
-          best-educated guess and is not a guarantee.
-        </Message>
-      )}
       {match?.metadata?.output.abi && (
         <>
           <Heading size="md">ABI</Heading>
