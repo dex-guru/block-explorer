@@ -4,6 +4,7 @@ import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
 import {
   ChainConfigModel,
+  ChainStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
 import {
@@ -18,7 +19,7 @@ import {
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 
 interface HoldingsPageServerProps {
@@ -59,7 +60,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
     },
   ]
 
-  const pageTitle = address
+  const pageTitle = isAddress(address)
     ? `Token Holdings for ${checkSumAddress}`
     : 'No correct address provided'
 
@@ -102,13 +103,20 @@ export default HoldingsPage
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
+  const apolloClient = initializeApollo({ ctx })
+
   if (address && !isAddress(address)) {
     ctx.res.statusCode = 404
 
-    return { props: { address: address } }
-  }
+    const { data } = await apolloClient.query<{
+      chainStats: ChainStatsModel
+      chainConfig: ChainConfigModel
+    }>({
+      query: CHAIN_STATS,
+    })
 
-  const apolloClient = initializeApollo({ ctx })
+    return { props: { ...data, address: address } }
+  }
 
   const { data } = await apolloClient.query<{
     tokenHoldingsStats: TokenHoldingsStatsModel

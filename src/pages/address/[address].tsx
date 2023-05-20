@@ -12,7 +12,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 
 interface AddressPageServerProps {
   address: AddressModel
@@ -74,13 +74,20 @@ export default AddressPage
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
+  const apolloClient = initializeApollo({ ctx })
+
   if (!isAddress(address)) {
     ctx.res.statusCode = 404
 
-    return { props: {} }
-  }
+    const { data } = await apolloClient.query<{
+      chainStats: ChainStatsModel
+      chainConfig: ChainConfigModel
+    }>({
+      query: CHAIN_STATS,
+    })
 
-  const apolloClient = initializeApollo({ ctx })
+    return { props: data }
+  }
 
   const { data } = await apolloClient.query<{
     address: AddressModel
