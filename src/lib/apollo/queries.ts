@@ -611,6 +611,34 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
       totalNative
       totalStable
     }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+    }
   }
 `
 

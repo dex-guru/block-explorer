@@ -4,7 +4,6 @@ import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
 import {
   ChainConfigModel,
-  ChainStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
 import {
@@ -35,7 +34,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
 }) => {
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
-  const stats: SummaryStat[] = [
+  const renderStats = (): SummaryStat[] => [
     {
       title: 'Assets in Wallet',
       value: financialFormat(tokenHoldingsStats?.tokenCount || 0),
@@ -74,7 +73,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
       </Head>
 
       <Page withSearch chainConfig={chainConfig}>
-        {isAddress(address) && (
+        {isAddress(address) && !tokenHoldingsStats && (
           <Empty
             icon={<IconSearch />}
             title="No holdings"
@@ -89,7 +88,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
             title="Token Holdings"
             address={checkSumAddress || undefined}
           >
-            <Summary stats={stats} />
+            <Summary stats={renderStats()} />
             <TokensDataTable address={address} />
           </DetailsView>
         )}
@@ -109,7 +108,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ctx.res.statusCode = 404
 
     const { data } = await apolloClient.query<{
-      chainStats: ChainStatsModel
       chainConfig: ChainConfigModel
     }>({
       query: CHAIN_STATS,
