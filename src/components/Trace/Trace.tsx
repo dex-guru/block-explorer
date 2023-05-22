@@ -64,7 +64,7 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
     },
     {
       title: 'To',
-      value: displayAddress(data.from),
+      value: displayAddress(data.to),
     },
     {
       title: 'Value',
