@@ -22,7 +22,7 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
     if (value) {
       doThemeChange(value === Theme.dark ? Theme.dark : Theme.light)
     }
-  }, [])
+  })
 
   const handleThemeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = !!e.target?.checked ? Theme.dark : Theme.light

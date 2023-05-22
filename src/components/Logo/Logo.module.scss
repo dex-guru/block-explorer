@@ -1,7 +1,7 @@
 .container {
   flex: 0 0 auto;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
 }
 
@@ -10,18 +10,25 @@
   height: 36px;
 }
 
+.content {
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+}
+
 .title {
-  font-family: 'IBM Plex Mono';
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 1;
+  font-family: 'Sora';
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 20px;
   display: block;
 }
 
 .subtitle {
   display: block;
-  font-size: 12px;
-  line-height: 1;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--color-bg-5);
 }
 
 .link {

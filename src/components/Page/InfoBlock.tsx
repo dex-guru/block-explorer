@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useQuery } from '@apollo/client'
+import Tile from '../Tile'
 import Value from '../Value'
 import { InfoBlockProps } from './types'
 import { CHAIN_STATS } from '@/lib/apollo/queries'
@@ -10,22 +11,17 @@ const InfoBlock: FC<InfoBlockProps> = ({ chainConfig }) => {
   const { data } = useQuery(CHAIN_STATS)
 
   return (
-    <div className={styles.container}>
-      {data && (
-        <>
-          <div className={styles.price}>
-            {chainConfig.nativeCurrency.symbol} price{' '}
-            <Value
-              value={financialFormat(data.chainStats.nativeTokenPriceUsd)}
-              prefix="$"
-              delta={data.chainStats.nativeTokenPriceUsd24hDelta * 100}
-            />
-          </div>
-
-          <div className={styles.message}>{data.chainConfig.message}</div>
-        </>
-      )}
-    </div>
+    <Tile
+      className={styles.container}
+      prefix={`${chainConfig.nativeCurrency.symbol} price`}
+      title={
+        <Value
+          value={financialFormat(data.chainStats.nativeTokenPriceUsd)}
+          prefix="$"
+          delta={data.chainStats.nativeTokenPriceUsd24hDelta * 100}
+        />
+      }
+    />
   )
 }
 

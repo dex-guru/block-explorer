@@ -1,12 +1,21 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
+import Button from '../Button'
+import IconGotoTop from '@/images/icons/goto-top.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import styles from './PageFooter.module.scss'
 
 const PageFooter: FC = () => {
   return (
     <div className={styles.container}>
+      <div className={styles.header}>
+        <Button icon={<IconGotoTop />} caption="Back to Top" />
+        <div className={styles.body}></div>
+      </div>
+      <div className={styles.socials}></div>
+      <div className={styles.footer}></div>
+
       <div className={styles.links}>
         <Link href="https://feedback.dex.guru/" className={styles.link}>
           Make a suggestion

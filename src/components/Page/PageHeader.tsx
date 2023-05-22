@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react'
 import Logo from '../Logo'
 import Search from '../Search'
+import ThemeToggle from '../ThemeToggle'
 import InfoBlock from './InfoBlock'
 import PageMenu from './PageMenu'
 import { PageHeaderProps } from './types'
@@ -31,24 +32,21 @@ const PageHeader: FC<PageHeaderProps> = ({
 
   return (
     <header className={styles.container}>
-      <InfoBlock chainConfig={chainConfig} />
-      <div className={styles.main}>
-        <div className={styles.logo}>
-          <Logo
-            title={`${chainConfig.name} Explorer`}
-            to="/"
-            url={chainConfig.icon}
-          />
-        </div>
-        {!!withSearch && (
-          <div className={styles.search}>
-            <Search className={styles.searchElement} />
-          </div>
-        )}
-        {!!withMenu && <PageMenu className={styles.menu} links={links} />}
-        {/* <div className={styles.theme}>
+      <div className={styles.logo}>
+        <Logo title={`${chainConfig.name}`} to="/" url={chainConfig.icon} />
+      </div>
+      <div className={styles.price}>
+        <InfoBlock chainConfig={chainConfig} />
+      </div>
+      <div className={styles.search}>
+        {!!withSearch && <Search className={styles.searchElement} />}
+      </div>
+      {!!withMenu && <PageMenu className={styles.menu} links={links} />}
+      <div className={styles.network}>
         <ThemeToggle />
-      </div> */}
+      </div>
+      <div className={styles.theme}>
+        <ThemeToggle />
       </div>
     </header>
   )
