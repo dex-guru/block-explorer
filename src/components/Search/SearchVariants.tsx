@@ -72,7 +72,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.blocks?.length) {
-    const blockValue = AddressValues['account']
+    const blockValue = AddressValues['block']
 
     const renderedContent = data.blocks?.map((block) => {
       const url = blockValue?.url

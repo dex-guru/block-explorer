@@ -18,7 +18,7 @@ import {
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 
 interface HoldingsPageServerProps {
@@ -34,7 +34,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
 }) => {
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
-  const stats: SummaryStat[] = [
+  const renderStats = (): SummaryStat[] => [
     {
       title: 'Assets in Wallet',
       value: financialFormat(tokenHoldingsStats?.tokenCount || 0),
@@ -59,7 +59,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
     },
   ]
 
-  const pageTitle = address
+  const pageTitle = isAddress(address)
     ? `Token Holdings for ${checkSumAddress}`
     : 'No correct address provided'
 
@@ -73,7 +73,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
       </Head>
 
       <Page withSearch chainConfig={chainConfig}>
-        {isAddress(address) && (
+        {isAddress(address) && !tokenHoldingsStats && (
           <Empty
             icon={<IconSearch />}
             title="No holdings"
@@ -88,7 +88,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
             title="Token Holdings"
             address={checkSumAddress || undefined}
           >
-            <Summary stats={stats} />
+            <Summary stats={renderStats()} />
             <TokensDataTable address={address} />
           </DetailsView>
         )}
@@ -102,13 +102,19 @@ export default HoldingsPage
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { address } = ctx.query as { address: string; tab: string }
 
+  const apolloClient = initializeApollo({ ctx })
+
   if (address && !isAddress(address)) {
     ctx.res.statusCode = 404
 
-    return { props: { address: address } }
-  }
+    const { data } = await apolloClient.query<{
+      chainConfig: ChainConfigModel
+    }>({
+      query: CHAIN_STATS,
+    })
 
-  const apolloClient = initializeApollo({ ctx })
+    return { props: { ...data, address: address } }
+  }
 
   const { data } = await apolloClient.query<{
     tokenHoldingsStats: TokenHoldingsStatsModel

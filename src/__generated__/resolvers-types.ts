@@ -302,7 +302,7 @@ export type QueryChainConfigArgs = {
 
 
 export type QueryChainStatsArgs = {
-  chainId?: Scalars['Long'];
+  chainId?: Scalars['Int'];
 };
 
 
