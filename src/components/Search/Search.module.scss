@@ -71,6 +71,14 @@
   background: none;
   border: none;
   color: var(--color-search-action);
+  opacity: 1;
+  visibility: visible;
+  transition: 0.25s ease;
+
+  &:disabled {
+    opacity: 0;
+    visibility: hidden;
+  }
 
   &:focus,
   &:hover {

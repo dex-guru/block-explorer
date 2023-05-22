@@ -87,7 +87,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={props.chainConfig}>
+      <Page chainConfig={props.chainConfig}>
         <DetailsView
           title={block ? 'Transactions for block' : 'Transactions'}
           address={block?.toString()}
@@ -162,6 +162,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   } = await apolloClient.query({
     query: GET_TRANSACTIONS_STATS,
     variables: { blockNumber: block },
+    errorPolicy: 'none',
   })
 
   return addApolloState(apolloClient, {

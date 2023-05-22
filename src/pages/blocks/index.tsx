@@ -53,7 +53,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={props.chainConfig}>
+      <Page chainConfig={props.chainConfig}>
         <DetailsView title="Blocks">
           <Summary
             stats={[

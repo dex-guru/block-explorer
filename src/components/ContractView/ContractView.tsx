@@ -150,7 +150,7 @@ const ContractView: FC<IContractViewProps> = ({
           <link rel="icon" href={chain.config.icon} />
           <meta name="description" content="Block Explorer" />
         </Head>
-        <Page withSearch chainConfig={chain.config}>
+        <Page chainConfig={chain.config}>
           <DetailsView
             icon={<Avatar address={address} />}
             title="Contract"

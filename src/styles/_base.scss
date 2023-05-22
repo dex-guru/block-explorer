@@ -4,6 +4,7 @@ html {
   font-family: 'IBM Plex Sans Condensed', sans-serif;
   min-width: 320px;
   color-scheme: dark light;
+  scroll-behavior: smooth;
 
   content: 'dark';
 
@@ -51,6 +52,7 @@ body {
   margin: 0;
   padding: 0;
   min-width: 320px;
+  scroll-behavior: smooth;
 }
 
 ::selection {

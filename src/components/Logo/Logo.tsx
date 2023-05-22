@@ -16,8 +16,8 @@ const Logo: FC<LogoProps> = ({ title, to, url }) => {
       />
       {!!title && (
         <div className={styles.content}>
-          <strong className={styles.title}>{title}</strong>{' '}
-          <span className={styles.subtitle}>Explorer by DexGuru</span>
+          <strong className={styles.title}>{title} Explorer</strong>{' '}
+          <span className={styles.subtitle}>by DexGuru</span>
         </div>
       )}
     </div>

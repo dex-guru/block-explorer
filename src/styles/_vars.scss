@@ -1,4 +1,4 @@
-html {
+@mixin theme-dark {
   color-scheme: dark;
 
   --color-bg: #1e242c;
@@ -10,6 +10,26 @@ html {
   --color-text: #fff;
   --color-muted: #6d7986;
 
+  --color-tooltip-bg: var(--color-bg-3);
+  --color-tooltip-text: var(--color-text);
+}
+
+@mixin theme-light {
+  color-scheme: light;
+
+  --color-bg: #eceff1;
+  --color-bg-2: #fff;
+  --color-bg-3: #a8b4c1;
+  --color-bg-4: #465160;
+  --color-bg-5: #545c66;
+  --color-bg-6: #a8b4c1;
+  --color-text: #181d23;
+
+  --color-tooltip-bg: var(--color-bg-5);
+  --color-tooltip-text: var(--color-bg);
+}
+
+html {
   --color-positive: #12b886;
   --color-negative: #ff646d;
   --color-info: #46a6ff;
@@ -28,14 +48,6 @@ html {
   --color-link: var(--color-accent);
   --color-link-hover: var(--color-accent-a);
 
-  --color-button-border: var(--color-bg-3);
-  --color-button-hover-border: var(--color-bg-4);
-  --color-button-bg: var(--color-bg-3);
-  --color-button-hover-bg: var(--color-bg-4);
-  --color-button-text: var(--color-text);
-  --color-button-hover-text: var(--color-text);
-  --color-button-icon: var(--color-bg-6);
-
   --color-input-bg: transparent;
   --color-input-border: var(--color-bg-3);
   --color-input-text: var(--color-text);
@@ -44,9 +56,6 @@ html {
 
   --radii-sm: 4px;
   --radii-lg: 8px;
-
-  --color-tooltip-bg: var(--color-bg-3);
-  --color-tooltip-text: var(--color-text);
 
   background: var(--color-page-bg);
   color: var(--color-page-text);
@@ -64,19 +73,19 @@ html {
     color: var(--color-muted);
   }
 
+  @media (prefers-color-scheme: dark) {
+    @include theme-dark;
+  }
+
+  @media (prefers-color-scheme: light) {
+    @include theme-light;
+  }
+
+  &.theme-dark {
+    @include theme-dark;
+  }
+
   &.theme-light {
-    color-scheme: light;
-
-    --color-bg: #eceff1;
-    --color-bg-2: #fff;
-    --color-bg-3: #a8b4c1;
-    --color-bg-4: #465160;
-    --color-bg-5: #545c66;
-    --color-bg-6: #a8b4c1;
-    --color-text: #181d23;
-
-    --color-tooltip-bg: var(--color-bg-5);
-    --color-tooltip-text: var(--color-bg);
-    --color-button-text: var(--color-bg-2);
+    @include theme-light;
   }
 }

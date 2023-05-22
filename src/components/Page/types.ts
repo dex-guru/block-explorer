@@ -3,7 +3,6 @@ import { ChainConfigModel } from '@/__generated__/resolvers-types'
 
 export type PageHeaderProps = {
   withMenu?: boolean
-  withSearch?: boolean
   chainConfig: ChainConfigModel
 }
 export type PageProps = PageHeaderProps & {

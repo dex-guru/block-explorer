@@ -17,7 +17,7 @@ const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         <Error title="No TX hash was provided" />
       </Page>
     </>

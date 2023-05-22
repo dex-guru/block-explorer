@@ -29,6 +29,7 @@ import { Pagination } from './Pagination'
 import Properties from './Properties'
 import Search from './Search'
 import Separated from './Separated'
+import Socials from './Socials'
 import Summary from './Summary'
 import { BlockOverview, TxLogs, TxOverview, TxTrace } from './TabContent'
 import TabPanel from './TabPanel'
@@ -91,6 +92,7 @@ export {
   Properties,
   Separated,
   Summary,
+  Socials,
   Search,
   Table,
   TabPanel,

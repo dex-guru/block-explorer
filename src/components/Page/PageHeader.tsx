@@ -1,17 +1,17 @@
 import { FC, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import Logo from '../Logo'
 import Search from '../Search'
-import ThemeToggle from '../ThemeToggle'
 import InfoBlock from './InfoBlock'
 import PageMenu from './PageMenu'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
-const PageHeader: FC<PageHeaderProps> = ({
-  chainConfig,
-  withSearch,
-  withMenu = true,
-}) => {
+const ThemeToggle = dynamic(() => import('../ThemeToggle'), {
+  ssr: false,
+})
+
+const PageHeader: FC<PageHeaderProps> = ({ chainConfig, withMenu = true }) => {
   const links = useMemo(() => {
     const baseLinks = [
       { caption: 'Home', href: '/' },
@@ -39,12 +39,10 @@ const PageHeader: FC<PageHeaderProps> = ({
         <InfoBlock chainConfig={chainConfig} />
       </div>
       <div className={styles.search}>
-        {!!withSearch && <Search className={styles.searchElement} />}
+        <Search className={styles.searchElement} />
       </div>
       {!!withMenu && <PageMenu className={styles.menu} links={links} />}
-      <div className={styles.network}>
-        <ThemeToggle />
-      </div>
+      <div className={styles.network}>MAINNET</div>
       <div className={styles.theme}>
         <ThemeToggle />
       </div>

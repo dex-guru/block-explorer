@@ -152,10 +152,6 @@ const Index: NextPage<IndexProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={props.chainConfig}>
-        <Banner>
-          <Search className={styles.searchMain} />
-        </Banner>
-
         {!!stats && (
           <Summary
             stats={statsDisplay}

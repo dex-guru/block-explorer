@@ -1,2 +1,8 @@
 .container {
+  transition: 0.25s ease;
+  opacity: 1;
+}
+
+.loading {
+  opacity: 0;
 }

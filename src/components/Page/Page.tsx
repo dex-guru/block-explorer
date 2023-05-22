@@ -4,12 +4,7 @@ import PageHeader from './PageHeader'
 import { PageProps } from './types'
 import styles from './Page.module.scss'
 
-const Page: FC<PageProps> = ({
-  withMenu,
-  withSearch,
-  children,
-  chainConfig,
-}) => {
+const Page: FC<PageProps> = ({ withMenu, children, chainConfig }) => {
   return (
     <div
       className={styles.container}
@@ -20,11 +15,7 @@ const Page: FC<PageProps> = ({
       }
     >
       <div className={styles.header}>
-        <PageHeader
-          withMenu={withMenu}
-          withSearch={withSearch}
-          chainConfig={chainConfig}
-        />
+        <PageHeader withMenu={withMenu} chainConfig={chainConfig} />
       </div>
       <div className={styles.body}>{children}</div>
       <div className={styles.footer}>
