@@ -16,7 +16,7 @@ import { generateLineChartData } from './utils'
 import styles from './LineChart.module.scss'
 
 const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
-  const chartData = generateLineChartData(data, options?.axis.x.dataKey)
+  const chartData = generateLineChartData(data, options.axis.x.dataKey)
 
   const renderedSeries = data.map((el) => {
     return (
@@ -93,7 +93,6 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
         {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
-          dataKey={options?.axis.x.dataKey}
           type={options?.axis.x.type}
           domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
@@ -134,6 +133,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
 
         {options?.zoom && (
           <Brush
+            dataKey={options?.axis.x.dataKey}
             type={options.axis.x.type}
             className={styles.zoom}
             tickFormatter={options?.axis?.x?.tickFormatter}

@@ -2,7 +2,7 @@ import { LineChartDataset } from './types'
 
 export const generateLineChartData = (
   series: LineChartDataset[],
-  idxKey: string | number
+  idxKey: string
 ) => {
   const objData: Record<string | number, unknown> = {}
 

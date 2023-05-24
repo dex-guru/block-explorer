@@ -26,5 +26,5 @@ export type LineChartOptions = {
 export type LineChartProps = {
   data: LineChartDataset[]
   className?: string
-  options?: LineChartOptions & { axis: { x: { dataKey: string } } }
+  options: LineChartOptions & { axis: { x: { dataKey: string } } }
 }
