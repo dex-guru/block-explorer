@@ -23,6 +23,8 @@
   color: var(--color-muted);
   transform: none;
   transition: 0.25s ease;
+  width: 20px;
+  height: 20px;
 
   &Open {
     transform: rotate(180deg);

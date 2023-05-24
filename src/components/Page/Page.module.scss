@@ -19,6 +19,12 @@
     var(--color-accent-base-s),
     calc(var(--color-accent-base-l) + (var(--color-accent-shift) * 20%))
   );
+
+  --color-input-bg: transparent;
+  --color-input-border: var(--color-bg-3);
+  --color-input-text: var(--color-text);
+  --color-input-placeholder: var(--color-muted);
+  --color-input-focus: var(--color-accent);
 }
 
 .body {
