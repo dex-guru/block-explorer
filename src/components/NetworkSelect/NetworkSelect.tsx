@@ -1,8 +1,8 @@
 import { FC, useState } from 'react'
 import Link from 'next/link'
-import { IconDown, OutsideClicker } from '..'
 import clsx from 'clsx'
 import { NetworkSelectProps } from './types'
+import { IconDown, OutsideClicker } from '@/components'
 import styles from './NetworkSelect.module.scss'
 
 const NetworkSelect: FC<NetworkSelectProps> = ({

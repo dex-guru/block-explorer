@@ -5,7 +5,7 @@ import { PageProps } from './types'
 import { hexToHsl } from '@/lib/utils'
 import styles from './Page.module.scss'
 
-const Page: FC<PageProps> = ({ withMenu, children, chainConfig }) => {
+const Page: FC<PageProps> = ({ children, chainConfig }) => {
   const [h, s, l] = hexToHsl(chainConfig.chainColor)
 
   return (
@@ -20,7 +20,7 @@ const Page: FC<PageProps> = ({ withMenu, children, chainConfig }) => {
       }
     >
       <div className={styles.header}>
-        <PageHeader withMenu={withMenu} chainConfig={chainConfig} />
+        <PageHeader chainConfig={chainConfig} />
       </div>
       <div className={styles.body}>{children}</div>
       <div className={styles.footer}>
