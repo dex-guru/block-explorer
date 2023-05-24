@@ -32,7 +32,9 @@ const PageFooter: FC = () => {
         <div className={styles.copyright}>
           ©{new Date().getFullYear()} dex.guru
         </div>
-        <div className={styles.version}>Version Beta 433bd13</div>
+        <div className={styles.version}>
+          Version Beta {process.env.GIT_COMMIT}
+        </div>
       </div>
     </div>
   )
