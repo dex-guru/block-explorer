@@ -60,7 +60,8 @@
   top: 100%;
   padding: 0;
   margin-top: 16px;
-  background: var(--color-bg-3);
+  border: 1px var(--color-accent) solid;
+  background: var(--color-bg-2);
   border-radius: var(--radii-lg);
   overflow: hidden;
 
@@ -90,6 +91,7 @@
 }
 
 .list {
+  margin: 0;
   padding: 8px 0;
   list-style: none;
   display: flex;

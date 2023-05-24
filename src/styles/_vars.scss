@@ -10,6 +10,8 @@
   --color-text: #fff;
   --color-muted: #6d7986;
 
+  --color-accent-shift: 1;
+
   --color-tooltip-bg: var(--color-bg-3);
   --color-tooltip-text: var(--color-text);
 }
@@ -20,10 +22,12 @@
   --color-bg: #eceff1;
   --color-bg-2: #fff;
   --color-bg-3: #a8b4c1;
-  --color-bg-4: #465160;
+  --color-bg-4: #a8b4c1;
   --color-bg-5: #545c66;
-  --color-bg-6: #a8b4c1;
+  --color-bg-6: #465160;
   --color-text: #181d23;
+
+  --color-accent-shift: -1;
 
   --color-tooltip-bg: var(--color-bg-5);
   --color-tooltip-text: var(--color-bg);
@@ -35,9 +39,6 @@ html {
   --color-info: #46a6ff;
   --color-warn: #c9b824;
   --color-neutral: var(--color-muted);
-
-  --color-accent: #9488f0;
-  --color-accent-a: #afa5fb;
 
   --color-page-bg: var(--color-bg);
   --color-page-text: var(--color-text);
@@ -59,19 +60,6 @@ html {
 
   background: var(--color-page-bg);
   color: var(--color-page-text);
-
-  a {
-    color: var(--color-accent);
-
-    &:focus,
-    &:hover {
-      color: var(--color-accent-a);
-    }
-  }
-
-  small {
-    color: var(--color-muted);
-  }
 
   @media (prefers-color-scheme: dark) {
     @include theme-dark;

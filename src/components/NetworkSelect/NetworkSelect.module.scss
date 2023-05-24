@@ -1,0 +1,101 @@
+.container {
+  width: max-content;
+  cursor: pointer;
+}
+
+.body {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 32px;
+  position: relative;
+}
+
+.label {
+  composes: tag from '../Label/Label.module.scss';
+  composes: info from '../Label/Label.module.scss';
+  flex: 0 0 auto;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--color-muted);
+  transform: none;
+  transition: 0.25s ease;
+
+  &Open {
+    transform: rotate(180deg);
+    color: var(--color-accent);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  min-width: 100%;
+  width: max-content;
+  max-width: calc(100vw - 48px);
+  z-index: 2;
+  right: 0;
+  top: 100%;
+  padding: 0;
+  margin-top: 16px;
+  border: 1px var(--color-accent) solid;
+  background: var(--color-bg-2);
+  border-radius: var(--radii-lg);
+  overflow: hidden;
+
+  animation: dropdown 0.25s ease;
+
+  @media (max-width: 960px) {
+    top: auto;
+    bottom: 100%;
+  }
+
+  @keyframes dropdown {
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.tokenLink {
+  display: block;
+  padding: 8px 16px;
+  background: none;
+
+  &:hover {
+    background: var(--color-bg);
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  composes: lg from '../Button/Button.module.scss';
+  --color-button-border: var(--color-input-border);
+  --color-button-bg: transparent;
+  --color-button-text: var(--color-muted);
+  --color-button-hover-border: var(--color-accent-a);
+  --color-button-hover-bg: transparent;
+  --color-button-hover-text: var(--color-accent-a);
+}

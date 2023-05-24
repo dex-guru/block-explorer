@@ -3,24 +3,45 @@
   margin: 0 auto;
   padding: 8px;
   display: flex;
+  flex-flow: row wrap;
   gap: 16px;
   align-items: center;
-  flex-flow: row wrap;
 
-  @media (max-width: 840px) {
-    justify-content: center;
+  @media (max-width: 1200px) {
+    padding-right: 56px;
   }
 }
 
 .search {
   flex: 1 0 0;
-  max-width: 520px;
-  min-width: 320px;
   margin: 0 auto;
 
-  @media (max-width: 720px) {
-    order: 10;
-    flex: 0 0 100%;
+  @media (max-width: 1200px) {
+    display: block;
+    position: relative;
+    z-index: 1111;
+
+    .open & {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    flex: 0 0 calc(100% + 48px);
+  }
+}
+
+.price {
+  @media (max-width: 1200px) {
+    left: 8px;
+    bottom: 12px;
+    display: none;
+    position: fixed;
+    z-index: 1111;
+
+    .open & {
+      display: block;
+    }
   }
 }
 
@@ -28,11 +49,24 @@
   flex: 0 0 auto;
   display: flex;
 
-  padding-right: 16px;
-  border-right: 1px var(--color-bg-3) solid;
+  @media (max-width: 1200px) {
+    position: relative;
+    z-index: 1111;
 
-  @media (max-width: 840px) {
-    flex: 0 0 auto;
+    .open & {
+      margin-right: auto;
+    }
+  }
+
+  @media (min-width: 640.1px) {
+    padding-right: 16px;
+    border-right: 1px var(--color-bg-3) solid;
+  }
+}
+
+.price {
+  @media (max-width: 1200px) {
+    display: none;
   }
 }
 
@@ -40,10 +74,38 @@
   flex: 0 0 auto;
 
   @media (max-width: 1200px) {
-    order: 10;
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    top: 12px;
+    right: 8px;
+  }
+}
+
+.network {
+  @media (max-width: 960px) {
+    display: none;
+    position: fixed;
+    z-index: 1111;
+    right: 8px;
+    bottom: 12px;
+
+    .open & {
+      display: block;
+    }
   }
 }
 
 .theme {
   width: 36px;
+
+  @media (max-width: 960px) {
+    display: none;
+    position: relative;
+    z-index: 1111;
+
+    .open & {
+      display: block;
+    }
+  }
 }

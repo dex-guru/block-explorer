@@ -46,6 +46,10 @@
   position: relative;
   padding: 0 160px 68px 0;
 
+  @media (max-width: 440px) {
+    padding: 0;
+  }
+
   &Img {
     pointer-events: none;
     width: 228px;
@@ -65,6 +69,10 @@
       to {
         transform: rotate(5deg);
       }
+    }
+
+    @media (max-width: 440px) {
+      display: none;
     }
   }
 }
@@ -145,5 +153,6 @@
   --color-button-border: transparent;
 }
 
-.about {
+.text {
+  max-width: 560px;
 }

@@ -13,7 +13,7 @@
 
   @media (max-width: 1200px) {
     background: var(--color-bg);
-    padding: 16px;
+    padding: 56px 16px 56px;
     justify-content: center;
     align-items: center;
     flex-flow: column;
@@ -54,7 +54,7 @@
   position: fixed;
   z-index: 1001;
   right: 8px;
-  top: 8px;
+  top: 12px;
 }
 
 .icon {

@@ -53,6 +53,10 @@ body {
   padding: 0;
   min-width: 320px;
   scroll-behavior: smooth;
+
+  .open-menu & {
+    overflow: hidden;
+  }
 }
 
 ::selection {
@@ -63,11 +67,18 @@ body {
 a {
   transition: all 0.25s ease;
   text-decoration: none;
+  color: var(--color-accent);
+
+  &:focus,
+  &:hover {
+    color: var(--color-accent-a);
+  }
 }
 
 small {
   font-size: 12px;
   line-height: 20px;
+  color: var(--color-muted);
 }
 
 iframe {

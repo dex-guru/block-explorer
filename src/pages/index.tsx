@@ -89,9 +89,9 @@ const Index: NextPage<IndexProps> = (props) => {
           suffix={
             <>
               &nbsp;
-              {financialFormatLowValueHighPrecision(
-                stats.transactionsPerSecond
-              )}{' '}
+              {financialFormat(stats.transactionsPerSecond, {
+                decimals: 2,
+              })}{' '}
               txs/sec
             </>
           }

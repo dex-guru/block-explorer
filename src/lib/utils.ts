@@ -282,3 +282,48 @@ export const getBlocksWithTimeDiff = (
 
   return blocksWithTimeDiff
 }
+
+export const hexToRgb = (hex: string): [number, number, number] => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  const r = parseInt(result ? result[1] || '0' : '0', 16)
+  const g = parseInt(result ? result[2] || '0' : '0', 16)
+  const b = parseInt(result ? result[3] || '0' : '0', 16)
+
+  return [r, g, b]
+}
+
+export const rgbToHsl = (rI: number, gI: number, bI: number) => {
+  const r = rI / 255
+  const g = gI / 255
+  const b = bI / 255
+
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b)
+  let h, s
+  const l = (max + min) / 2
+
+  if (max == min) {
+    h = s = 0 // achromatic
+  } else {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0)
+        break
+      case g:
+        h = (b - r) / d + 2
+        break
+      case b:
+        h = (r - g) / d + 4
+        break
+    }
+
+    h = (h || 0) / 6
+  }
+
+  return [h, s, l]
+}
+
+export const hexToHsl = (hex: string) => rgbToHsl(...hexToRgb(hex))

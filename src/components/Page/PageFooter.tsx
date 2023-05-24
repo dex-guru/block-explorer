@@ -37,7 +37,7 @@ const PageFooter: FC = () => {
         <div className={styles.about}>
           <ImgFooter className={styles.aboutImg} />
 
-          <div className="text">
+          <div className={clsx('text', styles.text)}>
             <p>
               DexGuru is a non-custodial trading terminal made for traders in
               the DeFi era
@@ -56,7 +56,7 @@ const PageFooter: FC = () => {
           />
         </div>
 
-        <div className={styles.navigation}>
+        {/* <div className={styles.navigation}>
           <nav className={styles.links}>
             <Heading className={styles.linksTitle} size="xs">
               Use Cases
@@ -141,7 +141,7 @@ const PageFooter: FC = () => {
               </li>
             </ul>
           </nav>
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.footer}>
