@@ -5,7 +5,7 @@ import { CurveType } from 'recharts/types/shape/Curve'
 
 export type LineChartDataset = {
   id: string
-  data: unknown[]
+  data: { [key: string]: number }[]
   name?: string
   color?: string
   yAxis?: 'left' | 'right'

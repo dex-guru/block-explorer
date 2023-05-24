@@ -2,12 +2,16 @@ import { LineChartDataset } from './types'
 
 export const generateLineChartData = (
   series: LineChartDataset[],
-  idxKey: unknown
+  idxKey: string | number
 ) => {
   const objData: Record<string | number, unknown> = {}
 
   series.forEach((dataset) => {
     dataset.data.forEach((el) => {
+      if (!el) {
+        return
+      }
+
       objData[el[idxKey]] = {
         ...(objData[el[idxKey]] || {
           [`${idxKey}`]: el[idxKey],
