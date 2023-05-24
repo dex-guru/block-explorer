@@ -67,7 +67,10 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`${checkSumAddress} tokens portfolio on ${chainConfig.chain}, explore token balances held by this wallet, and view account activity in real-time.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

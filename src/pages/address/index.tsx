@@ -12,7 +12,10 @@ const AddressIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
     <>
       <Head>
         <title>No address provided</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore address to track recent transactions, explore token balances held by this wallet, and view account activity in real time.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

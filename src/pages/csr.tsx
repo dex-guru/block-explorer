@@ -45,7 +45,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
     <>
       <Head>
         <title>CSR Dashboard</title>
-        <meta name="description" content="Block Explorer" />
+        <meta name="description" content="CSR Dashboard" />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
