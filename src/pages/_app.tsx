@@ -2,7 +2,10 @@ import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '@/lib/apollo/client'
+import { initApm } from '@/services/apmService'
 import '@/styles/index.scss'
+
+initApm()
 
 export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps)
