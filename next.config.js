@@ -41,6 +41,20 @@ const nextConfig = {
     ],
   },
   generateBuildId: () => nextBuildId({ dir: __dirname }),
+  async headers() {
+    return [
+      {
+        source: '/:all*(svg|jpg|png|js|css)',
+        locale: false,
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, must-revalidate',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
