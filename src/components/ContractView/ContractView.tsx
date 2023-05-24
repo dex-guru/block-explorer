@@ -148,7 +148,12 @@ const ContractView: FC<IContractViewProps> = ({
         <Head>
           <title>{pageTitle}</title>
           <link rel="icon" href={chain.config.icon} />
-          <meta name="description" content="Block Explorer" />
+          <meta
+            name="description"
+            content={`Explore smart contract ${
+              addressInfo.name || addressInfo.address
+            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
+          />
         </Head>
         <Page withSearch chainConfig={chain.config}>
           <DetailsView

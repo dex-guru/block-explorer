@@ -35,7 +35,10 @@ const Block: NextPage<IBlockProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore block number ${block} to see included transactions.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
