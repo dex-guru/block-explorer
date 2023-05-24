@@ -12,22 +12,20 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import Heading from '../Heading'
+import { generateLineChartData } from './utils'
 import styles from './LineChart.module.scss'
 
-const LineChart: FC<LineChartProps> = ({
-  data,
-  series,
-  className,
-  options,
-}) => {
-  const renderedSeries = series.map((el) => {
+const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
+  const chartData = generateLineChartData(data, options?.axis.x.dataKey)
+
+  const renderedSeries = data.map((el) => {
     return (
       <Line
         className={clsx(styles.line, el.className)}
-        name={el.name}
+        name={el.name || el.id}
         key={el.id}
-        type="monotone"
-        dataKey={el.id}
+        type={el.type || 'monotone'}
+        dataKey={el.id || 'value'}
         stroke={el.color}
         dot={false}
         yAxisId={el.yAxis || 'left'}
@@ -82,8 +80,8 @@ const LineChart: FC<LineChartProps> = ({
     return null
   }
 
-  const hasLeftAxis = series.filter((el) => el.yAxis !== 'right')
-  const hasRightAxis = series.filter((el) => el.yAxis === 'right')
+  const hasLeftAxis = data.filter((el) => el.yAxis !== 'right')
+  const hasRightAxis = data.filter((el) => el.yAxis === 'right')
 
   return (
     <ResponsiveContainer
@@ -91,11 +89,13 @@ const LineChart: FC<LineChartProps> = ({
       height="100%"
       className={clsx(styles.container, className)}
     >
-      <Chart data={data} className={styles.chart} height={100} width={100}>
-        {options?.grid && <CartesianGrid className={styles.grid} />}
+      <Chart data={chartData} className={styles.chart} height={100} width={100}>
+        {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
-          dataKey="label"
+          dataKey={options?.axis.x.dataKey}
+          type={options?.axis.x.type}
+          domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
           className={clsx(
             styles.axisX,
@@ -134,11 +134,11 @@ const LineChart: FC<LineChartProps> = ({
 
         {options?.zoom && (
           <Brush
-            dataKey="label"
+            type={options.axis.x.type}
             className={styles.zoom}
             tickFormatter={options?.axis?.x?.tickFormatter}
           >
-            <Chart data={data}>{renderedSeries}</Chart>
+            <Chart data={chartData}>{renderedSeries}</Chart>
           </Brush>
         )}
       </Chart>

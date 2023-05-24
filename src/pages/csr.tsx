@@ -6,13 +6,13 @@ import {
 } from '@/__generated__/resolvers-types'
 import { Card, Grid, LineChart, Page, Value } from '@/components'
 import { LineChartDataset } from '@/components/LineChart'
-import { generateLineChartData } from '@/components/LineChart/utils'
 import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
+  getShortDate,
 } from '@/lib/utils'
 import styles from './Pages.module.scss'
 
@@ -80,20 +80,13 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
           <LineChart
-            data={generateLineChartData(csrStatsSeries)}
-            series={csrStatsSeries}
+            data={csrStatsSeries}
             options={{
               axis: {
                 x: {
-                  tickFormatter: (value: number) => {
-                    const date = new Date(value * 1000)
-                    return date.toLocaleDateString('en-GB', {
-                      timeZone: 'UTC',
-                      month: 'short',
-                      year: '2-digit',
-                      day: '2-digit',
-                    })
-                  },
+                  type: 'number',
+                  dataKey: 'timestamp',
+                  tickFormatter: getShortDate,
                   axisLine: false,
                   tickLine: false,
                 },

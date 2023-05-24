@@ -12,7 +12,6 @@ import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
-import { generateLineChartData } from '../LineChart/utils'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
@@ -257,11 +256,12 @@ const ContractView: FC<IContractViewProps> = ({
                           />
                           <LineChart
                             className={styles.holdersChart}
-                            data={generateLineChartData(holdersSeries || [])}
-                            series={holdersSeries}
+                            data={holdersSeries}
                             options={{
                               axis: {
                                 x: {
+                                  type: 'number',
+                                  dataKey: 'timestamp',
                                   hide: true,
                                   tickFormatter: (value: number) => {
                                     const date = new Date(value * 1000)

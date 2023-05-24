@@ -2,6 +2,16 @@ import BigNumber from 'bignumber.js'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
+export const getShortDate = (value: number) => {
+  const date = new Date(value * 1000)
+  return date.toLocaleDateString('en-GB', {
+    timeZone: 'UTC',
+    month: 'short',
+    year: '2-digit',
+    day: '2-digit',
+  })
+}
+
 export const getNormalizedValue = (
   value: number | string | BigNumber,
   decimals = 18,
