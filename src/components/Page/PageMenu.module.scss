@@ -39,6 +39,14 @@
   padding: 0;
 }
 
+.link {
+  color: var(--color-muted);
+}
+
+.active {
+  color: var(--color-accent);
+}
+
 .toggle {
   composes: action from '../Button/Button.module.scss';
   composes: lg from '../Button/Button.module.scss';

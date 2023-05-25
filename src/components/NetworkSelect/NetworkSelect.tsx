@@ -1,8 +1,7 @@
-import { FC, useState } from 'react'
-import Link from 'next/link'
+import { FC, Suspense, lazy, useState } from 'react'
 import clsx from 'clsx'
 import { NetworkSelectProps } from './types'
-import { IconDown, OutsideClicker } from '@/components'
+import { Button, IconDown, IconQuestion, OutsideClicker } from '@/components'
 import styles from './NetworkSelect.module.scss'
 
 const NetworkSelect: FC<NetworkSelectProps> = ({
@@ -38,16 +37,30 @@ const NetworkSelect: FC<NetworkSelectProps> = ({
           <div className={styles.dropdown}>
             <ul className={styles.list}>
               {variants.map((variant, idx) => {
+                const Icon = lazy(() =>
+                  import(`@/images/explorers/${variant.standard}.svg`).catch(
+                    () => ({
+                      default: () => <IconQuestion className={styles.icon} />,
+                    })
+                  )
+                )
+
+                const suspensedIcon = (
+                  <Suspense fallback={<span className={styles.icon} />}>
+                    <Icon className={styles.icon} />
+                  </Suspense>
+                )
+
                 return (
                   <li key={idx} className={styles.item}>
-                    <Link
-                      href={variant.url}
+                    <Button
+                      icon={suspensedIcon}
+                      caption={variant.name}
+                      to={variant.url}
                       className={styles.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                    >
-                      {variant.name}
-                    </Link>
+                    />
                   </li>
                 )
               })}

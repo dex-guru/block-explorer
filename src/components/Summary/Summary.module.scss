@@ -8,19 +8,36 @@
   display: flex;
   gap: 16px;
   flex-flow: row wrap;
-  padding: 8px;
 }
 
 .stats {
   flex: 2 0 320px;
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  place-content: start;
+  margin: 0 -8px;
+  overflow: hidden;
+
+  &List {
+    margin: 0 -1px -1px 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    place-content: start;
+  }
+
+  &Item {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .charts {
   flex: 1 0 320px;
+  padding: 8px;
+
+  &:not(:first-child) {
+    margin-left: -8px;
+    border-left: 1px var(--color-bg) solid;
+  }
 }
 
 .chart {
@@ -40,4 +57,14 @@
 
 .chartTile {
   height: 100%;
+}
+
+.tile {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 16px;
+
+  border-right: 1px var(--color-bg) solid;
+  border-bottom: 1px var(--color-bg) solid;
 }

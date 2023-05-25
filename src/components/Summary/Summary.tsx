@@ -40,9 +40,20 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
   }
 
   const renderStats = () => {
-    return stats?.map((stat, index) => {
-      return <Tile key={index} prefix={stat.title} title={stat.value} />
-    })
+    return (
+      <ul className={styles.statsList}>
+        {stats?.map((stat, index) => {
+          return (
+            <Tile
+              key={index}
+              prefix={stat.title}
+              title={stat.value}
+              className={styles.tile}
+            />
+          )
+        })}
+      </ul>
+    )
   }
 
   return (

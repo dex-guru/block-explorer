@@ -1,6 +1,17 @@
 .container {
   width: max-content;
   cursor: pointer;
+  border-radius: var(--radii-lg);
+  height: 32px;
+  gap: 8px;
+  padding: 4px 6px 4px 8px;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-3);
+  color: var(--color-muted);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
 }
 
 .body {
@@ -52,6 +63,7 @@
   @media (max-width: 960px) {
     top: auto;
     bottom: 100%;
+    margin-bottom: 16px;
   }
 
   @keyframes dropdown {
@@ -93,11 +105,18 @@
 }
 
 .link {
+  gap: 8px;
   composes: lg from '../Button/Button.module.scss';
-  --color-button-border: var(--color-input-border);
+  --color-button-border: transparent;
+  --color-button-hover-border: transparent;
   --color-button-bg: transparent;
-  --color-button-text: var(--color-muted);
-  --color-button-hover-border: var(--color-accent-a);
   --color-button-hover-bg: transparent;
+  --color-button-text: var(--color-muted);
   --color-button-hover-text: var(--color-accent-a);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }

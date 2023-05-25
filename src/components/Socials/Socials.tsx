@@ -9,7 +9,7 @@ const Socials: FC<SocialsProps> = ({ className, socials }) => {
       <ul className={styles.list}>
         {socials.map((social, idx) => {
           const Icon = lazy(() =>
-            import(`../../images/socials/${social.type}.svg`).catch(() => ({
+            import(`@/images/socials/${social.type}.svg`).catch(() => ({
               default: () => social.type,
             }))
           )
@@ -21,7 +21,7 @@ const Socials: FC<SocialsProps> = ({ className, socials }) => {
                 rel="noreferrer noopener"
                 className={styles.link}
               >
-                <Suspense>
+                <Suspense fallback={<span className={styles.icon} />}>
                   <Icon className={clsx(styles.icon, styles[social.type])} />
                 </Suspense>
               </a>
