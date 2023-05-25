@@ -1,0 +1,172 @@
+import { useCallback, useEffect, useState } from 'react'
+import bytes from 'bytes'
+import CheckedContractsView from './CheckedContractsView'
+import FileUpload from './FileUpload'
+import {
+  ADD_FILES_URL,
+  RESTART_SESSION_URL,
+  SESSION_DATA_URL,
+  VERIFY_VALIDATED_URL,
+} from './constants'
+import {
+  DropzoneFile,
+  IGenericError, // IResponseError,
+  SendableContract,
+  SessionResponse,
+  VerificationInput,
+} from './types'
+
+const UI_MAX_FILE_SIZE = 30 * 1024 * 1024
+
+const Verifier: React.FC = () => {
+  const [addedFiles, setAddedFiles] = useState<string[]>([])
+  const [unusedFiles, setUnusedFiles] = useState<string[]>([])
+  const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>(
+    []
+  )
+  const [errorMessage, setErrorMessage] = useState<string>()
+
+  const fetchAndUpdate = useCallback(
+    async (URL: string, fetchOptions?: RequestInit) => {
+      try {
+        const rawRes: Response = await fetch(URL, {
+          credentials: 'include',
+          method: fetchOptions?.method || 'GET', // default GET
+          // mode: "cors",
+          ...fetchOptions,
+        })
+
+        if (!rawRes.ok) {
+          const err: IGenericError = await rawRes.json()
+          throw new Error(err.error)
+        }
+        const res: SessionResponse = await rawRes.json()
+        setUnusedFiles([...res.unused])
+        setCheckedContracts([...res.contracts])
+        setAddedFiles([...res.files])
+        setErrorMessage('')
+        return res
+      } catch (e: any) {
+        console.log(e)
+
+        setErrorMessage(e?.message)
+      }
+    },
+    [setErrorMessage]
+  )
+  // const handleFiles = async (files: DropzoneFile[]) => {
+  //   const formData = new FormData();
+  //   files.forEach((file) => formData.append("files", file));
+  //   await fetchAndUpdate(ADD_FILES_URL, {
+  //     method: "POST",
+  //     body: formData,
+  //   });
+  // };
+  const handleFiles = async (files: DropzoneFile[]) => {
+    // const handleeFiles = async (files: DropzoneFile[]) => {
+    const jsonBody: any = { files: {} }
+    for (const file of files) {
+      if (file.size > UI_MAX_FILE_SIZE) {
+        const humanReadableSize = bytes(file.size)
+        return setErrorMessage(
+          `Added file ${
+            file.name
+          } is ${humanReadableSize} which is more than the maximum single file size of ${bytes(
+            UI_MAX_FILE_SIZE
+          )}`
+        )
+      }
+      let filePath = file.path
+      // remove absolute path
+      if (file.path.startsWith('/')) filePath = file.path.substring(1)
+      // If a zip, send a seperate request, since there's already no file path
+      if (
+        file.type === 'application/zip' ||
+        file.type === 'application/x-zip-compressed'
+      ) {
+        const formData = new FormData()
+        formData.append('files', file)
+        await fetchAndUpdate(ADD_FILES_URL, {
+          method: 'POST',
+          body: formData,
+        })
+      } else {
+        jsonBody.files[filePath] = await file.text()
+      }
+    }
+    if (Object.keys(jsonBody.files).length > 0) {
+      await fetchAndUpdate(ADD_FILES_URL, {
+        method: 'POST',
+        body: JSON.stringify(jsonBody),
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+  }
+
+  const restartSession = async () => {
+    await fetch(RESTART_SESSION_URL, {
+      credentials: 'include',
+      method: 'POST',
+    })
+    setUnusedFiles([])
+    setCheckedContracts([])
+    setAddedFiles([])
+    return
+  }
+
+  /**
+   * Function to submit a validated contract to verification with chainId and address.
+   *
+   * @param sendable -
+   */
+  const verifyCheckedContract = async (sendable: VerificationInput) => {
+    console.log('Verifying checkedContract ' + sendable.verificationId)
+    return fetchAndUpdate(VERIFY_VALIDATED_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contracts: [sendable],
+      }),
+    })
+  }
+
+  useEffect(() => {
+    fetchAndUpdate(SESSION_DATA_URL)
+  }, [fetchAndUpdate])
+
+  return (
+    <div className="flex flex-col flex-1 pb-8 px-8 md:px-12 lg:px-24 bg-gray-100">
+      <div className="text-center">
+        <h1 className="text-3xl md:text-4xl font-bold">Verifier</h1>
+        <p className="mt-2">
+          Verify smart contracts by recompiling with the Solidity source code
+          and metadata.
+        </p>
+      </div>
+      <div className="flex flex-col md:flex-row flex-grow mt-6">
+        <FileUpload
+          handleFilesAdded={handleFiles}
+          addedFiles={addedFiles}
+          metadataMissing={
+            unusedFiles.length > 0 && checkedContracts.length === 0
+          }
+          restartSession={restartSession}
+        />
+        <CheckedContractsView
+          checkedContracts={checkedContracts}
+          isHidden={checkedContracts.length < 1}
+          verifyCheckedContract={verifyCheckedContract}
+        />
+      </div>
+      <div className="text-xs italic mx-2 mt-1 text-gray-400">
+        Once a contract is verified it cant be removed from the Sourcify
+        repository.
+      </div>
+      {errorMessage}
+    </div>
+  )
+}
+
+export default Verifier
