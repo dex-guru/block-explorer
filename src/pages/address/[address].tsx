@@ -6,8 +6,6 @@ import {
   AddressModel,
   ChainConfigModel,
   ChainStatsModel,
-  ContractCreatorModel,
-  TokenBalancesStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
 import { ContractView, AddressView } from '@/components'
@@ -18,18 +16,14 @@ interface AddressPageServerProps {
   address: AddressModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-  contractCreator: ContractCreatorModel
   tokenHoldingsStats: TokenHoldingsStatsModel
-  balancesStats: TokenBalancesStatsModel
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
   address: addressInfo,
   chainStats,
   chainConfig,
-  contractCreator,
   tokenHoldingsStats,
-  balancesStats,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
@@ -51,9 +45,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
         tab={tab}
         addressInfo={addressInfo}
         chain={{ stats: chainStats, config: chainConfig }}
-        contractCreator={contractCreator}
         tokenHoldingsStats={tokenHoldingsStats}
-        balancesStats={balancesStats}
       />
     )
   }
@@ -94,7 +86,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
     tokenHoldingsStats: TokenHoldingsStatsModel
-    balancesStats: TokenBalancesStatsModel
   }>({
     query: GET_ADDRESS_INFO,
     variables: { address: address.toLowerCase() },

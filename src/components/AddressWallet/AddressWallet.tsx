@@ -16,7 +16,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
   const [isOpen, setIsOpen] = useState(false)
 
   if (!tokenHoldingsStats?.tokenCount) {
-    return <>–</>
+    return <span className={styles.muted}>–</span>
   }
 
   const handleClick = () => {
