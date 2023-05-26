@@ -48,7 +48,10 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
     <>
       <Head>
         <title>Blocks</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore recently created blocks on ${props.chainConfig.chain}`}
+        />
         <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
