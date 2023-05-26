@@ -109,7 +109,7 @@ const AddressView: FC<IAddressViewProps> = ({
                     value: (
                       <AddressWallet
                         className={styles.addressWallet}
-                        address={address}
+                        address={checkSumAddress}
                         tokenHoldingsStats={tokenHoldingsStats}
                       />
                     ),

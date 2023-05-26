@@ -585,30 +585,11 @@ export const GET_ADDRESS_INFO = gql`
       nativeBalance
       nativeBalanceUSD
     }
-    contractCreator(address: $address, chainId: ${CHAIN_ID}) {
-      creatorAddress
-      timestamp
-      txHash
-    }
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
       tokenCount
       totalNative
       totalStable
-    }
-    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
-      holders
-      maxTotalSupply
-      price
-      priceChange
-      priceNative
-      totalTransfers
-      fullyDilutedValuation
-      holdersChange
-      holdersChart {
-        timestamp
-        value
-      }
     }
     chainStats(chainId: ${CHAIN_ID}) {
       nativeTokenPriceUsd
@@ -644,6 +625,30 @@ export const GET_ADDRESS_INFO = gql`
         name
         standard
         url
+      }
+    }
+  }
+`
+
+export const GET_CONTRACT_INFO = gql`
+  query GetContractInfo($address: String!) {
+    contractCreator(address: $address, chainId: ${CHAIN_ID}) {
+      creatorAddress
+      timestamp
+      txHash
+    }
+    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
+      holders
+      maxTotalSupply
+      price
+      priceChange
+      priceNative
+      totalTransfers
+      fullyDilutedValuation
+      holdersChange
+      holdersChart {
+        timestamp
+        value
       }
     }
   }
