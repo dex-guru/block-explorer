@@ -65,7 +65,11 @@ export const CHAIN_STATS = gql`
       networkId
       rpc
       shortName
-      relatives
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -979,6 +983,10 @@ query ChainConfig {
     networkId
     rpc
     shortName
-    relatives
+    relatives {
+      name
+      standard
+      url
+    }
   }
 }`
