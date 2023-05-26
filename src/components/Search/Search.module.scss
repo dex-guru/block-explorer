@@ -11,10 +11,6 @@
   border-radius: 8px;
   position: relative;
   z-index: 10;
-
-  @media (min-width: 840.1px) {
-    max-width: 640px;
-  }
 }
 
 .combo {
@@ -71,6 +67,14 @@
   background: none;
   border: none;
   color: var(--color-search-action);
+  opacity: 1;
+  visibility: visible;
+  transition: 0.25s ease;
+
+  &:disabled {
+    opacity: 0;
+    visibility: hidden;
+  }
 
   &:focus,
   &:hover {

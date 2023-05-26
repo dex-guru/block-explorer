@@ -70,6 +70,7 @@ export type CsrStatsModel = {
 
 export type ChainConfigModel = {
   __typename?: 'ChainConfigModel';
+  blockTime: Scalars['Int'];
   chain: Scalars['String'];
   chainColor: Scalars['String'];
   chainId: Scalars['Int'];
@@ -83,6 +84,7 @@ export type ChainConfigModel = {
   name: Scalars['String'];
   nativeCurrency: NativeCurrencyModel;
   networkId: Scalars['Int'];
+  relatives: Array<ExplorerModel>;
   rpc: Array<Scalars['String']>;
   shortName: Scalars['String'];
 };
@@ -94,6 +96,7 @@ export type ChainFeatureModel = {
 
 export type ChainStatsModel = {
   __typename?: 'ChainStatsModel';
+  activeAddressesCount: Scalars['Decimal'];
   lastBlockNumber: Scalars['Int'];
   liquidity24hDelta: Scalars['Decimal'];
   liquidityUsd: Scalars['Decimal'];
@@ -101,6 +104,7 @@ export type ChainStatsModel = {
   mediumGasPrice: Scalars['Decimal'];
   nativeTokenPriceUsd: Scalars['Decimal'];
   nativeTokenPriceUsd24hDelta: Scalars['Decimal'];
+  smartContractsCount: Scalars['Decimal'];
   tokenSupply: Scalars['Decimal'];
   transactionsCount: Scalars['Int'];
   transactionsCountHistory: Array<TimeSeriesChartModel>;
@@ -704,6 +708,7 @@ export type CsrStatsModelResolvers<ContextType = any, ParentType extends Resolve
 }>;
 
 export type ChainConfigModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainConfigModel'] = ResolversParentTypes['ChainConfigModel']> = ResolversObject<{
+  blockTime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   chain?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chainColor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -717,6 +722,7 @@ export type ChainConfigModelResolvers<ContextType = any, ParentType extends Reso
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nativeCurrency?: Resolver<ResolversTypes['NativeCurrencyModel'], ParentType, ContextType>;
   networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  relatives?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>;
   rpc?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   shortName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -728,6 +734,7 @@ export type ChainFeatureModelResolvers<ContextType = any, ParentType extends Res
 }>;
 
 export type ChainStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainStatsModel'] = ResolversParentTypes['ChainStatsModel']> = ResolversObject<{
+  activeAddressesCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   lastBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   liquidity24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   liquidityUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
@@ -735,6 +742,7 @@ export type ChainStatsModelResolvers<ContextType = any, ParentType extends Resol
   mediumGasPrice?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   nativeTokenPriceUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   nativeTokenPriceUsd24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  smartContractsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   tokenSupply?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   transactionsCountHistory?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>;

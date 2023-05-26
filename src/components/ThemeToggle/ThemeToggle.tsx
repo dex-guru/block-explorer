@@ -1,31 +1,36 @@
-import { ChangeEventHandler, FC, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC } from 'react'
 import clsx from 'clsx'
 import { Theme, ThemeToggleProps } from './types'
 import styles from './ThemeToggle.module.scss'
 
-const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
-  const [initialValue, setInitialValue] = useState<string>('')
+export const THEME_STORAGE_NAME = 'blockExplorerSelectedTheme'
 
+const getCurrentTheme = (): string => {
+  const value = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue('content')
+    .replace(/"/g, '')
+
+  return value
+}
+
+const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
   const doThemeChange = (value: Theme): void => {
     document.documentElement.classList.remove('theme-dark', 'theme-light')
     document.documentElement.classList.add(`theme-${value}`)
   }
 
-  useEffect(() => {
-    const value = window
-      .getComputedStyle(document.documentElement)
-      .getPropertyValue('content')
-      .replace(/"/g, '')
+  const savedTheme = localStorage.getItem(THEME_STORAGE_NAME)
+  const currentTheme = savedTheme || getCurrentTheme()
 
-    setInitialValue(value)
-
-    if (value) {
-      doThemeChange(value === Theme.dark ? Theme.dark : Theme.light)
-    }
-  }, [])
+  if (savedTheme !== currentTheme) {
+    doThemeChange(savedTheme as Theme)
+  }
 
   const handleThemeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = !!e.target?.checked ? Theme.dark : Theme.light
+    const value = e.target?.checked ? Theme.dark : Theme.light
+
+    localStorage.setItem(THEME_STORAGE_NAME, value)
 
     onChange && onChange(value)
     doThemeChange(value)
@@ -35,7 +40,7 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
     <label className={clsx('theme-toggle', styles['theme-toggle'], className)}>
       <input
         type="checkbox"
-        defaultChecked={initialValue === Theme.dark ? true : false}
+        defaultChecked={currentTheme === Theme.dark}
         className={clsx(
           'theme-toggle__control',
           styles['theme-toggle__control']

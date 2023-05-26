@@ -72,7 +72,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         {isAddress(address) && !tokenHoldingsStats && (
           <Empty
             icon={<IconSearch />}

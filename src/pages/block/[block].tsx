@@ -40,7 +40,7 @@ const Block: NextPage<IBlockProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         {!isValidBlockNumber(block) && <Error title="This is not a block" />}
 
         {!data?.number && isValidBlockNumber(block) && (

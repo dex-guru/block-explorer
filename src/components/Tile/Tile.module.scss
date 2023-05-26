@@ -1,10 +1,11 @@
 .container {
   text-align: left;
-  font-weight: 500;
   display: flex;
   gap: 12px;
-  font-weight: 400;
   max-width: 100%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .icon {
@@ -27,8 +28,6 @@
 
 .title {
   font-weight: 400;
-  font-size: 16px;
-  line-height: 20px;
 }
 
 .subtitle {
