@@ -8,7 +8,7 @@ export type DataTableProps<T> = ITableProps<T> & {
   children?: ReactNode | ReactNode[]
   empty?: EmptyProps
 
+  onPageChange: (variables: PaginationVariables) => void
   total?: number
   perPage?: number
-  onPageChange?: (variables: PaginationVariables) => void
 }

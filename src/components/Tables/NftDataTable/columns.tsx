@@ -1,3 +1,4 @@
+import styles from '../../../pages/Pages.module.scss'
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
@@ -14,6 +15,12 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
     accessor: 'operatorAddress',
     title: 'Operator Address',
     modifier: 'address',
+    render: (data) =>
+      data.operatorAddress ? (
+        <Address address={data.operatorAddress} type="account" isCopy />
+      ) : (
+        <span className={styles.muted}>–</span>
+      ),
   },
   {
     accessor: 'blockTimestamp',

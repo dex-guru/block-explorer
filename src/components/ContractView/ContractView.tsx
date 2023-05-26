@@ -60,7 +60,7 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
   ssr: false,
 })
-const EventsTable = dynamic(() => import('../Tables/EventsTable'), {
+const EventsDataTable = dynamic(() => import('../Tables/EventsDataTable'), {
   ssr: false,
 })
 
@@ -412,7 +412,7 @@ const ContractView: FC<IContractViewProps> = ({
                   to: { pathname, query: { tab: 'events' } },
                   content: (
                     <Suspense>
-                      <EventsTable address={address} />
+                      <EventsDataTable address={address} />
                     </Suspense>
                   ),
                 },

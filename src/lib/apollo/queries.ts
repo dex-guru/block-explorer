@@ -921,8 +921,23 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
 `
 
 export const GET_LOGS_BY_ADDRESS = gql`
-  query Logs($address: String) {
-    logs(address: $address, chainId: ${CHAIN_ID}) {
+  query Logs(
+    $first: Long
+    $skip: Long
+    $address: String!
+  ) {
+    address (
+      address: $address
+      chainId: ${CHAIN_ID}
+    ) {
+      receiptLogsCount
+    }
+    logs(
+      first: $first
+      skip: $skip
+      address: $address
+      chainId: ${CHAIN_ID}
+    ) {
       address
       blockHash
       blockNumber
