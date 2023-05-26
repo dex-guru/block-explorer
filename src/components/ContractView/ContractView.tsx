@@ -156,21 +156,22 @@ const ContractView: FC<IContractViewProps> = ({
       value: 'code',
       to: `${pathname}?tab=code`,
     },
-    ...(abi
-      ? [
-          {
-            title: 'Read Contract',
-            value: 'readContract',
-            to: `${pathname}?tab=readContract`,
-          },
-          {
-            title: 'Write Contract',
-            value: 'writeContract',
-            to: `${pathname}?tab=writeContract`,
-          },
-        ]
-      : []),
   ]
+
+  if (abi) {
+    contractTabs.push(
+      {
+        title: 'Read Contract',
+        value: 'readContract',
+        to: `${pathname}?tab=readContract`,
+      },
+      {
+        title: 'Write Contract',
+        value: 'writeContract',
+        to: `${pathname}?tab=writeContract`,
+      }
+    )
+  }
 
   return (
     <WagmiConfig client={wagmiClient}>
