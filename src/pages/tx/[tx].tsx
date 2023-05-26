@@ -41,12 +41,17 @@ const TxPage: NextPage<ITxProps> = (props) => {
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore transaction ${
+            props.data?.hash || ''
+          } to see what happened with token balances and smart contracts in this TX.`}
+        />
         <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={props.chainConfig}>
+      <Page chainConfig={props.chainConfig}>
         {!props.data?.hash && (
           <Empty icon={<IconEmpty />} title="No TX was found" />
         )}

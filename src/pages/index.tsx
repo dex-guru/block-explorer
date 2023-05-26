@@ -89,9 +89,9 @@ const Index: NextPage<IndexProps> = (props) => {
           suffix={
             <>
               &nbsp;
-              {financialFormatLowValueHighPrecision(
-                stats.transactionsPerSecond
-              )}{' '}
+              {financialFormat(stats.transactionsPerSecond, {
+                decimals: 2,
+              })}{' '}
               txs/sec
             </>
           }
@@ -147,15 +147,14 @@ const Index: NextPage<IndexProps> = (props) => {
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Discover the power of ${chainConfig.name} blockchain with our reliable block explorer. Track transactions, explore blocks, and view network statistics in real time. Perfect for beginners and experts alike.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={props.chainConfig}>
-        <Banner>
-          <Search className={styles.searchMain} />
-        </Banner>
-
         {!!stats && (
           <Summary
             stats={statsDisplay}

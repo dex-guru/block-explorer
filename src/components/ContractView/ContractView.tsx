@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
 import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -12,12 +13,15 @@ import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
-import { generateLineChartData } from '../LineChart/utils'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
+import {
+  ContractCreatorModel,
+  TokenBalancesStatsModel,
+} from '@/__generated__/resolvers-types'
 import {
   Address,
   Avatar,
@@ -40,6 +44,7 @@ import {
 import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
+import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 
@@ -64,10 +69,13 @@ const ContractView: FC<IContractViewProps> = ({
   tab,
   addressInfo,
   chain,
-  contractCreator,
   tokenHoldingsStats,
-  balancesStats,
 }) => {
+  const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
+
+  const contractCreator: ContractCreatorModel = data?.contractCreator
+  const balancesStats: TokenBalancesStatsModel = data?.balancesStats
+
   const { chains, provider } = useMemo(() => {
     const currentChain = {
       id: chain.config.chainId,
@@ -148,13 +156,18 @@ const ContractView: FC<IContractViewProps> = ({
         <Head>
           <title>{pageTitle}</title>
           <link rel="icon" href={chain.config.icon} />
-          <meta name="description" content="Block Explorer" />
+          <meta
+            name="description"
+            content={`Explore smart contract ${
+              addressInfo.name || addressInfo.address
+            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
+          />
         </Head>
-        <Page withSearch chainConfig={chain.config}>
+        <Page chainConfig={chain.config}>
           <DetailsView
             icon={<Avatar address={address} />}
             title="Contract"
-            address={address}
+            address={checkSumAddress}
             tag="Token Contract"
           >
             <Grid>
@@ -257,11 +270,12 @@ const ContractView: FC<IContractViewProps> = ({
                           />
                           <LineChart
                             className={styles.holdersChart}
-                            data={generateLineChartData(holdersSeries || [])}
-                            series={holdersSeries}
+                            data={holdersSeries}
                             options={{
                               axis: {
                                 x: {
+                                  type: 'number',
+                                  dataKey: 'timestamp',
                                   hide: true,
                                   tickFormatter: (value: number) => {
                                     const date = new Date(value * 1000)

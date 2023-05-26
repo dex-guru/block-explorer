@@ -35,12 +35,15 @@ const Block: NextPage<IBlockProps> = ({
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore block number ${block} to see included transactions.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         {!isValidBlockNumber(block) && <Error title="This is not a block" />}
 
         {!data?.number && isValidBlockNumber(block) && (

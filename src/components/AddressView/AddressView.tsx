@@ -54,9 +54,12 @@ const AddressView: FC<IAddressViewProps> = ({
       <Head>
         <title>{pageTitle}</title>
         <link rel="icon" href={chain.config.icon} />
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore ${checkSumAddress} to track recent transactions, explore token balances held by this wallet, and view account activity in real time.`}
+        />
       </Head>
-      <Page withSearch chainConfig={chain.config}>
+      <Page chainConfig={chain.config}>
         {!addressInfo?.address && isAddress(address) && (
           <Empty
             icon={<IconSearch />}
@@ -106,7 +109,7 @@ const AddressView: FC<IAddressViewProps> = ({
                     value: (
                       <AddressWallet
                         className={styles.addressWallet}
-                        address={address}
+                        address={checkSumAddress}
                         tokenHoldingsStats={tokenHoldingsStats}
                       />
                     ),

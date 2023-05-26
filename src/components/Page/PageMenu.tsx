@@ -1,20 +1,23 @@
 import { FC, useState } from 'react'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
-import { IconCross, IconMenu } from '..'
 import { clsx } from 'clsx'
 import Button from '../Button'
+import { IconCross, IconMenu } from '@/components'
 import styles from './PageMenu.module.scss'
 
 const PageMenu: FC<{
   links: (LinkProps & { caption: string; className?: string })[]
   className?: string
-}> = ({ links, className }) => {
+  onOpenChange?: (value: boolean) => void
+}> = ({ links, className, onOpenChange }) => {
   const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
+    document.documentElement.classList[isOpen ? 'remove' : 'add']('open-menu')
+    onOpenChange && onOpenChange(!isOpen)
     setIsOpen(!isOpen)
   }
 

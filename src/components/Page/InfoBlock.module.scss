@@ -1,21 +1,8 @@
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 5px 0;
-  width: 100%;
-  height: 24px;
-
+  transition: 0.25s ease;
   opacity: 1;
-  transition: opacity 0.25s ease;
-
-  &:empty {
-    opacity: 0;
-  }
 }
 
-.message {
-  @media (max-width: 640px) {
-    display: none;
-  }
+.loading {
+  opacity: 0;
 }

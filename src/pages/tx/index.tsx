@@ -12,12 +12,15 @@ const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
     <>
       <Head>
         <title>No TX hash</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore transactions to see what happened with token balances and smart contracts.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         <Error title="No TX hash was provided" />
       </Page>
     </>

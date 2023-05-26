@@ -8,6 +8,23 @@
   background: var(--color-page-bg);
   color: var(--color-page-text);
   min-height: 100vh;
+
+  --color-accent: hsl(
+    var(--color-accent-base-h),
+    var(--color-accent-base-s),
+    calc(var(--color-accent-base-l) + (var(--color-accent-shift) * 10%))
+  );
+  --color-accent-a: hsl(
+    var(--color-accent-base-h),
+    var(--color-accent-base-s),
+    calc(var(--color-accent-base-l) + (var(--color-accent-shift) * 20%))
+  );
+
+  --color-input-bg: transparent;
+  --color-input-border: var(--color-bg-3);
+  --color-input-text: var(--color-text);
+  --color-input-placeholder: var(--color-muted);
+  --color-input-focus: var(--color-accent);
 }
 
 .body {
@@ -27,7 +44,7 @@
   width: 100%;
   background: var(--color-bg-2);
   position: sticky;
-  top: -44px;
+  top: 0;
   z-index: 2;
   flex: 0 0 auto;
 }

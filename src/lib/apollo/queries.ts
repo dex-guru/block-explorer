@@ -65,6 +65,7 @@ export const CHAIN_STATS = gql`
       networkId
       rpc
       shortName
+      relatives
     }
   }
 `
@@ -109,6 +110,11 @@ export const GET_TRANSACTIONS_STATS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -178,6 +184,11 @@ export const GET_TRANSACTIONS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -241,6 +252,11 @@ export const GET_BLOCKS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -341,6 +357,11 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -391,6 +412,11 @@ export const GET_TRANSACTION_LOGS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -427,6 +453,11 @@ export const GET_TRANSACTION_TRACES = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -485,6 +516,11 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -531,6 +567,11 @@ export const GET_CSR_STATS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -544,30 +585,11 @@ export const GET_ADDRESS_INFO = gql`
       nativeBalance
       nativeBalanceUSD
     }
-    contractCreator(address: $address, chainId: ${CHAIN_ID}) {
-      creatorAddress
-      timestamp
-      txHash
-    }
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
       tokenCount
       totalNative
       totalStable
-    }
-    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
-      holders
-      maxTotalSupply
-      price
-      priceChange
-      priceNative
-      totalTransfers
-      fullyDilutedValuation
-      holdersChange
-      holdersChart {
-        timestamp
-        value
-      }
     }
     chainStats(chainId: ${CHAIN_ID}) {
       nativeTokenPriceUsd
@@ -599,6 +621,35 @@ export const GET_ADDRESS_INFO = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`
+
+export const GET_CONTRACT_INFO = gql`
+  query GetContractInfo($address: String!) {
+    contractCreator(address: $address, chainId: ${CHAIN_ID}) {
+      creatorAddress
+      timestamp
+      txHash
+    }
+    balancesStats(tokenAddress: $address, chainId: ${CHAIN_ID}) {
+      holders
+      maxTotalSupply
+      price
+      priceChange
+      priceNative
+      totalTransfers
+      fullyDilutedValuation
+      holdersChange
+      holdersChart {
+        timestamp
+        value
+      }
     }
   }
 `
@@ -638,6 +689,11 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -851,6 +907,11 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       networkId
       rpc
       shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
 `
@@ -918,5 +979,6 @@ query ChainConfig {
     networkId
     rpc
     shortName
+    relatives
   }
 }`
