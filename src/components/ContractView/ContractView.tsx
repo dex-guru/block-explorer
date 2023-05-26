@@ -150,6 +150,29 @@ const ContractView: FC<IContractViewProps> = ({
     },
   ]
 
+  const contractTabs = [
+    {
+      title: 'Code',
+      value: 'code',
+      to: `${pathname}?tab=code`,
+    },
+  ]
+
+  if (abi) {
+    contractTabs.push(
+      {
+        title: 'Read Contract',
+        value: 'readContract',
+        to: `${pathname}?tab=readContract`,
+      },
+      {
+        title: 'Write Contract',
+        value: 'writeContract',
+        to: `${pathname}?tab=writeContract`,
+      }
+    )
+  }
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
@@ -434,33 +457,21 @@ const ContractView: FC<IContractViewProps> = ({
                       contracts. You may lose your money!
                     </Message>
                   )}
+
                   <TabPanel
                     tabsClassName={tabsStyles.inner}
-                    tabs={[
-                      {
-                        title: 'Code',
-                        value: 'code',
-                        to: `${pathname}?tab=code`,
-                      },
-                      {
-                        title: 'Read Contract',
-                        value: 'readContract',
-                        to: `${pathname}?tab=readContract`,
-                      },
-                      {
-                        title: 'Write Contract',
-                        value: 'writeContract',
-                        to: `${pathname}?tab=writeContract`,
-                      },
-                    ]}
+                    tabs={contractTabs}
                     value={tab}
                   >
-                    {['readContract', 'writeContract'].includes(
-                      tab as string
-                    ) && <ConnectButton />}
-                    {tab === 'code' && (
+                    {abi &&
+                      ['readContract', 'writeContract'].includes(
+                        tab as string
+                      ) && <ConnectButton />}
+
+                    {(tab === 'code' || !abi) && (
                       <Files match={match} address={address} />
                     )}
+
                     {tab === 'readContract' && (
                       <>
                         {!!abi &&
