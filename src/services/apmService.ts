@@ -9,6 +9,9 @@ const apmServerUrl =
     : 'https://apm-stage-lax.dexguru.biz'
 
 export const initApm = (): ApmBase | undefined => {
+  if (apm) {
+    return apm
+  }
   apm = init({
     serviceName: `FE-block-explorer_${CHAIN_ID}`,
     serverUrl: apmServerUrl,
@@ -23,6 +26,13 @@ export const initApm = (): ApmBase | undefined => {
     environment: process.env.NODE_ENV,
   })
   return apm
+}
+
+export const sendApmError = (errorMessage: string): void => {
+  const apm = initApm()
+  if (apm) {
+    apm.captureError(errorMessage)
+  }
 }
 
 export default apm

@@ -14,6 +14,7 @@ import { RetryLink } from '@apollo/client/link/retry'
 import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { sendApmError } from '@/services/apmService'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -25,14 +26,13 @@ type SchemaContext =
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   graphQLErrors?.forEach(({ message, locations, path }) => {
-    // just console the error for now
-    console.error(
-      `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-    )
+    const errorMessage = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+    sendApmError(errorMessage)
+    console.error(errorMessage)
   })
 
   if (networkError) {
-    // just console the error for now
+    sendApmError(`[Network error]: ${networkError}`)
     console.error(`[Network error]: ${networkError}`)
   }
 })
