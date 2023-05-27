@@ -22,10 +22,7 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
 
   const savedTheme = localStorage.getItem(THEME_STORAGE_NAME)
   const currentTheme = savedTheme || getCurrentTheme()
-
-  if (savedTheme !== currentTheme) {
-    doThemeChange(savedTheme as Theme)
-  }
+  doThemeChange(currentTheme as Theme)
 
   const handleThemeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target?.checked ? Theme.dark : Theme.light

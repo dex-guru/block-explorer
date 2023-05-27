@@ -35,6 +35,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
+  const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
+
   const pageTitle = `Transaction ${props.data?.hash || 'not found'}`
 
   return (
@@ -94,7 +96,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   ),
                 },
               ]}
-              value={tab || ''}
+              value={currentTab}
             />
           </DetailsView>
         )}

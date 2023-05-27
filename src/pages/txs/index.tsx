@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState } from 'react'
+import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -34,9 +34,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   const router = useRouter()
   const { tab } = router.query
 
-  const onlyTab = Array.isArray(tab) ? tab[0] : tab
-
-  const [currentTab, setCurrentTab] = useState(onlyTab || '')
+  const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
   const pathname = router.asPath.split('?')[0]
 
@@ -54,10 +52,6 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
       ),
     },
   ]
-
-  const handleChangeTab = (value: string) => {
-    setCurrentTab(value || '')
-  }
 
   if (!block) {
     tabs.push(
@@ -156,7 +150,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
             />
           )}
 
-          <TabPanel value={currentTab} tabs={tabs} onChange={handleChangeTab} />
+          <TabPanel value={currentTab} tabs={tabs} />
         </DetailsView>
       </Page>
     </>

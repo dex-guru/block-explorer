@@ -4,6 +4,7 @@ import { UrlObject } from 'url'
 export interface Tab<T> {
   title: string
   value: T
+  isActive?: boolean
   icon?: ReactNode
   indicator?: ReactNode
   disabled?: boolean
