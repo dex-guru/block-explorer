@@ -2,7 +2,6 @@ import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import Button from '../Button'
-import { SocialType } from '../Socials'
 import { Socials } from '@/components'
 import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
@@ -21,17 +20,7 @@ const PageFooter: FC = () => {
             document.documentElement.scrollTo(0, 0)
           }}
         />
-        <Socials
-          className={styles.socials}
-          socials={[
-            { type: SocialType.twitter, url: 'https://twitter.com/dexguru' },
-            { type: SocialType.telegram, url: 'https://t.me/dexguru' },
-            {
-              type: SocialType.discord,
-              url: 'https://discord.gg/dPW8fzwzz9',
-            },
-          ]}
-        />
+        <Socials className={styles.socials} />
       </div>
       <div className={styles.body}>
         <div className={styles.about}>

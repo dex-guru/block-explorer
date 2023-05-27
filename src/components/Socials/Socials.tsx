@@ -1,33 +1,42 @@
-import { FC, Suspense, lazy } from 'react'
+import { FC } from 'react'
 import clsx from 'clsx'
 import { SocialsProps } from './types'
+import IconDiscord from '@/images/socials/discord.svg'
+import IconTelegram from '@/images/socials/telegram.svg'
+import IconTwitter from '@/images/socials/twitter.svg'
 import styles from './Socials.module.scss'
 
-const Socials: FC<SocialsProps> = ({ className, socials }) => {
+const Socials: FC<SocialsProps> = ({ className }) => {
   return (
     <nav className={clsx(styles.container, className)}>
       <ul className={styles.list}>
-        {socials.map((social, idx) => {
-          const Icon = lazy(() =>
-            import(`@/images/socials/${social.type}.svg`).catch(() => ({
-              default: () => social.type,
-            }))
-          )
-
-          return (
-            <li key={idx} className={styles.item}>
-              <a
-                href={social.url}
-                rel="noreferrer noopener"
-                className={styles.link}
-              >
-                <Suspense fallback={<span className={styles.icon} />}>
-                  <Icon className={clsx(styles.icon, styles[social.type])} />
-                </Suspense>
-              </a>
-            </li>
-          )
-        })}
+        <li className={styles.item}>
+          <a
+            href="https://twitter.com/dexguru"
+            rel="noreferrer noopener"
+            className={styles.link}
+          >
+            <IconTwitter className={styles.icon} />
+          </a>
+        </li>
+        <li className={styles.item}>
+          <a
+            href="https://t.me/dexguru"
+            rel="noreferrer noopener"
+            className={styles.link}
+          >
+            <IconTelegram className={styles.icon} />
+          </a>
+        </li>
+        <li className={styles.item}>
+          <a
+            href="https://discord.gg/dPW8fzwzz9"
+            rel="noreferrer noopener"
+            className={styles.link}
+          >
+            <IconDiscord className={styles.icon} />
+          </a>
+        </li>
       </ul>
     </nav>
   )

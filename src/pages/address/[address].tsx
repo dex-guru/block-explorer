@@ -17,7 +17,6 @@ interface AddressPageServerProps {
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
   tokenHoldingsStats: TokenHoldingsStatsModel
-  tab: string
 }
 
 const AddressPage: NextPage<AddressPageServerProps> = ({
@@ -25,10 +24,9 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   chainStats,
   chainConfig,
   tokenHoldingsStats,
-  tab,
 }) => {
   const router = useRouter()
-  const { address } = router.query
+  const { address, tab } = router.query
 
   if (!address) {
     return null
@@ -66,7 +64,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { address, tab } = ctx.query as { address: string; tab: string }
+  const { address } = ctx.query as { address: string; tab: string }
 
   const apolloClient = initializeApollo({ ctx })
 
@@ -98,6 +96,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   return addApolloState(apolloClient, {
-    props: { ...data, tab: tab || '' },
+    props: { ...data },
   })
 }
