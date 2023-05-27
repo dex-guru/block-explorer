@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
-import clsx from 'clsx'
-import pageStyles from '../../../pages/Pages.module.scss'
 import { lastTxsColumns } from './columns'
 import {
   ChainConfigModel,
@@ -9,15 +7,17 @@ import {
 } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { TRANSACTIONS_LAST } from '@/lib/apollo/queries'
-import { ITEMS_PER_PAGE } from '@/pages'
 import styles from './ShortTxs.module.scss'
 
 interface IShortTxsTableProps {
+  data: TransactionModel[]
   chainConfig: ChainConfigModel
 }
 
 export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
-  const [transactions, setTransactions] = useState<TransactionModel[] | null>()
+  const [transactions, setTransactions] = useState<TransactionModel[]>(
+    props.data
+  )
 
   const { data, loading } = useQuery<{
     transactions: TransactionModel[]
@@ -34,11 +34,9 @@ export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
   return (
     <Table
       columns={lastTxsColumns(props.chainConfig)}
-      data={transactions || [...Array(ITEMS_PER_PAGE)]}
+      data={transactions}
       showHeader={false}
-      className={clsx(styles.cardChild, {
-        [pageStyles.tablePreloader]: !transactions,
-      })}
+      className={styles.cardChild}
       getRowKey={transactions ? (data) => data.hash : undefined}
     />
   )
