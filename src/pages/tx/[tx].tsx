@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -35,7 +35,14 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
+  const onlyTab = Array.isArray(tab) ? tab[0] : tab
+  const [currentTab, setCurrentTab] = useState(onlyTab || '')
+
   const pageTitle = `Transaction ${props.data?.hash || 'not found'}`
+
+  const handleChangeTab = (value: string) => {
+    setCurrentTab(value || '')
+  }
 
   return (
     <>
@@ -94,7 +101,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   ),
                 },
               ]}
-              value={tab || ''}
+              onChange={handleChangeTab}
+              value={currentTab}
             />
           </DetailsView>
         )}

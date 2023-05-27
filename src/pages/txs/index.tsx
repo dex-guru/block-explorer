@@ -35,7 +35,6 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   const { tab } = router.query
 
   const onlyTab = Array.isArray(tab) ? tab[0] : tab
-
   const [currentTab, setCurrentTab] = useState(onlyTab || '')
 
   const pathname = router.asPath.split('?')[0]

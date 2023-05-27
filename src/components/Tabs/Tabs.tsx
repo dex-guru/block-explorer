@@ -25,7 +25,7 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
   const renderTabs = () => {
     return tabs.map((item, index) => {
       const isActive =
-        (Array.isArray(item.value) && item.value.includes(currentValue)) ||
+        item.isActive ||
         item.value === currentValue ||
         (item.value === ('' as unknown as T) && // tab with value '' shouldn't have url query param
           currentValue === undefined)
