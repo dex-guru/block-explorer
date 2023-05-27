@@ -1,10 +1,8 @@
-/* eslint-disable */
 import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
-import clsx from 'clsx'
 import {
   BlockModel,
   ChainConfigModel,
@@ -13,8 +11,7 @@ import {
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Banner, Card, Grid, Page, Summary, Table, Value } from '@/components'
-import Search from '@/components/Search'
+import { Card, Grid, Page, Summary, Table, Value } from '@/components'
 import {
   BlockModelWithTimeDiff,
   lastBlocksColumns,
@@ -22,7 +19,6 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
-import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -36,6 +32,8 @@ import {
 import styles from './Pages.module.scss'
 
 interface IndexProps {
+  transactions: TransactionModel[]
+  blocks: BlockModelWithTimeDiff[]
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
@@ -46,7 +44,7 @@ export const ITEMS_PER_PAGE = 10
 
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
-  const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[] | null>(null)
+  const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
 
   const [isCosmos, setIsCosmos] = useState(false)
 
@@ -142,7 +140,9 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     })
 
-  const pageTitle = `${chainConfig.name} Block Explorer`
+  const pageTitle = `${chainConfig.name}${
+    chainConfig.chain ? ` ${chainConfig.chain}` : ''
+  } Block Explorer`
   return (
     <>
       <Head>
@@ -181,12 +181,10 @@ const Index: NextPage<IndexProps> = (props) => {
           >
             <Table
               columns={lastBlocksColumns}
-              data={blocks || [...Array(ITEMS_PER_PAGE)]}
+              data={blocks}
               showHeader={false}
-              className={clsx(styles.cardChild, {
-                [styles.tablePreloader]: !blocks,
-              })}
-              getRowKey={blocks ? (data) => data?.number.toString() : undefined}
+              className={styles.cardChild}
+              getRowKey={(data) => data.number.toString()}
             />
           </Card>
 
@@ -218,9 +216,16 @@ const Index: NextPage<IndexProps> = (props) => {
                 : undefined
             }
           >
-            {isCosmos && <ShortCosmosTxsTable />}
+            {isCosmos && (
+              <ShortCosmosTxsTable data={props.cosmosTransactions} />
+            )}
 
-            {!isCosmos && <ShortTxsTable chainConfig={chainConfig} />}
+            {!isCosmos && (
+              <ShortTxsTable
+                data={props.transactions}
+                chainConfig={chainConfig}
+              />
+            )}
           </Card>
         </Grid>
       </Page>
@@ -239,8 +244,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
   return addApolloState(apolloClient, {
     props: {
+      transactions: data.transactions,
+      blocks: blocksWithTimeDiff,
       chainStats: data.chainStats,
       csrStats: data.csrStats || null,
       chainConfig: data.chainConfig,

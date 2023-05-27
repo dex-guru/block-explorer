@@ -825,6 +825,7 @@ export const GET_ERC721_BY_ADDRESS = gql`
     }
   }
 `
+
 export const GET_ERC20_BY_ADDRESS = gql`
   query Erc20ByAddress(
     $first: Long
@@ -858,7 +859,28 @@ export const GET_ERC20_BY_ADDRESS = gql`
 `
 
 export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
-  query MainPageData {
+  query MainPageData(
+    $first: Long!
+    $skip: Long!
+  ) {
+    blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
+      hash
+      number
+      miner
+      transactionCount
+      timestamp
+      gasUsed
+      gasLimit
+    }
+    transactions(first: $first, skip:  $skip, chainId: ${CHAIN_ID}) {
+      hash
+      blockHash
+      blockNumber
+      blockTimestamp
+      fromAddress
+      toAddress
+      value
+    }
     chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
       liquidity24hDelta

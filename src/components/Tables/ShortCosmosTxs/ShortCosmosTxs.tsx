@@ -1,18 +1,19 @@
 import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
-import clsx from 'clsx'
-import pageStyles from '../../../pages/Pages.module.scss'
 import { cosmosTxsColumns } from './columns'
 import { CosmosTransactionModel } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { GET_COSMOS_TRANSACTIONS } from '@/lib/apollo/queries'
-import { ITEMS_PER_PAGE } from '@/pages'
 import styles from './ShortCosmos.module.scss'
 
-export const ShortCosmosTxsTable: FC = () => {
+interface IShortCosmosTxsTableProps {
+  data: CosmosTransactionModel[]
+}
+
+export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
   const [cosmosTransactions, setCosmosTransactions] = useState<
-    CosmosTransactionModel[] | null
-  >()
+    CosmosTransactionModel[]
+  >(props.data)
 
   const { data, loading } = useQuery<{
     cosmos: { transactions: CosmosTransactionModel[] }
@@ -29,12 +30,10 @@ export const ShortCosmosTxsTable: FC = () => {
   return (
     <Table
       columns={cosmosTxsColumns()}
-      data={cosmosTransactions || [...Array(ITEMS_PER_PAGE)]}
+      data={cosmosTransactions}
       showHeader={false}
-      className={clsx(styles.cardChild, {
-        [pageStyles.tablePreloader]: !cosmosTransactions,
-      })}
-      getRowKey={cosmosTransactions ? (data) => data.hash : undefined}
+      className={styles.cardChild}
+      getRowKey={(data) => data.hash}
     />
   )
 }
