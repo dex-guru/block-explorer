@@ -7,7 +7,6 @@ import {
   BlockModel,
   ChainConfigModel,
   ChainStatsModel,
-  CosmosTransactionModel,
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -37,7 +36,6 @@ interface IndexProps {
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
-  cosmosTransactions: CosmosTransactionModel[]
 }
 
 export const ITEMS_PER_PAGE = 10
@@ -216,9 +214,7 @@ const Index: NextPage<IndexProps> = (props) => {
                 : undefined
             }
           >
-            {isCosmos && (
-              <ShortCosmosTxsTable data={props.cosmosTransactions} />
-            )}
+            {isCosmos && <ShortCosmosTxsTable />}
 
             {!isCosmos && (
               <ShortTxsTable
@@ -252,7 +248,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       chainStats: data.chainStats,
       csrStats: data.csrStats || null,
       chainConfig: data.chainConfig,
-      cosmosTransactions: data?.cosmos?.transactions || null,
     },
   })
 }

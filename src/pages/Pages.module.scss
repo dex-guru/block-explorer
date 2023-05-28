@@ -177,7 +177,7 @@
 }
 
 .tablePreloader {
-  tr > * {
+  tr {
     visibility: hidden;
     pointer-events: none;
     animation: none;
@@ -192,8 +192,10 @@
   }
 
   a,
+  [class^='Address_container__'],
   [class='value'] {
     position: relative;
+    min-width: 6em;
 
     &:after {
       content: '';

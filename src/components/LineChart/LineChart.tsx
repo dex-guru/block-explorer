@@ -80,8 +80,8 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
     return null
   }
 
-  const hasLeftAxis = data.filter((el) => el.yAxis !== 'right')
-  const hasRightAxis = data.filter((el) => el.yAxis === 'right')
+  const hasLeftAxis = !!data.filter((el) => el.yAxis !== 'right').length
+  const hasRightAxis = !!data.filter((el) => el.yAxis === 'right').length
 
   return (
     <ResponsiveContainer
@@ -89,7 +89,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
       height="100%"
       className={clsx(styles.container, className)}
     >
-      <Chart data={chartData} className={styles.chart} height={100} width={100}>
+      <Chart data={chartData} className={styles.chart}>
         {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
@@ -107,6 +107,8 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
           <YAxis
             {...options?.axis?.y}
             className={clsx(
+              'yAxis',
+              'yAxis-left',
               styles.axisY,
               styles.axisYLeft,
               options?.axis?.y?.className
@@ -119,6 +121,8 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
           <YAxis
             {...options?.axis?.y}
             className={clsx(
+              'yAxis',
+              'yAxis-right',
               styles.axisY,
               styles.axisYRight,
               options?.axis?.y?.className
