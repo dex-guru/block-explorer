@@ -240,14 +240,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(
+    data?.blocks || [],
+    ITEMS_PER_PAGE
+  )
+
   return addApolloState(apolloClient, {
     props: {
-      transactions: data.transactions,
+      ...data,
       blocks: blocksWithTimeDiff,
-      chainStats: data.chainStats,
-      csrStats: data.csrStats || null,
-      chainConfig: data.chainConfig,
     },
   })
 }
