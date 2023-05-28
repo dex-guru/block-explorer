@@ -2,17 +2,26 @@ import { FC } from 'react'
 import { useQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { cosmosTxsColumns } from './columns'
-import { CosmosTransactionModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  CosmosTransactionModel,
+} from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { GET_COSMOS_TRANSACTIONS } from '@/lib/apollo/queries'
 import { ITEMS_PER_PAGE } from '@/pages'
 import styles from './ShortCosmos.module.scss'
 
-export const ShortCosmosTxsTable: FC = () => {
+interface IShortCosmosTxsTableProps {
+  chainConfig: ChainConfigModel
+}
+
+export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
   const { data, previousData } = useQuery<{
     cosmos: { transactions: CosmosTransactionModel[] }
   }>(GET_COSMOS_TRANSACTIONS, {
-    pollInterval: Number(process.env.pollInterval),
+    pollInterval: Number(
+      props.chainConfig?.blockTime || process.env.pollInterval
+    ),
   })
 
   const hasData = data?.cosmos.transactions || previousData?.cosmos.transactions

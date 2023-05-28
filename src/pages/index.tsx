@@ -50,7 +50,7 @@ const Index: NextPage<IndexProps> = (props) => {
     GET_BLOCKS_SHORT,
     {
       variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
-      pollInterval: Number(process.env.pollInterval),
+      pollInterval: Number(chainConfig?.blockTime || process.env.pollInterval),
     }
   )
 
@@ -214,7 +214,7 @@ const Index: NextPage<IndexProps> = (props) => {
                 : undefined
             }
           >
-            {isCosmos && <ShortCosmosTxsTable />}
+            {isCosmos && <ShortCosmosTxsTable chainConfig={chainConfig} />}
 
             {!isCosmos && (
               <ShortTxsTable
