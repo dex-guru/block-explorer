@@ -37,6 +37,7 @@ const NetworkSelect: FC<NetworkSelectProps> = ({
           className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
         />
       </div>
+
       {isOpen && (
         <div className={styles.dropdown}>
           <ul className={styles.list}>
