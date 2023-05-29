@@ -130,12 +130,14 @@ const ContractView: FC<IContractViewProps> = ({
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, CHAIN_ID)
 
+  const isMatchLoading = match === undefined
+
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
-  const hasSources = match?.metadata?.sources || undefined
+  const hasSources = !!match?.metadata?.sources
 
   const isSubTab =
-    tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+    !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = `Contract ${checkSumAddress}`
@@ -403,7 +405,8 @@ const ContractView: FC<IContractViewProps> = ({
                 {
                   title: 'Contract',
                   indicator: hasSources && <IconVerify />,
-                  value: ['code', 'readContract', 'writeContract'],
+                  value: 'code',
+                  isActive: isSubTab,
                   to: `${pathname}?tab=code`,
                 },
                 {
@@ -449,7 +452,7 @@ const ContractView: FC<IContractViewProps> = ({
 
               {isSubTab && (
                 <Card>
-                  {!match?.metadata?.sources && (
+                  {!isMatchLoading && !hasSources && (
                     <Message type="danger">
                       This smart contract isn&apos;t verified, but we have a
                       matching hash for the smart contract. Make sure you

@@ -12,7 +12,8 @@ export interface IFilesProps {
   address: string
 }
 const Files: FC<IFilesProps> = ({ match, address }) => {
-  const hasSources = match?.metadata?.sources || undefined
+  const isMatchLoaded = match !== undefined
+  const hasSources = !!match?.metadata?.sources
   const [bytecode, setBytecode] = useState('')
   const [isLoadingSources, setIsLoadingSources] = useState(false)
   const provider = useProvider()
@@ -50,55 +51,69 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <>
-      <Properties data={properties} />
-      {match?.metadata?.output.abi && (
-        <>
-          <Heading size="md">ABI</Heading>
-          <SyntaxHighlighter
-            className={styles.code}
-            language="json"
-            wrapLongLines
-            showLineNumbers
-          >
-            {JSON.stringify(match?.metadata?.output.abi, null, '  ') ?? ''}
-          </SyntaxHighlighter>
-        </>
-      )}
+  const renderFiles = () => {
+    if (!isMatchLoaded) {
+      return <LoadingCard />
+    }
 
-      {match?.metadata?.sources && (
-        <>
-          <Heading size="md">Source files</Heading>
-          {Object.keys(match.metadata?.sources).map((key) => {
-            const sourcecode = match.metadata?.sources[key].content
-            if (!sourcecode) {
-              return null
-            }
-            const filename = key.split('/').pop()
-            return (
-              <Details title={filename || ''} key={key}>
-                <SyntaxHighlighter
-                  language="solidity"
-                  showLineNumbers
-                  wrapLongLines
-                  className={styles.code}
-                >
-                  {sourcecode}
-                </SyntaxHighlighter>
-              </Details>
-            )
-          })}
-        </>
-      )}
-
-      {!hasSources && (
+    if (!hasSources) {
+      return (
         <>
           <Heading size="md">Bytecode</Heading>
           {isLoadingSources && <LoadingCard />}
           {bytecode && <Code>{bytecode}</Code>}
         </>
-      )}
+      )
+    }
+
+    return (
+      <>
+        {match?.metadata?.output.abi && (
+          <>
+            <Heading size="md">ABI</Heading>
+            <SyntaxHighlighter
+              className={styles.code}
+              language="json"
+              wrapLongLines
+              showLineNumbers
+            >
+              {JSON.stringify(match?.metadata?.output.abi, null, '  ') ?? ''}
+            </SyntaxHighlighter>
+          </>
+        )}
+
+        {hasSources && (
+          <>
+            <Heading size="md">Source files</Heading>
+            {Object.keys(match.metadata?.sources).map((key) => {
+              const sourcecode = match.metadata?.sources[key].content
+              if (!sourcecode) {
+                return null
+              }
+              const filename = key.split('/').pop()
+              return (
+                <Details title={filename || ''} key={key}>
+                  <SyntaxHighlighter
+                    language="solidity"
+                    showLineNumbers
+                    wrapLongLines
+                    className={styles.code}
+                  >
+                    {sourcecode}
+                  </SyntaxHighlighter>
+                </Details>
+              )
+            })}
+          </>
+        )}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <Properties data={properties} />
+      {renderFiles()}
     </>
   )
 }
