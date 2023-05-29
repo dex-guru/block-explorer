@@ -61,26 +61,28 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
       className={clsx(styles.container, { [styles.focus]: isFocus }, className)}
     >
       {!!showFilter && <div className={styles.filter}></div>}
-      <form className={styles.combo} onSubmit={handleSubmit}>
-        <input
-          ref={ref}
-          className={clsx(styles.query, { [styles.loading]: loading })}
-          type="text"
-          placeholder="Search by address / Txn Hash / Block number"
-          defaultValue={query}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          onChange={handleChange}
-        />
-        <div className={styles.actions}>
-          {withQR && <Button icon={<IconQR />} className={styles.action} />}
-          <Button
-            disabled={!canSubmit}
-            icon={<IconSearch />}
-            className={styles.action}
-            type="submit"
+      <form className={styles.body} onSubmit={handleSubmit}>
+        <label className={styles.combo}>
+          <input
+            ref={ref}
+            className={clsx(styles.query, { [styles.loading]: loading })}
+            type="text"
+            placeholder="Search by address / Txn Hash / Block number"
+            defaultValue={query}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            onChange={handleChange}
           />
-        </div>
+          <div className={styles.actions}>
+            {withQR && <Button icon={<IconQR />} className={styles.action} />}
+            <Button
+              disabled={!canSubmit}
+              icon={<IconSearch />}
+              className={styles.action}
+              type="submit"
+            />
+          </div>
+        </label>
       </form>
 
       {isOpen && (

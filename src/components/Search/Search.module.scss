@@ -13,13 +13,20 @@
   z-index: 10;
 }
 
+.body {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  flex: 1 1 auto;
+}
+
 .combo {
   composes: input from '../Interactive/Input.module.scss';
   composes: lg from '../Interactive/Input.module.scss';
 
   background: var(--color-input-bg);
+  cursor: text;
 
-  flex: 1 1 auto;
   display: flex;
   align-items: stretch;
 
@@ -58,11 +65,13 @@
   display: flex;
   align-items: stretch;
   padding: 0 6px;
+  pointer-events: none;
 }
 
 .action {
   composes: button from '../Button/Button.module.scss';
 
+  pointer-events: all;
   width: 36px;
   background: none;
   border: none;
@@ -74,6 +83,7 @@
   &:disabled {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
   }
 
   &:focus,
