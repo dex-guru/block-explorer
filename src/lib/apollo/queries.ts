@@ -989,38 +989,39 @@ export const GET_COSMOS_TRANSACTIONS = gql`
 `
 
 export const GET_CHAIN_CONFIG = gql`
-query ChainConfig {
-  chainConfig(chainId: ${CHAIN_ID}){
-    chain
-    chainColor
-    chainId
-    explorers {
+  query ChainConfig($chainId: Int!) {
+    chainConfig(chainId: $chainId) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
       name
-      standard
-      url
-    }
-    faucets
-    features {
-      name
-    }
-    gasUnit
-    infoURL
-    message
-    name
-    icon
-    nativeCurrency {
-      decimals
-      name
-      symbol
-      wrappedAddress
-    }
-    networkId
-    rpc
-    shortName
-    relatives {
-      name
-      standard
-      url
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
     }
   }
-}`
+`

@@ -1,11 +1,15 @@
+import { useContext } from 'react'
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
+import { ChainConfigContext } from '@/providers/ChainConfigProvider/ChainConfigContext'
 
 export default function Document() {
+  const chainConfig = useContext(ChainConfigContext)
+
   return (
     <Html lang="en">
       <Head>
-        <meta name="theme-color" content="#1e242c" />
+        <meta name="theme-color" content={chainConfig?.chainColor} />
 
         {!!process.env.gTagManagerId && (
           <Script id="google-tag-manager" strategy="afterInteractive">

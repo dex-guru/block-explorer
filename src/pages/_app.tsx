@@ -1,7 +1,9 @@
 import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client'
+import { CHAIN_ID } from '@/constants'
 import { useApollo } from '@/lib/apollo/client'
+import ChainConfigProvider from '@/providers/ChainConfigProvider/ChainConfigProvider'
 import { initApm } from '@/services/apmService'
 import '@/styles/index.scss'
 
@@ -12,21 +14,23 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
-      <Tooltip
-        id="app-tooltip"
-        variant="light"
-        positionStrategy="fixed"
-        clickable
-      />
-      <Tooltip
-        openOnClick
-        content="Copied!"
-        variant="light"
-        place="bottom"
-        anchorSelect=".clipboard-copy"
-        delayHide={1500}
-      />
+      <ChainConfigProvider chainId={CHAIN_ID}>
+        <Component {...pageProps} />
+        <Tooltip
+          id="app-tooltip"
+          variant="light"
+          positionStrategy="fixed"
+          clickable
+        />
+        <Tooltip
+          openOnClick
+          content="Copied!"
+          variant="light"
+          place="bottom"
+          anchorSelect=".clipboard-copy"
+          delayHide={1500}
+        />
+      </ChainConfigProvider>
     </ApolloProvider>
   )
 }
