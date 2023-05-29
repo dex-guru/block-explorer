@@ -210,3 +210,23 @@
     }
   }
 }
+
+.label {
+  text-transform: capitalize;
+
+  &-mint {
+    composes: success from '../components/Label/Label.module.scss';
+  }
+
+  &-burn {
+    composes: danger from '../components/Label/Label.module.scss';
+  }
+
+  &-swap {
+    composes: info from '../components/Label/Label.module.scss';
+  }
+
+  &-transfer {
+    composes: warn from '../components/Label/Label.module.scss';
+  }
+}
