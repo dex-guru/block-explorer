@@ -21,7 +21,7 @@ const Value: FC<ValueProps> = ({
         <span className={styles.value}>{value || children}</span>
         {!!suffix && <span className={styles.suffix}>{suffix}</span>}
       </span>
-      {delta && <Delta value={delta} className={styles.delta} />}
+      {!!delta && <Delta value={delta} className={styles.delta} />}
     </span>
   )
 }
