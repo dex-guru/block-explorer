@@ -30,7 +30,7 @@ const Verifier: React.FC = () => {
     async (URL: string, fetchOptions?: RequestInit) => {
       try {
         const rawRes: Response = await fetch(URL, {
-          credentials: 'include',
+          credentials: 'omit',
           method: fetchOptions?.method || 'GET', // default GET
           // mode: "cors",
           ...fetchOptions,
@@ -105,7 +105,7 @@ const Verifier: React.FC = () => {
 
   const restartSession = async () => {
     await fetch(RESTART_SESSION_URL, {
-      credentials: 'include',
+      credentials: 'omit',
       method: 'POST',
     })
     setUnusedFiles([])

@@ -21,6 +21,7 @@ export const checkAllByAddresses = async (
     `${SERVER_URL}/checkAllByAddresses?addresses=${addresses}&chainIds=${chainIds}`,
     {
       method: 'GET',
+      credentials: 'omit',
     }
   ).then((res) => {
     if (!res.ok) {
@@ -42,7 +43,9 @@ export const checkAllByAddresses = async (
  *
  */
 export const getSourcifyChains = async (): Promise<Chain[]> => {
-  const chainsArray = await (await fetch(`${SERVER_URL}/chains`)).json()
+  const chainsArray = await (
+    await fetch(`${SERVER_URL}/chains`, { credentials: 'omit' })
+  ).json()
   return chainsArray
 }
 
