@@ -7,3 +7,14 @@
 .only {
   grid-column: span 2;
 }
+
+.upload {
+  &Browse {
+    composes: button from '../Button/Button.module.scss';
+    composes: md from '../Button/Button.module.scss';
+  }
+
+  &Zone {
+    background: var(--color-bg-3);
+  }
+}

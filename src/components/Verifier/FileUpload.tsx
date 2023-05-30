@@ -3,6 +3,9 @@ import { useDropzone } from 'react-dropzone'
 import clsx from 'clsx'
 import Button from '../Button'
 import Card from '../Card'
+import Heading from '../Heading'
+import Label from '../Label'
+import Message from '../Message'
 import styles from './Verifier.module.scss'
 
 type FileUploadProps = {
@@ -31,11 +34,12 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const displayFiles = addedFiles.map((file) => {
     return (
-      <li className="mb-1" key={file}>
+      <li className={styles.uploadItem} key={file}>
         {file}
       </li>
     )
   })
+
   return (
     <Card
       title="File Add Zone"
@@ -53,34 +57,27 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </Button>
       }
     >
-      <div {...getRootProps()} className={styles.uploadZone}>
-        <div className="flex flex-col flex-grow border-dashed border-2 rounded-lg hover:bg-ceruleanBlue-100 border-ceruleanBlue-500 p-4 relative">
+      <div {...getRootProps()} className={styles.uploadBody}>
+        <div className={styles.container}>
           <input {...getInputProps()} type="file" />
           {metadataMissing && (
-            <div className="bg-red-100 text-red-700 text-center py-2 rounded-lg">
-              <p className="inline align-middle font-medium">
-                Metadata files missing!
-              </p>
-              <p className="text-sm">Please add contract metadata.json</p>
+            <Message type="danger" className={styles.uploadError}>
+              Metadata files missing! Please add contract metadata.json
+            </Message>
+          )}
+          {!!displayFiles.length && (
+            <div className={styles.uploadHeader}>
+              <Heading size="md">
+                Added Files <Label>{displayFiles.length}</Label>
+              </Heading>
+              <ul className={styles.uploadList}>{displayFiles}</ul>
             </div>
           )}
-          {displayFiles.length ? (
-            <div>
-              <h2 className="font-bold text-lg">
-                Added Files{' '}
-                <span className="font-normal">({displayFiles.length})</span>
-              </h2>
-              <ul className="flex flex-col break-all list-outside ml-4 list-disc">
-                {displayFiles}
-              </ul>
-            </div>
-          ) : (
-            <div className="flex flex-col flex-grow justify-center items-center text-center">
-              <div className="mt-2">
-                Drag and drop here
-                <div style={{ lineHeight: '0.8em' }}> or </div>
-                <span className="text-ceruleanBlue-500">browse</span>
-              </div>
+
+          {!displayFiles.length && (
+            <div className={styles.uploadZone}>
+              Drag and drop here or
+              <span className={styles.uploadBrowse}>browse</span>
             </div>
           )}
           {/* Loading Overlay */}
