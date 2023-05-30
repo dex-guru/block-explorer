@@ -95,7 +95,7 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: 'Market Cap',
+      title: 'FDV',
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(stats.marketCap, {
