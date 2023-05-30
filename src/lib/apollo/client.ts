@@ -9,9 +9,12 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
+import { RetryLink } from '@apollo/client/link/retry'
 import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
+import { sendApmError } from '@/services/apmService'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
@@ -21,13 +24,37 @@ type SchemaContext =
   | SchemaLink.ResolverContext
   | SchemaLink.ResolverContextFunction
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  graphQLErrors?.forEach(({ message, locations, path }) => {
+    const errorMessage = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+    sendApmError(errorMessage)
+    console.error(errorMessage)
+  })
+
+  if (networkError) {
+    sendApmError(`[Network error]: ${networkError}`)
+    console.error(`[Network error]: ${networkError}`)
+  }
+})
+
+const retryLink = new RetryLink({
+  delay: {
+    initial: 250,
+    max: 2500,
+  },
+  attempts: {
+    max: 3,
+    retryIf: (error, _operation) => !!error,
+  },
+})
+
 function createIsomorphicLink() {
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
     credentials: 'same-origin',
   })
 
-  return from([httpLink])
+  return from([errorLink, retryLink, httpLink])
 }
 
 function createApolloClient() {

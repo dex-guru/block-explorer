@@ -12,12 +12,15 @@ const BlockIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
     <>
       <Head>
         <title>No block number provided</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore block to see included transactions.`}
+        />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={chainConfig}>
+      <Page chainConfig={chainConfig}>
         <Error title="No block number provided" />
       </Page>
     </>

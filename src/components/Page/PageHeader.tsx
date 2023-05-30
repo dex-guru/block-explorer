@@ -1,16 +1,21 @@
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
+import dynamic from 'next/dynamic'
+import clsx from 'clsx'
 import Logo from '../Logo'
+import NetworkSelect from '../NetworkSelect'
 import Search from '../Search'
 import InfoBlock from './InfoBlock'
 import PageMenu from './PageMenu'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
-const PageHeader: FC<PageHeaderProps> = ({
-  chainConfig,
-  withSearch,
-  withMenu = true,
-}) => {
+const ThemeToggle = dynamic(() => import('../ThemeToggle'), {
+  ssr: false,
+})
+
+const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const links = useMemo(() => {
     const baseLinks = [
       { caption: 'Home', href: '/' },
@@ -29,26 +34,36 @@ const PageHeader: FC<PageHeaderProps> = ({
     return baseLinks
   }, [chainConfig.features, chainConfig.shortName])
 
+  const onOpenChange = (value: boolean) => {
+    setIsMenuOpen(value)
+  }
+
   return (
-    <header className={styles.container}>
-      <InfoBlock chainConfig={chainConfig} />
-      <div className={styles.main}>
-        <div className={styles.logo}>
-          <Logo
-            title={`${chainConfig.name} Explorer`}
-            to="/"
-            url={chainConfig.icon}
+    <header className={clsx(styles.container, { [styles.open]: isMenuOpen })}>
+      <div className={styles.logo}>
+        <Logo title={`${chainConfig.name}`} to="/" url={chainConfig.icon} />
+      </div>
+      <div className={styles.price}>
+        <InfoBlock chainConfig={chainConfig} />
+      </div>
+      <div className={styles.search}>
+        <Search className={styles.searchElement} />
+      </div>
+      <PageMenu
+        className={styles.menu}
+        links={links}
+        onOpenChange={onOpenChange}
+      />
+      {!!chainConfig.relatives.length && (
+        <div className={styles.network}>
+          <NetworkSelect
+            current={chainConfig.chain}
+            variants={chainConfig.relatives}
           />
         </div>
-        {!!withSearch && (
-          <div className={styles.search}>
-            <Search className={styles.searchElement} />
-          </div>
-        )}
-        {!!withMenu && <PageMenu className={styles.menu} links={links} />}
-        {/* <div className={styles.theme}>
+      )}
+      <div className={styles.theme}>
         <ThemeToggle />
-      </div> */}
       </div>
     </header>
   )

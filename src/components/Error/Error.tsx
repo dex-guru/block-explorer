@@ -1,8 +1,8 @@
 import { FC } from 'react'
-import { IconNoData } from '..'
 import clsx from 'clsx'
 import Button, { ButtonProps } from '../Button'
 import Empty, { EmptyProps } from '../Empty'
+import { IconNoData } from '@/components'
 import styles from './Error.module.scss'
 
 const Error: FC<EmptyProps & { actions?: ButtonProps[] }> = ({

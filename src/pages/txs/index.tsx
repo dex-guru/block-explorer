@@ -33,6 +33,9 @@ interface ITxsProps {
 const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   const router = useRouter()
   const { tab } = router.query
+
+  const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
+
   const pathname = router.asPath.split('?')[0]
 
   const blockQuery = block ? { block: block } : undefined
@@ -48,31 +51,32 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         </Suspense>
       ),
     },
-    ...(!block
-      ? [
-          {
-            title: 'ERC-20 Token TXns',
-            value: 'tokentxns',
-            to: { pathname, query: { tab: 'tokentxns' } },
-            content: (
-              <Suspense fallback={<LoadingCard />}>
-                <Erc20DataTable />
-              </Suspense>
-            ),
-          },
-          {
-            title: 'NFT Token TXns',
-            value: 'nfttxns',
-            to: { pathname, query: { tab: 'nfttxns' } },
-            content: (
-              <Suspense fallback={<LoadingCard />}>
-                <NftDataTable />
-              </Suspense>
-            ),
-          },
-        ]
-      : []),
   ]
+
+  if (!block) {
+    tabs.push(
+      {
+        title: 'ERC-20 Token TXns',
+        value: 'tokentxns',
+        to: { pathname, query: { tab: 'tokentxns' } },
+        content: (
+          <Suspense fallback={<LoadingCard />}>
+            <Erc20DataTable />
+          </Suspense>
+        ),
+      },
+      {
+        title: 'NFT Token TXns',
+        value: 'nfttxns',
+        to: { pathname, query: { tab: 'nfttxns' } },
+        content: (
+          <Suspense fallback={<LoadingCard />}>
+            <NftDataTable />
+          </Suspense>
+        ),
+      }
+    )
+  }
 
   const pageTitle = block
     ? `Transactions for block ${block?.toString()}`
@@ -82,12 +86,15 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content="Block Explorer" />
+        <meta
+          name="description"
+          content={`Explore recently created transactions on ${props.chainConfig.name} ${props.chainConfig.chain}`}
+        />
         <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Page withSearch chainConfig={props.chainConfig}>
+      <Page chainConfig={props.chainConfig}>
         <DetailsView
           title={block ? 'Transactions for block' : 'Transactions'}
           address={block?.toString()}
@@ -104,7 +111,8 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                 {
                   title: 'Transactions per Second',
                   value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsPerSecond || 0
+                    props.chainStats?.transactionsPerSecond || 0,
+                    { decimals: 2 }
                   ),
                 },
                 {
@@ -142,7 +150,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
             />
           )}
 
-          <TabPanel value={tab || ''} tabs={tabs} />
+          <TabPanel value={currentTab} tabs={tabs} />
         </DetailsView>
       </Page>
     </>
@@ -157,18 +165,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const blocks = ctx.query.block as string
   const block = blocks && blocks[0] ? parseInt(blocks) : null
 
-  const {
-    data: { transactionStats, chainStats, chainConfig },
-  } = await apolloClient.query({
+  const { data } = await apolloClient.query({
     query: GET_TRANSACTIONS_STATS,
     variables: { blockNumber: block },
   })
 
   return addApolloState(apolloClient, {
     props: {
-      chainStats,
-      chainConfig,
-      transactionStats,
+      ...data,
       block,
     },
   })

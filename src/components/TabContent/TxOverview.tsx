@@ -170,14 +170,14 @@ const TxOverview: FC<{
         <Separated>
           <Value
             value={getNormalizedValue(
-              data.receiptEffectiveGasPrice,
+              data.receiptEffectiveGasPrice || 0,
               chainConfig.nativeCurrency.decimals - 9
             )}
             suffix={gigaNative}
           />
           <Value
             value={getNormalizedValue(
-              data.receiptEffectiveGasPrice,
+              data.receiptEffectiveGasPrice || 0,
               chainConfig.nativeCurrency.decimals
             )}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}

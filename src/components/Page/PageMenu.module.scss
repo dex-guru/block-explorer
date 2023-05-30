@@ -11,9 +11,9 @@
   gap: 8px;
   justify-content: flex-end;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     background: var(--color-bg);
-    padding: 16px;
+    padding: 56px 16px 56px;
     justify-content: center;
     align-items: center;
     flex-flow: column;
@@ -39,13 +39,21 @@
   padding: 0;
 }
 
+.link {
+  color: var(--color-muted);
+}
+
+.active {
+  color: var(--color-accent);
+}
+
 .toggle {
   composes: action from '../Button/Button.module.scss';
   composes: lg from '../Button/Button.module.scss';
 
   padding: 0;
 
-  @media (min-width: 1024.1px) {
+  @media (min-width: 1200.1px) {
     display: none !important;
   }
 }
@@ -54,7 +62,7 @@
   position: fixed;
   z-index: 1001;
   right: 8px;
-  top: 8px;
+  top: 12px;
 }
 
 .icon {

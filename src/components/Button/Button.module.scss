@@ -1,10 +1,19 @@
 .button {
+  --color-button-border: var(--color-bg-3);
+  --color-button-hover-border: var(--color-bg-4);
+  --color-button-bg: var(--color-bg-3);
+  --color-button-hover-bg: var(--color-bg-4);
+  --color-button-text: var(--color-text);
+  --color-button-hover-text: var(--color-text);
+  --color-button-icon: var(--color-bg-6);
+
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
   justify-content: center;
   gap: 4px;
   vertical-align: middle;
+  padding: 0 8px;
 
   background: var(--color-button-bg);
   color: var(--color-button-text);

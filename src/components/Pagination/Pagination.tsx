@@ -35,19 +35,17 @@ export const Pagination: FC<IPaginationProps> = ({
   const [totalPages, setTotalPages] = useState(() =>
     getTotalPages(total, perPage)
   )
-  const [disabled, setDisabled] = useState(getDisabled(total, currentPage))
 
   const doChangePage = useCallback(
     (page: number) => {
       const toPage = Math.min(totalPages, Math.max(1, page))
 
       const skip = (toPage - 1) * perPage
-      setDisabled(getDisabled(total, toPage))
 
       onChange({ first: perPage, skip })
       setDefaultCurrentPage(toPage)
     },
-    [totalPages, onChange, perPage, setDefaultCurrentPage, total]
+    [totalPages, onChange, perPage, setDefaultCurrentPage]
   )
 
   const getNextHandler = useCallback(() => {
@@ -67,17 +65,22 @@ export const Pagination: FC<IPaginationProps> = ({
   }, [doChangePage, totalPages])
 
   useEffect(() => {
-    if (isMounted) {
-      setTotalPages(getTotalPages(total, perPage))
-      setDisabled(getDisabled(total, perPage))
+    if (!isMounted) {
+      return
     }
-  }, [isMounted, perPage, total])
+
+    setTotalPages(getTotalPages(total, perPage))
+  }, [isMounted, perPage, currentPage, total])
 
   useEffect(() => {
-    if (isMounted) {
-      setCurrentPage(defaultCurrentPage)
+    if (!isMounted) {
+      return
     }
-  }, [isMounted, defaultCurrentPage])
+
+    setCurrentPage(defaultCurrentPage)
+  }, [isMounted, defaultCurrentPage, total])
+
+  const disabled = getDisabled(totalPages, currentPage)
 
   return (
     <div className={clsx(styles.container, className)}>

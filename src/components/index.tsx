@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import Address from './Address'
 import AddressView from './AddressView'
+import AddressWallet from './AddressWallet'
 import Avatar from './Avatar'
 import Banner from './Banner'
 import Button from './Button'
@@ -23,12 +24,14 @@ import Label from './Label'
 import Loading, { LoadingCard } from './Loading'
 import Logo from './Logo'
 import Message from './Message'
+import NetworkSelect from './NetworkSelect'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
 import Properties from './Properties'
 import Search from './Search'
 import Separated from './Separated'
+import Socials from './Socials'
 import Summary from './Summary'
 import { BlockOverview, TxLogs, TxOverview, TxTrace } from './TabContent'
 import TabPanel from './TabPanel'
@@ -59,6 +62,7 @@ const LineChart = dynamic(() => import('./LineChart'), { ssr: false })
 export {
   Address,
   AddressView,
+  AddressWallet,
   Avatar,
   Banner,
   Button,
@@ -85,12 +89,14 @@ export {
   LineChart,
   Logo,
   Message,
+  NetworkSelect,
   OutsideClicker,
   Page,
   Pagination,
   Properties,
   Separated,
   Summary,
+  Socials,
   Search,
   Table,
   TabPanel,

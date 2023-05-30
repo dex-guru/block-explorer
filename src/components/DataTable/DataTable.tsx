@@ -24,23 +24,15 @@ export function DataTable<T>(props: DataTableProps<T>) {
   )
 
   const renderPerPage = useCallback(() => {
-    if (!total) {
-      return null
-    }
-
     return (
       <PerPageSelector
         onChange={onChangePerPageHandler}
         defaultPerPage={currentPerPagePage}
       />
     )
-  }, [currentPerPagePage, onChangePerPageHandler, total])
+  }, [currentPerPagePage, onChangePerPageHandler])
 
   const renderPagination = useCallback(() => {
-    if (!total || !onPageChange) {
-      return null
-    }
-
     return (
       <Pagination
         total={total}
@@ -53,22 +45,12 @@ export function DataTable<T>(props: DataTableProps<T>) {
     )
   }, [currentPage, currentPerPagePage, onPageChange, total])
 
-  if (!total && !onPageChange) {
-    return (
-      <div className={clsx(styles.container, className)}>
-        <Table {...tablePropsRest} className={styles.table} />
-      </div>
-    )
-  }
-
   return (
     <div className={clsx(styles.container, className)}>
-      {total > currentPerPagePage && (
-        <div className={styles.header}>
-          {renderPerPage()}
-          {renderPagination()}
-        </div>
-      )}
+      <div className={styles.header}>
+        {renderPerPage()}
+        {renderPagination()}
+      </div>
       <div className={styles.body}>
         {!tablePropsRest.isLoading && !total && props.empty && (
           <Empty icon={<IconEmpty />} {...props.empty} />
@@ -76,12 +58,10 @@ export function DataTable<T>(props: DataTableProps<T>) {
 
         {!!total && <Table {...tablePropsRest} className={styles.table} />}
       </div>
-      {total > currentPerPagePage && (
-        <div className={styles.footer}>
-          {renderPerPage()}
-          {renderPagination()}
-        </div>
-      )}
+      <div className={styles.footer}>
+        {renderPerPage()}
+        {renderPagination()}
+      </div>
     </div>
   )
 }

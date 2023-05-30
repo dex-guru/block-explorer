@@ -40,7 +40,7 @@ const nextConfig = {
       },
     ],
   },
-  generateBuildId: () => nextBuildId({ dir: __dirname }),
+  generateBuildId: () => nextBuildId.sync({ dir: __dirname }).slice(0, 7),
   async headers() {
     return [
       {

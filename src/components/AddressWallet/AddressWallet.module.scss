@@ -42,6 +42,8 @@
   color: var(--color-muted);
   transform: none;
   transition: 0.25s ease;
+  width: 20px;
+  height: 20px;
 
   &Open {
     transform: rotate(180deg);
@@ -60,7 +62,8 @@
   top: 100%;
   padding: 0;
   margin-top: 16px;
-  background: var(--color-bg-3);
+  border: 1px var(--color-accent) solid;
+  background: var(--color-bg-2);
   border-radius: var(--radii-lg);
   overflow: hidden;
 
@@ -90,6 +93,7 @@
 }
 
 .list {
+  margin: 0;
   padding: 8px 0;
   list-style: none;
   display: flex;
@@ -133,4 +137,8 @@
 .wallet {
   width: 20px;
   height: 20px;
+}
+
+.muted {
+  composes: muted from '../../pages/Pages.module.scss';
 }
