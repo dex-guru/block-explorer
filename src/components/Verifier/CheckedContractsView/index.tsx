@@ -4,7 +4,6 @@ import CheckedContract from './CheckedContract'
 
 type CheckedContractsViewProps = {
   checkedContracts: SendableContract[]
-  isHidden: boolean
   verifyCheckedContract: (
     sendable: VerificationInput
   ) => Promise<SessionResponse | undefined>
@@ -12,7 +11,6 @@ type CheckedContractsViewProps = {
 
 const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
   checkedContracts,
-  isHidden,
   verifyCheckedContract,
 }) => {
   const [collapsed, setCollapsed] = useState<boolean[]>([])
@@ -35,7 +33,9 @@ const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
       return tempCollapsed
     })
   }
+
   if (isHidden) return null
+
   return (
     <div className="pt-1 bg-ceruleanBlue-500 flex flex-grow basis-0 rounded-xl mx-2">
       <div

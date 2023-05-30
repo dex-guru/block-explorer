@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Page } from '@/components'
+import { DetailsView, IconVerify, Page } from '@/components'
 import Verifier from '@/components/Verifier'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
@@ -18,7 +18,9 @@ const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <Verifier />
+        <DetailsView title="Verify Contract" icon={<IconVerify className="" />}>
+          <Verifier />
+        </DetailsView>
       </Page>
     </>
   )

@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import bytes from 'bytes'
+import clsx from 'clsx'
+import Grid from '../Grid'
+import Message from '../Message'
 import CheckedContractsView from './CheckedContractsView'
 import FileUpload from './FileUpload'
 import {
@@ -15,6 +18,7 @@ import {
   SessionResponse,
   VerificationInput,
 } from './types'
+import styles from './Verifier.module.scss'
 
 const UI_MAX_FILE_SIZE = 30 * 1024 * 1024
 
@@ -137,15 +141,14 @@ const Verifier: React.FC = () => {
   }, [fetchAndUpdate])
 
   return (
-    <div className="flex flex-col flex-1 pb-8 px-8 md:px-12 lg:px-24 bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-3xl md:text-4xl font-bold">Verifier</h1>
-        <p className="mt-2">
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <Message type="info">
           Verify smart contracts by recompiling with the Solidity source code
           and metadata.
-        </p>
+        </Message>
       </div>
-      <div className="flex flex-col md:flex-row flex-grow mt-6">
+      <Grid className={styles.body}>
         <FileUpload
           handleFilesAdded={handleFiles}
           addedFiles={addedFiles}
@@ -153,18 +156,23 @@ const Verifier: React.FC = () => {
             unusedFiles.length > 0 && checkedContracts.length === 0
           }
           restartSession={restartSession}
+          className={clsx({ [styles.only]: checkedContracts.length === 0 })}
         />
-        <CheckedContractsView
-          checkedContracts={checkedContracts}
-          isHidden={checkedContracts.length < 1}
-          verifyCheckedContract={verifyCheckedContract}
-        />
-      </div>
-      <div className="text-xs italic mx-2 mt-1 text-gray-400">
-        Once a contract is verified it cant be removed from the Sourcify
+
+        {checkedContracts.length > 0 && (
+          <CheckedContractsView
+            checkedContracts={checkedContracts}
+            verifyCheckedContract={verifyCheckedContract}
+          />
+        )}
+      </Grid>
+
+      <Message type="warn">
+        Once a contract is verified it can&apos;t be removed from the Sourcify
         repository.
-      </div>
-      {errorMessage}
+      </Message>
+
+      {!!errorMessage && <Message type="danger">{errorMessage}</Message>}
     </div>
   )
 }
