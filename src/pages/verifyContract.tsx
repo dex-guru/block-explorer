@@ -5,7 +5,6 @@ import { Page } from '@/components'
 import Verifier from '@/components/Verifier'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
-import styles from './Pages.module.scss'
 
 const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({
   chainConfig,

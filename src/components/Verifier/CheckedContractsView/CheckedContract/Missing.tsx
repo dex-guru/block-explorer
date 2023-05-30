@@ -1,15 +1,15 @@
-import React from "react";
-import { SendableContract } from "../../../../types";
+import React from 'react'
+import { SendableContract } from '../../types'
 
 type MissingProps = {
-  checkedContract: SendableContract;
-};
+  checkedContract: SendableContract
+}
 
 const Missing: React.FC<MissingProps> = ({ checkedContract }) => {
-  const { files } = checkedContract;
-  const missingCount = Object.keys(files.missing).length;
+  const { files } = checkedContract
+  const missingCount = Object.keys(files.missing).length
   const totalContracts =
-    files.found.length + missingCount + Object.keys(files.invalid).length;
+    files.found.length + missingCount + Object.keys(files.invalid).length
   return (
     <div>
       <p>
@@ -22,7 +22,7 @@ const Missing: React.FC<MissingProps> = ({ checkedContract }) => {
         ))}
       </ul> */}
     </div>
-  );
-};
+  )
+}
 
-export default Missing;
+export default Missing
