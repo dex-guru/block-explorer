@@ -1,5 +1,6 @@
 import React from 'react'
 import { SendableContract } from '../../types'
+import Message from '@/components/Message'
 
 type MissingProps = {
   checkedContract: SendableContract
@@ -11,17 +12,10 @@ const Missing: React.FC<MissingProps> = ({ checkedContract }) => {
   const totalContracts =
     files.found.length + missingCount + Object.keys(files.invalid).length
   return (
-    <div>
-      <p>
-        {missingCount} out of {totalContracts} source files missing. Please add
-        the files in the add file zone
-      </p>
-      {/* <ul className="mt-4">
-        {Object.keys(files.missing).map((filePath, i) => (
-          <li key={i + "-" + filePath}>{filePath}</li>
-        ))}
-      </ul> */}
-    </div>
+    <Message type="danger">
+      {missingCount} out of {totalContracts} source files missing. Please add
+      the files in the add file zone
+    </Message>
   )
 }
 

@@ -1,62 +1,57 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useState } from 'react'
+import clsx from 'clsx'
 import DetailedView from '../../DetailedView'
+import styles from '../../Verifier.module.scss'
 import {
   SendableContract,
   SessionResponse,
   VerificationInput,
 } from '../../types'
+import { Status } from '../../types'
 import ChainAddressForm from './ChainAddressForm'
 import Invalid from './Invalid'
-import Label from './Label'
 import Missing from './Missing'
+import { Details, Label, LoadingCard, Properties } from '@/components'
 
 type CheckedContractProps = {
   checkedContract: SendableContract
   verifyCheckedContract: (
     sendable: VerificationInput
   ) => Promise<SessionResponse | undefined>
-  collapsed: boolean
-  toggleCollapse: () => void
 }
 
-enum VerifyMethods {
-  DEPLOYED,
-  CREATE2,
+type CustomStatus = Status | 'missing' | 'invalid'
+
+const statusText: Record<CustomStatus, { className: string; text: string }> = {
+  perfect: {
+    text: 'Perfect Match',
+    className: styles.contractTagSuccess,
+  },
+  partial: {
+    text: 'Partial Match',
+    className: styles.contractTagWarn,
+  },
+  missing: {
+    text: 'Files Missing',
+    className: styles.contractTagError,
+  },
+  invalid: {
+    text: 'Invalid Files',
+    className: styles.contractTagError,
+  },
+  error: {
+    text: 'Chain & Address Missing',
+    className: styles.contractTagError,
+  },
 }
 
 const CheckedContract: React.FC<CheckedContractProps> = ({
   checkedContract,
   verifyCheckedContract,
-  collapsed,
-  toggleCollapse,
 }) => {
-  const [verifyMethodSelected, setVerifyMethodSelected] =
-    useState<VerifyMethods>(VerifyMethods.DEPLOYED)
-
-  const selectVerifyMethod = (method: VerifyMethods) => {
-    if (method === verifyMethodSelected) {
-      setVerifyMethodSelected(VerifyMethods.DEPLOYED)
-    } else {
-      setVerifyMethodSelected(method)
-    }
-  }
-
-  const [isDetailedViewShown, setIsDetailedViewShown] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const closeModal = () => {
-    setIsDetailedViewShown(false)
-  }
-  const openModal = () => {
-    setIsDetailedViewShown(true)
-  }
-
-  const toggleCollapseWrapper: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault()
-    toggleCollapse()
-  }
-
-  let customStatus
+  let customStatus: CustomStatus
   if (checkedContract.status === 'perfect') customStatus = 'perfect'
   else if (checkedContract.status === 'partial') customStatus = 'partial'
   else if (Object.keys(checkedContract.files.missing).length > 0)
@@ -66,67 +61,65 @@ const CheckedContract: React.FC<CheckedContractProps> = ({
     customStatus = 'invalid'
   else customStatus = 'error'
 
+  const status = (
+    <Label
+      className={clsx(styles.contractTag, statusText[customStatus].className)}
+    >
+      {statusText[customStatus].text}
+    </Label>
+  )
+
+  const { files } = checkedContract
+  const foundCount = files.found.length
+  const missingCount = Object.keys(files.missing).length
+  const invalidCount = Object.keys(files.invalid).length
+  const totalFilesCount = foundCount + missingCount + invalidCount
+
   return (
-    <div className="mb-4 bg-ceruleanBlue-100 rounded-md relative">
-      {/* Loading Overlay */}
-      {isLoading && <p>Verifying Contract</p>}
-      {/* Contract item header */}
-      <button
-        onClick={toggleCollapseWrapper}
-        className="flex flex-row justify-between w-full bg-ceruleanBlue-500 rounded-md text-white p-4"
-      >
-        <h2 className="font-bold text-lg break-all text-left mr-1">
-          {checkedContract.name}
-        </h2>
-        <div className="flex flex-nowrap items-center">
-          {/* <div className="flex flex-row items-center"> */}
-          <Label customStatus={customStatus} />
-        </div>
-      </button>
+    <Details
+      title={
+        <>
+          {checkedContract.name} {status}
+        </>
+      }
+      className={styles.contract}
+    >
+      {isLoading && <LoadingCard />}
 
-      {/* Collapsed section */}
-      <div className={`${collapsed ? 'hidden' : ''} break-words px-4 p-4`}>
-        <div className="flex flex-row flex-wrap gap-3 mt-4 justify-center md:justify-start mb-6">
-          <div className="">
-            <button
-              onClick={() => selectVerifyMethod(VerifyMethods.DEPLOYED)}
-              className="text-sm"
-            >
-              Verify deployed contract
-            </button>
-          </div>
-        </div>
-        {verifyMethodSelected === VerifyMethods.DEPLOYED &&
-          ['perfect', 'partial', 'error'].includes(customStatus) && (
-            <ChainAddressForm
-              checkedContract={checkedContract}
-              customStatus={customStatus}
-              verifyCheckedContract={verifyCheckedContract}
-              setIsLoading={setIsLoading}
-            />
-          )}
-
-        {customStatus === 'missing' && (
-          <Missing checkedContract={checkedContract} />
-        )}
-        {customStatus === 'invalid' && (
-          <Invalid checkedContract={checkedContract} />
-        )}
-        <DetailedView
-          isShown={isDetailedViewShown}
-          closeModal={closeModal}
+      {['perfect', 'partial', 'error'].includes(customStatus) && (
+        <ChainAddressForm
           checkedContract={checkedContract}
+          customStatus={customStatus}
+          verifyCheckedContract={verifyCheckedContract}
+          setIsLoading={setIsLoading}
         />
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={openModal}
-            className="font-bold hover:underline flex items-center"
-          >
-            Detailed View
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+
+      {customStatus === 'missing' && (
+        <>
+          <Properties
+            className={styles.viewProps}
+            data={[
+              { title: 'Contract Name:', value: checkedContract.name },
+              { title: 'Compiled Path:', value: checkedContract.compiledPath },
+              {
+                title: (
+                  <>
+                    Sources <Label>{totalFilesCount}</Label>
+                  </>
+                ),
+                value: <Missing checkedContract={checkedContract} />,
+              },
+            ]}
+          />
+          <DetailedView checkedContract={checkedContract} />
+        </>
+      )}
+
+      {customStatus === 'invalid' && (
+        <Invalid checkedContract={checkedContract} />
+      )}
+    </Details>
   )
 }
 

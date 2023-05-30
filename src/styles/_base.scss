@@ -64,6 +64,31 @@ body {
   color: var(--color-bg);
 }
 
+dialog {
+  max-height: 100%;
+  max-width: 100%;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  overflow: overlay;
+  margin: 0 auto;
+  border: 0;
+  padding: 16px 8px;
+  background: none;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  &:not([open]) {
+    display: none !important;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
 a {
   transition: all 0.25s ease;
   text-decoration: none;

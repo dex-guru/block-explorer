@@ -5,6 +5,7 @@ import Button from '../Button'
 import Card from '../Card'
 import Heading from '../Heading'
 import Label from '../Label'
+import { LoadingCard } from '../Loading'
 import Message from '../Message'
 import styles from './Verifier.module.scss'
 
@@ -57,33 +58,36 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </Button>
       }
     >
-      <div {...getRootProps()} className={styles.uploadBody}>
-        <div className={styles.container}>
-          <input {...getInputProps()} type="file" />
-          {metadataMissing && (
-            <Message type="danger" className={styles.uploadError}>
-              Metadata files missing! Please add contract metadata.json
-            </Message>
-          )}
-          {!!displayFiles.length && (
-            <div className={styles.uploadHeader}>
-              <Heading size="md">
-                Added Files <Label>{displayFiles.length}</Label>
-              </Heading>
-              <ul className={styles.uploadList}>{displayFiles}</ul>
-            </div>
-          )}
+      <div
+        {...getRootProps()}
+        className={clsx(styles.uploadBody, {
+          [styles.uploadBodyLoading]: isLoading,
+        })}
+      >
+        <input {...getInputProps()} type="file" />
+        {metadataMissing && (
+          <Message type="danger" className={styles.uploadError}>
+            Metadata files missing! Please add contract metadata.json
+          </Message>
+        )}
 
-          {!displayFiles.length && (
-            <div className={styles.uploadZone}>
-              Drag and drop here or
-              <span className={styles.uploadBrowse}>browse</span>
-            </div>
-          )}
-          {/* Loading Overlay */}
-          {isLoading && <p>Checking contracts</p>}
+        <div className={styles.uploadZone}>
+          <span className={styles.uploadPropose}>Drag and drop here</span> or
+          <span className={styles.uploadBrowse}>Browse Files</span>
         </div>
+
+        {isLoading && <LoadingCard className={styles.uploadLoader} />}
       </div>
+
+      {!!displayFiles.length && (
+        <div className={styles.uploadHeader}>
+          <Heading size="md">
+            Added Files{' '}
+            <Label className={styles.uploadTag}>{displayFiles.length}</Label>
+          </Heading>
+          <ul className={styles.uploadList}>{displayFiles}</ul>
+        </div>
+      )}
     </Card>
   )
 }

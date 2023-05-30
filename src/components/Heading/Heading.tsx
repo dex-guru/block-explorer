@@ -27,7 +27,7 @@ export const Heading: FC<HeadingProps> = ({
       ...rest,
     },
     <>
-      <span className="caption">{children || caption}</span>{' '}
+      <span className={styles.caption}>{children || caption}</span>{' '}
       {tooltip && <TooltipAnchor tooltip={tooltip} {...tooltipOptions} />}
     </>
   )

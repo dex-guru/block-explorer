@@ -7,7 +7,7 @@ import styles from './Loading.module.scss'
 const LoadingCard: FC<{ className?: string }> = ({ className }) => {
   return (
     <Card className={clsx(styles.card, className)}>
-      <Loading />
+      <Loading className={styles.loader} />
     </Card>
   )
 }

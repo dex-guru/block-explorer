@@ -152,14 +152,12 @@ const Verifier: React.FC = () => {
         <FileUpload
           handleFilesAdded={handleFiles}
           addedFiles={addedFiles}
-          metadataMissing={
-            unusedFiles.length > 0 && checkedContracts.length === 0
-          }
+          metadataMissing={unusedFiles.length > 0 && !checkedContracts.length}
           restartSession={restartSession}
-          className={clsx({ [styles.only]: checkedContracts.length === 0 })}
+          className={clsx({ [styles.only]: !checkedContracts.length })}
         />
 
-        {checkedContracts.length > 0 && (
+        {!!checkedContracts.length && (
           <CheckedContractsView
             checkedContracts={checkedContracts}
             verifyCheckedContract={verifyCheckedContract}
