@@ -95,13 +95,22 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: 'FDV',
+      title: 'Active Addresses',
       value: (
         <Value
-          value={financialFormatLowValueHighPrecision(stats.marketCap, {
-            decimals: 2,
-          })}
-          prefix="$"
+          value={financialFormatLowValueHighPrecision(
+            stats.activeAddressesCount
+          )}
+        />
+      ),
+    },
+    {
+      title: 'Smart Contracts',
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(
+            stats.smartContractsCount
+          )}
         />
       ),
     },
