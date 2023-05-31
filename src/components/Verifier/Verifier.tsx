@@ -12,7 +12,7 @@ import {
 } from './constants'
 import {
   DropzoneFile,
-  IGenericError, // IResponseError,
+  IGenericError,
   SendableContract,
   SessionResponse,
   VerificationInput,
@@ -84,14 +84,7 @@ const Verifier: React.FC = () => {
     },
     [setErrorMessage]
   )
-  // const handleFiles = async (files: DropzoneFile[]) => {
-  //   const formData = new FormData();
-  //   files.forEach((file) => formData.append("files", file));
-  //   await fetchAndUpdate(ADD_FILES_URL, {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-  // };
+
   const handleFiles = async (files: DropzoneFile[]) => {
     // const handleeFiles = async (files: DropzoneFile[]) => {
     const jsonBody: any = { files: {} }

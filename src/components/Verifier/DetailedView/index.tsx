@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import styles from '../Verifier.module.scss'
 import { SendableContract } from '../types'
-import { Code, Copy, Details, Heading, Message } from '@/components'
+import { Code, Details, Heading, Message } from '@/components'
 
 type DetailedViewProps = {
   checkedContract: SendableContract
