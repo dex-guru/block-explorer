@@ -3,7 +3,6 @@ import { useDropzone } from 'react-dropzone'
 import clsx from 'clsx'
 import Button from '../Button'
 import Card from '../Card'
-import Heading from '../Heading'
 import Label from '../Label'
 import { LoadingCard } from '../Loading'
 import Message from '../Message'
@@ -14,7 +13,6 @@ type FileUploadProps = {
   restartSession: () => void
   addedFiles: string[]
   metadataMissing: boolean
-  className?: string
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({
@@ -22,7 +20,6 @@ const FileUpload: React.FC<FileUploadProps> = ({
   restartSession,
   addedFiles,
   metadataMissing,
-  className,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { getRootProps, getInputProps } = useDropzone({
@@ -41,52 +38,60 @@ const FileUpload: React.FC<FileUploadProps> = ({
     )
   })
 
+  const uploaderTitle = !!displayFiles.length ? (
+    <>
+      Added Files{' '}
+      <Label className={styles.uploadTag}>{displayFiles.length}</Label>
+    </>
+  ) : undefined
+
+  const uploaderClear = !!displayFiles.length ? (
+    <Button
+      caption="Clear Files"
+      onClick={async () => {
+        setIsLoading(true)
+        await restartSession()
+        setIsLoading(false)
+      }}
+      className={styles.uploadClear}
+    />
+  ) : undefined
+
   return (
     <Card
-      title="File Add Zone"
-      className={clsx(styles.upload, className)}
-      header={
-        <Button
-          onClick={async () => {
-            setIsLoading(true)
-            await restartSession()
-            setIsLoading(false)
-          }}
-          className={styles.uploadClear}
-        >
-          Clear Files
-        </Button>
-      }
+      title={uploaderTitle}
+      className={clsx(styles.upload, {
+        [styles.uploadBodyLoading]: isLoading,
+      })}
+      header={uploaderClear}
     >
       <div
         {...getRootProps()}
-        className={clsx(styles.uploadBody, {
+        className={clsx(styles.uploadZone, {
           [styles.uploadBodyLoading]: isLoading,
         })}
       >
         <input {...getInputProps()} type="file" />
-        {metadataMissing && (
-          <Message type="danger" className={styles.uploadError}>
-            Metadata files missing! Please add contract metadata.json
-          </Message>
-        )}
 
-        <div className={styles.uploadZone}>
-          <span className={styles.uploadPropose}>Drag and drop here</span> or
+        <div className={styles.uploadZoneBody}>
+          <span className={styles.uploadPropose}>
+            Drag and drop files to page
+          </span>{' '}
+          or
           <span className={styles.uploadBrowse}>Browse Files</span>
         </div>
 
         {isLoading && <LoadingCard className={styles.uploadLoader} />}
       </div>
 
+      {metadataMissing && (
+        <Message type="danger" className={styles.uploadError}>
+          Metadata files missing! Please add contract metadata.json
+        </Message>
+      )}
+
       {!!displayFiles.length && (
-        <div className={styles.uploadHeader}>
-          <Heading size="md">
-            Added Files{' '}
-            <Label className={styles.uploadTag}>{displayFiles.length}</Label>
-          </Heading>
-          <ul className={styles.uploadList}>{displayFiles}</ul>
-        </div>
+        <ul className={styles.uploadList}>{displayFiles}</ul>
       )}
     </Card>
   )

@@ -14,6 +14,7 @@ import Missing from './Missing'
 import { Details, Label, LoadingCard, Properties } from '@/components'
 
 type CheckedContractProps = {
+  isOpen?: boolean
   checkedContract: SendableContract
   verifyCheckedContract: (
     sendable: VerificationInput
@@ -46,6 +47,7 @@ const statusText: Record<CustomStatus, { className: string; text: string }> = {
 }
 
 const CheckedContract: React.FC<CheckedContractProps> = ({
+  isOpen,
   checkedContract,
   verifyCheckedContract,
 }) => {
@@ -77,6 +79,7 @@ const CheckedContract: React.FC<CheckedContractProps> = ({
 
   return (
     <Details
+      isOpen={isOpen}
       title={
         <>
           {checkedContract.name} {status}

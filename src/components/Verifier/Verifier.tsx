@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import bytes from 'bytes'
-import clsx from 'clsx'
 import Grid from '../Grid'
 import Message from '../Message'
 import CheckedContractsView from './CheckedContractsView'
@@ -29,6 +28,33 @@ const Verifier: React.FC = () => {
     []
   )
   const [errorMessage, setErrorMessage] = useState<string>()
+
+  useEffect(() => {
+    let lastTarget: EventTarget | null = null
+
+    const onDragEnter = (e: MouseEvent) => {
+      lastTarget = e.target
+      document.documentElement.classList.add(styles.dragOver)
+    }
+
+    const onDragLeave = (e: MouseEvent) => {
+      if (e.target === lastTarget || e.target === document) {
+        e.preventDefault()
+
+        document.documentElement.classList.remove(styles.dragOver)
+      }
+    }
+
+    addEventListener('dragenter', onDragEnter)
+    addEventListener('dragleave', onDragLeave)
+    addEventListener('drop', onDragLeave)
+
+    return () => {
+      removeEventListener('dragenter', onDragEnter)
+      removeEventListener('dragleave', onDragLeave)
+      removeEventListener('drop', onDragLeave)
+    }
+  })
 
   const fetchAndUpdate = useCallback(
     async (URL: string, fetchOptions?: RequestInit) => {
@@ -147,6 +173,10 @@ const Verifier: React.FC = () => {
           Verify smart contracts by recompiling with the Solidity source code
           and metadata.
         </Message>
+        <Message type="warn">
+          Once a contract is verified it can&apos;t be removed from the Sourcify
+          repository.
+        </Message>
       </div>
       <Grid className={styles.body}>
         <FileUpload
@@ -154,7 +184,6 @@ const Verifier: React.FC = () => {
           addedFiles={addedFiles}
           metadataMissing={unusedFiles.length > 0 && !checkedContracts.length}
           restartSession={restartSession}
-          className={clsx({ [styles.only]: !checkedContracts.length })}
         />
 
         {!!checkedContracts.length && (
@@ -164,11 +193,6 @@ const Verifier: React.FC = () => {
           />
         )}
       </Grid>
-
-      <Message type="warn">
-        Once a contract is verified it can&apos;t be removed from the Sourcify
-        repository.
-      </Message>
 
       {!!errorMessage && <Message type="danger">{errorMessage}</Message>}
     </div>

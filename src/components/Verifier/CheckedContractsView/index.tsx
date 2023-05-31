@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from '../Verifier.module.scss'
 import { SendableContract, SessionResponse, VerificationInput } from '../types'
 import CheckedContract from './CheckedContract'
 import { Card } from '@/components'
@@ -17,9 +18,10 @@ const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({
   if (!checkedContracts.length) return null
 
   return (
-    <Card title="Contracts">
+    <Card title="Contracts" className={styles.contracts}>
       {checkedContracts.map((contract) => (
         <CheckedContract
+          isOpen={checkedContracts.length === 1}
           key={contract.verificationId}
           checkedContract={contract}
           verifyCheckedContract={verifyCheckedContract}

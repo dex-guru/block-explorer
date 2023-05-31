@@ -126,7 +126,12 @@ const ChainAddressForm = ({
                   Sources <Label>{totalFilesCount}</Label>
                 </>
               ),
-              value: <DetailedView checkedContract={checkedContract} />,
+              value: (
+                <DetailedView
+                  checkedContract={checkedContract}
+                  className={styles.viewDetails}
+                />
+              ),
             },
             {
               title: (

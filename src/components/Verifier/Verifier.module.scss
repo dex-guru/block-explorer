@@ -4,18 +4,28 @@
   gap: 16px;
 }
 
+.header {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
 .only {
   grid-column: span 2;
 }
 
 .upload {
+  &:only-child {
+    grid-column: span 2;
+  }
+
   &Browse {
     composes: button from '../Button/Button.module.scss';
     composes: lg from '../Button/Button.module.scss';
     composes: action from '../Button/Button.module.scss';
   }
 
-  &Body {
+  &Zone {
     border-radius: var(--radii-sm);
     padding: 15px;
     background: var(--color-bg);
@@ -24,6 +34,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
+    min-height: 160px;
 
     &Loading {
       pointer-events: none;
@@ -32,16 +43,24 @@
     &:hover {
       border-color: var(--color-accent);
     }
-  }
 
-  &Zone {
-    flex: 1 0 auto;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    min-height: 160px;
+    .dragOver & {
+      &:before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+      }
+    }
+
+    &Body {
+      flex: 1 0 auto;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
   }
 
   &Loader {
@@ -61,11 +80,21 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    display: flex;
+    gap: 4px;
+    flex-flow: column;
   }
 
   &Item {
     margin: 0;
     padding: 0;
+  }
+
+  &Clear {
+    composes: lg from '../Button/Button.module.scss';
+    composes: action from '../Button/Button.module.scss';
+
+    margin: -8px 0 -8px auto;
   }
 }
 
@@ -84,13 +113,6 @@
 }
 
 .view {
-  max-height: 100%;
-  overflow: auto;
-  overflow: overlay;
-  width: 100%;
-  max-width: 720px;
-  border-radius: var(--radii-lg);
-
   &Form {
     display: flex;
     flex-flow: column;
@@ -99,6 +121,8 @@
   &Input {
     composes: input from '../Interactive/Input.module.scss';
     composes: lg from '../Interactive/Input.module.scss';
+
+    margin-block: -8px;
 
     &Invalid {
       color: var(--color-negative);
@@ -115,6 +139,10 @@
   &Props {
     composes: cardChild from '../Card/Card.module.scss';
   }
+
+  &Details {
+    margin-block: -8px;
+  }
 }
 
 .files {
@@ -126,17 +154,5 @@
     display: flex;
     gap: 8px;
     flex-flow: column;
-  }
-
-  &Item {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 8px;
-    min-height: 24px;
-  }
-
-  &Copy {
-    margin: 0;
   }
 }
