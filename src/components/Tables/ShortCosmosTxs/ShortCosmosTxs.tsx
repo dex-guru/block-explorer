@@ -1,39 +1,42 @@
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { useQuery } from '@apollo/client'
+import clsx from 'clsx'
 import { cosmosTxsColumns } from './columns'
-import { CosmosTransactionModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  CosmosTransactionModel,
+} from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { GET_COSMOS_TRANSACTIONS } from '@/lib/apollo/queries'
+import { ITEMS_PER_PAGE } from '@/pages'
 import styles from './ShortCosmos.module.scss'
 
 interface IShortCosmosTxsTableProps {
-  data: CosmosTransactionModel[]
+  chainConfig: ChainConfigModel
 }
 
 export const ShortCosmosTxsTable: FC<IShortCosmosTxsTableProps> = (props) => {
-  const [cosmosTransactions, setCosmosTransactions] = useState<
-    CosmosTransactionModel[]
-  >(props.data)
-
-  const { data, loading } = useQuery<{
+  const { data, previousData } = useQuery<{
     cosmos: { transactions: CosmosTransactionModel[] }
   }>(GET_COSMOS_TRANSACTIONS, {
-    pollInterval: Number(process.env.pollInterval),
+    pollInterval: Number(
+      props.chainConfig?.blockTime || process.env.pollInterval
+    ),
   })
 
-  useEffect(() => {
-    if (!loading && data?.cosmos?.transactions?.length) {
-      setCosmosTransactions(data.cosmos.transactions)
-    }
-  }, [data, loading])
+  const hasData = data?.cosmos.transactions || previousData?.cosmos.transactions
+
+  const dataDisplay = hasData || [...Array(ITEMS_PER_PAGE)]
 
   return (
     <Table
       columns={cosmosTxsColumns()}
-      data={cosmosTransactions}
+      data={dataDisplay}
       showHeader={false}
-      className={styles.cardChild}
-      getRowKey={(data) => data.hash}
+      className={clsx(styles.cardChild, {
+        [styles.tablePreloader]: !hasData,
+      })}
+      getRowKey={previousData ? (data) => data?.hash : undefined}
     />
   )
 }

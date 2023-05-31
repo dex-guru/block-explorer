@@ -7,7 +7,6 @@ import {
   BlockModel,
   ChainConfigModel,
   ChainStatsModel,
-  CosmosTransactionModel,
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -37,7 +36,6 @@ interface IndexProps {
   chainStats: ChainStatsModel
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
-  cosmosTransactions: CosmosTransactionModel[]
 }
 
 export const ITEMS_PER_PAGE = 10
@@ -52,7 +50,7 @@ const Index: NextPage<IndexProps> = (props) => {
     GET_BLOCKS_SHORT,
     {
       variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
-      pollInterval: Number(process.env.pollInterval),
+      pollInterval: Number(chainConfig?.blockTime || process.env.pollInterval),
     }
   )
 
@@ -97,13 +95,22 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: 'Market Cap',
+      title: 'Active Addresses',
       value: (
         <Value
-          value={financialFormatLowValueHighPrecision(stats.marketCap, {
-            decimals: 2,
-          })}
-          prefix="$"
+          value={financialFormatLowValueHighPrecision(
+            stats.activeAddressesCount
+          )}
+        />
+      ),
+    },
+    {
+      title: 'Smart Contracts',
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(
+            stats.smartContractsCount
+          )}
         />
       ),
     },
@@ -216,9 +223,7 @@ const Index: NextPage<IndexProps> = (props) => {
                 : undefined
             }
           >
-            {isCosmos && (
-              <ShortCosmosTxsTable data={props.cosmosTransactions} />
-            )}
+            {isCosmos && <ShortCosmosTxsTable chainConfig={chainConfig} />}
 
             {!isCosmos && (
               <ShortTxsTable
@@ -244,15 +249,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(data.blocks, ITEMS_PER_PAGE)
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(
+    data?.blocks || [],
+    ITEMS_PER_PAGE
+  )
+
   return addApolloState(apolloClient, {
     props: {
-      transactions: data.transactions,
+      ...data,
       blocks: blocksWithTimeDiff,
-      chainStats: data.chainStats,
-      csrStats: data.csrStats || null,
-      chainConfig: data.chainConfig,
-      cosmosTransactions: data?.cosmos?.transactions || null,
     },
   })
 }

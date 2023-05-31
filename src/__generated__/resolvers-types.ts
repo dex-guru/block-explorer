@@ -177,7 +177,7 @@ export type Erc721TransferModel = {
   operatorAddress?: Maybe<Scalars['String']>;
   toAddress: Scalars['String'];
   tokenAddress: Scalars['String'];
-  tokenId: Scalars['Int'];
+  tokenId: Scalars['Decimal'];
   value?: Maybe<Scalars['Decimal']>;
 };
 
@@ -819,7 +819,7 @@ export type Erc721TransferModelResolvers<ContextType = any, ParentType extends R
   operatorAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  tokenId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  tokenId?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   value?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

@@ -32,45 +32,46 @@ const NetworkSelect: FC<NetworkSelectProps> = ({
         className={clsx(styles.body, { [styles.open]: isOpen })}
         onClick={handleClick}
       >
-        {current}
-        {isOpen && (
-          <div className={styles.dropdown}>
-            <ul className={styles.list}>
-              {variants.map((variant, idx) => {
-                const Icon = lazy(() =>
-                  import(`@/images/explorers/${variant.standard}.svg`).catch(
-                    () => ({
-                      default: () => <IconQuestion className={styles.icon} />,
-                    })
-                  )
-                )
-
-                const suspensedIcon = (
-                  <Suspense fallback={<span className={styles.icon} />}>
-                    <Icon className={styles.icon} />
-                  </Suspense>
-                )
-
-                return (
-                  <li key={idx} className={styles.item}>
-                    <Button
-                      icon={suspensedIcon}
-                      caption={variant.name}
-                      to={variant.url}
-                      className={styles.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        )}
+        <span className={styles.caption}>{current}</span>
         <IconDown
           className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
         />
       </div>
+
+      {isOpen && (
+        <div className={styles.dropdown}>
+          <ul className={styles.list}>
+            {variants.map((variant, idx) => {
+              const Icon = lazy(() =>
+                import(`@/images/explorers/${variant.standard}.svg`).catch(
+                  () => ({
+                    default: () => <IconQuestion className={styles.icon} />,
+                  })
+                )
+              )
+
+              const suspensedIcon = (
+                <Suspense fallback={<span className={styles.icon} />}>
+                  <Icon className={styles.icon} />
+                </Suspense>
+              )
+
+              return (
+                <li key={idx} className={styles.item}>
+                  <Button
+                    icon={suspensedIcon}
+                    caption={variant.name}
+                    to={variant.url}
+                    className={styles.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
     </OutsideClicker>
   )
 }
