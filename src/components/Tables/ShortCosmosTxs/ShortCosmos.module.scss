@@ -1,11 +1,7 @@
 .cardChild {
-  margin: 0 -16px;
+  composes: cardChild from '../../../pages/Pages.module.scss';
+}
 
-  &:first-child {
-    margin-top: -16px;
-  }
-
-  &:last-child {
-    margin-bottom: -16px;
-  }
+.tablePreloader {
+  composes: tablePreloader from '../../../pages/Pages.module.scss';
 }

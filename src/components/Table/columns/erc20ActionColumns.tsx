@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import labelStyles from '../../Label/Label.module.scss'
+import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, Label } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
@@ -28,7 +28,9 @@ export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
     accessor: 'eventType',
     title: 'Method',
     render: (data) => (
-      <Label className={labelStyles[data.eventType]}>{data.eventType}</Label>
+      <Label className={clsx(styles.label, styles[`label-${data.eventType}`])}>
+        {data.eventType}
+      </Label>
     ),
   },
   {

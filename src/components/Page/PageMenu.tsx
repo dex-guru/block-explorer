@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, MouseEventHandler, useState } from 'react'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import { clsx } from 'clsx'
@@ -32,10 +32,16 @@ const PageMenu: FC<{
       />
       <ul className={clsx(styles.list, { [styles.open]: isOpen })}>
         {links.map((link, idx) => {
+          const handleLinkCLick: MouseEventHandler<HTMLAnchorElement> = (e) => {
+            document.documentElement.classList.remove('open-menu')
+            link.onClick && link.onClick(e)
+          }
+
           return (
             <li className={styles.item} key={idx}>
               <Link
                 {...link}
+                onClick={handleLinkCLick}
                 className={clsx(
                   styles.link,
                   {
