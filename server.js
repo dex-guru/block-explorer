@@ -1,55 +1,37 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require('express')
-const { gzip } = require('node-gzip')
+const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
-const client = createClient()
+const redisServer = process.env.REDIS_URL
+  ? {
+      url: process.env.REDIS_URL,
+    }
+  : undefined
 
-client.on('error', (err) => console.log('Redis Client Error', err))
+const redis = createClient(redisServer)
+redis.on('error', (err) => console.log('[ Redis Client Error ]', err))
 
 const app = next({ dev: false })
 const handle = app.getRequestHandler()
 
-const getJsonKey = (req) =>
-  req.path
-    .match(/\/([^\/]+)+/g)
-    .slice(3)
-    .join('')
+const getJsonKey = (req) => 'props:' + req.url.split('/').slice(4).join('/')
 
-const getSsrKey = (req) => {
-  return req.url
-}
+const getSsrKey = (req) => 'page:' + req.url
 
 async function jsonCache(req, res, time = 60 * 60 * 1000) {
   const key = getJsonKey(req)
-  const cache = await client.get(key)
+  const cache = await redis.get(key)
 
-  console.log('jsonCache', req.url, key)
+  res.setHeader('Content-Type', 'application/json')
+  res.setHeader('Content-Encoding', 'br')
 
   if (cache) {
-    const headersToWrite = {
-      'content-type': 'application/json',
-      'content-encoding': 'gzip',
-    }
-    const buffer = JSON.parse(cache, (k, v) => {
-      if (
-        v !== null &&
-        typeof v === 'object' &&
-        'type' in v &&
-        v.type === 'Buffer' &&
-        'data' in v &&
-        Array.isArray(v.data)
-      ) {
-        return Buffer.from(v.data)
-      }
-      return v
-    })
+    res.setHeader('X-Content-Source', 'cache')
+    let buff = Buffer.from(cache, 'base64')
 
-    Object.entries(headersToWrite).forEach(([key, value]) =>
-      res.setHeader(key, value)
-    )
-    return res.send(buffer)
+    return res.send(buff)
   }
 
   const rawResEnd = res.end
@@ -79,29 +61,32 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
   res.end = rawResEnd
 
   const isChunked = Array.isArray(data)
-  const response = isChunked ? Buffer.concat(data) : Buffer.from(data)
-  const serializedResponse = isChunked
-    ? JSON.stringify(response)
-    : JSON.stringify(await gzip(response))
+  const response = isChunked
+    ? zlib.gunzipSync(Buffer.concat(data))
+    : Buffer.from(data)
+
+  const compressedData = zlib.brotliCompressSync(response)
+  let buff = Buffer.from(compressedData).toString('base64')
 
   if (res.statusCode === 200 && data) {
-    client.set(key, serializedResponse, { EX: time })
+    redis.set(key, buff, { EX: time })
   }
 
-  return res.end(response)
+  return res.end(compressedData)
 }
 
 async function ssrCache(req, res, time = 60 * 60 * 1000) {
-  console.log('ssrCache', req.url)
-
   const key = getSsrKey(req)
+  const cache = await redis.get(key)
 
-  const cache = await client.get(key)
+  res.setHeader('Content-Encoding', 'br')
+  res.setHeader('Content-Type', 'text/html; charset=utf-8')
 
   if (cache) {
-    return res.send(
-      cache + `<!-- cache out @ ${new Date().toLocaleString()} -->`
-    )
+    res.setHeader('X-Content-Source', 'cache')
+    let buff = Buffer.from(cache, 'base64')
+
+    return res.send(buff)
   }
 
   const data =
@@ -110,24 +95,29 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
       ...req.params,
     })) + `<!-- cache in  @ ${new Date().toLocaleString()} -->`
 
+  const compressedData = zlib.brotliCompressSync(data)
+  let buff = Buffer.from(compressedData).toString('base64')
+
   if (res.statusCode === 200 && data) {
-    client.set(key, data, { EX: time })
+    redis.set(key, buff, { EX: time })
   }
 
-  return res.send(data)
+  return res.send(compressedData)
 }
 
 app.prepare().then(async () => {
   const server = express()
-  await client.connect()
+  await redis.connect()
 
-  server.get('/', (req, res) => ssrCache(req, res))
-  server.get('/address/*', (req, res) => ssrCache(req, res, 5 * 60 * 1000))
-  server.get('/holdings/*', (req, res) => ssrCache(req, res, 5 * 60 * 1000))
-  server.get('/blocks/*', (req, res) => ssrCache(req, res, 10 * 60 * 1000))
-  server.get('/block/*', (req, res) => ssrCache(req, res, 24 * 60 * 60 * 1000))
-  server.get('/txs/*', (req, res) => ssrCache(req, res, 10 * 60 * 1000))
-  server.get('/tx/*', (req, res) => ssrCache(req, res, 24 * 60 * 60 * 1000))
+  if (process.env.SSR_URLS_CACHE_TIME) {
+    const json = JSON.parse(process.env.SSR_URLS_CACHE_TIME)
+    Object.entries(json).forEach(([url, time]) => {
+      console.log(
+        `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
+      )
+      server.get(url, (req, res) => ssrCache(req, res, time))
+    })
+  }
 
   server.get('/_next/data/*', (req, res) => {
     return jsonCache(req, res)
@@ -139,6 +129,6 @@ app.prepare().then(async () => {
     if (err) {
       throw err
     }
-    console.log(`> Ready!`)
+    console.log(`[ Block Explorer Server ] > Ready!`)
   })
 })
