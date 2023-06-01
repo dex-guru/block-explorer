@@ -29,6 +29,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
 
   if (cache) {
+    res.setHeader('X-Cache-Key', key)
     let buff = Buffer.from(cache, 'base64')
 
     return res.send(buff)
@@ -68,7 +69,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
   const compressedData = zlib.brotliCompressSync(response)
   let buff = Buffer.from(compressedData).toString('base64')
 
-  if (res.statusCode === 200 && data) {
+  if (res.statusCode === 200 && data && buff) {
     redis.set(key, buff, { EX: time })
   }
 
@@ -84,7 +85,7 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
 
   if (cache) {
-    res.setHeader('X-Content-Source', 'cache')
+    res.setHeader('X-Cache-Key', key)
     let buff = Buffer.from(cache, 'base64')
 
     return res.send(buff)
@@ -99,7 +100,7 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
   const compressedData = zlib.brotliCompressSync(data)
   let buff = Buffer.from(compressedData).toString('base64')
 
-  if (res.statusCode === 200 && data) {
+  if (res.statusCode === 200 && data && buff) {
     redis.set(key, buff, { EX: time })
   }
 
