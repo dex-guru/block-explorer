@@ -30,7 +30,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
 
   if (cache) {
     res.setHeader('X-Cache-Key', key)
-    let buff = Buffer.from(cache, 'base64')
+    const buff = Buffer.from(cache, 'base64')
 
     return res.send(buff)
   }
@@ -67,7 +67,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
     : Buffer.from(data)
 
   const compressedData = zlib.brotliCompressSync(response)
-  let buff = Buffer.from(compressedData).toString('base64')
+  const buff = Buffer.from(compressedData).toString('base64')
 
   if (res.statusCode === 200 && data && buff) {
     redis.set(key, buff, { EX: time })
