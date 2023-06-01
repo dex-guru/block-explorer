@@ -72,6 +72,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
     redis.set(key, buff, { EX: time })
   }
 
+  res.setHeader('X-Content-Source', 'direct')
   return res.end(compressedData)
 }
 
@@ -102,6 +103,7 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
     redis.set(key, buff, { EX: time })
   }
 
+  res.setHeader('X-Content-Source', 'direct')
   return res.send(compressedData)
 }
 
