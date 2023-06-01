@@ -93,7 +93,7 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
     (await app.renderToHTML(req, res, req.path, {
       ...req.query,
       ...req.params,
-    })) + `<!-- cache in  @ ${new Date().toLocaleString()} -->`
+    })) + `<!-- cache @ ${new Date().toLocaleString()} -->`
 
   const compressedData = zlib.brotliCompressSync(data)
   let buff = Buffer.from(compressedData).toString('base64')
