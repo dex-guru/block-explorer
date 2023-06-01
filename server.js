@@ -26,9 +26,9 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
 
   res.setHeader('Content-Type', 'application/json')
   res.setHeader('Content-Encoding', 'br')
+  res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
 
   if (cache) {
-    res.setHeader('X-Content-Source', 'cache')
     let buff = Buffer.from(cache, 'base64')
 
     return res.send(buff)
@@ -72,7 +72,6 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
     redis.set(key, buff, { EX: time })
   }
 
-  res.setHeader('X-Content-Source', 'direct')
   return res.end(compressedData)
 }
 
@@ -82,6 +81,7 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
 
   res.setHeader('Content-Encoding', 'br')
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
+  res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
 
   if (cache) {
     res.setHeader('X-Content-Source', 'cache')
@@ -103,7 +103,6 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
     redis.set(key, buff, { EX: time })
   }
 
-  res.setHeader('X-Content-Source', 'direct')
   return res.send(compressedData)
 }
 
