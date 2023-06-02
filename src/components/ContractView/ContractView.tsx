@@ -452,7 +452,7 @@ const ContractView: FC<IContractViewProps> = ({
 
               {isSubTab && (
                 <Card>
-                  {!isMatchLoading && !hasSources && (
+                  {!isMatchLoading && !hasSources && abi && (
                     <Message type="danger">
                       This smart contract isn&apos;t verified, but we have a
                       matching hash for the smart contract. Make sure you
