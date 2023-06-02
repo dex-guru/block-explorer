@@ -2,6 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from 'react'
+import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc'
 import {
   ApolloClient,
   from,
@@ -15,14 +16,6 @@ import { SchemaLink } from '@apollo/client/link/schema'
 import merge from 'deepmerge'
 import isEqual from 'lodash/isEqual'
 import { sendApmError } from '@/services/apmService'
-
-export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
-
-let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
-
-type SchemaContext =
-  | SchemaLink.ResolverContext
-  | SchemaLink.ResolverContextFunction
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   graphQLErrors?.forEach(({ message, locations, path }) => {
@@ -48,7 +41,7 @@ const retryLink = new RetryLink({
   },
 })
 
-function createIsomorphicLink() {
+export function createIsomorphicLink() {
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_API_URL + '/graphql',
     credentials: 'same-origin',
@@ -56,6 +49,16 @@ function createIsomorphicLink() {
 
   return from([errorLink, retryLink, httpLink])
 }
+
+// DEPRECATED
+
+export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
+
+let apolloClient: ApolloClient<NormalizedCacheObject> | null = null
+
+type SchemaContext =
+  | SchemaLink.ResolverContext
+  | SchemaLink.ResolverContextFunction
 
 function createApolloClient() {
   return new ApolloClient({

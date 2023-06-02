@@ -1,0 +1,232 @@
+.muted {
+  composes: muted from '../styles/_common.scss';
+}
+
+.icon {
+  composes: icon from '../styles/_common.scss';
+}
+
+.button {
+  composes: button from '../components/Button/Button.module.scss';
+  composes: sm from '../components/Button/Button.module.scss';
+}
+
+.pageTo {
+  --color-pagination-border: var(--color-separator);
+  --color-pagination-text: var(--color-muted);
+  --color-pagination-bg: transparent;
+  --color-pagination-hover: var(--color-accent-a);
+  --color-pagination-hover-text: var(--color-bg-2);
+
+  composes: button from '../components/Pagination/Pagination.module.scss';
+  margin: {
+    top: -8px;
+    bottom: -8px;
+  }
+}
+
+.disabled {
+  composes: disabled from '../components/Button/Button.module.scss';
+}
+
+.neutral {
+  composes: neutral from '../styles/_common.scss';
+}
+
+.positive {
+  composes: positive from '../styles/_common.scss';
+}
+
+.negative {
+  composes: negative from '../styles/_common.scss';
+}
+
+.success {
+  composes: success from '../components/Label/Label.module.scss';
+}
+
+.danger {
+  composes: danger from '../components/Label/Label.module.scss';
+}
+
+.warn {
+  composes: warn from '../components/Label/Label.module.scss';
+}
+
+.info {
+  composes: info from '../components/Label/Label.module.scss';
+}
+
+.cardChild {
+  margin: 0 -16px;
+
+  &:first-child {
+    margin-top: -16px;
+  }
+
+  &:last-child {
+    margin-bottom: -16px;
+  }
+}
+
+.grid4 {
+  composes: grid4 from '../components/Grid/Grid.module.scss';
+}
+
+.span2rows {
+  composes: span2rows from '../components/Grid/Grid.module.scss';
+}
+
+.span2cols {
+  composes: span2cols from '../components/Grid/Grid.module.scss';
+}
+
+.valueBig {
+  composes: big from '../components/Value/Value.module.scss';
+}
+
+.chart {
+  &Positive {
+    path {
+      stroke: var(--color-positive) !important;
+    }
+  }
+  &Negative {
+    path {
+      stroke: var(--color-negative) !important;
+    }
+  }
+}
+
+.span2Only {
+  &:only-child {
+    grid-column: span 2;
+  }
+}
+
+.propertyIndicator {
+  composes: success from '../components/Label/Label.module.scss';
+
+  padding: 0 4px;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+
+  vertical-align: baseline;
+}
+
+.tokenValues {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tokenValue {
+  margin: 0;
+  padding: 0;
+}
+
+.verifyContractFrame {
+  display: block;
+  flex: 1 0 auto;
+  min-height: 600px;
+}
+
+.txsHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .txsTitle {
+    align-items: flex-start;
+  }
+
+  .txsAction {
+    align-items: flex-end;
+  }
+}
+
+.tabsInner {
+  composes: inner from '../components/Tabs/Tabs.module.scss';
+  margin: -6px 0;
+  font-size: 14px;
+}
+
+.addressWallet {
+  margin: -6px 0 -6px -8px;
+}
+
+.mutedIcon {
+  color: var(--color-bg-4);
+}
+
+.contractName {
+  composes: info from '../components/Label/Label.module.scss';
+  margin: -8px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tablePreloader {
+  tr {
+    visibility: hidden;
+    pointer-events: none;
+    animation: none;
+  }
+
+  [class*='_icon_'] {
+    visibility: visible;
+  }
+
+  button {
+    display: none;
+  }
+
+  a,
+  [class^='Address_container__'],
+  [class='value'] {
+    position: relative;
+    min-width: 6em;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--radii-sm);
+      background: var(--color-bg);
+      visibility: visible;
+    }
+  }
+}
+
+.label {
+  text-transform: capitalize;
+
+  &-mint {
+    composes: success from '../components/Label/Label.module.scss';
+  }
+
+  &-burn {
+    composes: danger from '../components/Label/Label.module.scss';
+  }
+
+  &-swap {
+    composes: info from '../components/Label/Label.module.scss';
+  }
+
+  &-transfer {
+    composes: warn from '../components/Label/Label.module.scss';
+  }
+}

@@ -1,7 +1,7 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
 import styles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
@@ -39,8 +39,7 @@ const AddressView: FC<IAddressViewProps> = ({
   chain,
   tokenHoldingsStats,
 }) => {
-  const router = useRouter()
-  const pathname = router.asPath.split('?')[0]
+  const pathname = usePathname()
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = addressInfo?.address

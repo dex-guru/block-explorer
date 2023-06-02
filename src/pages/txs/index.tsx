@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { usePathname, useSearchParams } from 'next/navigation'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -31,12 +31,11 @@ interface ITxsProps {
 }
 
 const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
-  const router = useRouter()
-  const { tab } = router.query
+  const tab = useSearchParams().get('tab')
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
-  const pathname = router.asPath.split('?')[0]
+  const pathname = usePathname()
 
   const blockQuery = block ? { block: block } : undefined
 

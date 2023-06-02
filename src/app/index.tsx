@@ -1,8 +1,10 @@
+'use client'
+
 import { useEffect, useState } from 'react'
-import { GetServerSidePropsContext, NextPage } from 'next'
+import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useQuery } from '@apollo/client'
 import {
   BlockModel,
   ChainConfigModel,
@@ -18,11 +20,8 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
-import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import {
-  GET_BLOCKS_SHORT,
-  GET_BLOCKS_TXNS_CHAIN_STATS,
-} from '@/lib/apollo/queries'
+import { ITEMS_PER_PAGE } from '@/constants'
+import { GET_BLOCKS_SHORT } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -37,8 +36,6 @@ interface IndexProps {
   csrStats: CsrStatsModel
   chainConfig: ChainConfigModel
 }
-
-export const ITEMS_PER_PAGE = 10
 
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
@@ -239,25 +236,3 @@ const Index: NextPage<IndexProps> = (props) => {
 }
 
 export default Index
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
-
-  const { data } = await apolloClient.query({
-    query: GET_BLOCKS_TXNS_CHAIN_STATS,
-    // per_page + 1 - last item needs for time diff
-    variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
-  })
-
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(
-    data?.blocks || [],
-    ITEMS_PER_PAGE
-  )
-
-  return addApolloState(apolloClient, {
-    props: {
-      ...data,
-      blocks: blocksWithTimeDiff,
-    },
-  })
-}

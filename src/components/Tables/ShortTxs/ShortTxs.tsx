@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
 import { lastTxsColumns } from './columns'
 import {
   ChainConfigModel,

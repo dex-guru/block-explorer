@@ -1,9 +1,9 @@
 import { FC, Suspense } from 'react'
 import { useMemo } from 'react'
+import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
+import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -126,8 +126,7 @@ const ContractView: FC<IContractViewProps> = ({
     [connectors, provider]
   )
 
-  const router = useRouter()
-  const pathname = router.asPath.split('?')[0]
+  const pathname = usePathname()
   const match = useSourcifyMetadata(address, CHAIN_ID)
 
   const isMatchLoading = match === undefined

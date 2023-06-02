@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { isAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
 import {
@@ -25,10 +25,13 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   chainConfig,
   tokenHoldingsStats,
 }) => {
-  const router = useRouter()
-  const { address, tab } = router.query
-
+  const searchParams = useSearchParams()
+  const address = searchParams.get('address')
+  const tab = searchParams.get('tab')
   if (!address) {
+    return null
+  }
+  if (!tab) {
     return null
   }
 
