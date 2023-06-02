@@ -22,6 +22,7 @@ import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
 import { ITEMS_PER_PAGE } from '@/constants'
 import { GET_BLOCKS_SHORT } from '@/lib/apollo/queries'
+import { useAppContext } from '@/lib/context'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -39,6 +40,10 @@ interface IndexProps {
 
 const Index: NextPage<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
+
+  const context = useAppContext()
+  console.log('context', context)
+
   const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
 
   const [isCosmos, setIsCosmos] = useState(false)

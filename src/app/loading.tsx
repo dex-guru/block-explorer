@@ -1,8 +1,11 @@
 import { FC } from 'react'
-import styles from '../components/Loading/Loading.module.scss'
 
 const Loading: FC = () => {
-  return <progress className={styles.progress} />
+  return (
+    <p>
+      LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!LOADING!
+    </p>
+  )
 }
 
 export default Loading
