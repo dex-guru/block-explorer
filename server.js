@@ -37,21 +37,20 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
 
   const rawResEnd = res.end
   const rawResWrite = res.write
-  const chunks = []
-
-  const proxyWrite = new Proxy(res.write, {
-    apply(target, thisArg, args) {
-      const chunk = Buffer.from(args[0])
-      chunks.push(chunk)
-    },
-  })
-
-  res.write = proxyWrite
 
   const data = await new Promise(async (resolve) => {
+    const chunks = []
+
+    res.write = new Proxy(res.write, {
+      apply(target, thisArg, args) {
+        const chunk = Buffer.from(args[0])
+        chunks.push(chunk)
+      },
+    })
     res.end = async (res) => {
       resolve(res || chunks)
     }
+
     await app.render(req, res, req.path, {
       ...req.query,
       ...req.params,
