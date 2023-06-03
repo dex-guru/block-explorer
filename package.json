@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS=--require=elastic-apm-node/start-next.js next dev",
     "build": "next build",
-    "start": "node server.js",
+    "start": "NODE_OPTIONS=--require=elastic-apm-node/start-next.js node server.js",
     "lint": "next lint",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -26,6 +26,7 @@
     "clsx": "1.2.1",
     "deepmerge": "4.3.1",
     "disqus-react": "^1.1.5",
+    "elastic-apm-node": "^3.46.0",
     "eslint-config-next": "13.3.1",
     "express": "^4.18.2",
     "graphql": "16.6.0",
