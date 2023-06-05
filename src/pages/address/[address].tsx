@@ -11,6 +11,7 @@ import {
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 
 interface AddressPageServerProps {
   address: AddressModel
@@ -64,6 +65,8 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('address')
+
   const { address } = ctx.query as { address: string; tab: string }
 
   const apolloClient = initializeApollo({ ctx })
@@ -81,6 +84,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return { props: data }
   }
 
+  logger.info({
+    msg: 'Getting address info',
+    address: address.toLowerCase(),
+  })
+
   const { data } = await apolloClient.query<{
     address: AddressModel
     chainStats: ChainStatsModel
@@ -90,6 +98,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: GET_ADDRESS_INFO,
     variables: { address: address.toLowerCase() },
   })
+
+  logger.info({ msg: 'Got address info', data })
 
   if (!data?.address?.address) {
     ctx.res.statusCode = 404
