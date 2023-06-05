@@ -14,6 +14,7 @@ import {
   DropzoneFile,
   IGenericError,
   SendableContract,
+  SessionResponse,
   VerificationInput,
   VerifyResponse,
 } from './types'
@@ -60,6 +61,7 @@ const Verifier: React.FC = () => {
   const fetchAndUpdate = useCallback(
     async (URL: string, fetchOptions?: RequestInit) => {
       try {
+        const isSessionAPI = URL.includes('session')
         const rawRes: Response = await fetch(URL, {
           credentials: 'omit',
           method: fetchOptions?.method || 'GET', // default GET
@@ -74,6 +76,13 @@ const Verifier: React.FC = () => {
         const res: VerifyResponse = await rawRes.json()
         if (res.result && Array.isArray(res.result) && res.result[0].message) {
           throw new Error(res.result[0].message)
+        }
+        if (isSessionAPI) {
+          setUnusedFiles([...(res as unknown as SessionResponse).unused])
+          setCheckedContracts([
+            ...(res as unknown as SessionResponse).contracts,
+          ])
+          setAddedFiles([...(res as unknown as SessionResponse).files])
         }
         setErrorMessage('')
         return res
