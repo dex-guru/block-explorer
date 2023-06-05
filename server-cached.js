@@ -11,7 +11,7 @@ const redisURL = process.env.REDIS_URL
     }
   : undefined
 
-const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
+const chainId = process.env.NEXT_PUBLIC_CHAIN_ID || ''
 
 console.log('[ Redis Client] Using Redis URL:', redisURL)
 
@@ -42,12 +42,12 @@ const app = next({ dev: false })
 const handle = app.getRequestHandler()
 
 const getJsonKey = (req) =>
-  `props:${chainId}:` + req.url.split('/').slice(4).join('/')
-const getSsrKey = (req) => `page:${chainId}:` + req.url
+  `props:${req.url.split('/').slice(4).join('/')}:${chainId}`
+const getSsrKey = (req) => `page:${req.url}:${chainId}`
 
 const getRedisReady = () => isRedisConnected && redis.isReady
 
-async function jsonCache(req, res, time = 60 * 60 * 1000) {
+async function jsonCache(req, res, time = 15 * 60 * 1000) {
   const isRedisReady = getRedisReady()
 
   const key = getJsonKey(req)
@@ -111,7 +111,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
   return res.end(compressedData)
 }
 
-async function ssrCache(req, res, time = 60 * 60 * 1000) {
+async function ssrCache(req, res, time = 15 * 60 * 1000) {
   const isRedisReady = getRedisReady()
 
   const key = getSsrKey(req)
