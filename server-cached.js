@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config()
 const express = require('express')
 const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
-const redisServer = process.env.REDIS_URL
+const redisURL = process.env.REDIS_URL
   ? {
       url: process.env.REDIS_URL,
     }
   : undefined
 
-const redis = createClient(redisServer)
+console.log('Using Redis URL:', redisURL)
+
+const redis = createClient(redisURL)
 redis.on('error', (err) => console.log('[ Redis Client Error ]', err))
 
 const app = next({ dev: false })
