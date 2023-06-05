@@ -4,8 +4,8 @@ import DetailedView from '../../DetailedView'
 import styles from '../../Verifier.module.scss'
 import {
   SendableContract,
-  SessionResponse,
   VerificationInput,
+  VerifyResponse,
 } from '../../types'
 import { Status } from '../../types'
 import ChainAddressForm from './ChainAddressForm'
@@ -18,7 +18,7 @@ type CheckedContractProps = {
   checkedContract: SendableContract
   verifyCheckedContract: (
     sendable: VerificationInput
-  ) => Promise<SessionResponse | undefined>
+  ) => Promise<VerifyResponse | undefined>
 }
 
 type CustomStatus = Status | 'missing' | 'invalid'

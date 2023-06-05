@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '../Verifier.module.scss'
-import { SendableContract, SessionResponse, VerificationInput } from '../types'
+import { SendableContract, VerificationInput, VerifyResponse } from '../types'
 import CheckedContract from './CheckedContract'
 import { Card } from '@/components'
 
@@ -8,7 +8,7 @@ type CheckedContractsViewProps = {
   checkedContracts: SendableContract[]
   verifyCheckedContract: (
     sendable: VerificationInput
-  ) => Promise<SessionResponse | undefined>
+  ) => Promise<VerifyResponse | undefined>
 }
 
 const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({

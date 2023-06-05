@@ -12,8 +12,8 @@ import { checkAllByAddresses } from '../../../api'
 import {
   CheckAllByAddressResult,
   SendableContract,
-  SessionResponse,
   VerificationInput,
+  VerifyResponse,
 } from '../../../types'
 import Message from './Message'
 import Button from '@/components/Button'
@@ -27,7 +27,7 @@ type ChainAddressFormProps = {
   checkedContract: SendableContract
   verifyCheckedContract: (
     sendable: VerificationInput
-  ) => Promise<SessionResponse | undefined>
+  ) => Promise<VerifyResponse | undefined>
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 const ChainAddressForm = ({
