@@ -11,21 +11,36 @@ const redisURL = process.env.REDIS_URL
     }
   : undefined
 
-console.log('Using Redis URL:', redisURL)
+console.log('[ Redis Client] Using Redis URL:', redisURL)
 
 const redis = createClient(redisURL)
-redis.on('error', (err) => console.log('[ Redis Client Error ]', err))
+let isRedisConnected = false
+
+redis.on('error', (err) => {
+  if (isRedisConnected) {
+    console.log('[ Redis Client Error ]', err)
+  }
+})
+
+redis.on('connect', () => {
+  console.log('[ Redis Client ] Connected')
+  isRedisConnected = true
+})
+
+redis.on('disconnect', () => {
+  console.log('[ Redis Client ] Disconnected')
+  isRedisConnected = false
+})
 
 const app = next({ dev: false })
 const handle = app.getRequestHandler()
 
 const getJsonKey = (req) => 'props:' + req.url.split('/').slice(4).join('/')
-
 const getSsrKey = (req) => 'page:' + req.url
 
 async function jsonCache(req, res, time = 60 * 60 * 1000) {
   const key = getJsonKey(req)
-  const cache = await redis.get(key)
+  const cache = redis.isReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'application/json')
   res.setHeader('Content-Encoding', 'br')
@@ -80,7 +95,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
 
 async function ssrCache(req, res, time = 60 * 60 * 1000) {
   const key = getSsrKey(req)
-  const cache = await redis.get(key)
+  const cache = redis.isReady ? await redis.get(key) : null
 
   res.setHeader('Content-Encoding', 'br')
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
@@ -111,7 +126,8 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
 
 app.prepare().then(async () => {
   const server = express()
-  await redis.connect()
+  console.log('[ Redis Client ] Connecting...')
+  redis.connect()
 
   if (process.env.SSR_URLS_CACHE_TIME) {
     const json = JSON.parse(process.env.SSR_URLS_CACHE_TIME)
