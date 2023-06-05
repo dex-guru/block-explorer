@@ -13,6 +13,7 @@ const redisURL = process.env.REDIS_URL
 
 const chainId = process.env.NEXT_PUBLIC_CHAIN_ID || ''
 
+console.log('chainID:', chainId)
 console.log('[ Redis Client] Using Redis URL:', redisURL)
 
 const redis = createClient(redisURL)
@@ -154,7 +155,7 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
 app.prepare().then(async () => {
   const server = express()
   console.log('[ Redis Client ] Connecting...')
-  await redis.connect()
+  redis.connect()
 
   if (process.env.SSR_URLS_CACHE_TIME) {
     const json = JSON.parse(process.env.SSR_URLS_CACHE_TIME)
