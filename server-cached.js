@@ -103,10 +103,13 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
   const compressedData = isRedisReady
     ? zlib.brotliCompressSync(response)
     : zlib.gzipSync(response)
-  const buff = Buffer.from(compressedData).toString('base64')
 
-  if (isRedisReady && res.statusCode === 200 && data && buff) {
-    redis.set(key, buff, { EX: time })
+  if (isRedisReady && res.statusCode === 200 && data) {
+    const buff = Buffer.from(compressedData).toString('base64')
+
+    if (buff) {
+      redis.set(key, buff, { EX: time })
+    }
   }
 
   return res.end(compressedData)
@@ -143,10 +146,13 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
   const compressedData = isRedisReady
     ? zlib.brotliCompressSync(data)
     : zlib.gzipSync(data)
-  let buff = Buffer.from(compressedData).toString('base64')
 
   if (isRedisReady && res.statusCode === 200 && data && buff) {
-    redis.set(key, buff, { EX: time })
+    let buff = Buffer.from(compressedData).toString('base64')
+
+    if (buff) {
+      redis.set(key, buff, { EX: time })
+    }
   }
 
   return res.send(compressedData)
