@@ -8,14 +8,14 @@ import {
   ADD_FILES_URL,
   RESTART_SESSION_URL,
   SESSION_DATA_URL,
-  VERIFY_VALIDATED_URL,
+  VERIFY_URL,
 } from './constants'
 import {
   DropzoneFile,
   IGenericError,
   SendableContract,
-  SessionResponse,
   VerificationInput,
+  VerifyResponse,
 } from './types'
 import styles from './Verifier.module.scss'
 
@@ -24,6 +24,7 @@ const UI_MAX_FILE_SIZE = 30 * 1024 * 1024
 const Verifier: React.FC = () => {
   const [addedFiles, setAddedFiles] = useState<string[]>([])
   const [unusedFiles, setUnusedFiles] = useState<string[]>([])
+  const [filesContent, setFilesContent] = useState({ files: {} })
   const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>(
     []
   )
@@ -70,10 +71,10 @@ const Verifier: React.FC = () => {
           const err: IGenericError = await rawRes.json()
           throw new Error(err.error)
         }
-        const res: SessionResponse = await rawRes.json()
-        setUnusedFiles([...res.unused])
-        setCheckedContracts([...res.contracts])
-        setAddedFiles([...res.files])
+        const res: VerifyResponse = await rawRes.json()
+        if (res.result && Array.isArray(res.result) && res.result[0].message) {
+          throw new Error(res.result[0].message)
+        }
         setErrorMessage('')
         return res
       } catch (e: any) {
@@ -123,6 +124,7 @@ const Verifier: React.FC = () => {
         body: JSON.stringify(jsonBody),
         headers: { 'Content-Type': 'application/json' },
       })
+      setFilesContent(jsonBody)
     }
   }
 
@@ -144,13 +146,15 @@ const Verifier: React.FC = () => {
    */
   const verifyCheckedContract = async (sendable: VerificationInput) => {
     console.log('Verifying checkedContract ' + sendable.verificationId)
-    return fetchAndUpdate(VERIFY_VALIDATED_URL, {
+    return fetchAndUpdate(VERIFY_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contracts: [sendable],
+        address: sendable.address,
+        chain: sendable.chainId,
+        ...filesContent,
       }),
     })
   }

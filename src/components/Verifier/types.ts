@@ -28,6 +28,17 @@ export type SessionResponse = {
   unused: string[]
   files: string[]
 }
+
+export type VerifyResponse = {
+  result: [
+    {
+      address: string
+      status: Status
+      message?: string // error msg
+      storageTimestamp?: string // The contract at the provided address and chain has already been sourcified at timestamp indicated by storageTimestamp.
+    }
+  ]
+}
 export interface IGenericError {
   error: string
 }
