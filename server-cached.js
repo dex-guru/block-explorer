@@ -5,7 +5,7 @@ const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
-SSR_URLS_CACHE_TIME = {
+const SSR_URLS_CACHE_TIME = {
   '/': 5000,
   '/block/*': 50000,
   '/tx/*': 50000,
@@ -15,7 +15,7 @@ SSR_URLS_CACHE_TIME = {
   '/holdings/*': 5000,
   '/holdings/*': 5000,
 }
-JSON_URLS_CACHE_TIME = {
+const JSON_URLS_CACHE_TIME = {
   '/index.json': 5000,
   '/block/*': 50000,
   '/tx/*': 50000,
@@ -184,27 +184,21 @@ app.prepare().then(async () => {
   console.log('[ Redis Client ] Connecting...')
   redis.connect()
 
-  if (process.env.SSR_URLS_CACHE_TIME) {
-    const json = JSON.parse(process.env.SSR_URLS_CACHE_TIME)
-    Object.entries(json).forEach(([url, time]) => {
-      console.log(
-        `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
-      )
-      server.get(url, (req, res) => ssrCache(req, res, time))
-    })
-  }
+  Object.entries(SSR_URLS_CACHE_TIME).forEach(([url, time]) => {
+    console.log(
+      `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
+    )
+    server.get(url, (req, res) => ssrCache(req, res, time))
+  })
 
-  if (process.env.JSON_URLS_CACHE_TIME) {
-    const json = JSON.parse(process.env.JSON_URLS_CACHE_TIME)
-    Object.entries(json).forEach(([url, time]) => {
-      console.log(
-        `[ Block Explorer Server ] > Props request "${url}" cache for ${time}ms`
-      )
-      server.get(`/_next/data/:hash${url}`, (req, res) =>
-        jsonCache(req, res, time)
-      )
-    })
-  }
+  Object.entries(JSON_URLS_CACHE_TIME).forEach(([url, time]) => {
+    console.log(
+      `[ Block Explorer Server ] > Props request "${url}" cache for ${time}ms`
+    )
+    server.get(`/_next/data/:hash${url}`, (req, res) =>
+      jsonCache(req, res, time)
+    )
+  })
 
   server.get('*', (req, res) => handle(req, res))
 
