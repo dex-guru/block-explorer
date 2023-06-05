@@ -5,6 +5,27 @@ const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
+SSR_URLS_CACHE_TIME = {
+  '/': 5000,
+  '/block/*': 50000,
+  '/tx/*': 50000,
+  '/blocks/*': 50000,
+  '/txs/*': 50000,
+  '/address/*': 5000,
+  '/holdings/*': 5000,
+  '/holdings/*': 5000,
+}
+JSON_URLS_CACHE_TIME = {
+  '/index.json': 5000,
+  '/block/*': 50000,
+  '/tx/*': 50000,
+  '/blocks/*': 50000,
+  '/txs/*': 50000,
+  '/address/*': 5000,
+  '/holdings/*': 5000,
+  '/holdings/*': 5000,
+}
+
 const redisURL = process.env.REDIS_URL
   ? {
       url: process.env.REDIS_URL,
