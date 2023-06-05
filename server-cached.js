@@ -147,8 +147,8 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
     ? zlib.brotliCompressSync(data)
     : zlib.gzipSync(data)
 
-  if (isRedisReady && res.statusCode === 200 && data && buff) {
-    let buff = Buffer.from(compressedData).toString('base64')
+  if (isRedisReady && res.statusCode === 200 && data) {
+    const buff = Buffer.from(compressedData).toString('base64')
 
     if (buff) {
       redis.set(key, buff, { EX: time })
