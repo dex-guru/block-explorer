@@ -19,7 +19,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Docker
 
-Values in `.env.production` file should be prefixed with `APP_NEXT_` so you can override them while running the container!
+Values in `.env.production` file should be prefixed with `APP_NEXT_` so you can override them while running the container! (See more at https://raphaelpralat.medium.com/system-environment-variables-in-next-js-with-docker-1f0754e04cde)
 
 ```bash
 docker build -t expolore-stage-arbitrum .
