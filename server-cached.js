@@ -1,28 +1,46 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config()
 const express = require('express')
 const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
-const redisServer = process.env.REDIS_URL
+const redisURL = process.env.REDIS_URL
   ? {
       url: process.env.REDIS_URL,
     }
   : undefined
 
-const redis = createClient(redisServer)
-redis.on('error', (err) => console.log('[ Redis Client Error ]', err))
+console.log('[ Redis Client] Using Redis URL:', redisURL)
+
+const redis = createClient(redisURL)
+let isRedisConnected = false
+
+redis.on('error', (err) => {
+  if (isRedisConnected) {
+    console.log('[ Redis Client Error ]', err)
+  }
+})
+
+redis.on('connect', () => {
+  console.log('[ Redis Client ] Connected')
+  isRedisConnected = true
+})
+
+redis.on('disconnect', () => {
+  console.log('[ Redis Client ] Disconnected')
+  isRedisConnected = false
+})
 
 const app = next({ dev: false })
 const handle = app.getRequestHandler()
 
 const getJsonKey = (req) => 'props:' + req.url.split('/').slice(4).join('/')
-
 const getSsrKey = (req) => 'page:' + req.url
 
 async function jsonCache(req, res, time = 60 * 60 * 1000) {
   const key = getJsonKey(req)
-  const cache = await redis.get(key)
+  const cache = redis.isReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'application/json')
   res.setHeader('Content-Encoding', 'br')
@@ -77,7 +95,7 @@ async function jsonCache(req, res, time = 60 * 60 * 1000) {
 
 async function ssrCache(req, res, time = 60 * 60 * 1000) {
   const key = getSsrKey(req)
-  const cache = await redis.get(key)
+  const cache = redis.isReady ? await redis.get(key) : null
 
   res.setHeader('Content-Encoding', 'br')
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
@@ -108,7 +126,8 @@ async function ssrCache(req, res, time = 60 * 60 * 1000) {
 
 app.prepare().then(async () => {
   const server = express()
-  await redis.connect()
+  console.log('[ Redis Client ] Connecting...')
+  redis.connect()
 
   if (process.env.SSR_URLS_CACHE_TIME) {
     const json = JSON.parse(process.env.SSR_URLS_CACHE_TIME)
