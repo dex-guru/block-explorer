@@ -98,6 +98,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   return addApolloState(apolloClient, {
-    props: { data: blocks[0], chainStats, chainConfig },
+    props: { data: blocks[0] || null, chainStats, chainConfig },
   })
 }
