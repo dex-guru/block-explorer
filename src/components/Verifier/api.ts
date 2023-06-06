@@ -1,0 +1,60 @@
+import { REPOSITORY_SERVER_URL, SERVER_URL } from './constants'
+import { Chain, CheckAllByAddressResult } from './types'
+import { CHAIN_ID } from '@/constants'
+
+type ChainIdsResponse = {
+  chainId: string
+  status: string
+}
+
+export type ServersideAddressCheck = {
+  address: string
+  status: string
+  chainIds?: ChainIdsResponse[]
+}
+
+export const checkAllByAddresses = async (
+  addresses: string,
+  chainIds: string
+): Promise<CheckAllByAddressResult[]> => {
+  const response = await fetch(
+    `${SERVER_URL}/checkAllByAddresses?addresses=${addresses}&chainIds=${chainIds}`,
+    {
+      method: 'GET',
+      credentials: 'omit',
+    }
+  ).then((res) => {
+    if (!res.ok) {
+      // e.g. HTTP 400 invalid address
+      return res.json().then((json) => {
+        throw new Error(json.message)
+      })
+    }
+    return res.json()
+  })
+
+  return response
+}
+
+/**
+ * @function to fetch Sourcify's chains array and return as an object with the chainId as keys.
+ *
+ * The Ethereum networks are placed on top, the rest of the networks are sorted alphabetically.
+ *
+ */
+export const getSourcifyChains = async (): Promise<Chain[]> => {
+  const chainsArray = await (
+    await fetch(`${SERVER_URL}/chains`, { credentials: 'omit' })
+  ).json()
+  return chainsArray
+}
+
+export const generateRepoLink = (
+  address: string,
+  matchStatus: 'perfect' | 'partial'
+) => {
+  let matchPath
+  if (matchStatus === 'perfect') matchPath = 'full_match'
+  if (matchStatus === 'partial') matchPath = 'partial_match'
+  return `${REPOSITORY_SERVER_URL}/contracts/${matchPath}/${CHAIN_ID}/${address}`
+}
