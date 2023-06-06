@@ -141,7 +141,7 @@ const PageFooter: FC = () => {
           Version Beta {process.env.GIT_COMMIT}
         </div>
 
-        <div className={clsx(styles.links)}>
+        <nav className={clsx(styles.links)}>
           <ul className={styles.linksLine}>
             <li className={styles.linksItem}>
               <Link
@@ -152,7 +152,7 @@ const PageFooter: FC = () => {
               </Link>
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
     </div>
   )
