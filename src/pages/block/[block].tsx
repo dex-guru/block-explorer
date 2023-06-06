@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import {
   BlockModel,
   ChainConfigModel,
@@ -9,27 +10,26 @@ import { Empty, Error, IconSearch, Page } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
 import { isValidBlockNumber } from '@/lib/utils'
 
 export interface IBlockProps {
-  block?: string
   data: BlockModel | null
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }
 
-const Block: NextPage<IBlockProps> = ({
-  data,
-  chainConfig,
-  chainStats,
-  block,
-}) => {
+const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
+  const router = useRouter()
+  const { block } = router.query
+
   const pageTitle = data?.number
     ? `Block #${data?.number}`
     : isValidBlockNumber(block)
     ? `No block ${block}`
     : 'Not a block'
+
+  console.log(chainConfig)
 
   return (
     <>
@@ -69,13 +69,20 @@ export default Block
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { block } = ctx.query
 
+  const apolloClient = initializeApollo({ ctx })
+
   if (!isValidBlockNumber(block)) {
     ctx.res.statusCode = 404
 
-    return { props: { block } }
-  }
+    const { data } = await apolloClient.query<{
+      chainStats: ChainStatsModel
+      chainConfig: ChainConfigModel
+    }>({
+      query: CHAIN_STATS,
+    })
 
-  const apolloClient = initializeApollo({ ctx })
+    return { props: data }
+  }
 
   const { data } = await apolloClient.query<{
     blocks: BlockModel[]
@@ -88,17 +95,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const { blocks, chainStats, chainConfig } = data
 
-  if (!blocks?.length) {
+  if (!data.blocks?.length) {
     ctx.res.statusCode = 404
 
-    return { props: { block } }
+    return { props: data }
   }
 
   return addApolloState(apolloClient, {
-    props: { block, data: blocks[0], chainStats, chainConfig },
+    props: { data: blocks[0], chainStats, chainConfig },
   })
-}
-
-export const config = {
-  runtime: 'experimental-edge',
 }

@@ -156,7 +156,3 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     },
   })
 }
-
-export const config = {
-  runtime: 'experimental-edge',
-}
