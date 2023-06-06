@@ -3,18 +3,13 @@ import { CHAIN_ID } from '@/constants'
 
 let apm: ApmBase | undefined
 
-const apmServerUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://apm.dex.guru'
-    : 'https://apm-stage-lax.dexguru.biz'
-
 export const initApm = (): ApmBase | undefined => {
   if (apm) {
     return apm
   }
   apm = init({
     serviceName: `FE-block-explorer_${CHAIN_ID}`,
-    serverUrl: apmServerUrl,
+    serverUrl: process.env.NEXT_PUBLIC_APM_RUM_URL,
     serviceVersion: process.env.GIT_COMMIT,
     pageLoadTransactionName: '/',
     active: true,

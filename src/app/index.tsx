@@ -74,10 +74,15 @@ const Index: NextPage<IndexProps> = (props) => {
     },
   ]
 
+  const lastBlockNumber = Math.max(
+    blocks[0].number,
+    props.chainStats.lastBlockNumber
+  )
+
   const statsDisplay = [
     {
       title: 'Last Block Number',
-      value: financialFormatLowValueHighPrecision(stats.lastBlockNumber),
+      value: financialFormatLowValueHighPrecision(lastBlockNumber),
     },
     {
       title: 'Transactions',

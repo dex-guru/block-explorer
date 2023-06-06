@@ -17,6 +17,7 @@
 
 .headerContent {
   flex: 0 1 auto;
+  margin-left: auto;
 }
 
 .header {
@@ -31,7 +32,7 @@
 }
 
 .body {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
 }
 
 .body,
@@ -59,4 +60,16 @@
   composes: action from '../Button/Button.module.scss';
 
   flex: 1 0 auto;
+}
+
+.cardChild {
+  margin: 0 -15px;
+
+  &:first-child {
+    margin-top: -15px;
+  }
+
+  &:last-child {
+    margin-bottom: -15px;
+  }
 }
