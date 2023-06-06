@@ -29,8 +29,6 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     ? `No block ${block}`
     : 'Not a block'
 
-  console.log(chainConfig)
-
   return (
     <>
       <Head>
