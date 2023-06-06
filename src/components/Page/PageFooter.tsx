@@ -5,7 +5,6 @@ import Button from '../Button'
 import { Socials } from '@/components'
 import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
-import IconQuestion from '@/images/icons/question.svg'
 import styles from './PageFooter.module.scss'
 
 const PageFooter: FC = () => {
