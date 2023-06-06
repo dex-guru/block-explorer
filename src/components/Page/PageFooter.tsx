@@ -5,7 +5,6 @@ import Button from '../Button'
 import { Socials } from '@/components'
 import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
-import IconQuestion from '@/images/icons/question.svg'
 import styles from './PageFooter.module.scss'
 
 const PageFooter: FC = () => {
@@ -141,13 +140,8 @@ const PageFooter: FC = () => {
           Version Beta {process.env.GIT_COMMIT}
         </div>
 
-        <div className={clsx(styles.links)}>
+        <nav className={clsx(styles.links)}>
           <ul className={styles.linksLine}>
-            <li className={styles.linksItem}>
-              <Link href="https://feedback.dex.guru/" className={styles.link}>
-                Make a suggestion
-              </Link>
-            </li>
             <li className={styles.linksItem}>
               <Link
                 href="https://docs.dex.guru/legal/terms-of-service"
@@ -156,13 +150,8 @@ const PageFooter: FC = () => {
                 Terms of Use
               </Link>
             </li>
-            <li className={styles.linksItem}>
-              <Link href="https://feedback.dex.guru/" className={styles.link}>
-                <IconQuestion className={styles.linkIcon} />
-              </Link>
-            </li>
           </ul>
-        </div>
+        </nav>
       </div>
     </div>
   )
