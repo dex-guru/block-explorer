@@ -9,7 +9,7 @@ export const initApm = (): ApmBase | undefined => {
   }
   apm = init({
     serviceName: `FE-block-explorer_${CHAIN_ID}`,
-    serverUrl: process.env.NEXT_PUBLIC_APM_SERVER_URL,
+    serverUrl: process.env.NEXT_PUBLIC_APM_RUM_URL,
     serviceVersion: process.env.GIT_COMMIT,
     pageLoadTransactionName: '/',
     active: true,

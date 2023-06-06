@@ -15,7 +15,7 @@ import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
 const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
@@ -113,13 +113,20 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const { tx } = ctx.query
 
+    const apolloClient = initializeApollo({ ctx })
+
     if (!isHexString(tx)) {
       ctx.res.statusCode = 404
 
-      return { props: {} }
-    }
+      const { data } = await apolloClient.query<{
+        chainStats: ChainStatsModel
+        chainConfig: ChainConfigModel
+      }>({
+        query: CHAIN_STATS,
+      })
 
-    const apolloClient = initializeApollo({ ctx })
+      return { props: data }
+    }
 
     const { data, error } = await apolloClient.query<{
       transactions: TransactionModel[]
@@ -148,8 +155,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
     if (!transactions?.length) {
       ctx.res.statusCode = 404
-
-      return { props: {} }
     }
 
     return addApolloState(apolloClient, {
