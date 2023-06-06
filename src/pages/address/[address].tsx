@@ -66,46 +66,55 @@ export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const logger = getLogger('address')
+  try {
+    const { address } = ctx.query as { address: string }
 
-  const { address } = ctx.query as { address: string; tab: string }
+    const apolloClient = initializeApollo({ ctx })
 
-  const apolloClient = initializeApollo({ ctx })
+    if (!isAddress(address)) {
+      ctx.res.statusCode = 404
 
-  if (!isAddress(address)) {
-    ctx.res.statusCode = 404
+      const { data, error } = await apolloClient.query<{
+        chainStats: ChainStatsModel
+        chainConfig: ChainConfigModel
+      }>({
+        query: CHAIN_STATS,
+      })
+      if (error) {
+        logger.error(error, 'Error getting chain stats')
+      }
 
-    const { data } = await apolloClient.query<{
-      chainStats: ChainStatsModel
-      chainConfig: ChainConfigModel
-    }>({
-      query: CHAIN_STATS,
+      return { props: data }
+    }
+
+    logger.info({
+      msg: 'Getting address info',
+      address: address.toLowerCase(),
     })
 
-    return { props: data }
+    const { data, error } = await apolloClient.query<{
+      address: AddressModel
+      chainStats: ChainStatsModel
+      chainConfig: ChainConfigModel
+      tokenHoldingsStats: TokenHoldingsStatsModel
+    }>({
+      query: GET_ADDRESS_INFO,
+      variables: { address: address.toLowerCase() },
+    })
+
+    error
+      ? logger.error(error, 'Error getting address info')
+      : logger.info({ msg: 'Got address info', data })
+
+    if (!data?.address?.address) {
+      ctx.res.statusCode = 404
+    }
+
+    return addApolloState(apolloClient, {
+      props: { ...data },
+    })
+  } catch (e) {
+    logger.error(e, 'getServerSideProps error')
+    throw e
   }
-
-  logger.info({
-    msg: 'Getting address info',
-    address: address.toLowerCase(),
-  })
-
-  const { data } = await apolloClient.query<{
-    address: AddressModel
-    chainStats: ChainStatsModel
-    chainConfig: ChainConfigModel
-    tokenHoldingsStats: TokenHoldingsStatsModel
-  }>({
-    query: GET_ADDRESS_INFO,
-    variables: { address: address.toLowerCase() },
-  })
-
-  logger.info({ msg: 'Got address info', data })
-
-  if (!data?.address?.address) {
-    ctx.res.statusCode = 404
-  }
-
-  return addApolloState(apolloClient, {
-    props: { ...data },
-  })
 }
