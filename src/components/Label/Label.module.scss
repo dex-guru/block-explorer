@@ -13,6 +13,10 @@
 
   color: var(--color-label-text);
   background: var(--color-label-bg);
+
+  &:only-child {
+    vertical-align: middle;
+  }
 }
 
 .accent {
