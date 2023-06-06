@@ -144,21 +144,11 @@ const PageFooter: FC = () => {
         <div className={clsx(styles.links)}>
           <ul className={styles.linksLine}>
             <li className={styles.linksItem}>
-              <Link href="https://feedback.dex.guru/" className={styles.link}>
-                Make a suggestion
-              </Link>
-            </li>
-            <li className={styles.linksItem}>
               <Link
                 href="https://docs.dex.guru/legal/terms-of-service"
                 className={styles.link}
               >
                 Terms of Use
-              </Link>
-            </li>
-            <li className={styles.linksItem}>
-              <Link href="https://feedback.dex.guru/" className={styles.link}>
-                <IconQuestion className={styles.linkIcon} />
               </Link>
             </li>
           </ul>
