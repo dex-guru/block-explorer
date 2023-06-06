@@ -95,8 +95,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   if (!data.blocks?.length) {
     ctx.res.statusCode = 404
-
-    return { props: data }
   }
 
   return addApolloState(apolloClient, {
