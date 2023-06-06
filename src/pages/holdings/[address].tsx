@@ -19,6 +19,7 @@ import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import { financialFormat } from '@/lib/utils'
 
 interface HoldingsPageServerProps {
@@ -103,30 +104,40 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
 export default HoldingsPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { address } = ctx.query as { address: string; tab: string }
+  const logger = getLogger('holding address')
+  try {
+    const { address } = ctx.query as { address: string; tab: string }
 
-  const apolloClient = initializeApollo({ ctx })
+    const apolloClient = initializeApollo({ ctx })
 
-  if (address && !isAddress(address)) {
-    ctx.res.statusCode = 404
+    if (address && !isAddress(address)) {
+      ctx.res.statusCode = 404
 
-    const { data } = await apolloClient.query<{
-      chainConfig: ChainConfigModel
+      const { data } = await apolloClient.query<{
+        chainConfig: ChainConfigModel
+      }>({
+        query: CHAIN_STATS,
+      })
+
+      return { props: { ...data, address: address } }
+    }
+
+    const { data, error } = await apolloClient.query<{
+      tokenHoldingsStats: TokenHoldingsStatsModel
     }>({
-      query: CHAIN_STATS,
+      query: GET_ADDRESS_TOKENS_STATS,
+      variables: { address: address.toLowerCase() },
     })
 
-    return { props: { ...data, address: address } }
+    error
+      ? logger.error(error, 'Error getting GET_ADDRESS_TOKENS_STATS info')
+      : logger.info({ msg: 'Got GET_ADDRESS_TOKENS_STATS info', data })
+
+    return addApolloState(apolloClient, {
+      props: { address: address, ...data },
+    })
+  } catch (e) {
+    logger.error(e, 'getServerSideProps error')
+    throw e
   }
-
-  const { data } = await apolloClient.query<{
-    tokenHoldingsStats: TokenHoldingsStatsModel
-  }>({
-    query: GET_ADDRESS_TOKENS_STATS,
-    variables: { address: address.toLowerCase() },
-  })
-
-  return addApolloState(apolloClient, {
-    props: { address: address, ...data },
-  })
 }
