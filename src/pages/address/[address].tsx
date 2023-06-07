@@ -11,6 +11,7 @@ import {
 import { ContractView, AddressView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 
 interface AddressPageServerProps {
   address: AddressModel
@@ -64,38 +65,56 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 export default AddressPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { address } = ctx.query as { address: string; tab: string }
+  const logger = getLogger('address')
+  try {
+    const { address } = ctx.query as { address: string }
 
-  const apolloClient = initializeApollo({ ctx })
+    const apolloClient = initializeApollo({ ctx })
 
-  if (!isAddress(address)) {
-    ctx.res.statusCode = 404
+    if (!isAddress(address)) {
+      ctx.res.statusCode = 404
 
-    const { data } = await apolloClient.query<{
-      chainStats: ChainStatsModel
-      chainConfig: ChainConfigModel
-    }>({
-      query: CHAIN_STATS,
+      const { data, error } = await apolloClient.query<{
+        chainStats: ChainStatsModel
+        chainConfig: ChainConfigModel
+      }>({
+        query: CHAIN_STATS,
+      })
+      if (error) {
+        logger.error(error, 'Error getting chain stats')
+      }
+
+      return { props: data }
+    }
+
+    logger.info({
+      msg: 'Getting address info',
+      address: address.toLowerCase(),
     })
 
-    return { props: data }
+    const { data, error } = await apolloClient.query<{
+      address: AddressModel
+      chainStats: ChainStatsModel
+      chainConfig: ChainConfigModel
+      tokenHoldingsStats: TokenHoldingsStatsModel
+    }>({
+      query: GET_ADDRESS_INFO,
+      variables: { address: address.toLowerCase() },
+    })
+
+    error
+      ? logger.error(error, 'Error getting address info')
+      : logger.info({ msg: 'Got address info', data })
+
+    if (!data?.address?.address) {
+      ctx.res.statusCode = 404
+    }
+
+    return addApolloState(apolloClient, {
+      props: { ...data },
+    })
+  } catch (e) {
+    logger.error(e, 'getServerSideProps error')
+    throw e
   }
-
-  const { data } = await apolloClient.query<{
-    address: AddressModel
-    chainStats: ChainStatsModel
-    chainConfig: ChainConfigModel
-    tokenHoldingsStats: TokenHoldingsStatsModel
-  }>({
-    query: GET_ADDRESS_INFO,
-    variables: { address: address.toLowerCase() },
-  })
-
-  if (!data?.address?.address) {
-    ctx.res.statusCode = 404
-  }
-
-  return addApolloState(apolloClient, {
-    props: { ...data },
-  })
 }

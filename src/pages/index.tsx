@@ -23,6 +23,7 @@ import {
   GET_BLOCKS_SHORT,
   GET_BLOCKS_TXNS_CHAIN_STATS,
 } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -246,13 +247,19 @@ const Index: NextPage<IndexProps> = (props) => {
 export default Index
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('homepage')
+
   const apolloClient = initializeApollo({ ctx })
 
-  const { data } = await apolloClient.query({
+  const { data, error } = await apolloClient.query({
     query: GET_BLOCKS_TXNS_CHAIN_STATS,
     // per_page + 1 - last item needs for time diff
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
+
+  error
+    ? logger.error(error, 'Error getting GET_BLOCKS_TXNS_CHAIN_STATS info')
+    : logger.info({ msg: 'Got GET_BLOCKS_TXNS_CHAIN_STATS info', data })
 
   const blocksWithTimeDiff = getBlocksWithTimeDiff(
     data?.blocks || [],
