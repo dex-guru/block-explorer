@@ -50,6 +50,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/server-cached.js ./server-cached.js
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY entrypoint.sh .
 COPY .env.production .
 
