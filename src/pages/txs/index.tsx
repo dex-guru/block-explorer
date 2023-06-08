@@ -12,6 +12,7 @@ import { LoadingCard } from '@/components/Loading'
 import { Tab } from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import {
   financialFormatLowValueHighPrecision,
   getNormalizedValue,
@@ -159,20 +160,29 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
 export default Txs
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx })
+  const logger = getLogger('txs')
+  try {
+    const apolloClient = initializeApollo({ ctx })
 
-  const blocks = ctx.query.block as string
-  const block = blocks && blocks[0] ? parseInt(blocks) : null
+    const blocks = ctx.query.block as string
+    const block = blocks && blocks[0] ? parseInt(blocks) : null
 
-  const { data } = await apolloClient.query({
-    query: GET_TRANSACTIONS_STATS,
-    variables: { blockNumber: block },
-  })
+    const { data, error } = await apolloClient.query({
+      query: GET_TRANSACTIONS_STATS,
+      variables: { blockNumber: block },
+    })
+    error
+      ? logger.error(error, 'Error getting GET_TRANSACTIONS_STATS info')
+      : logger.info({ msg: 'Got GET_TRANSACTIONS_STATS info', data })
 
-  return addApolloState(apolloClient, {
-    props: {
-      ...data,
-      block,
-    },
-  })
+    return addApolloState(apolloClient, {
+      props: {
+        ...data,
+        block,
+      },
+    })
+  } catch (e) {
+    logger.error(e, 'getServerSideProps error')
+    throw e
+  }
 }

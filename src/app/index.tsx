@@ -20,8 +20,11 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
-import { ITEMS_PER_PAGE } from '@/constants'
-import { GET_BLOCKS_SHORT } from '@/lib/apollo/queries'
+import {
+  GET_BLOCKS_SHORT,
+  GET_BLOCKS_TXNS_CHAIN_STATS,
+} from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import { useAppContext } from '@/lib/context'
 import {
   financialFormat,

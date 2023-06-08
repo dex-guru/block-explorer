@@ -9,6 +9,7 @@ import { LineChartDataset } from '@/components/LineChart'
 import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -109,14 +110,19 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
 export default CSRStats
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('csr')
+
   if (CHAIN_ID !== CHAIN_IDS.CANTO) {
     return
   }
   const apolloClient = initializeApollo({ ctx })
 
-  const { data } = await apolloClient.query({
+  const { data, error } = await apolloClient.query({
     query: GET_CSR_STATS,
   })
+  error
+    ? logger.error(error, 'Error getting csr info')
+    : logger.info({ msg: 'Got csr info', data })
 
   return addApolloState(apolloClient, {
     props: {

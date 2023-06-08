@@ -16,6 +16,7 @@ import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 
 const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
 const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
@@ -107,56 +108,66 @@ const TxPage: NextPage<ITxProps> = (props) => {
 export default TxPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { tx } = ctx.query
+  const logger = getLogger('tx')
+  try {
+    const { tx } = ctx.query
 
-  const apolloClient = initializeApollo({ ctx })
+    const apolloClient = initializeApollo({ ctx })
 
-  if (!isHexString(tx)) {
-    ctx.res.statusCode = 404
+    if (!isHexString(tx)) {
+      ctx.res.statusCode = 404
 
-    const { data } = await apolloClient.query<{
+      const { data } = await apolloClient.query<{
+        chainStats: ChainStatsModel
+        chainConfig: ChainConfigModel
+      }>({
+        query: CHAIN_STATS,
+      })
+
+      return { props: data }
+    }
+
+    const { data, error } = await apolloClient.query<{
+      transactions: TransactionModel[]
+      logs: LogModel[]
       chainStats: ChainStatsModel
       chainConfig: ChainConfigModel
+      erc20Events: { data: Erc20EventModel[] }
+      nftEvents: { data: Erc721TransferModel[] }
     }>({
-      query: CHAIN_STATS,
+      query: GET_TRANSACTIONS_BY_HASH,
+      variables: { hash: tx },
     })
 
-    return { props: data }
+    error
+      ? logger.error(error, 'Error getting GET_TRANSACTIONS_BY_HASH info')
+      : logger.info({ msg: 'Got GET_TRANSACTIONS_BY_HASH info', data })
+
+    const {
+      transactions,
+      logs,
+      chainConfig,
+      chainStats,
+      erc20Events: { data: erc20Events },
+      nftEvents: { data: nftEvents },
+    } = data
+
+    if (!transactions?.length) {
+      ctx.res.statusCode = 404
+    }
+
+    return addApolloState(apolloClient, {
+      props: {
+        data: transactions[0],
+        logs: logs || [],
+        chainConfig: chainConfig,
+        chainStats: chainStats,
+        erc20Events: erc20Events || [],
+        nftEvents: nftEvents || [],
+      },
+    })
+  } catch (e) {
+    logger.error(e, 'getServerSideProps error')
+    throw e
   }
-
-  const { data } = await apolloClient.query<{
-    transactions: TransactionModel[]
-    logs: LogModel[]
-    chainStats: ChainStatsModel
-    chainConfig: ChainConfigModel
-    erc20Events: { data: Erc20EventModel[] }
-    nftEvents: { data: Erc721TransferModel[] }
-  }>({
-    query: GET_TRANSACTIONS_BY_HASH,
-    variables: { hash: tx },
-  })
-
-  const {
-    transactions,
-    logs,
-    chainConfig,
-    chainStats,
-    erc20Events: { data: erc20Events },
-    nftEvents: { data: nftEvents },
-  } = data
-
-  if (!transactions?.length) {
-    ctx.res.statusCode = 404
-  }
-
-  return addApolloState(apolloClient, {
-    props: {
-      data: transactions[0],
-      logs: logs || [],
-      chainConfig: chainConfig,
-      chainStats: chainStats,
-      erc20Events: erc20Events || [],
-      nftEvents: nftEvents || [],
-    },
-  })
 }

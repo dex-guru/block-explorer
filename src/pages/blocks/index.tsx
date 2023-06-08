@@ -14,6 +14,7 @@ import { blocksColumns } from '@/components/Table/columns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
@@ -109,14 +110,24 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 export default BlockPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('blocks')
+
   const apolloClient = initializeApollo({ ctx })
 
   const {
     data: { blocks, blockStats, chainStats, chainConfig },
+    error,
   } = await apolloClient.query({
     query: GET_BLOCKS,
     variables: { first: 10, skip: 0 },
   })
+
+  error
+    ? logger.error(error, 'Error getting GET_BLOCKS info')
+    : logger.info({
+        msg: 'Got GET_BLOCKS info',
+        obj: { blocks, blockStats, chainStats, chainConfig },
+      })
 
   return addApolloState(apolloClient, {
     props: { blocks, blockStats, chainStats, chainConfig },
