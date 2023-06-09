@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
-import { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
+import { ITEMS_PER_PAGE } from '../constants'
 import {
   BlockModel,
   ChainConfigModel,
@@ -20,12 +20,7 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
-import {
-  GET_BLOCKS_SHORT,
-  GET_BLOCKS_TXNS_CHAIN_STATS,
-} from '@/lib/apollo/queries'
-import { getLogger } from '@/lib/logger'
-import { useAppContext } from '@/lib/context'
+import { GET_BLOCKS_SHORT } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -41,11 +36,8 @@ interface IndexProps {
   chainConfig: ChainConfigModel
 }
 
-const Index: NextPage<IndexProps> = (props) => {
+const Index: FC<IndexProps> = (props) => {
   const { chainStats: stats, chainConfig } = props
-
-  const context = useAppContext()
-  console.log('context', context)
 
   const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
 

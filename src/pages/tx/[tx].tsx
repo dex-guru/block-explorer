@@ -32,9 +32,12 @@ interface ITxProps {
 }
 
 const TxPage: NextPage<ITxProps> = (props) => {
-  const tab = useSearchParams().get('tab')
+  const searchParams = useSearchParams()
   const pathname = usePathname()
-
+  if (!searchParams || !pathname) {
+    return null
+  }
+  const tab = searchParams.get('tab')
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
   const pageTitle = `Transaction ${props.data?.hash || 'not found'}`

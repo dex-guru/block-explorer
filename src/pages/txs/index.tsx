@@ -32,11 +32,15 @@ interface ITxsProps {
 }
 
 const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
-  const tab = useSearchParams().get('tab')
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+
+  if (!searchParams || !pathname) {
+    return null
+  }
+  const tab = searchParams.get('tab')
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
-
-  const pathname = usePathname()
 
   const blockQuery = block ? { block: block } : undefined
 

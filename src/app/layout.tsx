@@ -1,4 +1,3 @@
-import { Tooltip } from 'react-tooltip'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { ApolloWrapper } from '@/lib/apollo/apolloWrapper'

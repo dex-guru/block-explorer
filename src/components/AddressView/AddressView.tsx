@@ -40,7 +40,6 @@ const AddressView: FC<IAddressViewProps> = ({
   tokenHoldingsStats,
 }) => {
   const pathname = usePathname()
-
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = addressInfo?.address
     ? `Address ${checkSumAddress}`
