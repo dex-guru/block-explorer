@@ -11,14 +11,14 @@ import {
 } from '@/__generated__/resolvers-types'
 import { ContractView, AddressView } from '@/components'
 
-interface AddressPageServerProps {
+export interface IAddressPageProps {
   address: AddressModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
   tokenHoldingsStats: TokenHoldingsStatsModel
 }
 
-const AddressPage: FC<AddressPageServerProps> = ({
+const AddressPage: FC<IAddressPageProps> = ({
   address: addressInfo,
   chainStats,
   chainConfig,

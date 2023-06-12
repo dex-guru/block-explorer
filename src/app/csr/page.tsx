@@ -12,7 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: 'CSR Dashboard',
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: 'CSR Dashboard',
   }

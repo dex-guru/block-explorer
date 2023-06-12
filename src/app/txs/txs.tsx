@@ -2,7 +2,6 @@
 
 import { Suspense, lazy } from 'react'
 import { NextPage } from 'next'
-import Head from 'next/head'
 import { usePathname, useSearchParams } from 'next/navigation'
 import {
   ChainConfigModel,
@@ -86,77 +85,63 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
     : 'Transactions'
 
   return (
-    <>
-      <Head>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Explore recently created transactions on ${props.chainConfig.name} ${props.chainConfig.chain}`}
-        />
-        <link rel="icon" href={props.chainConfig.icon} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+    <Page chainConfig={props.chainConfig}>
+      <DetailsView
+        title={block ? 'Transactions for block' : 'Transactions'}
+        address={block?.toString()}
+      >
+        {!block && (
+          <Summary
+            stats={[
+              {
+                title: 'Transactions Count',
+                value: financialFormatLowValueHighPrecision(
+                  props.chainStats?.transactionsCount || 0
+                ),
+              },
+              {
+                title: 'Transactions per Second',
+                value: financialFormatLowValueHighPrecision(
+                  props.chainStats?.transactionsPerSecond || 0,
+                  { decimals: 2 }
+                ),
+              },
+              {
+                title: 'Transactions, 24h',
+                value: (
+                  <>
+                    {financialFormatLowValueHighPrecision(
+                      props.transactionStats?.transactions24H
+                    )}{' '}
+                    <Delta
+                      value={props.transactionStats?.transactionsDelta24H * 100}
+                    />
+                  </>
+                ),
+              },
+              {
+                title: 'Network Transactions Fee, 24h',
+                value: (
+                  <>
+                    {getNormalizedValue(
+                      props.transactionStats?.networkTransactionsFee24H
+                    )}{' '}
+                    <Delta
+                      value={
+                        props.transactionStats?.networkTransactionsFeeDelta24H *
+                        100
+                      }
+                    />
+                  </>
+                ),
+              },
+            ]}
+          />
+        )}
 
-      <Page chainConfig={props.chainConfig}>
-        <DetailsView
-          title={block ? 'Transactions for block' : 'Transactions'}
-          address={block?.toString()}
-        >
-          {!block && (
-            <Summary
-              stats={[
-                {
-                  title: 'Transactions Count',
-                  value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsCount || 0
-                  ),
-                },
-                {
-                  title: 'Transactions per Second',
-                  value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsPerSecond || 0,
-                    { decimals: 2 }
-                  ),
-                },
-                {
-                  title: 'Transactions, 24h',
-                  value: (
-                    <>
-                      {financialFormatLowValueHighPrecision(
-                        props.transactionStats?.transactions24H
-                      )}{' '}
-                      <Delta
-                        value={
-                          props.transactionStats?.transactionsDelta24H * 100
-                        }
-                      />
-                    </>
-                  ),
-                },
-                {
-                  title: 'Network Transactions Fee, 24h',
-                  value: (
-                    <>
-                      {getNormalizedValue(
-                        props.transactionStats?.networkTransactionsFee24H
-                      )}{' '}
-                      <Delta
-                        value={
-                          props.transactionStats
-                            ?.networkTransactionsFeeDelta24H * 100
-                        }
-                      />
-                    </>
-                  ),
-                },
-              ]}
-            />
-          )}
-
-          <TabPanel value={currentTab} tabs={tabs} />
-        </DetailsView>
-      </Page>
-    </>
+        <TabPanel value={currentTab} tabs={tabs} />
+      </DetailsView>
+    </Page>
   )
 }
 

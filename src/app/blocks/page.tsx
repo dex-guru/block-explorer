@@ -13,7 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: 'Blocks',
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore recently created blocks on ${chainConfig.name} ${chainConfig.chain}`,
   }

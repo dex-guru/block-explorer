@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Block from './block'
+import Block, { IBlockProps } from './block'
 import {
   BlockModel,
   ChainConfigModel,
@@ -31,16 +31,9 @@ export async function generateMetadata({
 
   return {
     title: pageTitle,
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore block number ${block} to see included transactions.`,
   }
-}
-
-export interface IBlockProps {
-  data: BlockModel | null
-  chainStats: ChainStatsModel
-  chainConfig: ChainConfigModel
 }
 
 const getProps = async (block: string): Promise<IBlockProps> => {
@@ -73,7 +66,7 @@ const getProps = async (block: string): Promise<IBlockProps> => {
 
     return { data: blocks[0] || null, chainStats, chainConfig }
   } catch (e) {
-    logger.error(e, 'getProps error on address page')
+    logger.error(e, 'getProps error on block page')
     throw e
   }
 }

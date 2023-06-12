@@ -29,7 +29,6 @@ export async function generateMetadata({
 
   return {
     title: pageTitle,
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore transaction ${
       tx || ''

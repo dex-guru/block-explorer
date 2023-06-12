@@ -1,4 +1,4 @@
-import Index from '.'
+import Index, { IndexProps } from '.'
 import ContextWrapper from './ContextWrapper'
 import {
   BlockModel,
@@ -9,12 +9,33 @@ import {
 } from '@/__generated__/resolvers-types'
 import { ITEMS_PER_PAGE } from '@/constants'
 import { getClient } from '@/lib/apollo/apolloClient'
+import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { GET_BLOCKS_TXNS_CHAIN_STATS } from '@/lib/apollo/queries'
 import { getBlocksWithTimeDiff } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
-async function getProps() {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { block?: string }
+}): Promise<NewType> {
+  const { block } = searchParams
+
+  const chainConfig = await getChainConfig()
+
+  const pageTitle = `${chainConfig.name}${
+    chainConfig.chain ? ` ${chainConfig.chain}` : ''
+  } Block Explorer`
+  return {
+    title: pageTitle,
+    viewport: 'width=device-width, initial-scale=1',
+    icons: chainConfig.icon,
+    description: `Discover the power of ${chainConfig.name} blockchain with our reliable block explorer. Track transactions, explore blocks, and view network statistics in real time. Perfect for beginners and experts alike.`,
+  }
+}
+
+async function getProps(): Promise<IndexProps> {
   const apolloClient = getClient()
 
   const { data } = await apolloClient.query<{

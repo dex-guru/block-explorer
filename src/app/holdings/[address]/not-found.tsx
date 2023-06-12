@@ -7,7 +7,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: 'No correct address provided',
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore transactions to see what happened with token balances and smart contracts.`,
   }

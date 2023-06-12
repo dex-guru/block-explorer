@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
-import AddressPage from './address'
+import AddressPage, { IAddressPageProps } from './address'
 import {
   AddressModel,
   ChainConfigModel,
@@ -39,7 +39,7 @@ export async function generateMetadata({
   }
 }
 
-const getProps = async (address: string) => {
+const getProps = async (address: string): Promise<IAddressPageProps> => {
   const logger = getLogger('address')
   try {
     const apolloClient = getClient()
@@ -73,7 +73,7 @@ const getProps = async (address: string) => {
       notFound()
     }
 
-    return { ...data }
+    return data
   } catch (e) {
     logger.error(e, 'getProps error on address page')
     throw e

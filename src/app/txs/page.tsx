@@ -21,7 +21,6 @@ export async function generateMetadata({
     : 'Transactions'
   return {
     title: pageTitle,
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore recently created transactions on ${chainConfig.name} ${chainConfig.chain}`,
   }

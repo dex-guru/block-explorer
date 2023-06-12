@@ -7,7 +7,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: 'No block number provided',
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `Explore block to see included transactions.`,
   }

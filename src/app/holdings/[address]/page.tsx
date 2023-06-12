@@ -29,7 +29,6 @@ export async function generateMetadata({
 
   return {
     title: pageTitle,
-    viewport: 'width=device-width, initial-scale=1',
     icons: chainConfig.icon,
     description: `${checkSumAddress} tokens portfolio on ${chainConfig.name} ${chainConfig.chain}, explore token balances held by this wallet, and view account activity in real-time.`,
   }
