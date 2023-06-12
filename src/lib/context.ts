@@ -1,14 +1,10 @@
 'use client'
 
 import { createContext, useContext } from 'react'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 
 export type AppContextType = {
   chainConfig: ChainConfigModel
-  chainStats: ChainStatsModel
 }
 
 export const AppContext = createContext<AppContextType | null>(null)

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import Index, { IndexProps } from '.'
-import ContextWrapper from './ContextWrapper'
 import {
   BlockModel,
   ChainConfigModel,
@@ -60,14 +59,5 @@ export default async function Page() {
   // Fetch data directly in a Server Component
   const props = await getProps()
   // Forward fetched data to your Client Component
-  return (
-    <ContextWrapper
-      contextValue={{
-        chainConfig: props.chainConfig,
-        chainStats: props.chainStats,
-      }}
-    >
-      <Index {...props} />
-    </ContextWrapper>
-  )
+  return <Index {...props} />
 }

@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
+import ContextWrapper from './ContextWrapper'
+import WrappersContainer from './WrappersContainer'
+import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { ApolloWrapper } from '@/lib/apollo/apolloWrapper'
 import { initApm } from '@/services/apmService'
 import '@/styles/index.scss'
@@ -10,7 +13,7 @@ export const metadata: Metadata = {
 
 initApm()
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -25,7 +28,9 @@ export default function RootLayout({
         )}
       </head>
       <body>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <ApolloWrapper>
+          <WrappersContainer>{children}</WrappersContainer>
+        </ApolloWrapper>
         {!!process.env.gTagManagerId && (
           <noscript>
             <iframe
