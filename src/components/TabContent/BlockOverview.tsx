@@ -3,6 +3,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import styles from '../../pages/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'
+import { IBlockProps } from '@/app/block/[block]/page'
 import {
   Address,
   Code,
@@ -17,7 +18,6 @@ import {
   Value,
 } from '@/components'
 import { financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
-import { IBlockProps } from '@/pages/block/[block]'
 
 const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   if (!data?.number) {

@@ -6,11 +6,9 @@ import { useAppContext } from '@/lib/context'
 const AddressIndex = () => {
   const { chainConfig } = useAppContext()
   return (
-    <>
-      <Page chainConfig={chainConfig}>
-        <Error title="No address provided" />
-      </Page>
-    </>
+    <Page chainConfig={chainConfig}>
+      <Error title="No address provided" />
+    </Page>
   )
 }
 
