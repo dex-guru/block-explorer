@@ -1,6 +1,6 @@
 'use client'
 
-import { NextPage } from 'next'
+import { FC } from 'react'
 import {
   ChainConfigModel,
   CsrStatsModel,
@@ -19,7 +19,7 @@ export interface ICSRStatsProps {
   csrStats: CsrStatsModel
 }
 
-const CSRStats: NextPage<ICSRStatsProps> = ({ csrStats, chainConfig }) => {
+const CSRStats: FC<ICSRStatsProps> = ({ csrStats, chainConfig }) => {
   const csrStatsSeries: LineChartDataset[] = [
     {
       id: 'burned',

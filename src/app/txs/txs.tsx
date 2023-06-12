@@ -1,7 +1,6 @@
 'use client'
 
-import { Suspense, lazy } from 'react'
-import { NextPage } from 'next'
+import { Suspense, lazy, FC } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import {
   ChainConfigModel,
@@ -29,7 +28,7 @@ export interface ITxsProps {
   block?: number
 }
 
-const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
+const Txs: FC<ITxsProps> = ({ block, ...props }) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
 

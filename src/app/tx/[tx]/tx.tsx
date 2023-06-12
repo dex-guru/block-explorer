@@ -1,7 +1,6 @@
 'use client'
 
-import { Suspense, lazy } from 'react'
-import { NextPage } from 'next'
+import { Suspense, lazy, FC } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import {
   ChainConfigModel,
@@ -30,7 +29,7 @@ export interface ITxProps {
   nftEvents: Erc721TransferModel[]
 }
 
-const TxPage: NextPage<ITxProps> = (props) => {
+const TxPage: FC<ITxProps> = (props) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
   if (!searchParams || !pathname) {
