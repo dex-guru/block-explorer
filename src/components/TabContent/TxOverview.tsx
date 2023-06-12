@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
+import styles from '../../app/Pages.module.scss'
 import { Property } from '../Properties/types'
 import {
   erc20ActionColumns,

@@ -58,15 +58,7 @@
 }
 
 .cardChild {
-  margin: 0 -16px;
-
-  &:first-child {
-    margin-top: -16px;
-  }
-
-  &:last-child {
-    margin-bottom: -16px;
-  }
+  composes: cardChild from '../components/Card/Card.module.scss';
 }
 
 .grid4 {

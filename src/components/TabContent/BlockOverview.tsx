@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
+import styles from '../../app/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'
 import { IBlockProps } from '@/app/block/[block]/page'
 import {

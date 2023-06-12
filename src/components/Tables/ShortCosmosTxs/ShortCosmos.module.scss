@@ -1,7 +1,7 @@
 .cardChild {
-  composes: cardChild from '../../../pages/Pages.module.scss';
+  composes: cardChild from '../../../app/Pages.module.scss';
 }
 
 .tablePreloader {
-  composes: tablePreloader from '../../../pages/Pages.module.scss';
+  composes: tablePreloader from '../../../app/Pages.module.scss';
 }
