@@ -80,10 +80,6 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
     )
   }
 
-  const pageTitle = block
-    ? `Transactions for block ${block?.toString()}`
-    : 'Transactions'
-
   return (
     <Page chainConfig={props.chainConfig}>
       <DetailsView

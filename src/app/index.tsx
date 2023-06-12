@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
-import Head from 'next/head'
 import Link from 'next/link'
 import { ITEMS_PER_PAGE } from '../constants'
 import {
@@ -149,9 +148,6 @@ const Index: FC<IndexProps> = (props) => {
       ),
     })
 
-  const pageTitle = `${chainConfig.name}${
-    chainConfig.chain ? ` ${chainConfig.chain}` : ''
-  } Block Explorer`
   return (
     <Page chainConfig={props.chainConfig}>
       {!!stats && (

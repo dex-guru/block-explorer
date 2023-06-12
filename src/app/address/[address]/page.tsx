@@ -3,14 +3,9 @@ import { notFound } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
 import AddressPage, { IAddressPageProps } from './address'
 import {
-  AddressModel,
-  ChainConfigModel,
-  ChainStatsModel,
-  TokenHoldingsStatsModel,
-} from '@/__generated__/resolvers-types'
-import { getClient } from '@/lib/apollo/apolloClient'
-import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
-import { GET_ADDRESS_INFO } from '@/lib/apollo/queries'
+  getAddressPageModel,
+  getChainConfig,
+} from '@/lib/apollo/apolloServerSideQueries'
 import { getLogger } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
@@ -42,32 +37,13 @@ export async function generateMetadata({
 const getProps = async (address: string): Promise<IAddressPageProps> => {
   const logger = getLogger('address')
   try {
-    const apolloClient = getClient()
-
     if (!isAddress(address)) {
       logger.error(address, `Address ${address} is not valid`)
 
       notFound()
     }
 
-    logger.info({
-      msg: 'Getting address info',
-      address: address.toLowerCase(),
-    })
-
-    const { data, error } = await apolloClient.query<{
-      address: AddressModel
-      chainStats: ChainStatsModel
-      chainConfig: ChainConfigModel
-      tokenHoldingsStats: TokenHoldingsStatsModel
-    }>({
-      query: GET_ADDRESS_INFO,
-      variables: { address: address.toLowerCase() },
-    })
-
-    error
-      ? logger.error(error, 'Error getting address info')
-      : logger.info({ msg: 'Got address info', data })
+    const data = await getAddressPageModel(address)
 
     if (!data?.address?.address) {
       notFound()

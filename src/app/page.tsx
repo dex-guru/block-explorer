@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import Index, { IndexProps } from '.'
 import ContextWrapper from './ContextWrapper'
 import {
@@ -15,18 +16,13 @@ import { getBlocksWithTimeDiff } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: { block?: string }
-}): Promise<NewType> {
-  const { block } = searchParams
-
+export async function generateMetadata(): Promise<Metadata> {
   const chainConfig = await getChainConfig()
 
   const pageTitle = `${chainConfig.name}${
     chainConfig.chain ? ` ${chainConfig.chain}` : ''
   } Block Explorer`
+
   return {
     title: pageTitle,
     viewport: 'width=device-width, initial-scale=1',

@@ -1,8 +1,8 @@
 import { FC, Suspense } from 'react'
 import { useMemo } from 'react'
 import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
+import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
-import Head from 'next/head'
 import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -44,6 +44,7 @@ import {
 import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
+import { getAddressPageModel } from '@/lib/apollo/apolloServerSideQueries'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
@@ -63,6 +64,26 @@ const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
 const EventsDataTable = dynamic(() => import('../Tables/EventsDataTable'), {
   ssr: false,
 })
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { address: string }
+}): Promise<Metadata> {
+  const { address } = params
+
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const pageTitle = `Contract ${checkSumAddress}`
+
+  const { address: addressInfo } = await getAddressPageModel(address)
+
+  return {
+    title: pageTitle,
+    description: `Explore smart contract ${
+      addressInfo.name || addressInfo.address
+    } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`,
+  }
+}
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -138,9 +159,6 @@ const ContractView: FC<IContractViewProps> = ({
   const isSubTab =
     !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
-  const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = `Contract ${checkSumAddress}`
-
   const holdersSeries: LineChartDataset[] = [
     {
       id: 'holders',
@@ -173,20 +191,11 @@ const ContractView: FC<IContractViewProps> = ({
       }
     )
   }
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Head>
-          <title>{pageTitle}</title>
-          <link rel="icon" href={chain.config.icon} />
-          <meta
-            name="description"
-            content={`Explore smart contract ${
-              addressInfo.name || addressInfo.address
-            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
-          />
-        </Head>
         <Page chainConfig={chain.config}>
           <DetailsView
             icon={<Avatar address={address} />}
