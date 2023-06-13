@@ -16,7 +16,7 @@
   margin: 0;
   pointer-events: none;
   max-width: min(320px, 100vh);
-  word-break: break-all;
+  word-wrap: break-word;
 
   &[class*=' styles-module_show'] {
     transition-delay: 0s;

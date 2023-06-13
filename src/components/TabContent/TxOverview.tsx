@@ -21,6 +21,7 @@ import {
   Code,
   DateTime,
   Details,
+  IconCross,
   Label,
   Properties,
   Table,
@@ -56,7 +57,9 @@ const TxOverview: FC<{
           icon={
             !!data.receiptStatus ? (
               <IconVerify className={pageStyles.icon} />
-            ) : undefined
+            ) : (
+              <IconCross className={pageStyles.icon} />
+            )
           }
           value={data.receiptStatus ? 'Success' : 'Failed'}
           className={clsx({
@@ -133,10 +136,18 @@ const TxOverview: FC<{
       tooltip:
         'The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.',
       value: (
-        <Value
-          value={getNormalizedValue(data.value)}
-          suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
-        />
+        <Separated>
+          <Value
+            value={getNormalizedValue(data.value)}
+            suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
+          />
+          <Value
+            value={getNormalizedValue(
+              data.value * chainStats.nativeTokenPriceUsd
+            )}
+            prefix="$"
+          />
+        </Separated>
       ),
     },
     {

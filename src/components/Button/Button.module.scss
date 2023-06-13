@@ -38,13 +38,13 @@
     opacity: 0.5;
     pointer-events: none;
   }
+}
 
-  .icon {
-    & > svg {
-      height: 20px;
-      object-fit: contain;
-      object-position: center;
-    }
+.icon {
+  & > svg {
+    height: 20px;
+    object-fit: contain;
+    object-position: center;
   }
 }
 
