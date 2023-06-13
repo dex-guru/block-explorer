@@ -3,6 +3,7 @@
 const nextBuildId = require('next-build-id')
 
 const nextConfig = {
+  output: 'standalone',
   env: {
     disqusURL: 'http://block-explorer-five.vercel.app/',
     disqusName: 'your-disqus-shortname',

@@ -5,6 +5,7 @@ import { DetailsView, IconVerify, Page } from '@/components'
 import Verifier from '@/components/Verifier'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 
 const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({
   chainConfig,
@@ -29,13 +30,20 @@ const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({
 export default VerifyContract
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('verifyContract')
+
   const apolloClient = initializeApollo({ ctx })
 
   const {
     data: { chainConfig },
+    error,
   } = await apolloClient.query({
     query: GET_CHAIN_CONFIG,
   })
+
+  error
+    ? logger.error(error, 'Error getting GET_CHAIN_CONFIG info')
+    : logger.info({ msg: 'Got GET_CHAIN_CONFIG info', chainConfig })
 
   return addApolloState(apolloClient, {
     props: {
