@@ -1,5 +1,4 @@
 import { FC, Suspense } from 'react'
-import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
@@ -31,26 +30,6 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
   ssr: false,
 })
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { address: string }
-}): Promise<Metadata> {
-  const { address } = params
-
-  const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = address
-    ? `Address ${checkSumAddress}`
-    : isAddress(address)
-    ? `No address ${address}`
-    : 'Not an address'
-
-  return {
-    title: pageTitle,
-    description: `Explore ${checkSumAddress} to track recent transactions, explore token balances held by this wallet, and view account activity in real time.`,
-  }
-}
 
 const AddressView: FC<IAddressViewProps> = ({
   address,
