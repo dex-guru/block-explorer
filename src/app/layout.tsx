@@ -26,9 +26,7 @@ export default async function RootLayout({
         )}
       </head>
       <body>
-        <ApolloWrapper>
-          <WrappersContainer>{children}</WrappersContainer>
-        </ApolloWrapper>
+        <ApolloWrapper>{children}</ApolloWrapper>
         {!!process.env.gTagManagerId && (
           <noscript>
             <iframe
