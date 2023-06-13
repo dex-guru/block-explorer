@@ -1,7 +1,6 @@
 import { FC, Suspense } from 'react'
 import { useMemo } from 'react'
 import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
-import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
@@ -64,26 +63,6 @@ const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
 const EventsDataTable = dynamic(() => import('../Tables/EventsDataTable'), {
   ssr: false,
 })
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { address: string }
-}): Promise<Metadata> {
-  const { address } = params
-
-  const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = `Contract ${checkSumAddress}`
-
-  const { address: addressInfo } = await getAddressPageModel(address)
-
-  return {
-    title: pageTitle,
-    description: `Explore smart contract ${
-      addressInfo.name || addressInfo.address
-    } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`,
-  }
-}
 
 const ContractView: FC<IContractViewProps> = ({
   address,
