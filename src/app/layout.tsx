@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
-import WrappersContainer from './WrappersContainer'
+import ContextWrapper from './ContextWrapper'
+import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { ApolloWrapper } from '@/lib/apollo/apolloWrapper'
 import { initApm } from '@/services/apmService'
 import '@/styles/index.scss'
@@ -16,6 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const chainConfig = await getChainConfig()
   return (
     <html lang="en">
       <head>
@@ -26,7 +28,11 @@ export default async function RootLayout({
         )}
       </head>
       <body>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <ApolloWrapper>
+          <ContextWrapper contextValue={{ chainConfig }}>
+            {children}
+          </ContextWrapper>
+        </ApolloWrapper>
         {!!process.env.gTagManagerId && (
           <noscript>
             <iframe
