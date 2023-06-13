@@ -238,7 +238,7 @@ export type Query = {
   cosmos: CosmosModel;
   /** Get CSRStats */
   csrStats: CsrStatsModel;
-  /** Get ERC20 Transactions */
+  /** Get ERC20 Transactions. Types: all, actions, transfers */
   erc20Events: Erc20EventsModel;
   /** Get logs */
   logs: Array<LogModel>;
@@ -325,6 +325,7 @@ export type QueryCosmosArgs = {
 export type QueryErc20EventsArgs = {
   address?: InputMaybe<Scalars['String']>;
   chainId?: Scalars['Int'];
+  eventTypes?: Scalars['String'];
   first?: InputMaybe<Scalars['Long']>;
   hash?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Long']>;
@@ -874,7 +875,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   contractCreator?: Resolver<Maybe<ResolversTypes['ContractCreatorModel']>, ParentType, ContextType, RequireFields<QueryContractCreatorArgs, 'address' | 'chainId'>>;
   cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType, RequireFields<QueryCosmosArgs, 'chainId' | 'first'>>;
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
-  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
+  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'eventTypes' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
   logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'>>;
   nftEvents?: Resolver<ResolversTypes['NFTTransfersModel'], ParentType, ContextType, RequireFields<QueryNftEventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>>;
   search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'chainId' | 'first' | 'query' | 'skip'>>;

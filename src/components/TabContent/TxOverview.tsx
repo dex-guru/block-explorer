@@ -31,20 +31,24 @@ import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import { TxEventsData } from '@/pages/tx/[tx]'
 
 const TxOverview: FC<{
   data: TransactionModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-  erc20Events: Erc20EventModel[]
-  nftEvents: Erc721TransferModel[]
-}> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
+  erc20Transfers: TxEventsData<Erc20EventModel>
+  erc20Actions: TxEventsData<Erc20EventModel>
+  nftEvents: TxEventsData<Erc721TransferModel>
+}> = ({
+  data,
+  chainConfig,
+  chainStats,
+  erc20Transfers,
+  erc20Actions,
+  nftEvents,
+}) => {
   const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
-
-  const transfers = erc20Events.filter(
-    (event) => event.eventType === 'transfer'
-  )
-  const actions = erc20Events.filter((event) => event.eventType !== 'transfer')
 
   const properties: Property[] = [
     {
@@ -246,56 +250,63 @@ const TxOverview: FC<{
       ),
     })
 
+  console.log(erc20Transfers, erc20Actions)
+
   return (
     <>
       <Properties data={properties} />
-      {(!!transfers?.length || !!actions?.length || !!nftEvents?.length) && (
+      {(!!erc20Transfers?.total ||
+        !!erc20Actions?.total ||
+        !!nftEvents?.total) && (
         <Card>
-          {!!transfers.length && (
+          {!!erc20Transfers?.total && (
             <Details
               isOpen
               title={
                 <>
                   ERC-20 Tokens Transferred:{' '}
                   <Label className={styles.propertyIndicator}>
-                    {transfers.length}
+                    {erc20Transfers?.total}
                   </Label>
                 </>
               }
             >
-              <Table data={transfers} columns={erc20TransfersColumns} />
+              <Table
+                data={erc20Transfers.data}
+                columns={erc20TransfersColumns}
+              />
             </Details>
           )}
 
-          {!!nftEvents.length && (
+          {!!nftEvents.total && (
             <Details
               isOpen
               title={
                 <>
                   NFT Tokens Transferred:{' '}
                   <Label className={styles.propertyIndicator}>
-                    {nftEvents.length}
+                    {nftEvents.total}
                   </Label>
                 </>
               }
             >
-              <Table data={nftEvents} columns={nftTransfersColumns} />
+              <Table data={nftEvents.data} columns={nftTransfersColumns} />
             </Details>
           )}
 
-          {!!actions.length && (
+          {!!erc20Actions.total && (
             <Details
               isOpen
               title={
                 <>
                   Transaction Actions:{' '}
                   <Label className={styles.propertyIndicator}>
-                    {actions.length}
+                    {erc20Actions.total}
                   </Label>
                 </>
               }
             >
-              <Table data={actions} columns={erc20ActionColumns} />
+              <Table data={erc20Actions.data} columns={erc20ActionColumns} />
             </Details>
           )}
         </Card>
