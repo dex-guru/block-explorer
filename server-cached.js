@@ -5,6 +5,12 @@ const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
+require('elastic-apm-node').start({
+  serverUrl: process.env.NEXT_PUBLIC_APM_SERVER_URL,
+  serviceName: `FE-node-block-explorer_${process.env.NEXT_PUBLIC_CHAIN_ID}`,
+  secretToken: 'some_secret_token',
+})
+
 const SSR_URLS_CACHE_TIME = {
   '/': 5,
   '/block/*': 50,
