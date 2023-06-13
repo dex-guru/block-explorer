@@ -27,9 +27,7 @@ export const TooltipAnchor: FC<TooltipAnchorProps> = ({
       data-tooltip-place={place}
       data-tooltip-variant={type}
     >
-      <span className={styles.icon}>
-        <IconInfo />
-      </span>
+      <IconInfo className={styles.icon} />
       <span className={styles.caption}>Details</span>
     </span>
   )

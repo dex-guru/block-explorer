@@ -75,7 +75,7 @@ const getProps = async (tx: string): Promise<ITxProps> => {
     }
 
     return {
-      data: transactions[0],
+      data: transactions[0] || null,
       logs: logs || [],
       chainConfig: chainConfig,
       chainStats: chainStats,

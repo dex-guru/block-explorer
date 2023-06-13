@@ -5,10 +5,14 @@
   --code-text: var(--color-text);
 
   background: var(--code-bg);
-  padding: 0.5em;
+  padding: 8px;
   color: var(--code-text);
 
   font-size: 14px;
+  line-height: 20px;
+
+  border-radius: var(--radii-sm);
+  min-height: 35px;
 }
 
 .pre {

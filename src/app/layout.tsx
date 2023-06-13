@@ -1,8 +1,5 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
-import ContextWrapper from './ContextWrapper'
-import WrappersContainer from './WrappersContainer'
-import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { ApolloWrapper } from '@/lib/apollo/apolloWrapper'
 import { initApm } from '@/services/apmService'
 import '@/styles/index.scss'
@@ -29,7 +26,9 @@ export default async function RootLayout({
       </head>
       <body>
         <ApolloWrapper>
-          <WrappersContainer>{children}</WrappersContainer>
+          {/* <WrappersContainer> */}
+          {children}
+          {/* </WrappersContainer> */}
         </ApolloWrapper>
         {!!process.env.gTagManagerId && (
           <noscript>
