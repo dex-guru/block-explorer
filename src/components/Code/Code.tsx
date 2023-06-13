@@ -54,7 +54,7 @@ const Code: FC<CodeProps> = ({
   }
 
   if (!initialText) {
-    return false
+    return null
   }
 
   return (
