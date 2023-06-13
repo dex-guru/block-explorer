@@ -2,7 +2,6 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from 'react'
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc'
 import {
   ApolloClient,
   from,
