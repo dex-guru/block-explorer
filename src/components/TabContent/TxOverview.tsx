@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
+import pageStyles from '../../pages/Pages.module.scss'
 import { Property } from '../Properties/types'
 import {
   erc20ActionColumns,
@@ -21,6 +21,7 @@ import {
   Code,
   DateTime,
   Details,
+  IconCross,
   Label,
   Properties,
   Table,
@@ -31,6 +32,7 @@ import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import styles from './TxOverview.module.scss'
 
 const TxOverview: FC<{
   data: TransactionModel
@@ -54,13 +56,15 @@ const TxOverview: FC<{
         <Value
           icon={
             !!data.receiptStatus ? (
-              <IconVerify className={styles.icon} />
-            ) : undefined
+              <IconVerify className={pageStyles.icon} />
+            ) : (
+              <IconCross className={pageStyles.icon} />
+            )
           }
           value={data.receiptStatus ? 'Success' : 'Failed'}
           className={clsx({
-            [styles.positive]: !!data.receiptStatus,
-            [styles.negative]: !data.receiptStatus,
+            [pageStyles.positive]: !!data.receiptStatus,
+            [pageStyles.negative]: !data.receiptStatus,
           })}
         />
       ),
@@ -76,14 +80,14 @@ const TxOverview: FC<{
       tooltip: 'The date and time at which a transaction is produced.',
       value: (
         <Value
-          icon={<StopwatchIcon className={styles.muted} />}
+          icon={<StopwatchIcon className={pageStyles.muted} />}
           value={<TimeAgo timestamp={data.blockTimestamp} />}
           suffix={
             <>
               &nbsp;
               <DateTime
                 timestamp={data.blockTimestamp}
-                className={styles.muted}
+                className={pageStyles.muted}
               />
             </>
           }
@@ -101,7 +105,7 @@ const TxOverview: FC<{
             isShorten={false}
             isCopy
           />
-          <Label type="tag" className={styles.success}>
+          <Label type="tag" className={pageStyles.success}>
             {data.nonce}
           </Label>
         </Separated>
@@ -132,10 +136,18 @@ const TxOverview: FC<{
       tooltip:
         'The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.',
       value: (
-        <Value
-          value={getNormalizedValue(data.value)}
-          suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
-        />
+        <Separated>
+          <Value
+            value={getNormalizedValue(data.value)}
+            suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
+          />
+          <Value
+            value={getNormalizedValue(
+              data.value * chainStats.nativeTokenPriceUsd
+            )}
+            prefix="$"
+          />
+        </Separated>
       ),
     },
     {
@@ -257,7 +269,7 @@ const TxOverview: FC<{
               title={
                 <>
                   ERC-20 Tokens Transferred:{' '}
-                  <Label className={styles.propertyIndicator}>
+                  <Label className={pageStyles.propertyIndicator}>
                     {transfers.length}
                   </Label>
                 </>
@@ -273,13 +285,17 @@ const TxOverview: FC<{
               title={
                 <>
                   NFT Tokens Transferred:{' '}
-                  <Label className={styles.propertyIndicator}>
+                  <Label className={pageStyles.propertyIndicator}>
                     {nftEvents.length}
                   </Label>
                 </>
               }
             >
-              <Table data={nftEvents} columns={nftTransfersColumns} />
+              <Table
+                data={nftEvents}
+                columns={nftTransfersColumns}
+                className={styles.table}
+              />
             </Details>
           )}
 
@@ -289,7 +305,7 @@ const TxOverview: FC<{
               title={
                 <>
                   Transaction Actions:{' '}
-                  <Label className={styles.propertyIndicator}>
+                  <Label className={pageStyles.propertyIndicator}>
                     {actions.length}
                   </Label>
                 </>

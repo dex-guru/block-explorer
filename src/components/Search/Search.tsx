@@ -38,9 +38,8 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
     setIsOpen(allowOpen)
   }, [data])
 
-  const handleBlur: FocusEventHandler<HTMLInputElement> = (e) => {
+  const handleBlur: FocusEventHandler<HTMLInputElement> = () => {
     setIsFocus(false)
-    e.target.value = query || ''
   }
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
@@ -65,7 +64,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
         <label className={styles.combo}>
           <input
             ref={ref}
-            className={clsx(styles.query, { [styles.loading]: loading })}
+            className={clsx(styles.query, { [styles.queryLoading]: loading })}
             type="text"
             placeholder="Search by address / Txn Hash / Block number"
             defaultValue={query}
@@ -77,8 +76,12 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
             {withQR && <Button icon={<IconQR />} className={styles.action} />}
             <Button
               disabled={!canSubmit}
-              icon={<IconSearch />}
-              className={styles.action}
+              icon={
+                !loading ? <IconSearch className={styles.icon} /> : undefined
+              }
+              className={clsx(styles.action, {
+                [styles.actionLoading]: loading,
+              })}
               type="submit"
             />
           </div>

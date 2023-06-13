@@ -53,6 +53,10 @@ const Code: FC<CodeProps> = ({
     setCurrentFormat('custom')
   }
 
+  if (!initialText) {
+    return false
+  }
+
   return (
     <div className={clsx(styles.container, className)}>
       {!!initialText && (

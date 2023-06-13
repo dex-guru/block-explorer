@@ -152,6 +152,9 @@
   --color-button-bg: var(--color-bg-2);
   --color-button-text: var(--color-accent);
   --color-button-border: transparent;
+  --color-button-hover-bg: var(--color-accent);
+  --color-button-hover-text: var(--color-bg);
+  --color-button-hover-border: transparent;
 }
 
 .text {

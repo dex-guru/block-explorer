@@ -14,6 +14,7 @@ const Socials: FC<SocialsProps> = ({ className }) => {
           <a
             href="https://twitter.com/dexguru"
             rel="noreferrer noopener"
+            target="_blank"
             className={styles.link}
           >
             <IconTwitter className={styles.icon} />
@@ -23,6 +24,7 @@ const Socials: FC<SocialsProps> = ({ className }) => {
           <a
             href="https://t.me/dexguru"
             rel="noreferrer noopener"
+            target="_blank"
             className={styles.link}
           >
             <IconTelegram className={styles.icon} />
@@ -32,6 +34,7 @@ const Socials: FC<SocialsProps> = ({ className }) => {
           <a
             href="https://discord.gg/dPW8fzwzz9"
             rel="noreferrer noopener"
+            target="_blank"
             className={styles.link}
           >
             <IconDiscord className={styles.icon} />
