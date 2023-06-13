@@ -43,7 +43,6 @@ import {
 import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
-import { getAddressPageModel } from '@/lib/apollo/apolloServerSideQueries'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
