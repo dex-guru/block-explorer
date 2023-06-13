@@ -40,7 +40,6 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
 
   const handleBlur: FocusEventHandler<HTMLInputElement> = () => {
     setIsFocus(false)
-    // e.target.value = query || ''
   }
 
   const handleFocus: FocusEventHandler<HTMLInputElement> = () => {
