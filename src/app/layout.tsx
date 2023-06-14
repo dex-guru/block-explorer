@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Script from 'next/script'
 import ContextWrapper from './ContextWrapper'
+import { Tooltip } from '@/components/Tooltip'
 import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { ApolloWrapper } from '@/lib/apollo/apolloWrapper'
 import { initApm } from '@/services/apmService'
@@ -18,6 +19,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const chainConfig = await getChainConfig()
+
   return (
     <html lang="en">
       <head>
@@ -32,6 +34,22 @@ export default async function RootLayout({
           <ContextWrapper contextValue={{ chainConfig }}>
             {children}
           </ContextWrapper>
+          <Tooltip
+            className="app-tooltip"
+            id="app-tooltip"
+            variant="light"
+            positionStrategy="fixed"
+            clickable
+          />
+          <Tooltip
+            className="app-tooltip"
+            openOnClick
+            content="Copied!"
+            variant="light"
+            place="bottom"
+            anchorSelect=".clipboard-copy"
+            delayHide={1500}
+          />
         </ApolloWrapper>
         {!!process.env.gTagManagerId && (
           <noscript>
