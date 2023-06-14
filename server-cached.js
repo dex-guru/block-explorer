@@ -12,24 +12,24 @@ require('elastic-apm-node').start({
 })
 
 const SSR_URLS_CACHE_TIME = {
-  '/': 5,
-  '/block/*': 50,
-  '/tx/*': 50,
-  '/blocks/*': 50,
-  '/txs/*': 50,
-  '/address/*': 5,
-  '/holdings/*': 5,
-  '/holdings/*': 5,
+  // '/': 5,
+  // '/block/*': 50,
+  // '/tx/*': 50,
+  // '/blocks/*': 50,
+  // '/txs/*': 50,
+  // '/address/*': 5,
+  // '/holdings/*': 5,
+  // '/holdings/*': 5,
 }
 const JSON_URLS_CACHE_TIME = {
-  '/index.json': 5,
-  '/block/*': 50,
-  '/tx/*': 50,
-  '/blocks/*': 50,
-  '/txs/*': 50,
-  '/address/*': 5,
-  '/holdings/*': 5,
-  '/holdings/*': 5,
+  // '/index.json': 5,
+  // '/block/*': 50,
+  // '/tx/*': 50,
+  // '/blocks/*': 50,
+  // '/txs/*': 50,
+  // '/address/*': 5,
+  // '/holdings/*': 5,
+  // '/holdings/*': 5,
 }
 
 const redisURL = process.env.REDIS_URL
