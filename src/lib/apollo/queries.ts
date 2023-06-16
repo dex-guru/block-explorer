@@ -1026,3 +1026,10 @@ query ChainConfig {
     }
   }
 }`
+
+export const GET_CONTRACT_CODE = gql`
+query GetContractCode ($address: String!) {
+  contractCode(address: $address, chainId: ${CHAIN_ID}){
+    code
+  }
+}`
