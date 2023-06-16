@@ -15,8 +15,11 @@
   height: 16px;
 }
 
+.image,
 .noimage {
   color: var(--color-muted);
+  width: 32px;
+  height: 32px;
 }
 
 .valueNativeWithStable {

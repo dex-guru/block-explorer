@@ -5,25 +5,31 @@ const zlib = require('node:zlib')
 const { createClient } = require('redis')
 const next = require('next')
 
+require('elastic-apm-node').start({
+  serverUrl: process.env.NEXT_PUBLIC_APM_SERVER_URL,
+  serviceName: `FE-node-block-explorer_${process.env.NEXT_PUBLIC_CHAIN_ID}`,
+  secretToken: 'some_secret_token',
+})
+
 const SSR_URLS_CACHE_TIME = {
-  '/': 5,
-  '/block/*': 50,
-  '/tx/*': 50,
-  '/blocks/*': 50,
-  '/txs/*': 50,
-  '/address/*': 5,
-  '/holdings/*': 5,
-  '/holdings/*': 5,
+  // '/': 5,
+  // '/block/*': 50,
+  // '/tx/*': 50,
+  // '/blocks/*': 50,
+  // '/txs/*': 50,
+  // '/address/*': 5,
+  // '/holdings/*': 5,
+  // '/holdings/*': 5,
 }
 const JSON_URLS_CACHE_TIME = {
-  '/index.json': 5,
-  '/block/*': 50,
-  '/tx/*': 50,
-  '/blocks/*': 50,
-  '/txs/*': 50,
-  '/address/*': 5,
-  '/holdings/*': 5,
-  '/holdings/*': 5,
+  // '/index.json': 5,
+  // '/block/*': 50,
+  // '/tx/*': 50,
+  // '/blocks/*': 50,
+  // '/txs/*': 50,
+  // '/address/*': 5,
+  // '/holdings/*': 5,
+  // '/holdings/*': 5,
 }
 
 const redisURL = process.env.REDIS_URL
