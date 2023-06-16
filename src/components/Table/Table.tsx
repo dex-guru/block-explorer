@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { TransitionGroup } from 'react-transition-group'
 import clsx from 'clsx'
 import { useBodyRows, useHeader } from './hooks'
@@ -25,6 +26,8 @@ export function Table<T>({
   onRowClick,
   getRowKey,
 }: ITableProps<T>) {
+  const ref = useRef<HTMLDivElement>(null)
+
   const header = useHeader<T>(columns)
 
   const rows = useBodyRows<T>({
@@ -35,8 +38,12 @@ export function Table<T>({
     getRowKey,
   })
 
+  useEffect(() => {
+    ref.current?.scrollTo({ top: ref.current.scrollHeight })
+  }, [data])
+
   return (
-    <div className={clsx(styles.container, className)}>
+    <div className={clsx(styles.container, className)} ref={ref}>
       <table
         className={clsx(styles.table, { [styles.tableLoading]: isLoading })}
       >

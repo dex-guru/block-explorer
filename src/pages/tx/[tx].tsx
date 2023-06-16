@@ -27,7 +27,7 @@ const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
 const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
 
 export type TxEventsData<T> = { data: T[]; total: number }
-export const MAX_EVENTS_PER_PAGE = 3
+export const MAX_EVENTS_PER_PAGE = 10
 
 interface ITxProps {
   data: TransactionModel
