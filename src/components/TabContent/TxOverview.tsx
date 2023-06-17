@@ -21,6 +21,7 @@ import {
   Code,
   DateTime,
   Details,
+  IconCross,
   Label,
   Properties,
   Table,
@@ -47,17 +48,15 @@ const TxOverview: FC<{
   )
   const actions = erc20Events.filter((event) => event.eventType !== 'transfer')
 
+  const IconStatus = data.receiptStatus ? IconVerify : IconCross
+
   const properties: Property[] = [
     {
       title: 'Status:',
       tooltip: 'The status of the transaction.',
       value: (
         <Value
-          icon={
-            !!data.receiptStatus ? (
-              <IconVerify className={pageStyles.icon} />
-            ) : undefined
-          }
+          icon={<IconStatus className={pageStyles.icon} />}
           value={data.receiptStatus ? 'Success' : 'Failed'}
           className={clsx({
             [pageStyles.positive]: !!data.receiptStatus,
@@ -133,10 +132,18 @@ const TxOverview: FC<{
       tooltip:
         'The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.',
       value: (
-        <Value
-          value={getNormalizedValue(data.value)}
-          suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
-        />
+        <Separated>
+          <Value
+            value={getNormalizedValue(data.value)}
+            suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
+          />
+          <Value
+            value={getNormalizedValue(
+              data.value * chainStats.nativeTokenPriceUsd
+            )}
+            prefix="$"
+          />
+        </Separated>
       ),
     },
     {

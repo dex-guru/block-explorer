@@ -32,33 +32,35 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       tooltip:
         'Also known as Block Number. The block height, which indicates the length of the blockchain, increases after the addition of the new block.',
       value: (
-        <div>
-          {data.number}{' '}
-          <Link
-            data-tooltip-content="Previous Block"
-            data-tooltip-id="app-tooltip"
-            href={
-              blockValues?.url ? blockValues?.url(`${data.number - 1}`) : ''
-            }
-            className={clsx(styles.pageTo, {
-              [styles.disabled]: data.number < 2,
-            })}
-          >
-            <IconLeft className={styles.icon} />
-          </Link>{' '}
-          <Link
-            data-tooltip-content="Next Block"
-            data-tooltip-id="app-tooltip"
-            href={
-              blockValues?.url ? blockValues?.url(`${data.number + 1}`) : ''
-            }
-            className={clsx(styles.pageTo, {
-              [styles.disabled]: chainStats?.lastBlockNumber === data.number,
-            })}
-          >
-            <IconRight className={styles.icon} />
-          </Link>
-        </div>
+        <Separated>
+          <div>{data.number}</div>
+          <div>
+            <Link
+              data-tooltip-content="Previous Block"
+              data-tooltip-id="app-tooltip"
+              href={
+                blockValues?.url ? blockValues?.url(`${data.number - 1}`) : ''
+              }
+              className={clsx(styles.pageTo, {
+                [styles.disabled]: data.number < 2,
+              })}
+            >
+              <IconLeft className={styles.icon} />
+            </Link>{' '}
+            <Link
+              data-tooltip-content="Next Block"
+              data-tooltip-id="app-tooltip"
+              href={
+                blockValues?.url ? blockValues?.url(`${data.number + 1}`) : ''
+              }
+              className={clsx(styles.pageTo, {
+                [styles.disabled]: chainStats?.lastBlockNumber === data.number,
+              })}
+            >
+              <IconRight className={styles.icon} />
+            </Link>
+          </div>
+        </Separated>
       ),
     },
     {
@@ -81,11 +83,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
           value={
             <>
               <TimeAgo timestamp={data.timestamp} showTooltip={false} />{' '}
-              <span className={styles.muted}>
-                (
-                <DateTime timestamp={data.timestamp} className={styles.muted} />
-                )
-              </span>
+              <DateTime timestamp={data.timestamp} className={styles.muted} />
             </>
           }
         />
@@ -118,7 +116,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
             data.gasUsed * data.baseFeePerGas,
             chainConfig?.nativeCurrency.decimals
           )}
-          suffix={<>&nbsp;${chainConfig?.nativeCurrency.symbol}</>}
+          suffix={<>&nbsp;{chainConfig?.nativeCurrency.symbol}</>}
         />
       ),
     },

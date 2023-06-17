@@ -11,6 +11,7 @@ import DetailsView from '@/components/DetailsView/DetailsView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
+import { getLogger } from '@/lib/logger'
 import { isValidBlockNumber } from '@/lib/utils'
 
 export interface IBlockProps {
@@ -65,6 +66,8 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
 export default Block
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const logger = getLogger('block')
+
   const { block } = ctx.query
 
   const apolloClient = initializeApollo({ ctx })
@@ -82,7 +85,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return { props: data }
   }
 
-  const { data } = await apolloClient.query<{
+  const { data, error } = await apolloClient.query<{
     blocks: BlockModel[]
     chainStats: ChainStatsModel
     chainConfig: ChainConfigModel
@@ -90,6 +93,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: GET_BLOCKS_BY_NUMBER,
     variables: { number: Number(block) },
   })
+
+  error
+    ? logger.error(error, 'Error getting GET_BLOCKS_BY_NUMBER info')
+    : logger.info({ msg: 'Got GET_BLOCKS_BY_NUMBER info', data })
 
   const { blocks, chainStats, chainConfig } = data
 
