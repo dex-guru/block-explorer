@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import { Address, Delta, IconContract, Tile, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
@@ -11,7 +12,7 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
     title: 'Asset',
     render: (data) => {
       const icon = data.logo[0] ? (
-        <img
+        <Image
           src={data.logo[0]}
           alt={data.symbol.join('/')}
           width="32"

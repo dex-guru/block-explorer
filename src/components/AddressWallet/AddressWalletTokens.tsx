@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
@@ -49,7 +50,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
         : ''
 
       const icon = token.logo[0] ? (
-        <img
+        <Image
           src={token.logo[0]}
           alt={token.symbol.join('/')}
           width="32"
