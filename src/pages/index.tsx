@@ -74,7 +74,7 @@ const Index: NextPage<IndexProps> = (props) => {
   ]
 
   const lastBlockNumber = Math.max(
-    blocks[0].number,
+    blocks[0]?.number,
     props.chainStats.lastBlockNumber
   )
 
