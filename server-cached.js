@@ -178,7 +178,7 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
     })) + `<!-- cache @ ${new Date().toLocaleString()} -->`
 
   const compressedData = isRedisReady
-    ? zlib.brotliCompressSync(response, {
+    ? zlib.brotliCompressSync(data, {
         params: {
           [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
           [zlib.constants.BROTLI_PARAM_QUALITY]: 1,
