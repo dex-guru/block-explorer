@@ -82,11 +82,11 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
   const cache = isRedisReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Content-Encoding', 'gzip')
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
   res.setHeader('X-Content-Redis', isRedisReady ? 'alive' : 'gone')
 
   if (cache) {
+    res.setHeader('Content-Encoding', 'gzip')
     res.setHeader('X-Cache-Key', key)
     const buff = Buffer.from(cache, 'base64')
 
@@ -99,18 +99,16 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
 
   const rawResEnd = res.end
   const rawResWrite = res.write
-  const chunks = []
-
-  const proxyWrite = new Proxy(res.write, {
-    apply(target, thisArg, args) {
-      const chunk = Buffer.from(args[0])
-      chunks.push(chunk)
-    },
-  })
-
-  res.write = proxyWrite
 
   const data = await new Promise(async (resolve) => {
+    const chunks = []
+
+    res.write = new Proxy(res.write, {
+      apply(target, thisArg, args) {
+        const chunk = Buffer.from(args[0])
+        chunks.push(chunk)
+      },
+    })
     res.end = async (res) => {
       resolve(res || chunks)
     }
@@ -125,13 +123,11 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
   res.end = rawResEnd
 
   const isChunked = Array.isArray(data)
-  const response = isChunked
-    ? zlib.gunzipSync(Buffer.concat(data))
-    : Buffer.from(data)
+  const compressedData = isChunked
+    ? Buffer.concat(data)
+    : zlib.gzipSync(Buffer.from(data))
 
-  const compressedData = zlib.gzipSync(response)
-
-  if (isRedisReady && res.statusCode === 200 && data) {
+  if (isRedisReady && res.statusCode === 200 && compressedData) {
     const buff = Buffer.from(compressedData).toString('base64')
 
     if (buff) {
@@ -149,7 +145,7 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
   const cache = isRedisReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.setHeader('Content-Encoding', 'gzip')
+  res.setHeader('Content-Encoding', isRedisReady ? 'br' : 'gzip')
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
   res.setHeader('X-Content-Redis', isRedisReady ? 'alive' : 'gone')
 
@@ -170,7 +166,9 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
       ...req.params,
     })) + `<!-- cache @ ${new Date().toLocaleString()} -->`
 
-  const compressedData = zlib.gzipSync(data)
+  const compressedData = isRedisReady
+    ? zlib.brotliCompressSync(data)
+    : zlib.gzipSync(data)
 
   if (isRedisReady && res.statusCode === 200 && data) {
     const buff = Buffer.from(compressedData).toString('base64')
@@ -190,14 +188,14 @@ app.prepare().then(async () => {
 
   Object.entries(SSR_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Page request "${url}" cache for ${time} sec`
+      `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
     )
     server.get(url, (req, res) => ssrCache(req, res, time))
   })
 
   Object.entries(JSON_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Props request "${url}" cache for ${time} sec`
+      `[ Block Explorer Server ] > Props request "${url}" cache for ${time}ms`
     )
     server.get(`/_next/data/:hash${url}`, (req, res) =>
       jsonCache(req, res, time)
