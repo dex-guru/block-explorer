@@ -12,9 +12,9 @@ require('elastic-apm-node').start({
 })
 
 const SSR_URLS_CACHE_TIME = {
-  // '/': 5,
-  // '/block/*': 50,
-  // '/tx/*': 50,
+  '/': 10,
+  '/block/*': 10,
+  '/tx/*': 10,
   // '/blocks/*': 50,
   // '/txs/*': 50,
   // '/address/*': 5,
@@ -22,9 +22,9 @@ const SSR_URLS_CACHE_TIME = {
   // '/holdings/*': 5,
 }
 const JSON_URLS_CACHE_TIME = {
-  // '/index.json': 5,
-  // '/block/*': 50,
-  // '/tx/*': 50,
+  '/index.json': 10,
+  '/block/*': 10,
+  '/tx/*': 10,
   // '/blocks/*': 50,
   // '/txs/*': 50,
   // '/address/*': 5,
@@ -99,16 +99,18 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
 
   const rawResEnd = res.end
   const rawResWrite = res.write
+  const chunks = []
+
+  const proxyWrite = new Proxy(res.write, {
+    apply(target, thisArg, args) {
+      const chunk = Buffer.from(args[0])
+      chunks.push(chunk)
+    },
+  })
+
+  res.write = proxyWrite
 
   const data = await new Promise(async (resolve) => {
-    const chunks = []
-
-    res.write = new Proxy(res.write, {
-      apply(target, thisArg, args) {
-        const chunk = Buffer.from(args[0])
-        chunks.push(chunk)
-      },
-    })
     res.end = async (res) => {
       resolve(res || chunks)
     }
@@ -128,7 +130,12 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
     : Buffer.from(data)
 
   const compressedData = isRedisReady
-    ? zlib.brotliCompressSync(response)
+    ? zlib.brotliCompressSync(response, {
+        params: {
+          [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 1,
+        },
+      })
     : zlib.gzipSync(response)
 
   if (isRedisReady && res.statusCode === 200 && data) {
