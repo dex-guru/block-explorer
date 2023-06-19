@@ -5,7 +5,7 @@ import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
 import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
-import { GET_ERC20_BY_ADDRESS } from '@/lib/apollo/queries'
+import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './Erc20DataTable.module.scss'
 
@@ -21,7 +21,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   isWalletAddress,
 }) => {
   const [getErc20, { data, loading, previousData }] =
-    useLazyQuery(GET_ERC20_BY_ADDRESS)
+    useLazyQuery(GET_ERC20_EVENTS)
   const isMount = useIsMount()
 
   const addressVar = useMemo(

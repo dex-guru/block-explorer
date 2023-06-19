@@ -1,8 +1,11 @@
-.container {
+.innerCard {
+  margin: -16px;
+  background: none;
 }
 
 .table {
-  max-height: 75hv;
-  margin: 0 -16px -23px 0;
-  padding: 0 16px 0 0;
+  max-height: 66vh;
+  margin-right: -16px;
+  padding-right: 16px;
+  overflow-y: overlay;
 }
