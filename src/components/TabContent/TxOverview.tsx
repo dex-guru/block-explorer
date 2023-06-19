@@ -95,7 +95,7 @@ const TxOverview: FC<{
       ),
     },
     {
-      title: 'From / Nonce:',
+      title: 'From | Nonce:',
       tooltip: 'The sending party of the transaction.',
       value: (
         <Separated>
