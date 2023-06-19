@@ -12,24 +12,24 @@ require('elastic-apm-node').start({
 })
 
 const SSR_URLS_CACHE_TIME = {
-  '/': 10,
-  '/block/*': 10,
-  '/tx/*': 10,
-  // '/blocks/*': 50,
-  // '/txs/*': 50,
-  // '/address/*': 5,
-  // '/holdings/*': 5,
-  // '/holdings/*': 5,
+  '/': 60,
+  '/block/*': 60,
+  '/tx/*': 60,
+  '/blocks/*': 60,
+  '/txs/*': 60,
+  '/address/*': 60,
+  '/holdings/*': 60,
+  '/holdings/*': 60,
 }
 const JSON_URLS_CACHE_TIME = {
-  '/index.json': 10,
-  '/block/*': 10,
-  '/tx/*': 10,
-  // '/blocks/*': 50,
-  // '/txs/*': 50,
-  // '/address/*': 5,
-  // '/holdings/*': 5,
-  // '/holdings/*': 5,
+  '/index.json': 60,
+  '/block/*': 60,
+  '/tx/*': 60,
+  '/blocks/*': 60,
+  '/txs/*': 60,
+  '/address/*': 60,
+  '/holdings/*': 60,
+  '/holdings/*': 60,
 }
 
 const redisURL = process.env.REDIS_URL
@@ -178,7 +178,12 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
     })) + `<!-- cache @ ${new Date().toLocaleString()} -->`
 
   const compressedData = isRedisReady
-    ? zlib.brotliCompressSync(data)
+    ? zlib.brotliCompressSync(response, {
+        params: {
+          [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+          [zlib.constants.BROTLI_PARAM_QUALITY]: 1,
+        },
+      })
     : zlib.gzipSync(data)
 
   if (isRedisReady && res.statusCode === 200 && data) {
