@@ -82,7 +82,7 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
   const cache = isRedisReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'application/json')
-  res.setHeader('Content-Encoding', isRedisReady ? 'br' : 'gzip')
+  res.setHeader('Content-Encoding', 'gzip')
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
   res.setHeader('X-Content-Redis', isRedisReady ? 'alive' : 'gone')
 
@@ -129,14 +129,7 @@ async function jsonCache(req, res, time = 15 * 60 * 1000) {
     ? zlib.gunzipSync(Buffer.concat(data))
     : Buffer.from(data)
 
-  const compressedData = isRedisReady
-    ? zlib.brotliCompressSync(response, {
-        params: {
-          [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 1,
-        },
-      })
-    : zlib.gzipSync(response)
+  const compressedData = zlib.gzipSync(response)
 
   if (isRedisReady && res.statusCode === 200 && data) {
     const buff = Buffer.from(compressedData).toString('base64')
@@ -156,7 +149,7 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
   const cache = isRedisReady ? await redis.get(key) : null
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-  res.setHeader('Content-Encoding', isRedisReady ? 'br' : 'gzip')
+  res.setHeader('Content-Encoding', 'gzip')
   res.setHeader('X-Content-Source', cache ? 'cache' : 'direct')
   res.setHeader('X-Content-Redis', isRedisReady ? 'alive' : 'gone')
 
@@ -177,14 +170,7 @@ async function ssrCache(req, res, time = 15 * 60 * 1000) {
       ...req.params,
     })) + `<!-- cache @ ${new Date().toLocaleString()} -->`
 
-  const compressedData = isRedisReady
-    ? zlib.brotliCompressSync(data, {
-        params: {
-          [zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 1,
-        },
-      })
-    : zlib.gzipSync(data)
+  const compressedData = zlib.gzipSync(data)
 
   if (isRedisReady && res.statusCode === 200 && data) {
     const buff = Buffer.from(compressedData).toString('base64')
@@ -204,14 +190,14 @@ app.prepare().then(async () => {
 
   Object.entries(SSR_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
+      `[ Block Explorer Server ] > Page request "${url}" cache for ${time} sec`
     )
     server.get(url, (req, res) => ssrCache(req, res, time))
   })
 
   Object.entries(JSON_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Props request "${url}" cache for ${time}ms`
+      `[ Block Explorer Server ] > Props request "${url}" cache for ${time} sec`
     )
     server.get(`/_next/data/:hash${url}`, (req, res) =>
       jsonCache(req, res, time)
