@@ -92,6 +92,28 @@
     border: none;
     color: var(--color-search-action-hover);
   }
+
+  &Loading {
+    &:after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border: 1.5px var(--color-accent) solid;
+      border-radius: 8px;
+      border-top-color: transparent;
+      animation: loading-spin 1s linear infinite;
+
+      @keyframes loading-spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    }
+  }
 }
 
 .dropdown {
@@ -177,24 +199,8 @@
   margin: 0 -16px -16px;
 }
 
-.loading {
-  &:after {
-    content: '';
-    width: 24px;
-    height: 24px;
-    border: 2px var(--color-accent) solid;
-    border-radius: 12px;
-    border-top-color: transparent;
-    animation: loading-spin 1s;
-
-    @keyframes loader-spin {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
+.icon {
+  &Loading {
+    display: none;
   }
 }

@@ -1,13 +1,12 @@
 .button {
   --color-button-text: var(--color-neutral);
-  --color-button-hover-text: var(--color-accent);
+  --color-button-hover-bg: var(--color-accent-a);
+  --color-button-hover-border: var(--color-accent-a);
+  --color-button-hover-text: var(--color-bg-2);
 
   composes: button from '../Button/Button.module.scss';
   composes: sm from '../Button/Button.module.scss';
 
   padding: 0;
-  margin: {
-    top: -4px;
-    bottom: -4px;
-  }
+  margin-block: -4px;
 }

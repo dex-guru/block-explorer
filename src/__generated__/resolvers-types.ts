@@ -113,6 +113,11 @@ export type ChainStatsModel = {
   volume24hUsd: Scalars['Decimal'];
 };
 
+export type ContractCodeModel = {
+  __typename?: 'ContractCodeModel';
+  code: Scalars['String'];
+};
+
 export type ContractCreatorModel = {
   __typename?: 'ContractCreatorModel';
   creatorAddress: Scalars['String'];
@@ -232,6 +237,8 @@ export type Query = {
   chainConfig: ChainConfigModel;
   /** Get transactions */
   chainStats: ChainStatsModel;
+  /** Get contract code */
+  contractCode?: Maybe<ContractCodeModel>;
   /** Contract creator */
   contractCreator?: Maybe<ContractCreatorModel>;
   /** Get last cosmos blocks and/or transactions */
@@ -306,6 +313,12 @@ export type QueryChainConfigArgs = {
 
 
 export type QueryChainStatsArgs = {
+  chainId?: Scalars['Int'];
+};
+
+
+export type QueryContractCodeArgs = {
+  address: Scalars['String'];
   chainId?: Scalars['Int'];
 };
 
@@ -586,6 +599,7 @@ export type ResolversTypes = ResolversObject<{
   ChainConfigModel: ResolverTypeWrapper<ChainConfigModel>;
   ChainFeatureModel: ResolverTypeWrapper<ChainFeatureModel>;
   ChainStatsModel: ResolverTypeWrapper<ChainStatsModel>;
+  ContractCodeModel: ResolverTypeWrapper<ContractCodeModel>;
   ContractCreatorModel: ResolverTypeWrapper<ContractCreatorModel>;
   CosmosBlockModel: ResolverTypeWrapper<CosmosBlockModel>;
   CosmosModel: ResolverTypeWrapper<CosmosModel>;
@@ -626,6 +640,7 @@ export type ResolversParentTypes = ResolversObject<{
   ChainConfigModel: ChainConfigModel;
   ChainFeatureModel: ChainFeatureModel;
   ChainStatsModel: ChainStatsModel;
+  ContractCodeModel: ContractCodeModel;
   ContractCreatorModel: ContractCreatorModel;
   CosmosBlockModel: CosmosBlockModel;
   CosmosModel: CosmosModel;
@@ -753,6 +768,11 @@ export type ChainStatsModelResolvers<ContextType = any, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ContractCodeModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ContractCodeModel'] = ResolversParentTypes['ContractCodeModel']> = ResolversObject<{
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ContractCreatorModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ContractCreatorModel'] = ResolversParentTypes['ContractCreatorModel']> = ResolversObject<{
   creatorAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -872,6 +892,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType, RequireFields<QueryBlocksArgs, 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'number' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
   chainConfig?: Resolver<ResolversTypes['ChainConfigModel'], ParentType, ContextType, RequireFields<QueryChainConfigArgs, 'chainId'>>;
   chainStats?: Resolver<ResolversTypes['ChainStatsModel'], ParentType, ContextType, RequireFields<QueryChainStatsArgs, 'chainId'>>;
+  contractCode?: Resolver<Maybe<ResolversTypes['ContractCodeModel']>, ParentType, ContextType, RequireFields<QueryContractCodeArgs, 'address' | 'chainId'>>;
   contractCreator?: Resolver<Maybe<ResolversTypes['ContractCreatorModel']>, ParentType, ContextType, RequireFields<QueryContractCreatorArgs, 'address' | 'chainId'>>;
   cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType, RequireFields<QueryCosmosArgs, 'chainId' | 'first'>>;
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
@@ -996,6 +1017,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ChainConfigModel?: ChainConfigModelResolvers<ContextType>;
   ChainFeatureModel?: ChainFeatureModelResolvers<ContextType>;
   ChainStatsModel?: ChainStatsModelResolvers<ContextType>;
+  ContractCodeModel?: ContractCodeModelResolvers<ContextType>;
   ContractCreatorModel?: ContractCreatorModelResolvers<ContextType>;
   CosmosBlockModel?: CosmosBlockModelResolvers<ContextType>;
   CosmosModel?: CosmosModelResolvers<ContextType>;

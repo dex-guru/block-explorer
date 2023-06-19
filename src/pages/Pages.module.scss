@@ -163,6 +163,7 @@
 
 .contractName {
   composes: info from '../components/Label/Label.module.scss';
+  display: flex;
   margin: -8px 0;
   font-size: 16px;
   font-weight: 500;
