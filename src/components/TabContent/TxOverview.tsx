@@ -125,6 +125,8 @@ const TxOverview: FC<{
 
   const IconStatus = data.receiptStatus ? IconVerify : IconCross
 
+  const IconStatus = data.receiptStatus ? IconVerify : IconCross
+
   const properties: Property[] = [
     {
       title: 'Status:',

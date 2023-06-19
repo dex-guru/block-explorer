@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { LogoProps } from './types'
 import styles from './Logo.module.scss'
@@ -6,7 +7,7 @@ import styles from './Logo.module.scss'
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
   const content = (
     <div className={styles.container}>
-      <img
+      <Image
         src={url}
         className={styles.image}
         alt="Logo"
