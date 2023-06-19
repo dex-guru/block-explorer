@@ -3,13 +3,19 @@ import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
 
 export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'fromAddress',
-    title: 'From',
+    title: (
+      <>
+        Out{' '}
+        <TooltipAnchor tooltip="Sent tokens and the address it was sent from" />
+      </>
+    ),
     modifier: 'address',
     render: (data) => (
       <Address address={data.fromAddress} type="account" isCopy />
@@ -17,7 +23,12 @@ export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'toAddress',
-    title: 'To',
+    title: (
+      <>
+        In{' '}
+        <TooltipAnchor tooltip="Received tokens and the address that received them" />
+      </>
+    ),
     modifier: 'address',
     render: (data) => (
       <Address address={`${data.toAddress}`} type="account" isCopy />
@@ -25,7 +36,7 @@ export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'amounts',
-    title: 'For',
+    title: 'Token',
     type: 'number',
     modifier: 'tokenValue',
     render: (data) => (
