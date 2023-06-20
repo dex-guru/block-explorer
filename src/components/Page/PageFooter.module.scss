@@ -15,7 +15,7 @@
 .body {
   display: flex;
   flex-flow: row wrap;
-  gap: 80px;
+  gap: 64px;
   align-items: stretch;
 }
 
@@ -93,6 +93,10 @@
   @media (max-width: 600px) {
     flex-flow: column;
   }
+}
+
+.links {
+  flex: 1 0 auto;
 }
 
 .links {
