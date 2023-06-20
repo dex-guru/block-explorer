@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { isHexString } from '@ethersproject/bytes'
-import TxPage, { ITxProps } from './tx'
+import TxPage, { ITxProps, TxEventsData } from './tx'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -20,7 +20,6 @@ import { getLogger } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
 
-export type TxEventsData<T> = { data: T[]; total: number }
 export const MAX_EVENTS_PER_PAGE = 10
 
 export async function generateMetadata({

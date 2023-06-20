@@ -16,6 +16,7 @@ import {
   Erc721TransferModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
+import { MAX_EVENTS_PER_PAGE, TxEventsData } from '@/app/tx/[tx]/page'
 import {
   Address,
   Card,
@@ -34,7 +35,6 @@ import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
-import { MAX_EVENTS_PER_PAGE, TxEventsData } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
 
 const TxOverview: FC<{

@@ -2,7 +2,6 @@
 
 import { Suspense, lazy, FC } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { TxEventsData } from './page'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -21,6 +20,7 @@ const TxOverview = lazy(
 const TxLogs = lazy(() => import('../../../components/TabContent/TxLogs'))
 const TxTrace = lazy(() => import('../../../components/TabContent/TxTrace'))
 
+export type TxEventsData<T> = { data: T[]; total: number }
 export interface ITxProps {
   data: TransactionModel
   logs: LogModel[]
