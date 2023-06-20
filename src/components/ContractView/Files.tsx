@@ -1,9 +1,11 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useMemo } from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
-import { useProvider } from 'wagmi'
+import { useQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'
+import { ContractCodeModel } from '@/__generated__/resolvers-types'
 import { Heading, Properties, Details, Code } from '@/components'
+import { GET_CONTRACT_CODE } from '@/lib/apollo/queries'
 import { Match } from '@/types'
 import styles from './ContractView.module.scss'
 
@@ -14,9 +16,16 @@ export interface IFilesProps {
 const Files: FC<IFilesProps> = ({ match, address }) => {
   const isMatchLoaded = match !== undefined
   const hasSources = !!match?.metadata?.sources
-  const [bytecode, setBytecode] = useState('')
-  const [isLoadingSources, setIsLoadingSources] = useState(false)
-  const provider = useProvider()
+  const { data } = useQuery<{
+    contractCode: ContractCodeModel
+  }>(GET_CONTRACT_CODE, {
+    variables: { address },
+  })
+
+  const bytecode = useMemo(
+    () => (!hasSources && data ? data.contractCode.code : ''),
+    [data, hasSources]
+  )
 
   const properties: Property[] = []
   if (match?.metadata?.language) {
@@ -39,18 +48,6 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
       : 'No',
   })
 
-  useEffect(() => {
-    if (!hasSources) {
-      setIsLoadingSources(true)
-      provider.getCode(address).then((code) => {
-        setIsLoadingSources(false)
-        setBytecode(code)
-      })
-    }
-    // on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const renderFiles = () => {
     if (!isMatchLoaded) {
       return <LoadingCard />
@@ -60,8 +57,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
       return (
         <>
           <Heading size="md">Bytecode</Heading>
-          {isLoadingSources && <LoadingCard />}
-          {bytecode && <Code>{bytecode}</Code>}
+          {bytecode ? <Code>{bytecode}</Code> : <LoadingCard />}
         </>
       )
     }

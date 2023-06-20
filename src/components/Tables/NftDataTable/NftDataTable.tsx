@@ -5,7 +5,7 @@ import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
 import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
-import { GET_ERC721_BY_ADDRESS } from '@/lib/apollo/queries'
+import { GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './NftDataTable.module.scss'
 
@@ -17,9 +17,8 @@ interface INftDataTableProps {
 }
 
 export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
-  const [getNfts, { data, loading, previousData }] = useLazyQuery(
-    GET_ERC721_BY_ADDRESS
-  )
+  const [getNfts, { data, loading, previousData }] =
+    useLazyQuery(GET_ERC721_EVENTS)
   const isMount = useIsMount()
 
   const getVariables = useCallback(

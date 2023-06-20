@@ -25,20 +25,7 @@ const nextConfig = {
     return config
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'assets-stage.dex.guru',
-        port: '',
-        pathname: '/icons/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'assets.dex.guru',
-        port: '',
-        pathname: '/icons/**',
-      },
-    ],
+    domains: ['assets-stage.dex.guru', 'assets.dex.guru'],
   },
   generateBuildId: () => nextBuildId.sync({ dir: __dirname }).slice(0, 7),
   async headers() {

@@ -133,7 +133,10 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       value: (
         <Separated>
           <div>{financialFormat(data.gasUsed)}</div>
-          <Value value={(data.gasUsed * 100) / data.gasLimit} suffix="%" />
+          <Value
+            value={financialFormat((data.gasUsed * 100) / data.gasLimit)}
+            suffix="%"
+          />
         </Separated>
       ),
     },

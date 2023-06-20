@@ -13,7 +13,6 @@
   line-height: 20px;
   opacity: 1;
   transition: opacity 0.25s ease;
-  overflow: hidden;
 
   &Loading {
     opacity: 0.5;
@@ -32,6 +31,9 @@
 
 .theadrow {
   background: var(--color-table-thead);
+  position: sticky;
+  z-index: 100;
+  top: 0;
 }
 
 .tbodyrow {

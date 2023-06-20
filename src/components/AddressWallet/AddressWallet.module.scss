@@ -55,7 +55,7 @@
   position: absolute;
   min-width: 320px;
   width: max-content;
-  max-width: calc(100vw - 48px);
+  max-width: min(#{calc(100vw - 48px)}, 360px);
   z-index: 2;
   left: 0;
   right: 0;
@@ -98,7 +98,7 @@
   list-style: none;
   display: flex;
   flex-flow: column;
-  max-height: 90vh;
+  max-height: max(50vh, 300px);
   overflow: auto;
 }
 
