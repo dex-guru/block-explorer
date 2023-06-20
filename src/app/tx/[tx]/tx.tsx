@@ -2,6 +2,7 @@
 
 import { Suspense, lazy, FC } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { TxEventsData } from './page'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -25,8 +26,9 @@ export interface ITxProps {
   logs: LogModel[]
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-  erc20Events: Erc20EventModel[]
-  nftEvents: Erc721TransferModel[]
+  erc20Transfers: TxEventsData<Erc20EventModel>
+  erc20Actions: TxEventsData<Erc20EventModel>
+  nftEvents: TxEventsData<Erc721TransferModel>
 }
 
 const TxPage: FC<ITxProps> = (props) => {
