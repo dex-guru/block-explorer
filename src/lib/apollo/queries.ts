@@ -826,7 +826,7 @@ export const GET_ERC20_EVENTS = gql`
       skip: $skip
       walletAddress: $walletAddress
       eventTypes: $eventTypes
-      chainId: 250
+      chainId: ${CHAIN_ID}
     ) {
       total
       data {
