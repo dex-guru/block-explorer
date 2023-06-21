@@ -42,6 +42,14 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/token/:address*',
+        destination: '/address/:address*',
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
