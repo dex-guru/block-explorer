@@ -194,6 +194,8 @@ const ContractView: FC<IContractViewProps> = ({
             title="Contract"
             address={checkSumAddress}
             tag="Token Contract"
+            type="address"
+            chainConfig={chain.config}
           >
             <Grid>
               <Properties

@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: var(--color-muted);
+}
+
+.body {
+  padding: 4px 6px;
+  background: var(--color-bg-3);
+  border-radius: var(--radii-lg);
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
