@@ -5,7 +5,7 @@ import Label from '../Label'
 import Value from '../Value'
 import AddressWalletTokens from './AddressWalletTokens'
 import { AddressWalletProps } from './types'
-import { Button, IconDown, IconWallet, OutsideClicker } from '@/components'
+import { Button, IconDown, IconWallet } from '@/components'
 import { financialFormat } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
