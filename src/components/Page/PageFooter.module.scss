@@ -15,7 +15,7 @@
 .body {
   display: flex;
   flex-flow: row wrap;
-  gap: 80px;
+  gap: 64px;
   align-items: stretch;
 }
 
@@ -96,6 +96,10 @@
 }
 
 .links {
+  flex: 1 0 auto;
+}
+
+.links {
   &Title {
     display: block;
     text-transform: uppercase;
@@ -137,6 +141,7 @@
 }
 
 .gotoTop {
+  margin-left: auto;
   order: 2;
   --color-button-bg: transparent;
   --color-button-hover-bg: transparent;

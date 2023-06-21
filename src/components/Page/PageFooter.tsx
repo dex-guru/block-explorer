@@ -2,12 +2,14 @@ import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import Button from '../Button'
-import { Socials } from '@/components'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import { Heading } from '@/components'
+import ImgDexGuru from '@/images/dexguru.svg'
 import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
 import styles from './PageFooter.module.scss'
 
-const PageFooter: FC = () => {
+const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -19,21 +21,17 @@ const PageFooter: FC = () => {
             document.documentElement.scrollTo(0, 0)
           }}
         />
-        <Socials className={styles.socials} />
       </div>
       <div className={styles.body}>
         <div className={styles.about}>
           <ImgFooter className={styles.aboutImg} />
-
           <div className={clsx('text', styles.text)}>
             <p>
-              DexGuru is a non-custodial trading terminal made for traders in
-              the DeFi era
+              Powered by DexGuru <ImgDexGuru className={styles.logoDexGuru} />
             </p>
             <small>
-              DexGuru is a non-custodial trading terminal made for traders in
-              the DeFi era, leveraging on-chain analytics combined with token
-              swap execution capabilities.
+              DexGuru is an Analytics Platform and Block Explorer for{' '}
+              {chainConfig.name}.
             </small>
           </div>
 
@@ -44,92 +42,154 @@ const PageFooter: FC = () => {
           />
         </div>
 
-        {/* <div className={styles.navigation}>
+        <div className={styles.navigation}>
           <nav className={styles.links}>
             <Heading className={styles.linksTitle} size="xs">
-              Use Cases
+              Products & Services
             </Heading>
 
             <ul className={styles.linksList}>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Search Market
+                <Link
+                  href="https://dex.guru/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Trading Terminal
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Alerts & Notifications
+                <Link
+                  href="https://dex.guru/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Charting
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Top Cryptos by Market Cap
+                <Link
+                  href="https://developers.dex.guru/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  On-Chain REST API
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Tokens Explorer
+                <Link
+                  href="https://b2b.dex.guru/explorer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Explorer-as-a-Service
                 </Link>
               </li>
             </ul>
           </nav>
+
           <nav className={styles.links}>
             <Heading className={styles.linksTitle} size="xs">
-              Use Cases
+              Company
             </Heading>
 
             <ul className={styles.linksList}>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Search Market
+                <Link
+                  href="https://b2b.dex.guru/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  About Us
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Alerts & Notifications
+                <Link
+                  href="https://docs.dex.guru/resources/brand-assets"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Brand Assets
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Top Cryptos by Market Cap
+                <Link
+                  href="https://webforms.pipedrive.com/f/6rExdWpdC4j2tsyB09LRGHr6990s7NqeLfhIpT4vPjJOmddqhyIMu7dyvJFAjABNHd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Contact Us
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Tokens Explorer
+                <Link
+                  href="https://docs.dex.guru/resources/terms-of-service"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Terms Of Service
                 </Link>
               </li>
             </ul>
           </nav>
+
           <nav className={styles.links}>
             <Heading className={styles.linksTitle} size="xs">
-              Use Cases
+              Community
             </Heading>
 
             <ul className={styles.linksList}>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Search Market
+                <Link
+                  href="https://discord.com/invite/dPW8fzwzz9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Discord
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Alerts & Notifications
+                <Link
+                  href="https://twitter.com/dexguru"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Twitter
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Top Cryptos by Market Cap
+                <Link
+                  href="https://t.me/dexguru"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Telegram
                 </Link>
               </li>
               <li className={styles.linksItem}>
-                <Link href="#" className={styles.link}>
-                  Tokens Explorer
+                <Link
+                  href="https://dexguru.substack.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Newsletter
                 </Link>
               </li>
             </ul>
           </nav>
-        </div> */}
+        </div>
       </div>
 
       <div className={styles.footer}>
