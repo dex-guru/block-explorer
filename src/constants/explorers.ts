@@ -1,4 +1,4 @@
-type ExplorerData = {
+export type ExplorerData = {
   display_name: string
   url: string
   logo_uri?: string
@@ -10,7 +10,7 @@ type ExplorerData = {
   id: string
 }
 
-enum Explorers {
+export enum Explorers {
   dexguru = 'dexguru',
   tenderly = 'tenderly',
   arbitrumNovaScan = 'arbitrumNovaScan',

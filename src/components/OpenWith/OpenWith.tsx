@@ -1,12 +1,70 @@
-import { FC, Suspense, lazy } from 'react'
+import { FC, ReactNode, Suspense, lazy } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import Heading from '../Heading'
-import { OpenWithProps } from './types'
+import { OpenWithProps, OpenWithType } from './types'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { IconQuestion } from '@/components'
-import { explorers } from '@/constants/explorers'
+import { ExplorerData, explorers } from '@/constants/explorers'
 import styles from './OpenWith.module.scss'
+
+const getLogo = (el: ExplorerData): ReactNode => {
+  if (el.logo_uri) {
+    return (
+      <Image
+        src={el.logo_uri || ''}
+        alt={el.display_name}
+        width={24}
+        height={24}
+        className={styles.icon}
+      />
+    )
+  }
+
+  const Icon = lazy(() =>
+    import(`@/images/explorers/${el.id}.svg`).catch(() => ({
+      default: () => <IconQuestion className={styles.icon} />,
+    }))
+  )
+
+  return (
+    <Suspense fallback={<span className={styles.icon} />}>
+      <Icon className={styles.icon} />
+    </Suspense>
+  )
+}
+
+const renderElements = (
+  explorersData: ExplorerData[],
+  type: OpenWithType,
+  address: string,
+  chainConfig: ChainConfigModel
+): ReactNode => {
+  return explorersData.map((el, idx) => {
+    const chainName = chainConfig.name.toLowerCase().replace('ethereum', 'eth')
+
+    const url = `${el.url}${el[`${type}_path`]}`
+      .replace(':address', address)
+      .replace(
+        ':chain',
+        el.id === 'tenderly' && chainName === 'eth' ? 'mainnet' : chainName
+      )
+      .replace(':tx', address)
+
+    return (
+      <Link
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        key={idx}
+        className={styles.link}
+      >
+        {getLogo(el)}
+      </Link>
+    )
+  })
+}
 
 const OpenWith: FC<OpenWithProps> = ({
   address,
@@ -28,59 +86,7 @@ const OpenWith: FC<OpenWithProps> = ({
         Open with
       </Heading>
       <div className={styles.body}>
-        {explorersData.map((el, idx) => {
-          const chainName = chainConfig.name
-            .toLowerCase()
-            .replace('ethereum', 'eth')
-
-          const url = `${el.url}${el[`${type}_path`]}`
-            .replace(':address', address)
-            .replace(
-              ':chain',
-              el.id === 'tenderly' && chainName === 'eth'
-                ? 'mainnet'
-                : chainName
-            )
-            .replace(':tx', address)
-
-          let logo
-
-          if (el.logo_uri) {
-            logo = (
-              <Image
-                src={el.logo_uri || ''}
-                alt={el.display_name}
-                width={24}
-                height={24}
-                className={styles.icon}
-              />
-            )
-          } else {
-            const Icon = lazy(() =>
-              import(`@/images/explorers/${el.id}.svg`).catch(() => ({
-                default: () => <IconQuestion className={styles.icon} />,
-              }))
-            )
-
-            logo = (
-              <Suspense fallback={<span className={styles.icon} />}>
-                <Icon className={styles.icon} />
-              </Suspense>
-            )
-          }
-
-          return (
-            <Link
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={idx}
-              className={styles.link}
-            >
-              {logo}
-            </Link>
-          )
-        })}
+        {renderElements(explorersData, type, address, chainConfig)}
       </div>
     </div>
   )
