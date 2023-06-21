@@ -10,6 +10,7 @@ const Page: FC<PageProps> = ({ children, chainConfig }) => {
 
   return (
     <div
+      id="page"
       className={styles.container}
       style={
         {
