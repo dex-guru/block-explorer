@@ -6,6 +6,7 @@ import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { AddressValues } from '../Address/helpers'
 import Loading from '../Loading'
+import OutsideClicker from '../OutsideClicker'
 import Tile from '../Tile'
 import Value from '../Value'
 import { AddressWalletTokensProps } from './types'
@@ -25,6 +26,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   address,
   className,
   coord,
+  onClose,
 }) => {
   const [getTokens, { data, loading }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
@@ -96,12 +98,13 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   }
 
   return createPortal(
-    <div
+    <OutsideClicker
+      onClick={onClose}
       className={clsx(styles.dropdown, className)}
       style={{ left: coord?.left, top: coord?.top }}
     >
       <ul className={styles.list}>{renderTokens()}</ul>
-    </div>,
+    </OutsideClicker>,
     getRootElement()
   )
 }

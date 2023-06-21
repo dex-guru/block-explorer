@@ -36,10 +36,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
     : undefined
 
   return (
-    <OutsideClicker
-      className={clsx(styles.container, className)}
-      onClick={handleClose}
-    >
+    <div className={clsx(styles.container, className)}>
       <div className={styles.body}>
         <div
           className={clsx(styles.stats, { [styles.statsOpen]: isOpen })}
@@ -54,7 +51,11 @@ const AddressWallet: FC<AddressWalletProps> = ({
             {tokenHoldingsStats?.tokenCount}
           </Label>
           {isOpen && (
-            <AddressWalletTokens address={address} coord={dropdownCoord} />
+            <AddressWalletTokens
+              address={address}
+              coord={dropdownCoord}
+              onClose={handleClose}
+            />
           )}
           <IconDown
             className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
@@ -66,7 +67,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
           icon={<IconWallet className={styles.wallet} />}
         />
       </div>
-    </OutsideClicker>
+    </div>
   )
 }
 
