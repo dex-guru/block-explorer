@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
@@ -14,6 +15,7 @@ import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
+  getRootElement,
 } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
@@ -22,6 +24,7 @@ const ADRESS_WALLET_LIMIT = 100
 const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   address,
   className,
+  coord,
 }) => {
   const [getTokens, { data, loading }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
@@ -92,10 +95,14 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
     })
   }
 
-  return (
-    <div className={clsx(styles.dropdown, className)}>
+  return createPortal(
+    <div
+      className={clsx(styles.dropdown, className)}
+      style={{ left: coord?.left, top: coord?.top }}
+    >
       <ul className={styles.list}>{renderTokens()}</ul>
-    </div>
+    </div>,
+    getRootElement()
   )
 }
 

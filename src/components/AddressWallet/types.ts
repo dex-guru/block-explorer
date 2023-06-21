@@ -9,4 +9,8 @@ export type AddressWalletProps = {
 export type AddressWalletTokensProps = {
   address: string
   className?: string
+  coord?: {
+    left: number
+    top: number
+  }
 }
