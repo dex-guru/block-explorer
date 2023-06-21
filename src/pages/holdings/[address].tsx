@@ -91,6 +91,8 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
           <DetailsView
             title="Token Holdings"
             address={checkSumAddress || undefined}
+            type="address"
+            chainConfig={chainConfig}
           >
             <Summary stats={renderStats()} />
             <TokensDataTable address={address} />

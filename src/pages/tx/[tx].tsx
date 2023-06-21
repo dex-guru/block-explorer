@@ -71,6 +71,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
           <DetailsView
             title="Transaction"
             address={props.data?.hash || undefined}
+            type="tx"
+            chainConfig={props.chainConfig}
           >
             <TabPanel
               tabs={[

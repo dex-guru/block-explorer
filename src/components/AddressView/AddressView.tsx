@@ -75,6 +75,8 @@ const AddressView: FC<IAddressViewProps> = ({
             title="Address"
             address={address}
             tag="Address"
+            type="address"
+            chainConfig={chain.config}
           >
             <Grid>
               <Properties

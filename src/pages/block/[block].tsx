@@ -50,7 +50,12 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
         )}
 
         {!!data?.number && (
-          <DetailsView title="Block" address={data?.number.toString()}>
+          <DetailsView
+            title="Block"
+            address={data?.number.toString()}
+            type="block"
+            chainConfig={chainConfig}
+          >
             <BlockOverview
               data={data}
               chainConfig={chainConfig}
