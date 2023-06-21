@@ -29,9 +29,18 @@ const OpenWith: FC<OpenWithProps> = ({
       </Heading>
       <div className={styles.body}>
         {explorersData.map((el, idx) => {
+          const chainName = chainConfig.name
+            .toLowerCase()
+            .replace('ethereum', 'eth')
+
           const url = `${el.url}${el[`${type}_path`]}`
             .replace(':address', address)
-            .replace(':chain', chainConfig.name.toLowerCase())
+            .replace(
+              ':chain',
+              el.id === 'tenderly' && chainName === 'eth'
+                ? 'mainnet'
+                : chainName
+            )
             .replace(':tx', address)
 
           let logo
