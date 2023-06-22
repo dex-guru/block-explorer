@@ -6,9 +6,19 @@ import Heading from '../Heading'
 import { OpenWithProps } from './types'
 import { IconQuestion } from '@/components'
 import { ExplorerData, explorers } from '@/constants/explorers'
+import IconDexGuru from '@/images/explorers/dexguru.svg'
+import IconTenderly from '@/images/explorers/tenderly.svg'
 import styles from './OpenWith.module.scss'
 
 const getLogo = (el: ExplorerData): ReactNode => {
+  if (el.id === 'dexguru') {
+    return <IconDexGuru width={24} height={24} className={styles.icon} />
+  }
+
+  if (el.id === 'tenderly') {
+    return <IconTenderly width={24} height={24} className={styles.icon} />
+  }
+
   if (el.logo_uri) {
     return (
       <Image
@@ -21,17 +31,7 @@ const getLogo = (el: ExplorerData): ReactNode => {
     )
   }
 
-  const Icon = lazy(() =>
-    import(`@/images/explorers/${el.id}.svg`).catch(() => ({
-      default: () => <IconQuestion className={styles.icon} />,
-    }))
-  )
-
-  return (
-    <Suspense fallback={<span className={styles.icon} />}>
-      <Icon className={styles.icon} />
-    </Suspense>
-  )
+  return <IconQuestion width={24} height={24} className={styles.icon} />
 }
 
 const OpenWith: FC<OpenWithProps> = ({
@@ -65,6 +65,8 @@ const OpenWith: FC<OpenWithProps> = ({
           rel="noopener noreferrer"
           key={idx}
           className={styles.link}
+          data-tooltip-content={el.display_name}
+          data-tooltip-id="app-tooltip"
         >
           {getLogo(el)}
         </Link>
