@@ -1,4 +1,4 @@
-import { FC, ReactNode, Suspense, lazy, useCallback } from 'react'
+import { FC, ReactNode, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
