@@ -26,6 +26,7 @@ export type AddressModel = {
   name?: Maybe<Scalars['String']>;
   nativeBalance: Scalars['Float'];
   nativeBalanceUSD: Scalars['Float'];
+  symbol?: Maybe<Scalars['String']>;
 };
 
 export type BlockModel = {
@@ -680,6 +681,7 @@ export type AddressModelResolvers<ContextType = any, ParentType extends Resolver
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  symbol?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

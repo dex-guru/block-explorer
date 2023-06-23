@@ -573,6 +573,7 @@ export const GET_ADDRESS_INFO = gql`
       name
       nativeBalance
       nativeBalanceUSD
+      symbol
     }
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H

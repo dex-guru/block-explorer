@@ -203,7 +203,11 @@ const ContractView: FC<IContractViewProps> = ({
                 <Avatar address={address} />
               )
             }
-            title={addressInfo.name || 'Contract'}
+            title={
+              addressInfo.name
+                ? `${addressInfo.symbol} (${addressInfo.name})`
+                : 'Contract'
+            }
             address={checkSumAddress}
             tag="Token Contract"
             type="address"
