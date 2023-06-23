@@ -58,6 +58,7 @@ const AddressView: FC<IAddressViewProps> = ({
           title="Address"
           address={address}
           tag="Address"
+          type="address"
         >
           <Grid>
             <Properties

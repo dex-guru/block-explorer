@@ -1,10 +1,11 @@
-import React, { FC, ReactNode, useEffect, useRef } from 'react'
+import React, { CSSProperties, FC, ReactNode, useEffect, useRef } from 'react'
 
 const OutsideClicker: FC<{
   onClick: () => void
   children: ReactNode
   className?: string
-}> = ({ className, onClick, children }) => {
+  style?: CSSProperties
+}> = ({ className, onClick, children, style }) => {
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handleClickOutside = (event: Event): void => {
@@ -22,7 +23,7 @@ const OutsideClicker: FC<{
   })
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={style}>
       {children}
     </div>
   )

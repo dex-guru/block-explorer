@@ -1,10 +1,11 @@
 import { FC, useState } from 'react'
+import { useResizeDetector } from 'react-resize-detector'
 import clsx from 'clsx'
 import Label from '../Label'
 import Value from '../Value'
 import AddressWalletTokens from './AddressWalletTokens'
 import { AddressWalletProps } from './types'
-import { Button, IconDown, IconWallet, OutsideClicker } from '@/components'
+import { Button, IconDown, IconWallet } from '@/components'
 import { financialFormat } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
@@ -14,6 +15,8 @@ const AddressWallet: FC<AddressWalletProps> = ({
   tokenHoldingsStats,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const { height, ref } = useResizeDetector()
 
   if (!tokenHoldingsStats?.tokenCount) {
     return <span className={styles.muted}>–</span>
@@ -27,15 +30,18 @@ const AddressWallet: FC<AddressWalletProps> = ({
     setIsOpen(false)
   }
 
+  const rect = ref.current?.getBoundingClientRect()
+  const dropdownCoord = rect
+    ? { left: rect?.left, top: rect?.top + height }
+    : undefined
+
   return (
-    <OutsideClicker
-      className={clsx(styles.container, className)}
-      onClick={handleClose}
-    >
+    <div className={clsx(styles.container, className)}>
       <div className={styles.body}>
         <div
           className={clsx(styles.stats, { [styles.statsOpen]: isOpen })}
           onClick={handleClick}
+          ref={ref}
         >
           <Value
             value={financialFormat(tokenHoldingsStats?.totalStable)}
@@ -44,7 +50,13 @@ const AddressWallet: FC<AddressWalletProps> = ({
           <Label type="tag" className={styles.label}>
             {tokenHoldingsStats?.tokenCount}
           </Label>
-          {isOpen && <AddressWalletTokens address={address} />}
+          {isOpen && (
+            <AddressWalletTokens
+              address={address}
+              coord={dropdownCoord}
+              onClose={handleClose}
+            />
+          )}
           <IconDown
             className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
           />
@@ -55,7 +67,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
           icon={<IconWallet className={styles.wallet} />}
         />
       </div>
-    </OutsideClicker>
+    </div>
   )
 }
 

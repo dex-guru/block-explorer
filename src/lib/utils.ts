@@ -2,6 +2,11 @@ import BigNumber from 'bignumber.js'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
+export const getRootElement = () =>
+  document.getElementById('page') ||
+  document.getElementById('__next') ||
+  document.body
+
 export const getShortDate = (value: number) => {
   const date = new Date(value * 1000)
   return date.toLocaleDateString('en-GB', {

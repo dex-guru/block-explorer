@@ -27,6 +27,7 @@ import Loading, { LoadingCard } from './Loading'
 import Logo from './Logo'
 import Message from './Message'
 import NetworkSelect from './NetworkSelect'
+import OpenWith from './OpenWith'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
@@ -93,6 +94,7 @@ export {
   Message,
   NetworkSelect,
   OutsideClicker,
+  OpenWith,
   Page,
   Pagination,
   Properties,
