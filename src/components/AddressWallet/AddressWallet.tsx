@@ -26,13 +26,17 @@ const AddressWallet: FC<AddressWalletProps> = ({
     setIsOpen(!isOpen)
   }
 
-  const handleClose = () => {
+  const handleClose = (e: Event) => {
+    if (!isOpen || ref?.current?.contains(e.target as Node)) {
+      return
+    }
+
     setIsOpen(false)
   }
 
   const rect = ref.current?.getBoundingClientRect()
   const dropdownCoord = rect
-    ? { left: rect?.left, top: rect?.top + height }
+    ? { left: rect?.left, top: rect?.top + height + window.scrollY }
     : undefined
 
   return (
