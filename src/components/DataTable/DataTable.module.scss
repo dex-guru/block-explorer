@@ -16,11 +16,15 @@
   flex-flow: row wrap;
 
   &::after {
-    @media (min-width: 640px) {
+    @media (min-width: 880px) {
       content: '';
-      flex: 0 0 120px;
+      flex: 0 1 240px;
     }
   }
+}
+
+.header {
+  color: var(--color-muted);
 }
 
 .footer {
@@ -34,4 +38,10 @@
 
 .pagination {
   margin: 0 auto;
+}
+
+.totalRows {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
 }
