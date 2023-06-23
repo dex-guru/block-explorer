@@ -9,4 +9,5 @@ export type HeadingProps = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
   tooltip?: ReactNode
   tooltipOptions?: TooltipAnchorOptions
+  indicator?: ReactNode
 }

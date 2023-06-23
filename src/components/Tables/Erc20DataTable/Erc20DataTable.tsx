@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { erc20Columns } from './columns'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
 import { LoadingCard } from '@/components/Loading'
@@ -14,11 +15,13 @@ const PER_PAGE = 10
 interface IErc20DataTableProps {
   address?: string
   isWalletAddress?: boolean
+  chainConfig: ChainConfigModel
 }
 
 export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   address,
   isWalletAddress,
+  chainConfig,
 }) => {
   const [getErc20, { data, loading, previousData }] =
     useLazyQuery(GET_ERC20_EVENTS)
@@ -87,7 +90,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   return (
     <DataTable
       isLoading={loading}
-      columns={erc20Columns}
+      columns={erc20Columns(chainConfig)}
       data={displayData?.erc20Events?.data}
       total={displayData?.erc20Events?.total}
       perPage={PER_PAGE}

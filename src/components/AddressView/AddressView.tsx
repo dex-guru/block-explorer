@@ -139,7 +139,11 @@ const AddressView: FC<IAddressViewProps> = ({
                   to: `${pathname}?tab=tokentxns`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Erc20DataTable address={address} isWalletAddress />
+                      <Erc20DataTable
+                        address={address}
+                        chainConfig={chain.config}
+                        isWalletAddress
+                      />
                     </Suspense>
                   ),
                 },

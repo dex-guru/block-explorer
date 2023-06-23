@@ -18,6 +18,7 @@ export const Heading: FC<HeadingProps> = ({
   tooltip,
   tooltipOptions,
   children,
+  indicator,
   ...rest
 }) => {
   return React.createElement(
@@ -27,7 +28,7 @@ export const Heading: FC<HeadingProps> = ({
       ...rest,
     },
     <>
-      <span className={styles.caption}>{children || caption}</span>{' '}
+      <span className={styles.caption}>{children || caption}</span> {indicator}
       {tooltip && <TooltipAnchor tooltip={tooltip} {...tooltipOptions} />}
     </>
   )

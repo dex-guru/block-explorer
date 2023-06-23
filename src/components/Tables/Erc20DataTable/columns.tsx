@@ -1,11 +1,17 @@
 import clsx from 'clsx'
-import { Erc20EventModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  Erc20EventModel,
+} from '@/__generated__/resolvers-types'
 import { Address, Label, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
+import TokenIcon from '@/components/TokenIcon'
 import { financialFormat } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
 
-export const erc20Columns: IColumn<Erc20EventModel>[] = [
+export const erc20Columns = (
+  chainConfig: ChainConfigModel
+): IColumn<Erc20EventModel>[] => [
   {
     accessor: 'hash',
     title: 'Txn Hash',
@@ -57,7 +63,14 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <Address address={data.tokenAddresses[0]} type="account" isCopy />
+        <div className={styles.tokenInfo}>
+          <TokenIcon
+            address={data.tokenAddresses[0]}
+            network={chainConfig?.name || ''}
+            alt={data.tokenSymbols[0]}
+          />
+          <Address address={data.tokenAddresses[0]} type="account" isCopy />
+        </div>
       ) : null,
   },
 ]

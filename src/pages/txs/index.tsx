@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { chain } from 'lodash'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -62,7 +63,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         to: { pathname, query: { tab: 'tokentxns' } },
         content: (
           <Suspense fallback={<LoadingCard />}>
-            <Erc20DataTable />
+            <Erc20DataTable chainConfig={props.chainConfig} />
           </Suspense>
         ),
       },

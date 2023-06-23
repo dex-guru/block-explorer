@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { IconVerify } from '..'
 import clsx from 'clsx'
 import Copy from '../Copy'
 import Heading from '../Heading'
@@ -16,6 +17,7 @@ const DetailsView: FC<DetailsViewProps> = ({
   children,
   type,
   chainConfig,
+  titleIndicator,
 }) => {
   return (
     <div className={clsx(styles.container, className)}>
@@ -24,7 +26,12 @@ const DetailsView: FC<DetailsViewProps> = ({
         <Heading caption={title} size="lg" className={styles.title} />
         {!!address && (
           <>
-            <Heading caption={address} size="lg" className={styles.address} />
+            <Heading
+              caption={address}
+              size="lg"
+              className={styles.address}
+              indicator={titleIndicator}
+            />
             <Copy text={address} />
           </>
         )}

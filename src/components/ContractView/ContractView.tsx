@@ -15,6 +15,7 @@ import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { LoadingCard } from '../Loading'
 import tabsStyles from '../Tabs/Tabs.module.scss'
+import TokenIcon from '../TokenIcon'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -190,12 +191,28 @@ const ContractView: FC<IContractViewProps> = ({
         </Head>
         <Page chainConfig={chain.config}>
           <DetailsView
-            icon={<Avatar address={address} />}
-            title="Contract"
+            icon={
+              addressInfo.name ? (
+                <TokenIcon
+                  address={address}
+                  network={chain.config.name.toLowerCase()}
+                  alt={addressInfo.name}
+                  className={styles.icon}
+                />
+              ) : (
+                <Avatar address={address} />
+              )
+            }
+            title={addressInfo.name || 'Contract'}
             address={checkSumAddress}
             tag="Token Contract"
             type="address"
             chainConfig={chain.config}
+            titleIndicator={
+              !!hasSources ? (
+                <IconVerify className={styles.verified} />
+              ) : undefined
+            }
           >
             <Grid>
               <Properties
@@ -388,7 +405,10 @@ const ContractView: FC<IContractViewProps> = ({
                   to: { pathname, query: { tab: 'tokentxns' } },
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Erc20DataTable address={address} />
+                      <Erc20DataTable
+                        address={address}
+                        chainConfig={chain.config}
+                      />
                     </Suspense>
                   ),
                 },
