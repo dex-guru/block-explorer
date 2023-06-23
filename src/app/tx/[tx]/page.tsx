@@ -10,6 +10,7 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
+import { MAX_EVENTS_PER_PAGE } from '@/constants'
 import { getClient } from '@/lib/apollo/apolloClient'
 import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import {
@@ -19,8 +20,6 @@ import {
 import { getLogger } from '@/lib/logger'
 
 export const dynamic = 'force-dynamic'
-
-export const MAX_EVENTS_PER_PAGE = 10
 
 export async function generateMetadata({
   params,

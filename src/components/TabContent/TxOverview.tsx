@@ -16,7 +16,7 @@ import {
   Erc721TransferModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { MAX_EVENTS_PER_PAGE, TxEventsData } from '@/app/tx/[tx]/page'
+import { TxEventsData } from '@/app/tx/[tx]/tx'
 import {
   Address,
   Card,
@@ -31,6 +31,7 @@ import {
   Value,
 } from '@/components'
 import Separated from '@/components/Separated/Separated'
+import { MAX_EVENTS_PER_PAGE } from '@/constants'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
