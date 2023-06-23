@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import Image from 'next/image'
 import { IconQuestion } from '..'
 import clsx from 'clsx'

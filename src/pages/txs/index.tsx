@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { chain } from 'lodash'
 import {
   ChainConfigModel,
   ChainStatsModel,
