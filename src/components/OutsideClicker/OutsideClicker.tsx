@@ -1,7 +1,7 @@
 import React, { CSSProperties, FC, ReactNode, useEffect, useRef } from 'react'
 
 const OutsideClicker: FC<{
-  onClick: () => void
+  onClick: (e: Event) => void
   children: ReactNode
   className?: string
   style?: CSSProperties
@@ -10,7 +10,7 @@ const OutsideClicker: FC<{
 
   const handleClickOutside = (event: Event): void => {
     if (!event.target || !ref?.current?.contains(event.target as Node)) {
-      onClick()
+      onClick(event)
     }
   }
 

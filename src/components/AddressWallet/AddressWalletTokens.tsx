@@ -99,7 +99,9 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
 
   return createPortal(
     <OutsideClicker
-      onClick={onClose}
+      onClick={(e) => {
+        onClose(e)
+      }}
       className={clsx(styles.dropdown, className)}
       style={{ left: coord?.left, top: coord?.top }}
     >

@@ -13,5 +13,5 @@ export type AddressWalletTokensProps = {
     left: number
     top: number
   }
-  onClose: () => void
+  onClose: (e: Event) => void
 }
