@@ -6,6 +6,7 @@ import { PerPageSelector } from '../PerPageSelector'
 import { Table } from '../Table'
 import { DataTableProps } from './types'
 import IconEmpty from '@/images/icons/no-flash.svg'
+import { financialFormat } from '@/lib/utils'
 import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
@@ -49,6 +50,9 @@ export function DataTable<T>(props: DataTableProps<T>) {
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
         {renderPerPage()}
+        <span className={styles.totalRows}>
+          Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
+        </span>
         {renderPagination()}
       </div>
       <div className={styles.body}>
