@@ -1,3 +1,5 @@
+'use client'
+
 import dynamic from 'next/dynamic'
 import Address from './Address'
 import AddressView from './AddressView'

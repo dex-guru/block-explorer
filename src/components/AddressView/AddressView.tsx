@@ -1,9 +1,8 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { isAddress, getAddress } from '@ethersproject/address'
-import styles from '../../pages/Pages.module.scss'
+import styles from '../../app/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
@@ -39,147 +38,127 @@ const AddressView: FC<IAddressViewProps> = ({
   chain,
   tokenHoldingsStats,
 }) => {
-  const router = useRouter()
-  const pathname = router.asPath.split('?')[0]
-
+  const pathname = usePathname()
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = addressInfo?.address
-    ? `Address ${checkSumAddress}`
-    : isAddress(address)
-    ? `No address ${address}`
-    : 'Not an address'
 
   return (
-    <>
-      <Head>
-        <title>{pageTitle}</title>
-        <link rel="icon" href={chain.config.icon} />
-        <meta
-          name="description"
-          content={`Explore ${checkSumAddress} to track recent transactions, explore token balances held by this wallet, and view account activity in real time.`}
+    <Page chainConfig={chain.config}>
+      {!addressInfo?.address && isAddress(address) && (
+        <Empty
+          icon={<IconSearch />}
+          title={<>Address {checkSumAddress} not&nbsp;found</>}
         />
-      </Head>
-      <Page chainConfig={chain.config}>
-        {!addressInfo?.address && isAddress(address) && (
-          <Empty
-            icon={<IconSearch />}
-            title={<>Address {checkSumAddress} not&nbsp;found</>}
-          />
-        )}
+      )}
 
-        {!isAddress(address) && <Error title="No correct address provided" />}
+      {!isAddress(address) && <Error title="No correct address provided" />}
 
-        {!!addressInfo?.address && (
-          <DetailsView
-            icon={<Avatar address={address} />}
-            title="Address"
-            address={address}
-            tag="Address"
-            type="address"
-            chainConfig={chain.config}
-          >
-            <Grid>
-              <Properties
-                data={[
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo?.nativeBalance)}
-                        suffix={
-                          <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
-                        }
-                      />
-                    ),
-                  },
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Value:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo?.nativeBalanceUSD)}
-                        prefix="$"
-                      />
-                    ),
-                  },
-                ]}
-              />
-
-              <Properties
-                data={[
-                  {
-                    title: 'Tokens:',
-                    value: (
-                      <AddressWallet
-                        className={styles.addressWallet}
-                        address={checkSumAddress}
-                        tokenHoldingsStats={tokenHoldingsStats}
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </Grid>
-
-            <TabPanel
-              tabs={[
+      {!!addressInfo?.address && (
+        <DetailsView
+          icon={<Avatar address={address} />}
+          title="Address"
+          address={address}
+          tag="Address"
+          type="address"
+        >
+          <Grid>
+            <Properties
+              data={[
                 {
-                  title: 'Transactions',
-                  value: '',
-                  to: pathname,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxsDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
-
-                {
-                  title: 'ERC-20 Token TXns',
-                  value: 'tokentxns',
-                  to: `${pathname}?tab=tokentxns`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Erc20DataTable address={address} isWalletAddress />
-                    </Suspense>
+                  title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo?.nativeBalance)}
+                      suffix={<>&nbsp;{chain?.config?.nativeCurrency.symbol}</>}
+                    />
                   ),
                 },
                 {
-                  title: 'NFT Token TXns',
-                  value: 'nfttxns',
-                  to: `${pathname}?tab=nfttxns`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <NftDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
-                {
-                  title: 'Analytics',
-                  value: 'analytics',
-                  to: `${pathname}?tab=analytics`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>Some analytics here soon</Card>
-                    </Suspense>
-                  ),
-                },
-                {
-                  title: 'Comments',
-                  value: 'comments',
-                  to: `${pathname}?tab=comments`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>Some comments here soon</Card>
-                    </Suspense>
+                  title: `${chain?.config?.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo?.nativeBalanceUSD)}
+                      prefix="$"
+                    />
                   ),
                 },
               ]}
-              value={tab || ''}
             />
-          </DetailsView>
-        )}
-      </Page>
-    </>
+
+            <Properties
+              data={[
+                {
+                  title: 'Tokens:',
+                  value: (
+                    <AddressWallet
+                      className={styles.addressWallet}
+                      address={checkSumAddress}
+                      tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
+                },
+              ]}
+            />
+          </Grid>
+
+          <TabPanel
+            tabs={[
+              {
+                title: 'Transactions',
+                value: '',
+                to: pathname,
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <TxsDataTable address={address} />
+                  </Suspense>
+                ),
+              },
+
+              {
+                title: 'ERC-20 Token TXns',
+                value: 'tokentxns',
+                to: `${pathname}?tab=tokentxns`,
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <Erc20DataTable address={address} isWalletAddress />
+                  </Suspense>
+                ),
+              },
+              {
+                title: 'NFT Token TXns',
+                value: 'nfttxns',
+                to: `${pathname}?tab=nfttxns`,
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <NftDataTable address={address} />
+                  </Suspense>
+                ),
+              },
+              {
+                title: 'Analytics',
+                value: 'analytics',
+                to: `${pathname}?tab=analytics`,
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <Card>Some analytics here soon</Card>
+                  </Suspense>
+                ),
+              },
+              {
+                title: 'Comments',
+                value: 'comments',
+                to: `${pathname}?tab=comments`,
+                content: (
+                  <Suspense fallback={<LoadingCard />}>
+                    <Card>Some comments here soon</Card>
+                  </Suspense>
+                ),
+              },
+            ]}
+            value={tab || ''}
+          />
+        </DetailsView>
+      )}
+    </Page>
   )
 }
 

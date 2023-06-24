@@ -1,27 +1,29 @@
-.react-tooltip {
-  position: fixed;
-  opacity: 0;
-  visibility: hidden;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  transition: opacity 0.25s ease;
-  z-index: 65535;
-  background-color: var(--color-tooltip-bg);
-  color: var(--color-tooltip-text);
-  margin: 0;
-  pointer-events: none;
-  max-width: min(320px, 100vh);
-  word-wrap: break-word;
+.app-tooltip {
+  --rt-color-white: var(--color-tooltip-bg);
+  --rt-color-dark: var(--color-tooltip-text);
+  --rt-color-success: var(--color-positive);
+  --rt-color-error: var(--color-negative);
+  --rt-color-warning: var(--color-warn);
+  --rt-color-info: var(--color-info);
+  --rt-opacity: 1;
 
-  &[class*=' styles-module_show'] {
-    transition-delay: 0s;
-    opacity: 1 !important;
-    visibility: visible !important;
+  &[class*='styles-module_tooltip__'] {
+    position: fixed;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    transition: opacity 0.25s ease;
+    z-index: 65535;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-text);
+    margin: 0;
+    pointer-events: none;
+    max-width: min(320px, 100vh);
+    word-wrap: break-word;
   }
 
   &-arrow {

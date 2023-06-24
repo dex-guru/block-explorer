@@ -18,6 +18,8 @@ export const TRANSACTIONS_LAST = gql`
 export const CHAIN_STATS = gql`
   query ChainStats {
     chainStats(chainId: ${CHAIN_ID}) {
+      activeAddressesCount
+      smartContractsCount
       lastBlockNumber
       liquidity24hDelta
       liquidityUsd
