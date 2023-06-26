@@ -7,7 +7,7 @@ import {
 
 export interface IAddressViewProps {
   address: string
-  tab: string | null
+  tab: string | string[] | undefined
   addressInfo: AddressModel | null
   chain: {
     stats: ChainStatsModel

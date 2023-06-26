@@ -1,6 +1,6 @@
 import { FC, MouseEventHandler, useState } from 'react'
 import Link, { LinkProps } from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { clsx } from 'clsx'
 import Button from '../Button'
 import { IconCross, IconMenu } from '@/components'
@@ -11,7 +11,7 @@ const PageMenu: FC<{
   className?: string
   onOpenChange?: (value: boolean) => void
 }> = ({ links, className, onOpenChange }) => {
-  const pathname = usePathname()
+  const router = useRouter()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -45,7 +45,7 @@ const PageMenu: FC<{
                 className={clsx(
                   styles.link,
                   {
-                    [styles.active]: pathname === link.href,
+                    [styles.active]: router.pathname === link.href,
                   },
                   link.className
                 )}

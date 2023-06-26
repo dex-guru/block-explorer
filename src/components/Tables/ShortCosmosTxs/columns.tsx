@@ -1,4 +1,4 @@
-import styles from '../../../app/Pages.module.scss'
+import styles from '../../../pages/Pages.module.scss'
 import { CosmosTransactionModel } from '@/__generated__/resolvers-types'
 import { Address, IconTx, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'

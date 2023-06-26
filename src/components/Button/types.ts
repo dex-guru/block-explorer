@@ -20,6 +20,6 @@ export interface ButtonProps {
   disabled?: boolean
   hidden?: boolean
   pending?: boolean
-  to?: string | UrlObject | null
+  to?: string | UrlObject
   onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }

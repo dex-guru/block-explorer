@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
+import { useQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { cosmosTxsColumns } from './columns'
 import {
@@ -7,8 +7,8 @@ import {
   CosmosTransactionModel,
 } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
-import { ITEMS_PER_PAGE } from '@/constants'
 import { GET_COSMOS_TRANSACTIONS } from '@/lib/apollo/queries'
+import { ITEMS_PER_PAGE } from '@/pages'
 import styles from './ShortCosmos.module.scss'
 
 interface IShortCosmosTxsTableProps {

@@ -1,15 +1,16 @@
 import { FC, Suspense } from 'react'
 import { useMemo } from 'react'
-import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
 import dynamic from 'next/dynamic'
-import { usePathname } from 'next/navigation'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useQuery } from '@apollo/client'
 import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Abi, AbiFunction } from 'abitype'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import pageStyles from '../../app/Pages.module.scss'
+import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { LoadingCard } from '../Loading'
@@ -125,7 +126,8 @@ const ContractView: FC<IContractViewProps> = ({
     [connectors, provider]
   )
 
-  const pathname = usePathname()
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, CHAIN_ID)
 
   const isMatchLoading = match === undefined
@@ -136,6 +138,9 @@ const ContractView: FC<IContractViewProps> = ({
 
   const isSubTab =
     !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+
+  const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const pageTitle = `Contract ${checkSumAddress}`
 
   const holdersSeries: LineChartDataset[] = [
     {
@@ -169,11 +174,20 @@ const ContractView: FC<IContractViewProps> = ({
       }
     )
   }
-  const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
+        <Head>
+          <title>{pageTitle}</title>
+          <link rel="icon" href={chain.config.icon} />
+          <meta
+            name="description"
+            content={`Explore smart contract ${
+              addressInfo.name || addressInfo.address
+            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
+          />
+        </Head>
         <Page chainConfig={chain.config}>
           <DetailsView
             icon={<Avatar address={address} />}

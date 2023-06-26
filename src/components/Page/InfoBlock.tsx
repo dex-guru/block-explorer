@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr'
+import { useQuery } from '@apollo/client'
 import clsx from 'clsx'
 import Tile from '../Tile'
 import Value from '../Value'

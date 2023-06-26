@@ -1,4 +1,4 @@
-import styles from '../../../app/Pages.module.scss'
+import styles from '../../../pages/Pages.module.scss'
 import {
   ChainConfigModel,
   TransactionModel,

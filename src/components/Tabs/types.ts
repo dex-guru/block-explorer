@@ -12,7 +12,7 @@ export interface Tab<T> {
   className?: string
   onClick?: () => void
   tooltip?: string
-  to?: string | UrlObject | null
+  to?: string | UrlObject
   content?: ReactNode
 }
 

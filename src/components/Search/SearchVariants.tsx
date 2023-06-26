@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { AddressValues } from '../Address/helpers'
 import Avatar from '../Avatar'

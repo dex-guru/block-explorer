@@ -5,12 +5,11 @@ import {
   useRef,
   useState,
 } from 'react'
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'
-import { useRouter } from 'next/navigation'
+import { NextRouter, useRouter } from 'next/router'
 import { isAddress } from '@ethersproject/address'
 import { isHexString } from '@ethersproject/bytes'
 
-const doSearch = async (q: string, router: AppRouterInstance) => {
+const doSearch = async (q: string, router: NextRouter) => {
   // Cleanup
   q = q.trim()
 

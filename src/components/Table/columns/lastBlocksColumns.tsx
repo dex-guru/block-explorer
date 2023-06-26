@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from '../../../app/Pages.module.scss'
+import styles from '../../../pages/Pages.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
 import { Address, IconBlock, Label, Tile, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'

@@ -5,7 +5,7 @@ import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
 import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat } from '@/lib/utils'
-import styles from '@/app/Pages.module.scss'
+import styles from '@/pages/Pages.module.scss'
 
 export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
   {
