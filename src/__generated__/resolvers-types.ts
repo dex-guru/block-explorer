@@ -26,6 +26,7 @@ export type AddressModel = {
   name?: Maybe<Scalars['String']>;
   nativeBalance: Scalars['Float'];
   nativeBalanceUSD: Scalars['Float'];
+  symbol?: Maybe<Scalars['String']>;
 };
 
 export type BlockModel = {
@@ -507,6 +508,8 @@ export type TransactionModel = {
 
 export type TransactionStatsModel = {
   __typename?: 'TransactionStatsModel';
+  avgTransactionsFee24H: Scalars['Float'];
+  avgTransactionsFeeDelta24H: Scalars['Float'];
   networkTransactionsFee24H: Scalars['Decimal'];
   networkTransactionsFeeDelta24H: Scalars['Float'];
   transactions24H: Scalars['Int'];
@@ -680,6 +683,7 @@ export type AddressModelResolvers<ContextType = any, ParentType extends Resolver
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  symbol?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -996,6 +1000,8 @@ export type TransactionModelResolvers<ContextType = any, ParentType extends Reso
 }>;
 
 export type TransactionStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionStatsModel'] = ResolversParentTypes['TransactionStatsModel']> = ResolversObject<{
+  avgTransactionsFee24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  avgTransactionsFeeDelta24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   networkTransactionsFee24H?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   networkTransactionsFeeDelta24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   transactions24H?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

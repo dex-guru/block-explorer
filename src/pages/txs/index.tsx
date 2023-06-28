@@ -7,9 +7,17 @@ import {
   ChainStatsModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Delta, DetailsView, Page, Summary, TabPanel } from '@/components'
+import {
+  Delta,
+  DetailsView,
+  Page,
+  Summary,
+  TabPanel,
+  Value,
+} from '@/components'
 import { LoadingCard } from '@/components/Loading'
 import { Tab } from '@/components/Tabs'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -104,19 +112,6 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
             <Summary
               stats={[
                 {
-                  title: 'Transactions Count',
-                  value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsCount || 0
-                  ),
-                },
-                {
-                  title: 'Transactions per Second',
-                  value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsPerSecond || 0,
-                    { decimals: 2 }
-                  ),
-                },
-                {
                   title: 'Transactions, 24h',
                   value: (
                     <>
@@ -132,19 +127,60 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   ),
                 },
                 {
-                  title: 'Network Transactions Fee, 24h',
-                  value: (
+                  title: (
                     <>
-                      {getNormalizedValue(
-                        props.transactionStats?.networkTransactionsFee24H
-                      )}{' '}
-                      <Delta
-                        value={
-                          props.transactionStats
-                            ?.networkTransactionsFeeDelta24H * 100
-                        }
+                      Transactions per Second (TPS){' '}
+                      <TooltipAnchor tooltip="Transactions Per Second (TPS) refers to the number of validated transactions that a blockchain network can process and confirm within a single second." />
+                    </>
+                  ),
+                  value: financialFormatLowValueHighPrecision(
+                    props.chainStats?.transactionsPerSecond || 0,
+                    { decimals: 2 }
+                  ),
+                },
+                {
+                  title: (
+                    <>
+                      Network Transaction Fee, 24h{' '}
+                      <TooltipAnchor
+                        tooltip={`Total number of ${props.chainConfig.nativeCurrency.symbol} paid as a transaction fee for the ${props.chainConfig.name} network over the last 24h.`}
                       />
                     </>
+                  ),
+                  value: (
+                    <Value
+                      value={getNormalizedValue(
+                        props.transactionStats?.networkTransactionsFee24H
+                      )}
+                      suffix={
+                        <>&nbsp;{props.chainConfig.nativeCurrency.symbol}</>
+                      }
+                      delta={
+                        props.transactionStats?.networkTransactionsFeeDelta24H *
+                        100
+                      }
+                    />
+                  ),
+                },
+                {
+                  title: (
+                    <>
+                      Avg. Transaction Fee, 24h{' '}
+                      <TooltipAnchor
+                        tooltip={`The daily average amount spent per transaction on the ${props.chainConfig.name} network in USD.`}
+                      />
+                    </>
+                  ),
+                  value: (
+                    <Value
+                      value={getNormalizedValue(
+                        props.transactionStats?.avgTransactionsFee24H
+                      )}
+                      prefix="$"
+                      delta={
+                        props.transactionStats?.avgTransactionsFeeDelta24H * 100
+                      }
+                    />
                   ),
                 },
               ]}
