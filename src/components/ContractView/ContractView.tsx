@@ -2,6 +2,7 @@ import { FC, Suspense } from 'react'
 import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { isAddress, getAddress } from '@ethersproject/address'
@@ -175,6 +176,24 @@ const ContractView: FC<IContractViewProps> = ({
     )
   }
 
+  const addressIcon = addressInfo.logoURL ? (
+    <Image
+      src={addressInfo.logoURL}
+      alt={addressInfo.symbol || ''}
+      className={styles.icon}
+      width={32}
+      height={32}
+    />
+  ) : (
+    <Avatar address={address} className={styles.icon} />
+  )
+
+  const contractTitle = addressInfo.symbol
+    ? `${addressInfo.symbol}${
+        addressInfo.name !== addressInfo.symbol ? ` (${addressInfo.name})` : ''
+      }`
+    : 'Contract'
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
@@ -190,8 +209,8 @@ const ContractView: FC<IContractViewProps> = ({
         </Head>
         <Page chainConfig={chain.config}>
           <DetailsView
-            icon={<Avatar address={address} />}
-            title="Contract"
+            icon={addressIcon}
+            title={contractTitle}
             address={checkSumAddress}
             tag="Token Contract"
             type="address"

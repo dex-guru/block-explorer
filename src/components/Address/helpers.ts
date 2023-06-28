@@ -4,13 +4,13 @@ import { AddressType } from './types'
 import { getShortAddress } from '@/lib/utils'
 
 type AddressValueProps = {
-  format?: (address: string, shorten?: boolean) => string
-  url?: (address: string, text?: string) => string
+  format: (address: string, shorten?: boolean) => string
+  url: (address: string, text?: string) => string
   canBeShort?: boolean
 }
 
 export const AddressValues: Record<AddressType, AddressValueProps> = {
-  common: {},
+  common: { url: (addr) => addr, format: (addr) => addr },
 
   account: {
     format: (address: string, shorten = true) => {
@@ -59,6 +59,7 @@ export const AddressValues: Record<AddressType, AddressValueProps> = {
   },
 
   cosmos: {
+    url: (addr) => addr,
     format: (address: string) => {
       return `${address.slice(0, 20)}…`
     },

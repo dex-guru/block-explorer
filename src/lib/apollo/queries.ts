@@ -575,6 +575,8 @@ export const GET_ADDRESS_INFO = gql`
       name
       nativeBalance
       nativeBalanceUSD
+      logoURL
+      symbol
     }
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
       change24H
@@ -769,6 +771,9 @@ export const GET_SEARCH = gql`
         assetsValueUSD24hDelta
         nativeBalance
         nativeBalanceUSD
+        name
+        logoURL
+        symbol
       }
       transactions {
         hash
@@ -840,6 +845,8 @@ export const GET_ERC20_EVENTS = gql`
         toAddress
         tokenAddresses
         tokenSymbols
+        tokenLogos
+        tokenNames
       }
     }
   }

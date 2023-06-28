@@ -9,12 +9,14 @@
   --color-tab-active-text: var(--color-text);
   --color-tab-active-bg: transparent;
 
-  --color-tab-border-width: 2px;
-  --color-tab-height: 40px;
-  --color-tab-radius: 0;
+  --tab-border-width: 2px;
+  --tab-height: 40px;
+  --tab-radius: 0;
+
+  --tabs-gap: 4px;
 
   display: flex;
-  gap: 4px;
+  gap: var(--tabs-gap);
   align-items: flex-end;
 
   font-weight: 500;
@@ -36,9 +38,9 @@
   font-size: inherit;
   line-height: inherit;
 
-  border-width: var(--color-tab-border-width);
-  height: var(--color-tab-height);
-  border-radius: var(--color-tab-radius);
+  border-width: var(--tab-border-width);
+  height: var(--tab-height);
+  border-radius: var(--tab-radius);
   padding: 0 8px;
   width: min-content;
   white-space: nowrap;
@@ -68,7 +70,9 @@
   --color-tab-active-text: var(--color-bg-2);
   --color-tab-active-bg: var(--color-accent);
 
-  --color-tab-border-width: 0;
-  --color-tab-height: 32px;
-  --color-tab-radius: var(--radii-sm);
+  --tab-border-width: 0;
+  --tab-height: 32px;
+  --tab-radius: var(--radii-sm);
+
+  --tabs-gap: 0;
 }

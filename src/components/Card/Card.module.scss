@@ -2,6 +2,8 @@
   --color-card-bg: var(--color-bg-2);
   --color-card-text: currentColor;
   --color-card-separator: var(--color-separator);
+  --color-card-padding: 16px;
+  --color-card-gap: 16px;
 
   background: var(--color-card-bg);
   border-radius: var(--radii-lg);
@@ -21,10 +23,10 @@
 }
 
 .header {
-  padding: 16px;
+  padding: var(--color-card-padding);
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--color-card-gap);
   flex-flow: row wrap;
 
   &:not(:last-child) {
@@ -38,10 +40,10 @@
 
 .body,
 .footer {
-  padding: 16px;
+  padding: var(--color-card-padding);
   display: flex;
   flex-flow: column;
-  gap: 16px;
+  gap: var(--color-card-gap);
 }
 
 .footer {

@@ -139,31 +139,47 @@
 }
 
 .variants {
-  background: var(--color-bg-3);
+  background: var(--color-bg-2);
+  border: 1px var(--color-accent) solid;
+  border-radius: var(--radii-lg);
+  overflow: hidden;
+  padding: 8px;
+
+  --color-card-padding: 0;
+  --color-card-gap: 0;
 }
 
 .tabs {
   display: flex;
   flex-flow: column;
-  gap: 16px;
 }
 
 .list {
   max-height: 75vh;
   overflow: auto;
   overflow: overlay;
-  margin: 0;
   padding: 0;
+  margin: 0;
   list-style: none;
   display: flex;
   flex-flow: column;
-  gap: 8px;
+  max-height: 75vh;
+  margin: 0 -8px -8px;
 }
 
 .item {
   margin: 0;
-  padding: 0;
+  padding: 16px;
   list-style: none;
+  background: transparent;
+  color: var(--color-accent);
+  transition: all 0.25s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-bg);
+    color: var(--color-accent-a);
+  }
 }
 
 .avatar {
@@ -184,9 +200,9 @@
 }
 
 .tag {
-  --color-label-bg: var(--color-bg-2);
-  --color-label-text: var(--color-bg-muted);
-  border-radius: 8px;
+  --color-label-bg: var(--color-muted);
+  --color-label-text: var(--color-bg-3);
+  border-radius: var(--radii-lg);
   line-height: 16px;
   height: 16px;
 }
@@ -196,7 +212,8 @@
 }
 
 .table {
-  margin: 0 -16px -16px;
+  max-height: 75vh;
+  margin: 0 -8px -8px;
 }
 
 .icon {

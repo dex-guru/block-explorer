@@ -29,3 +29,37 @@
   display: block;
   margin: auto;
 }
+
+.data {
+  composes: data from '../../Table/Table.module.scss';
+
+  &Row {
+    composes: dataRow from '../../Table/Table.module.scss';
+  }
+
+  &Value {
+    composes: dataValue from '../../Table/Table.module.scss';
+  }
+
+  &Number {
+    composes: dataNumber from '../../Table/Table.module.scss';
+  }
+}
+
+.icon {
+  composes: icon from '../../Table/Table.module.scss';
+
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
+}
+
+.token {
+  &Name {
+    composes: tokenName from '../../Table/Table.module.scss';
+  }
+
+  &Symbol {
+    composes: tokenSymbol from '../../Table/Table.module.scss';
+  }
+}

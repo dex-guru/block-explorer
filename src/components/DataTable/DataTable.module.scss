@@ -9,6 +9,8 @@
 .header,
 .footer {
   composes: header from '../Card/Card.module.scss';
+
+  color: var(--color-muted);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,10 +23,6 @@
       flex: 0 1 240px;
     }
   }
-}
-
-.header {
-  color: var(--color-muted);
 }
 
 .footer {

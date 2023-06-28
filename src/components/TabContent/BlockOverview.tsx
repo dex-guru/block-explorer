@@ -38,9 +38,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
             <Link
               data-tooltip-content="Previous Block"
               data-tooltip-id="app-tooltip"
-              href={
-                blockValues?.url ? blockValues?.url(`${data.number - 1}`) : ''
-              }
+              href={blockValues?.url(`${data.number - 1}`)}
               className={clsx(styles.pageTo, {
                 [styles.disabled]: data.number < 2,
               })}
@@ -50,9 +48,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
             <Link
               data-tooltip-content="Next Block"
               data-tooltip-id="app-tooltip"
-              href={
-                blockValues?.url ? blockValues?.url(`${data.number + 1}`) : ''
-              }
+              href={blockValues?.url(`${data.number + 1}`)}
               className={clsx(styles.pageTo, {
                 [styles.disabled]: chainStats?.lastBlockNumber === data.number,
               })}
