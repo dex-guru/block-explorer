@@ -200,9 +200,9 @@
 }
 
 .tag {
-  --color-label-bg: var(--color-bg-2);
-  --color-label-text: var(--color-bg-muted);
-  border-radius: 8px;
+  --color-label-bg: var(--color-muted);
+  --color-label-text: var(--color-bg-3);
+  border-radius: var(--radii-lg);
   line-height: 16px;
   height: 16px;
 }
