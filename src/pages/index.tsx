@@ -85,6 +85,8 @@ const Index: NextPage<IndexProps> = (props) => {
     },
     {
       title: 'Transactions',
+      tooltip:
+        'Total Transactions Counter and TPS (Transactions Per Second). TPS refers to the number of validated transactions a blockchain network can process and confirm within a second.',
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
@@ -101,7 +103,9 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: 'Active Addresses',
+      title: 'Total Addresses',
+      tooltip:
+        'Total of distinct address numbers who send at least one transaction on-chain.',
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(
@@ -112,6 +116,7 @@ const Index: NextPage<IndexProps> = (props) => {
     },
     {
       title: 'Smart Contracts',
+      tooltip: 'Total number of smart contracts created on-chain.',
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(
@@ -121,7 +126,9 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: `${chainConfig.nativeCurrency.symbol} Supply`,
+      title: `${chainConfig.nativeCurrency.symbol} Max Supply`,
+      tooltip:
+        'The maximum number of coins or tokens that will ever exist for a particular cryptocurrency.',
       value: financialFormatLowValueHighPrecision(stats.tokenSupply),
     },
     {
@@ -137,7 +144,9 @@ const Index: NextPage<IndexProps> = (props) => {
   ]
   props.csrStats &&
     statsDisplay.push({
-      title: 'Total Revenue',
+      title: 'Contract Secured Revenue (CSR)',
+      tooltip:
+        'Contract Secured Revenue (CSR) allows smart contract owners to claim a percentage of all transaction fees paid by users when interacting with smart contracts.',
       value: (
         <Link href="/csr">
           <Value
