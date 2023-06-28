@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Card from '../Card'
 import LineChart from '../LineChart'
 import Tile from '../Tile'
+import TooltipAnchor from '../TooltipAnchor'
 import { SummaryProps } from './types'
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './Summary.module.scss'
@@ -46,7 +47,11 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
           return (
             <Tile
               key={index}
-              prefix={stat.title}
+              prefix={
+                <>
+                  {stat.title} <TooltipAnchor tooltip={stat.tooltip} />
+                </>
+              }
               title={stat.value}
               className={styles.tile}
             />
