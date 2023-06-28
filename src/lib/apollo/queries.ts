@@ -76,6 +76,8 @@ export const GET_TRANSACTIONS_STATS = gql`
     transactionStats(chainId: ${CHAIN_ID}) {
       networkTransactionsFee24H
       networkTransactionsFeeDelta24H
+      avgTransactionsFee24H
+      avgTransactionsFeeDelta24H
       transactions24H
       transactionsDelta24H
     }

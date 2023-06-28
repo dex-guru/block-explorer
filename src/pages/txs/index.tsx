@@ -22,8 +22,8 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import {
+  financialFormat,
   financialFormatLowValueHighPrecision,
-  getNormalizedValue,
 } from '@/lib/utils'
 
 const TxsDataTable = lazy(() => import('../../components/Tables/TxsDataTable/'))
@@ -149,7 +149,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   ),
                   value: (
                     <Value
-                      value={getNormalizedValue(
+                      value={financialFormat(
                         props.transactionStats?.networkTransactionsFee24H
                       )}
                       suffix={
@@ -173,8 +173,9 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   ),
                   value: (
                     <Value
-                      value={getNormalizedValue(
-                        props.transactionStats?.avgTransactionsFee24H
+                      value={financialFormat(
+                        props.transactionStats?.avgTransactionsFee24H *
+                          props.chainStats.nativeTokenPriceUsd
                       )}
                       prefix="$"
                       delta={

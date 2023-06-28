@@ -49,7 +49,8 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
               key={index}
               prefix={
                 <>
-                  {stat.title} <TooltipAnchor tooltip={stat.tooltip} />
+                  {stat.title}{' '}
+                  {!!stat.tooltip && <TooltipAnchor tooltip={stat.tooltip} />}
                 </>
               }
               title={stat.value}
