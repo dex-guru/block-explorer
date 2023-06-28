@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import pageStyles from '../../pages/Pages.module.scss'
@@ -31,22 +32,98 @@ import {
 import Separated from '@/components/Separated/Separated'
 import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
+import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import { MAX_EVENTS_PER_PAGE, TxEventsData } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
 
 const TxOverview: FC<{
   data: TransactionModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-  erc20Events: Erc20EventModel[]
-  nftEvents: Erc721TransferModel[]
-}> = ({ data, chainConfig, chainStats, erc20Events, nftEvents }) => {
+  erc20Transfers: TxEventsData<Erc20EventModel>
+  erc20Actions: TxEventsData<Erc20EventModel>
+  nftEvents: TxEventsData<Erc721TransferModel>
+}> = ({
+  data,
+  chainConfig,
+  chainStats,
+  erc20Transfers,
+  erc20Actions,
+  nftEvents,
+}) => {
+  const [erc20TransfersData, setErc20TransfersData] = useState(
+    erc20Transfers.data || []
+  )
+  const [getErc2Events, { loading: loadingTransfers }] = useLazyQuery<{
+    erc20Events: { total: number; data: Erc20EventModel[] }
+  }>(GET_ERC20_EVENTS)
+
+  const [erc20ActionsData, setErc20ActionsData] = useState(
+    erc20Actions.data || []
+  )
+  const [getErc2Actions, { loading: loadingActions }] = useLazyQuery<{
+    erc20Events: { total: number; data: Erc20EventModel[] }
+  }>(GET_ERC20_EVENTS)
+
+  const [nftEventsData, setNftEventsData] = useState(nftEvents.data || [])
+  const [getNft, { loading: loadingNft }] = useLazyQuery<{
+    nftEvents: { total: number; data: Erc721TransferModel[] }
+  }>(GET_ERC721_EVENTS)
+
+  const handleClickMoreTransfers = async () => {
+    const result = await getErc2Events({
+      variables: {
+        hash: data.hash,
+        eventTypes: 'transfers',
+        first: MAX_EVENTS_PER_PAGE,
+        skip: erc20TransfersData.length,
+      },
+    })
+
+    const newData = result?.data?.erc20Events?.data
+
+    if (newData?.length) {
+      setErc20TransfersData([...erc20TransfersData, ...newData])
+    }
+  }
+
+  const handleClickMoreActions = async () => {
+    const result = await getErc2Actions({
+      variables: {
+        hash: data.hash,
+        eventTypes: 'actions',
+        first: MAX_EVENTS_PER_PAGE,
+        skip: erc20ActionsData.length,
+      },
+    })
+
+    const newData = result?.data?.erc20Events?.data
+
+    if (newData?.length) {
+      setErc20ActionsData([...erc20ActionsData, ...newData])
+    }
+  }
+
+  const handleClickMoreNft = async () => {
+    const result = await getNft({
+      variables: {
+        hash: data.hash,
+        first: MAX_EVENTS_PER_PAGE,
+        skip: nftEventsData.length,
+      },
+    })
+
+    const newData = result?.data?.nftEvents?.data
+
+    if (newData?.length) {
+      setNftEventsData([...nftEventsData, ...newData])
+    }
+  }
+
   const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
 
-  const transfers = erc20Events.filter(
-    (event) => event.eventType === 'transfer'
-  )
-  const actions = erc20Events.filter((event) => event.eventType !== 'transfer')
+  const IconStatus = data.receiptStatus ? IconVerify : IconCross
 
   const properties: Property[] = [
     {
@@ -54,13 +131,7 @@ const TxOverview: FC<{
       tooltip: 'The status of the transaction.',
       value: (
         <Value
-          icon={
-            !!data.receiptStatus ? (
-              <IconVerify className={pageStyles.icon} />
-            ) : (
-              <IconCross className={pageStyles.icon} />
-            )
-          }
+          icon={<IconStatus className={pageStyles.icon} />}
           value={data.receiptStatus ? 'Success' : 'Failed'}
           className={clsx({
             [pageStyles.positive]: !!data.receiptStatus,
@@ -95,7 +166,7 @@ const TxOverview: FC<{
       ),
     },
     {
-      title: 'From / Nonce:',
+      title: 'From | Nonce:',
       tooltip: 'The sending party of the transaction.',
       value: (
         <Separated>
@@ -258,60 +329,119 @@ const TxOverview: FC<{
       ),
     })
 
+  const countMoreTransfers = erc20Transfers?.total - erc20TransfersData.length
+  const countMoreNft = erc20Transfers?.total - nftEventsData.length
+  const countMoreActions = erc20Actions?.total - erc20ActionsData.length
+
   return (
     <>
       <Properties data={properties} />
-      {(!!transfers?.length || !!actions?.length || !!nftEvents?.length) && (
+      {(!!erc20Transfers?.total ||
+        !!erc20Actions?.total ||
+        !!nftEvents?.total) && (
         <Card>
-          {!!transfers.length && (
+          {!!erc20Transfers?.total && (
             <Details
               isOpen
               title={
                 <>
                   ERC-20 Tokens Transferred:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {transfers.length}
+                    {erc20Transfers?.total}
                   </Label>
                 </>
               }
             >
-              <Table data={transfers} columns={erc20TransfersColumns} />
+              <Card
+                actions={
+                  countMoreTransfers > 0
+                    ? [
+                        {
+                          caption: `Load ${countMoreTransfers} More Transfers`,
+                          onClick: handleClickMoreTransfers,
+                          disabled: loadingTransfers,
+                        },
+                      ]
+                    : undefined
+                }
+                className={styles.innerCard}
+              >
+                <Table
+                  className={styles.table}
+                  data={erc20TransfersData}
+                  columns={erc20TransfersColumns}
+                />
+              </Card>
             </Details>
           )}
 
-          {!!nftEvents.length && (
+          {!!nftEvents.total && (
             <Details
               isOpen
               title={
                 <>
                   NFT Tokens Transferred:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {nftEvents.length}
+                    {nftEvents.total}
                   </Label>
                 </>
               }
             >
-              <Table
-                data={nftEvents}
-                columns={nftTransfersColumns}
-                className={styles.table}
-              />
+              <Card
+                actions={
+                  countMoreNft > 0
+                    ? [
+                        {
+                          caption: `Load ${countMoreNft} More NFT Transfers`,
+                          onClick: handleClickMoreNft,
+                          disabled: loadingNft,
+                        },
+                      ]
+                    : undefined
+                }
+                className={styles.innerCard}
+              >
+                <Table
+                  className={styles.table}
+                  data={nftEventsData}
+                  columns={nftTransfersColumns}
+                />
+              </Card>
             </Details>
           )}
 
-          {!!actions.length && (
+          {!!erc20Actions.total && (
             <Details
               isOpen
               title={
                 <>
                   Transaction Actions:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {actions.length}
+                    {erc20Actions.total}
                   </Label>
                 </>
               }
             >
-              <Table data={actions} columns={erc20ActionColumns} />
+              <Card
+                actions={
+                  countMoreActions > 0
+                    ? [
+                        {
+                          caption: `Load ${countMoreActions} More Actions`,
+                          onClick: handleClickMoreActions,
+                          disabled: loadingActions,
+                        },
+                      ]
+                    : undefined
+                }
+                className={styles.innerCard}
+              >
+                <Table
+                  className={styles.table}
+                  data={erc20ActionsData}
+                  columns={erc20ActionColumns}
+                />
+              </Card>
             </Details>
           )}
         </Card>

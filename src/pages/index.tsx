@@ -74,7 +74,7 @@ const Index: NextPage<IndexProps> = (props) => {
   ]
 
   const lastBlockNumber = Math.max(
-    blocks[0].number,
+    blocks[0]?.number,
     props.chainStats.lastBlockNumber
   )
 
@@ -121,11 +121,11 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
-      title: 'Token Supply',
+      title: `${chainConfig.nativeCurrency.symbol} Supply`,
       value: financialFormatLowValueHighPrecision(stats.tokenSupply),
     },
     {
-      title: 'Token Price',
+      title: `${chainConfig.nativeCurrency.symbol} Price`,
       value: (
         <Value
           value={financialFormat(stats.nativeTokenPriceUsd)}
@@ -173,9 +173,7 @@ const Index: NextPage<IndexProps> = (props) => {
             stats={statsDisplay}
             charts={[
               {
-                title: `${
-                  chainConfig.nativeCurrency.name || ''
-                } Transaction History in 14 days`,
+                title: 'Transaction History in 14 days',
                 data: chartData,
               },
             ]}

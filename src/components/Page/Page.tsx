@@ -10,6 +10,7 @@ const Page: FC<PageProps> = ({ children, chainConfig }) => {
 
   return (
     <div
+      id="page"
       className={styles.container}
       style={
         {
@@ -24,7 +25,7 @@ const Page: FC<PageProps> = ({ children, chainConfig }) => {
       </div>
       <div className={styles.body}>{children}</div>
       <div className={styles.footer}>
-        <PageFooter />
+        <PageFooter chainConfig={chainConfig} />
       </div>
     </div>
   )

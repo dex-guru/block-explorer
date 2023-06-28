@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 export interface IColumn<T> {
   render?: (data: T, placeholder?: ReactNode) => ReactNode
   accessor: string
-  title?: string
+  title?: ReactNode
   type?: 'number' | 'text' | 'center'
   modifier?: string
   placeholder?: ReactNode

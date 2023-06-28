@@ -1,9 +1,12 @@
 import { FC, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { AddressValues } from '../Address/helpers'
 import Loading from '../Loading'
+import OutsideClicker from '../OutsideClicker'
 import Tile from '../Tile'
 import Value from '../Value'
 import { AddressWalletTokensProps } from './types'
@@ -13,6 +16,7 @@ import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
+  getRootElement,
 } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
@@ -21,6 +25,8 @@ const ADRESS_WALLET_LIMIT = 100
 const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
   address,
   className,
+  coord,
+  onClose,
 }) => {
   const [getTokens, { data, loading }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
@@ -49,7 +55,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
         : ''
 
       const icon = token.logo[0] ? (
-        <img
+        <Image
           src={token.logo[0]}
           alt={token.symbol.join('/')}
           width="32"
@@ -91,10 +97,17 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
     })
   }
 
-  return (
-    <div className={clsx(styles.dropdown, className)}>
+  return createPortal(
+    <OutsideClicker
+      onClick={(e) => {
+        onClose(e)
+      }}
+      className={clsx(styles.dropdown, className)}
+      style={{ left: coord?.left, top: coord?.top }}
+    >
       <ul className={styles.list}>{renderTokens()}</ul>
-    </div>
+    </OutsideClicker>,
+    getRootElement()
   )
 }
 

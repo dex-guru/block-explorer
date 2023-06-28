@@ -13,6 +13,8 @@
 
   border-radius: var(--radii-sm);
   min-height: 35px;
+  max-height: 75vh;
+  overflow: auto;
 }
 
 .pre {

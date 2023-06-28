@@ -75,12 +75,14 @@ const AddressView: FC<IAddressViewProps> = ({
             title="Address"
             address={address}
             tag="Address"
+            type="address"
+            chainConfig={chain.config}
           >
             <Grid>
               <Properties
                 data={[
                   {
-                    title: `${chain?.config?.nativeCurrency.symbol} Amount:`,
+                    title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
                     value: (
                       <Value
                         value={financialFormat(addressInfo?.nativeBalance)}

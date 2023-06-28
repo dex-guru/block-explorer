@@ -277,7 +277,7 @@ export const GET_BLOCKS_SHORT = gql`
 `
 
 export const GET_TRANSACTIONS_BY_HASH = gql`
-  query TransactionByHash($hash: String!) {
+  query TransactionByHash($hash: String!, $eventsCount: Long) {
     transactions(hash: $hash, first: 1, chainId: ${CHAIN_ID}) {
       blockHash
       blockNumber
@@ -302,20 +302,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       transactionType
       value
     }
-    erc20Events(hash: $hash, chainId: ${CHAIN_ID}) {
-      data {
-        fromAddress
-        toAddress
-        tokenAddresses
-        tokenSymbols
-        eventType
-        hash
-        blockTimestamp
-        amounts
-      }
-      total
-    }
-    nftEvents(hash: $hash, chainId: ${CHAIN_ID}) {
+    nftEvents(skip:0, first: $eventsCount, hash: $hash, chainId: ${CHAIN_ID}) {
       data {
         blockTimestamp
         fromAddress
@@ -326,6 +313,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
         tokenId
         value
       }
+      total
     }
     chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
@@ -793,13 +781,12 @@ export const GET_SEARCH = gql`
   }
 `
 
-export const GET_ERC721_BY_ADDRESS = gql`
-  query nftEvents(
+export const GET_ERC721_EVENTS = gql`
+  query Erc721Events(
     $first: Long
     $address: String
     $hash: String
     $skip: Long
-    
   ) {
     nftEvents(
       first: $first
@@ -823,14 +810,14 @@ export const GET_ERC721_BY_ADDRESS = gql`
   }
 `
 
-export const GET_ERC20_BY_ADDRESS = gql`
-  query Erc20ByAddress(
+export const GET_ERC20_EVENTS = gql`
+  query Erc20Events(
     $first: Long
     $address: String
     $skip: Long
     $walletAddress: String
     $hash: String
-    
+    $eventTypes: String
   ) {
     erc20Events(
       address: $address
@@ -838,6 +825,7 @@ export const GET_ERC20_BY_ADDRESS = gql`
       hash: $hash
       skip: $skip
       walletAddress: $walletAddress
+      eventTypes: $eventTypes
       chainId: ${CHAIN_ID}
     ) {
       total

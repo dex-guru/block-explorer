@@ -170,16 +170,17 @@ img {
 
 .item-enter {
   opacity: 0;
-  transform: scale(1, 0.75);
+  transform: scale(1, 0.9);
 }
 .item-enter-active {
   opacity: 1;
-  transform: scale(1.01);
-  transition: all 500ms ease-in;
+  transform: scale(0.95, 0.9);
+  transition: all 250ms ease-in;
 }
 .item-enter-done {
   opacity: 1;
   transform: scale(1);
+  transition: all 250ms ease-out;
 }
 .item-exit {
   display: none;
