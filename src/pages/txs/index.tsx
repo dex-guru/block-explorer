@@ -175,12 +175,11 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   value: (
                     <Value
                       value={getNormalizedValue(
-                        props.transactionStats?.networkTransactionsFee24H
+                        props.transactionStats?.avgTransactionsFee24H
                       )}
                       prefix="$"
                       delta={
-                        props.transactionStats?.networkTransactionsFeeDelta24H *
-                        100
+                        props.transactionStats?.avgTransactionsFeeDelta24H * 100
                       }
                     />
                   ),
