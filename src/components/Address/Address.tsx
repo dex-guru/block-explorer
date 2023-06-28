@@ -28,10 +28,8 @@ const Address: FC<AddressProps> = ({
         }
       : {}
 
-  const linkUrl = !!isLink && !!values.url ? values.url(address) : null
-  const addressDisplay = values?.format
-    ? values.format(address, isShorten)
-    : address
+  const linkUrl = !!isLink ? values.url(address) : null
+  const addressDisplay = values.format(address, isShorten)
 
   return (
     <span className={clsx(styles.container, className)}>

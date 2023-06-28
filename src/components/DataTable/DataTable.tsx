@@ -64,6 +64,9 @@ export function DataTable<T>(props: DataTableProps<T>) {
       </div>
       <div className={styles.footer}>
         {renderPerPage()}
+        <span className={styles.totalRows}>
+          Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
+        </span>
         {renderPagination()}
       </div>
     </div>

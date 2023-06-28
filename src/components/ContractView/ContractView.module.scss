@@ -1,3 +1,8 @@
+.icon {
+  width: 32px;
+  height: 32px;
+}
+
 .submit {
   composes: button from '../Button/Button.module.scss';
   composes: xl from '../Button/Button.module.scss';

@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { AddressValues } from '../Address/helpers'
@@ -22,33 +23,46 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   const tabs = []
 
   if (data.addresses?.length) {
-    const accountValue = AddressValues['account']
-
     const renderedContent = data.addresses?.map((account) => {
-      const url = accountValue?.url ? accountValue?.url(account.address) : ''
+      const addressIcon = account.logoURL ? (
+        <Image
+          src={account.logoURL}
+          alt={account.symbol || ''}
+          className={styles.icon}
+          width={32}
+          height={32}
+        />
+      ) : (
+        <Avatar address={account.address} className={styles.icon} />
+      )
+
+      const addressTitle = account.symbol ? (
+        `${account.symbol}${
+          account.name !== account.symbol ? ` (${account.name})` : ''
+        } `
+      ) : (
+        <Address
+          address={account.address}
+          type="account"
+          isCopy
+          isShorten={false}
+          className={styles.address}
+          isLink={false}
+        />
+      )
 
       return (
         <li
           className={styles.item}
           key={account.address}
           onClick={() => {
-            router.push(url)
+            router.push(AddressValues['account'].url(account.address))
           }}
         >
           <Tile
             className={styles.variant}
-            icon={
-              <Avatar address={account.address} className={styles.avatar} />
-            }
-            title={
-              <Address
-                address={account.address}
-                type="account"
-                isCopy
-                isShorten={false}
-                className={styles.address}
-              />
-            }
+            icon={addressIcon}
+            title={addressTitle}
             postfix={
               <Label type="tag" className={styles.tag}>
                 {account.addressType === 'smart_contract'
@@ -72,19 +86,13 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.blocks?.length) {
-    const blockValue = AddressValues['block']
-
     const renderedContent = data.blocks?.map((block) => {
-      const url = blockValue?.url
-        ? blockValue?.url(block.number.toString())
-        : ''
-
       return (
         <li
           className={styles.item}
           key={block.number}
           onClick={() => {
-            router.push(url)
+            router.push(AddressValues['block'].url(block.number.toString()))
           }}
         >
           <Tile
@@ -115,8 +123,6 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   if (data.transactions?.length) {
-    const blockValue = AddressValues['account']
-
     tabs.push({
       title: 'Transactions',
       value: 'txs',
@@ -130,9 +136,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           data={data.transactions}
           showHeader={false}
           onRowClick={(data) => {
-            if (blockValue?.url) {
-              router.push(blockValue?.url(data.hash))
-            }
+            router.push(AddressValues['account']?.url(data.hash))
           }}
         />
       ),

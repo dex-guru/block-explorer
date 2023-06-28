@@ -23,6 +23,7 @@ export type AddressModel = {
   assetsCount: Scalars['Int'];
   assetsValueUSD: Scalars['Float'];
   assetsValueUSD24hDelta: Scalars['Float'];
+  logoURL?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   nativeBalance: Scalars['Float'];
   nativeBalanceUSD: Scalars['Float'];
@@ -166,6 +167,8 @@ export type Erc20EventModel = {
   hash: Scalars['String'];
   toAddress: Scalars['String'];
   tokenAddresses: Array<Scalars['String']>;
+  tokenLogos: Array<Scalars['String']>;
+  tokenNames: Array<Scalars['String']>;
   tokenSymbols: Array<Scalars['String']>;
 };
 
@@ -680,6 +683,7 @@ export type AddressModelResolvers<ContextType = any, ParentType extends Resolver
   assetsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   assetsValueUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   assetsValueUSD24hDelta?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  logoURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -827,6 +831,8 @@ export type Erc20EventModelResolvers<ContextType = any, ParentType extends Resol
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tokenAddresses?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  tokenLogos?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  tokenNames?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   tokenSymbols?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

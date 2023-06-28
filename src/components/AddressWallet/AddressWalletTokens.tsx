@@ -46,14 +46,8 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
     return <Loading />
   }
 
-  const accountValues = AddressValues['account']
-
   const renderTokens = () => {
     return data?.tokenHoldings.map((token, idx) => {
-      const url = accountValues.url
-        ? accountValues.url(token.contractAddress)
-        : ''
-
       const icon = token.logo[0] ? (
         <Image
           src={token.logo[0]}
@@ -68,7 +62,10 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
 
       return (
         <li className={styles.item} key={idx}>
-          <Link href={url} className={styles.tokenLink}>
+          <Link
+            href={AddressValues['account'].url(token.contractAddress)}
+            className={styles.tokenLink}
+          >
             <Tile
               className={styles.token}
               icon={icon}

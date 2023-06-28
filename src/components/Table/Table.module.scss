@@ -118,3 +118,53 @@
     width: 96px;
   }
 }
+
+.data {
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+
+  &Row {
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  &Value {
+  }
+
+  &Number {
+    flex: 1 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: text-bottom;
+  }
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  color: var(--color-muted);
+}
+
+.token {
+  &Name,
+  &Symbol {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: text-bottom;
+  }
+
+  &Name {
+    max-width: 12ch;
+  }
+
+  &Symbol {
+    max-width: 8ch;
+  }
+}
