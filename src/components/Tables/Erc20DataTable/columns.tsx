@@ -5,10 +5,7 @@ import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, IconQuestion, Label, TimeAgo } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-} from '@/lib/utils'
+import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
 
 export const erc20Columns: IColumn<Erc20EventModel>[] = [
