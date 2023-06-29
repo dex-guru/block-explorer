@@ -60,7 +60,11 @@ export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
         {data.amounts.map((amount, idx) => {
           return (
             <li key={idx} className={styles.tokenValue}>
-              <Link href={AddressValues['token'].url(data.tokenAddresses[idx])}>
+              <Link
+                href={
+                  AddressValues['token'].url(data.tokenAddresses[idx]) || ''
+                }
+              >
                 {data.tokenSymbols[idx]}
               </Link>
             </li>

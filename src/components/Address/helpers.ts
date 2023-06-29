@@ -5,12 +5,12 @@ import { getShortAddress } from '@/lib/utils'
 
 type AddressValueProps = {
   format: (address: string, shorten?: boolean) => string
-  url: (address: string, text?: string) => string
+  url: (address: string, text?: string) => string | null
   canBeShort?: boolean
 }
 
 export const AddressValues: Record<AddressType, AddressValueProps> = {
-  common: { url: (addr) => addr, format: (addr) => addr },
+  common: { url: () => null, format: (addr) => addr },
 
   account: {
     format: (address: string, shorten = true) => {

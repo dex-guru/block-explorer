@@ -102,7 +102,10 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
 
             return (
               <div className={styles.dataRow} key={idx}>
-                <Link href={values.url(addr)} className={styles.dataValue}>
+                <Link
+                  href={values.url(addr) || ''}
+                  className={styles.dataValue}
+                >
                   {logo}
                   <span className={styles.tokenSymbol}>
                     {data.tokenSymbols[idx]}
