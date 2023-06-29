@@ -35,7 +35,7 @@ export const nftTransfersColumns: IColumn<Erc721TransferModel>[] = [
     modifier: 'tokenSymbol',
     render: (data) => {
       return (
-        <Link href={AddressValues['token'].url(data.tokenAddress)}>
+        <Link href={AddressValues['token'].url(data.tokenAddress) || ''}>
           {data.tokenId}
         </Link>
       )

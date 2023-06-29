@@ -56,7 +56,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           className={styles.item}
           key={account.address}
           onClick={() => {
-            router.push(AddressValues['account'].url(account.address))
+            router.push(AddressValues['account'].url(account.address) || '')
           }}
         >
           <Tile
@@ -92,7 +92,9 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           className={styles.item}
           key={block.number}
           onClick={() => {
-            router.push(AddressValues['block'].url(block.number.toString()))
+            router.push(
+              AddressValues['block'].url(block.number.toString()) || ''
+            )
           }}
         >
           <Tile
@@ -136,7 +138,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           data={data.transactions}
           showHeader={false}
           onRowClick={(data) => {
-            router.push(AddressValues['account']?.url(data.hash))
+            router.push(AddressValues['account']?.url(data.hash) || '')
           }}
         />
       ),
