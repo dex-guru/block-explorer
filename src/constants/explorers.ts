@@ -35,6 +35,7 @@ const ExplorersData: Record<Explorers, ExplorerData> = {
   tenderly: {
     id: 'tenderly',
     address_path: '/wallet/:chain/:address',
+    tx_path: '/tx/:chain/:tx',
     display_name: 'Tenderly',
     url: 'https://dashboard.tenderly.co',
   },
