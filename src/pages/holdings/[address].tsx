@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import { isAddress, getAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
+import { isAddress, getAddress } from 'viem'
 import {
   ChainConfigModel,
   TokenHoldingsStatsModel,

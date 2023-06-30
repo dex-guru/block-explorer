@@ -5,11 +5,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import { isAddress, getAddress } from '@ethersproject/address'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { Abi, AbiFunction } from 'abitype'
-import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { isAddress, getAddress } from 'viem'
+import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
@@ -42,7 +42,7 @@ import {
   LineChart,
   Message,
 } from '@/components'
-import { CHAIN_ID } from '@/constants'
+import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
@@ -77,7 +77,7 @@ const ContractView: FC<IContractViewProps> = ({
   const contractCreator: ContractCreatorModel = data?.contractCreator
   const balancesStats: TokenBalancesStatsModel = data?.balancesStats
 
-  const { chains, provider } = useMemo(() => {
+  const { chains, publicClient } = useMemo(() => {
     const currentChain = {
       id: chain.config.chainId,
       name: chain.config.name,
@@ -113,18 +113,19 @@ const ContractView: FC<IContractViewProps> = ({
       getDefaultWallets({
         appName: 'Block Explorer',
         chains,
+        projectId: WALLET_CONNECT_PROJECT_ID,
       }),
     [chains]
   )
 
-  const wagmiClient = useMemo(
+  const wagmiConfig = useMemo(
     () =>
-      createClient({
+      createConfig({
         autoConnect: true,
         connectors,
-        provider,
+        publicClient,
       }),
-    [connectors, provider]
+    [connectors, publicClient]
   )
 
   const router = useRouter()
@@ -195,7 +196,7 @@ const ContractView: FC<IContractViewProps> = ({
     : 'Contract'
 
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
         <Head>
           <title>{pageTitle}</title>

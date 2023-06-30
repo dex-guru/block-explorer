@@ -1,5 +1,4 @@
-import { getAddress } from '@ethersproject/address'
-import { isAddress } from '@ethersproject/address'
+import { getAddress, isAddress } from 'viem'
 import { AddressType } from './types'
 import { getShortAddress } from '@/lib/utils'
 

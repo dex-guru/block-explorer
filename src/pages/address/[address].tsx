@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { isAddress } from '@ethersproject/address'
 import '@rainbow-me/rainbowkit/styles.css'
+import { isAddress } from 'viem'
 import {
   AddressModel,
   ChainConfigModel,

@@ -21,6 +21,7 @@ const nextConfig = {
         'process.env.GIT_COMMIT': JSON.stringify(buildId),
       })
     )
+    config.resolve.fallback = { fs: false, net: false, tls: false }
 
     return config
   },
