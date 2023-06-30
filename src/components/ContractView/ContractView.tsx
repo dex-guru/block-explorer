@@ -352,7 +352,7 @@ const ContractView: FC<IContractViewProps> = ({
                     ),
                   },
                   {
-                    title: 'FDV / Max Total Supply:',
+                    title: 'FDV / Max Supply:',
                     value: (
                       <Separated>
                         <Value
