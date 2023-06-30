@@ -50,6 +50,7 @@ import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
 import IconMenu from '@/images/icons/menu.svg'
 import IconNoData from '@/images/icons/no-data.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
+import IconNoIcon from '@/images/icons/no-icon.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconSearch from '@/images/icons/search.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
@@ -117,6 +118,7 @@ export {
   IconVerify,
   IconLiquidityPool,
   IconQuestion,
+  IconNoIcon,
   IconBlock,
   IconTx,
   IconMenu,

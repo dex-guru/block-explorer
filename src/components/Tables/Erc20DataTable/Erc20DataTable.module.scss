@@ -48,18 +48,26 @@
 
 .icon {
   composes: icon from '../../Table/Table.module.scss';
-
-  &:not(:last-child) {
-    margin-right: 4px;
-  }
 }
 
 .token {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+
   &Name {
     composes: tokenName from '../../Table/Table.module.scss';
+
+    &Caption {
+      composes: tokenNameCaption from '../../Table/Table.module.scss';
+    }
   }
 
   &Symbol {
     composes: tokenSymbol from '../../Table/Table.module.scss';
+
+    &Symbol {
+      composes: tokenSymbolCaption from '../../Table/Table.module.scss';
+    }
   }
 }
