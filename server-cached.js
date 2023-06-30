@@ -188,14 +188,14 @@ app.prepare().then(async () => {
 
   Object.entries(SSR_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
+      `[ Block Explorer Server ] > Page request "${url}" cache for ${time}s`
     )
     server.get(url, (req, res) => ssrCache(req, res, time))
   })
 
   Object.entries(JSON_URLS_CACHE_TIME).forEach(([url, time]) => {
     console.log(
-      `[ Block Explorer Server ] > Props request "${url}" cache for ${time}ms`
+      `[ Block Explorer Server ] > Props request "${url}" cache for ${time}s`
     )
     server.get(`/_next/data/:hash${url}`, (req, res) =>
       jsonCache(req, res, time)
