@@ -64,6 +64,11 @@ body {
   color: var(--color-bg);
 }
 
+select {
+  -webkit-appearance: none;
+  font-size: inherit;
+}
+
 dialog {
   max-height: 100%;
   max-width: 100%;

@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address, IconQuestion, Label, TimeAgo } from '@/components'
+import { Address, IconNoIcon, Label, TimeAgo } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
@@ -97,7 +97,7 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
                 className={styles.icon}
               />
             ) : (
-              <IconQuestion className={styles.icon} />
+              <IconNoIcon className={styles.icon} />
             )
 
             return (
@@ -107,18 +107,26 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
                   className={styles.dataValue}
                 >
                   {logo}
-                  <span className={styles.tokenSymbol}>
-                    {data.tokenSymbols[idx]}
+
+                  <span className={styles.token}>
+                    <span className={styles.tokenSymbol}>
+                      <span className={styles.tokenSymbolCaption}>
+                        {data.tokenSymbols[idx]}
+                      </span>
+                    </span>
+
+                    <span
+                      className={styles.tokenName}
+                      data-tooltip-content={data.tokenNames[idx]}
+                      data-tooltip-id="app-tooltip"
+                    >
+                      (
+                      <span className={styles.tokenNameCaption}>
+                        {data.tokenNames[idx]}
+                      </span>
+                      )
+                    </span>
                   </span>
-                  &nbsp;(
-                  <span
-                    className={styles.tokenName}
-                    data-tooltip-content={data.tokenNames[idx]}
-                    data-tooltip-id="app-tooltip"
-                  >
-                    {data.tokenNames[idx]}
-                  </span>
-                  )
                 </Link>
               </div>
             )
