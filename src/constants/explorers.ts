@@ -13,6 +13,7 @@ export type ExplorerData = {
 export enum Explorers {
   dexguru = 'dexguru',
   tenderly = 'tenderly',
+  eigenphi = 'eigenphi',
   arbitrumNovaScan = 'arbitrumNovaScan',
   optimismExplorer = 'optimismExplorer',
   gnosisScan = 'gnosisScan',
@@ -38,6 +39,12 @@ const ExplorersData: Record<Explorers, ExplorerData> = {
     tx_path: '/tx/:chain/:tx',
     display_name: 'Tenderly',
     url: 'https://dashboard.tenderly.co',
+  },
+  eigenphi: {
+    id: 'eigenphi',
+    tx_path: '/mev/eigentx/:tx',
+    display_name: 'EigenPhi',
+    url: 'https://eigenphi.io',
   },
   arbitrumNovaScan: {
     id: 'arbitrumNovaScan',
@@ -124,25 +131,46 @@ const ExplorersData: Record<Explorers, ExplorerData> = {
 export const explorers: Record<number, ExplorerData[]> = {
   7700: [ExplorersData.dexguru],
   7701: [ExplorersData.dexguru],
-  42161: [ExplorersData.dexguru, ExplorersData.tenderly],
+  42161: [
+    ExplorersData.dexguru,
+    ExplorersData.tenderly,
+    ExplorersData.eigenphi,
+  ],
   42170: [ExplorersData.dexguru, ExplorersData.arbitrumNovaScan],
   10: [
     ExplorersData.dexguru,
     ExplorersData.optimismExplorer,
     ExplorersData.tenderly,
+    ExplorersData.eigenphi,
   ],
   100: [
     ExplorersData.dexguru,
     ExplorersData.gnosisScan,
     ExplorersData.tenderly,
   ],
-  250: [ExplorersData.dexguru, ExplorersData.ftmScan, ExplorersData.tenderly],
+  250: [
+    ExplorersData.dexguru,
+    ExplorersData.ftmScan,
+    ExplorersData.tenderly,
+    ExplorersData.eigenphi,
+  ],
   137: [
     ExplorersData.dexguru,
     ExplorersData.polygonScan,
     ExplorersData.tenderly,
+    ExplorersData.eigenphi,
   ],
-  56: [ExplorersData.dexguru, ExplorersData.bscScan, ExplorersData.tenderly],
-  1: [ExplorersData.dexguru, ExplorersData.etherscan, ExplorersData.tenderly],
+  56: [
+    ExplorersData.dexguru,
+    ExplorersData.bscScan,
+    ExplorersData.tenderly,
+    ExplorersData.eigenphi,
+  ],
+  1: [
+    ExplorersData.dexguru,
+    ExplorersData.etherscan,
+    ExplorersData.tenderly,
+    ExplorersData.eigenphi,
+  ],
   84531: [ExplorersData.baseScan],
 }

@@ -7,6 +7,7 @@ import { OpenWithProps } from './types'
 import { IconQuestion } from '@/components'
 import { ExplorerData, explorers } from '@/constants/explorers'
 import IconDexGuru from '@/images/explorers/dexguru.svg'
+import IconEigenPhi from '@/images/explorers/eigenphi.svg'
 import IconTenderly from '@/images/explorers/tenderly.svg'
 import styles from './OpenWith.module.scss'
 
@@ -17,6 +18,10 @@ const getLogo = (el: ExplorerData): ReactNode => {
 
   if (el.id === 'tenderly') {
     return <IconTenderly width={24} height={24} className={styles.icon} />
+  }
+
+  if (el.id === 'eigenphi') {
+    return <IconEigenPhi width={24} height={24} className={styles.icon} />
   }
 
   if (el.logo_uri) {
