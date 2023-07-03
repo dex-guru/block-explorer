@@ -52,6 +52,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
     <>
       <Head>
         <title>{pageTitle}</title>
+        <link rel="canonical" href={pathname} />
         <meta
           name="description"
           content={`Explore transaction ${
