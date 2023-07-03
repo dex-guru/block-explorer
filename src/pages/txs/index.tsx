@@ -100,6 +100,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
           content={`Explore recently created transactions on ${props.chainConfig.name} ${props.chainConfig.chain}`}
         />
         <link rel="icon" href={props.chainConfig.icon} />
+        <link rel="canonical" href={pathname} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 

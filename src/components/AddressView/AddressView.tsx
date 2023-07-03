@@ -54,6 +54,7 @@ const AddressView: FC<IAddressViewProps> = ({
       <Head>
         <title>{pageTitle}</title>
         <link rel="icon" href={chain.config.icon} />
+        <link rel="canonical" href={pathname} />
         <meta
           name="description"
           content={`Explore ${checkSumAddress} to track recent transactions, explore token balances held by this wallet, and view account activity in real time.`}

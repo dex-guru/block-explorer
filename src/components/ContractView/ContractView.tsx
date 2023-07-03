@@ -141,7 +141,6 @@ const ContractView: FC<IContractViewProps> = ({
     !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const pageTitle = `Contract ${checkSumAddress}`
 
   const holdersSeries: LineChartDataset[] = [
     {
@@ -192,7 +191,10 @@ const ContractView: FC<IContractViewProps> = ({
     ? `${addressInfo.symbol}${
         addressInfo.name !== addressInfo.symbol ? ` (${addressInfo.name})` : ''
       }`
-    : 'Contract'
+    : ''
+  const pageTitle = `${
+    contractTitle ? `${contractTitle} contract` : 'Contract'
+  } ${checkSumAddress} on ${chain.config.chain}`
 
   return (
     <WagmiConfig client={wagmiClient}>
@@ -200,6 +202,7 @@ const ContractView: FC<IContractViewProps> = ({
         <Head>
           <title>{pageTitle}</title>
           <link rel="icon" href={chain.config.icon} />
+          <link rel="canonical" href={pathname} />
           <meta
             name="description"
             content={`Explore smart contract ${
@@ -210,7 +213,7 @@ const ContractView: FC<IContractViewProps> = ({
         <Page chainConfig={chain.config}>
           <DetailsView
             icon={addressIcon}
-            title={contractTitle}
+            title={contractTitle || 'Contract'}
             address={checkSumAddress}
             tag="Token Contract"
             type="address"
