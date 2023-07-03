@@ -4,9 +4,8 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { getAddress } from '@ethersproject/address'
-import { isHexString } from '@ethersproject/bytes'
 import { clsx } from 'clsx'
+import { getAddress, isHex } from 'viem'
 import styles from '../../../Verifier.module.scss'
 import { checkAllByAddresses } from '../../../api'
 import {
@@ -78,7 +77,7 @@ const ChainAddressForm = ({
   ) => {
     const tempHash = e.target.value
     setCreatorTxHash(tempHash)
-    if (!isHexString(tempHash, 32) && tempHash !== '') {
+    if (!isHex(tempHash) || tempHash.length !== 34) {
       return setIsInvalidCreatorTxHash(true)
     }
     setIsInvalidCreatorTxHash(false)

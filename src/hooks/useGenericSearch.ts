@@ -6,8 +6,7 @@ import {
   useState,
 } from 'react'
 import { NextRouter, useRouter } from 'next/router'
-import { isAddress } from '@ethersproject/address'
-import { isHexString } from '@ethersproject/bytes'
+import { isAddress, isHex } from 'viem'
 
 const doSearch = async (q: string, router: NextRouter) => {
   // Cleanup
@@ -32,7 +31,7 @@ const doSearch = async (q: string, router: NextRouter) => {
   }
 
   // Tx hash?
-  if (isHexString(q, 32)) {
+  if (isHex(q) && q.length === 32) {
     router.replace(`/tx/${q}`)
     return
   }

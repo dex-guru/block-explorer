@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import { Abi, AbiFunction } from 'abitype'
-import { ethers } from 'ethers'
 import { useContractRead } from 'wagmi'
 import Details from '../Details'
 import { CHAIN_ID } from '@/constants'
@@ -21,7 +20,7 @@ const ContractProperty: FC<IContractPropertyProps> = ({
     functionName: method.name || '',
     chainId: CHAIN_ID,
   })
-  const result = ethers.BigNumber.isBigNumber(data) ? data.toString() : data
+  const result = `${data}`
   return (
     <Details title={method.name}>
       <>

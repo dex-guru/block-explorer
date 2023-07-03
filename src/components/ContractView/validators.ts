@@ -1,4 +1,4 @@
-import { isAddress } from '@ethersproject/address'
+import { isAddress } from 'viem'
 
 const addressValidator = (address: string) => {
   if (!isAddress(address)) {

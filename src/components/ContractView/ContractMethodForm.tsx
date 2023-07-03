@@ -2,7 +2,6 @@ import { FC, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
-import { ethers } from 'ethers'
 import { useAccount, useChainId } from 'wagmi'
 import Loading from '../Loading'
 import { getValidator } from './validators'
@@ -50,9 +49,7 @@ const ContractMethodForm: FC<IFormProps> = ({
           args: methodArgs,
           chainId: chainId,
         })
-        const result = ethers.BigNumber.isBigNumber(data)
-          ? data.toString()
-          : data
+        const result = `${data}`
 
         setCallResult(result)
         setIsLoading(false)
@@ -85,16 +82,12 @@ const ContractMethodForm: FC<IFormProps> = ({
           functionName: method.name,
           args: methodArgs,
           chainId: chainId,
-          overrides: {
-            from: account,
-            value: ethers.BigNumber.from(value),
-          },
+          account,
+          value: BigInt(value),
         })
-        const data = await writeContract<Abi, string, ethers.Signer>(config)
+        const data = await writeContract<Abi, string>(config)
 
-        const result = ethers.BigNumber.isBigNumber(data)
-          ? data.toString()
-          : data
+        const result = `${data}`
 
         setCallResult(result.toString())
         setIsLoading(false)
