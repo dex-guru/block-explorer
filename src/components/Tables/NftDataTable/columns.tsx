@@ -12,17 +12,6 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
   {
-    accessor: 'operatorAddress',
-    title: 'Operator Address',
-    modifier: 'address',
-    render: (data) =>
-      data.operatorAddress ? (
-        <Address address={data.operatorAddress} type="account" isCopy />
-      ) : (
-        <span className={styles.muted}>–</span>
-      ),
-  },
-  {
     accessor: 'blockTimestamp',
     title: 'Age',
     render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
@@ -46,14 +35,8 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
       ) : null,
   },
   {
-    accessor: 'amounts',
-    title: 'Amounts',
-    type: 'number',
-    render: (data) => financialFormat(data.value),
-  },
-  {
     accessor: 'tokenAddress',
-    title: 'Token',
+    title: 'Item',
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (

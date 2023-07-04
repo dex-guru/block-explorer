@@ -115,6 +115,8 @@ const AddressView: FC<IAddressViewProps> = ({
               tabs={[
                 {
                   title: 'Transactions',
+                  tooltip:
+                    'Transactions where an EOA (Externally Owned Address aka a wallet address) sends ETH directly to another EOA.',
                   value: '',
                   to: pathname,
                   content: (
@@ -125,7 +127,8 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
 
                 {
-                  title: 'ERC-20 Token TXns',
+                  title: 'Token TXs (ERC-20)',
+                  tooltip: 'Transactions with ERC-20 tokens.',
                   value: 'tokentxns',
                   to: `${pathname}?tab=tokentxns`,
                   content: (
