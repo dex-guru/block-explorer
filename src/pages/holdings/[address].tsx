@@ -41,15 +41,6 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
       value: financialFormat(tokenHoldingsStats?.tokenCount || 0),
     },
     {
-      title: 'Assets Total',
-      value: (
-        <Value
-          value={financialFormat(tokenHoldingsStats?.totalNative || 0)}
-          delta={(tokenHoldingsStats?.change24H || 0) * 100}
-        />
-      ),
-    },
-    {
       title: 'Assets Value',
       value: (
         <Value
