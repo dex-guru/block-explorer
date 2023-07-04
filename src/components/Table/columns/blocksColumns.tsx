@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import styles from '../Table.module.scss'
-import { BlockModel } from '@/__generated__/resolvers-types'
+import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import {
@@ -9,7 +9,9 @@ import {
   getNormalizedValue,
 } from '@/lib/utils'
 
-export const blocksColumns: IColumn<BlockModel>[] = [
+export const blocksColumns: (
+  chainConfig: ChainConfigModel
+) => IColumn<BlockModel>[] = (chainConfig) => [
   {
     accessor: 'number',
     title: 'Block',
@@ -79,7 +81,13 @@ export const blocksColumns: IColumn<BlockModel>[] = [
     type: 'number',
     modifier: 'block-baseFee',
     render: (data) => (
-      <Value value={getNormalizedValue(data.baseFeePerGas || 0)} />
+      <Value
+        value={getNormalizedValue(
+          data.baseFeePerGas || 0,
+          chainConfig.nativeCurrency.decimals - 9
+        )}
+        suffix={<>&nbsp;{chainConfig.gasUnit}</>}
+      />
     ),
   },
 ]
