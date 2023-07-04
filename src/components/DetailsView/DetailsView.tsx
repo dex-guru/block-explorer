@@ -5,11 +5,13 @@ import Heading from '../Heading'
 import Label from '../Label'
 import OpenWith from '../OpenWith'
 import { DetailsViewProps } from './types'
+import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
 
 const DetailsView: FC<DetailsViewProps> = ({
   title,
   address,
+  isVerified,
   icon,
   tag,
   className,
@@ -25,6 +27,7 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!address && (
           <>
             <Heading caption={address} size="lg" className={styles.address} />
+            {isVerified && <IconVerify className={styles.verified} />}
             <Copy text={address} />
           </>
         )}

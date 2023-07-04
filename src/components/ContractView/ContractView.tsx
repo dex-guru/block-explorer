@@ -230,6 +230,7 @@ const ContractView: FC<IContractViewProps> = ({
             icon={addressIcon}
             title={contractTitle || 'Contract'}
             address={checkSumAddress}
+            isVerified={hasSources}
             tag="Token Contract"
             type="address"
             chainConfig={chain.config}
