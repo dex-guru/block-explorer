@@ -27,7 +27,7 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!address && (
           <>
             <Heading caption={address} size="lg" className={styles.address} />
-            {isVerified && <IconVerify className={styles.verified} />}
+            {!!isVerified && <IconVerify className={styles.verified} />}
             <Copy text={address} />
           </>
         )}
