@@ -56,11 +56,6 @@ export const txsColumns = (
     type: 'number',
     render: (data) => {
       const value = Number(data.value)
-
-      if (!value) {
-        return <span className={styles.muted}>0</span>
-      }
-
       const bigValue = new BigNumber(value)
 
       return (

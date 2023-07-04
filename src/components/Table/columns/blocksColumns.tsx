@@ -3,6 +3,7 @@ import styles from '../Table.module.scss'
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -27,7 +28,12 @@ export const blocksColumns: (
   },
   {
     accessor: 'transactionCount',
-    title: 'Txn',
+    title: (
+      <>
+        Txn{' '}
+        <TooltipAnchor tooltip="A total number of transactions found in the block." />
+      </>
+    ),
     type: 'center',
     modifier: 'block-txs',
     render: (data) => {
