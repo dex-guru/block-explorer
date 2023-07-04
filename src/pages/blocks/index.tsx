@@ -15,7 +15,10 @@ import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+} from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
 const perPage = [5, 10, 25, 50, 100]
@@ -83,7 +86,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
                 title: 'Network Utilization',
                 value: (
                   <Value
-                    value={financialFormatLowValueHighPrecision(
+                    value={financialFormat(
                       props?.blockStats?.networkUtilization24H
                     )}
                     suffix="%"
