@@ -1,8 +1,6 @@
-import styles from '../../../pages/Pages.module.scss'
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import { financialFormat } from '@/lib/utils'
 
 export const nftColumns: IColumn<Erc721TransferModel>[] = [
   {
