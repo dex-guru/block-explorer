@@ -95,7 +95,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
           <DataTable
             isLoading={loading}
-            columns={blocksColumns}
+            columns={blocksColumns(props.chainConfig)}
             data={blocks}
             total={props?.chainStats?.lastBlockNumber || 0}
             perPage={perPage[1]}

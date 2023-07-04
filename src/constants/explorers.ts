@@ -59,7 +59,7 @@ const ExplorersData: Record<Explorers, ExplorerData> = {
   optimismExplorer: {
     id: 'optimismExplorer',
     address_path: '/address/:address',
-    display_name: 'The Optimism Explore',
+    display_name: 'The Optimism Explorer',
     logo_uri: 'https://assets-stage.dex.guru/icons/chain-10.svg',
     token_path: '/token/:address',
     tx_path: '/tx/:tx',
