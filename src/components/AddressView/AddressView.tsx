@@ -10,7 +10,6 @@ import { IAddressViewProps } from './types'
 import {
   Avatar,
   DetailsView,
-  Grid,
   Page,
   Properties,
   TabPanel,
