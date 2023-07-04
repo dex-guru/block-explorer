@@ -1,8 +1,6 @@
-import styles from '../../../pages/Pages.module.scss'
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
 import { Address, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
-import { financialFormat } from '@/lib/utils'
 
 export const nftColumns: IColumn<Erc721TransferModel>[] = [
   {
@@ -10,17 +8,6 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
     title: 'Txn Hash',
     modifier: 'address',
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
-  },
-  {
-    accessor: 'operatorAddress',
-    title: 'Operator Address',
-    modifier: 'address',
-    render: (data) =>
-      data.operatorAddress ? (
-        <Address address={data.operatorAddress} type="account" isCopy />
-      ) : (
-        <span className={styles.muted}>–</span>
-      ),
   },
   {
     accessor: 'blockTimestamp',
@@ -46,14 +33,8 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
       ) : null,
   },
   {
-    accessor: 'amounts',
-    title: 'Amounts',
-    type: 'number',
-    render: (data) => financialFormat(data.value),
-  },
-  {
     accessor: 'tokenAddress',
-    title: 'Token',
+    title: 'Item',
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (

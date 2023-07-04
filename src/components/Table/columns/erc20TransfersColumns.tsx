@@ -13,7 +13,7 @@ export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
     title: (
       <>
         Out{' '}
-        <TooltipAnchor tooltip="Sent tokens and the address it was sent from" />
+        <TooltipAnchor tooltip="The address where the token(s) were sent from." />
       </>
     ),
     modifier: 'address',
@@ -25,8 +25,7 @@ export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
     accessor: 'toAddress',
     title: (
       <>
-        In{' '}
-        <TooltipAnchor tooltip="Received tokens and the address that received them" />
+        In <TooltipAnchor tooltip="The address that received the token(s)." />
       </>
     ),
     modifier: 'address',

@@ -5,6 +5,7 @@ import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, IconNoIcon, Label, TimeAgo } from '@/components'
 import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
 
@@ -17,7 +18,7 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'eventType',
-    title: 'Event',
+    title: 'Method',
     modifier: 'address',
     render: (data) => (
       <Label className={clsx(styles.tag, styles[data.eventType])}>
@@ -32,7 +33,12 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'fromAddress',
-    title: 'From',
+    title: (
+      <>
+        Out{' '}
+        <TooltipAnchor tooltip="The address where the token(s) were sent from." />
+      </>
+    ),
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
@@ -41,7 +47,11 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'toAddress',
-    title: 'To',
+    title: (
+      <>
+        In <TooltipAnchor tooltip="The address that received the token(s)." />
+      </>
+    ),
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
@@ -50,7 +60,7 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   },
   {
     accessor: 'amounts',
-    title: 'Amounts',
+    title: 'Quantity',
     type: 'number',
     render: (data) => {
       if (!data.toAddress) {

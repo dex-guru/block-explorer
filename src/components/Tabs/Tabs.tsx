@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import Button from '../Button'
+import TooltipAnchor from '../TooltipAnchor'
 import { TabsProps } from './types'
 import styles from './Tabs.module.scss'
 
@@ -29,6 +30,14 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
         item.value === currentValue ||
         (item.value === ('' as unknown as T) && // tab with value '' shouldn't have url query param
           currentValue === undefined)
+
+      const tooltip = !!item.tooltip ? (
+        <>
+          {' '}
+          <TooltipAnchor tooltip={item.tooltip} />
+        </>
+      ) : null
+
       return (
         <Button
           key={index}
@@ -40,7 +49,12 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
             styles.tab
           )}
           to={item.to}
-          caption={item.title}
+          caption={
+            <>
+              {item.title}
+              {tooltip}
+            </>
+          }
           indicator={item.indicator}
           icon={item.icon}
           hidden={item.hidden}

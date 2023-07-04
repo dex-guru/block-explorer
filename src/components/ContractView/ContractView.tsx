@@ -477,6 +477,8 @@ const ContractView: FC<IContractViewProps> = ({
               tabs={[
                 {
                   title: 'Transactions',
+                  tooltip:
+                    'Transactions where an EOA (Externally Owned Address aka a wallet address) sends ETH directly to another EOA.',
                   value: '',
                   to: pathname,
                   content: (
@@ -486,16 +488,20 @@ const ContractView: FC<IContractViewProps> = ({
                   ),
                 },
 
-                {
-                  title: 'Holders',
-                  value: 'balances',
-                  to: { pathname, query: { tab: 'balances' } },
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <HoldersDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
+                ...(type === 'token'
+                  ? [
+                      {
+                        title: 'Holders',
+                        value: 'balances',
+                        to: { pathname, query: { tab: 'balances' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <HoldersDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
 
                 ...(type === 'contract'
                   ? [

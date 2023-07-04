@@ -65,14 +65,14 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
 
   {
     accessor: 'change24H',
-    title: 'Change, 24h',
+    title: 'Price Change, 24h',
     type: 'number',
     render: (data) => <Delta value={data.change24H * 100} />,
   },
 
   {
     accessor: 'value',
-    title: 'Value',
+    title: 'Value in USD',
     type: 'number',
     render: (data) => financialFormat(data.value),
   },
