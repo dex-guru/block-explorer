@@ -5,6 +5,7 @@ import { ChainConfigModel } from '@/__generated__/resolvers-types'
 export type DetailsViewProps = {
   title: ReactNode
   address?: string
+  isVerified?: boolean
   icon?: ReactNode
   tag?: string
   children?: ReactNode | ReactNode[]
