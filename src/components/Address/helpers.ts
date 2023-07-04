@@ -52,7 +52,7 @@ export const AddressValues: Record<AddressType, AddressValueProps> = {
       return getShortAddress(address)
     },
     url: (address: string) => {
-      return `/address/${address}`
+      return `/token/${address}`
     },
     canBeShort: false,
   },

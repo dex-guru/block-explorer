@@ -10,7 +10,6 @@ import { IAddressViewProps } from './types'
 import {
   Avatar,
   DetailsView,
-  Grid,
   Page,
   Properties,
   TabPanel,
@@ -79,47 +78,38 @@ const AddressView: FC<IAddressViewProps> = ({
             type="address"
             chainConfig={chain.config}
           >
-            <Grid>
-              <Properties
-                data={[
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo?.nativeBalance)}
-                        suffix={
-                          <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
-                        }
-                      />
-                    ),
-                  },
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Value:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo?.nativeBalanceUSD)}
-                        prefix="$"
-                      />
-                    ),
-                  },
-                ]}
-              />
-
-              <Properties
-                data={[
-                  {
-                    title: 'Tokens:',
-                    value: (
-                      <AddressWallet
-                        className={styles.addressWallet}
-                        address={checkSumAddress}
-                        tokenHoldingsStats={tokenHoldingsStats}
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </Grid>
+            <Properties
+              data={[
+                {
+                  title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo?.nativeBalance)}
+                      suffix={<>&nbsp;{chain?.config?.nativeCurrency.symbol}</>}
+                    />
+                  ),
+                },
+                {
+                  title: `${chain?.config?.nativeCurrency.symbol} Value:`,
+                  value: (
+                    <Value
+                      value={financialFormat(addressInfo?.nativeBalanceUSD)}
+                      prefix="$"
+                    />
+                  ),
+                },
+                {
+                  title: 'Tokens:',
+                  value: (
+                    <AddressWallet
+                      className={styles.addressWallet}
+                      address={checkSumAddress}
+                      tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
+                },
+              ]}
+            />
 
             <TabPanel
               tabs={[
