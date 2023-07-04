@@ -67,6 +67,8 @@ const AddressWallet: FC<AddressWalletProps> = ({
         </div>
         <Button
           className={styles.link}
+          data-tooltip-content="View all token holdings"
+          data-tooltip-id="app-tooltip"
           to={`/holdings/${address}`}
           icon={<IconWallet className={styles.wallet} />}
         />

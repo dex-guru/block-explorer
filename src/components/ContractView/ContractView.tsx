@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
@@ -12,6 +13,7 @@ import { isAddress, getAddress } from 'viem'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
+import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { LoadingCard } from '../Loading'
@@ -41,6 +43,7 @@ import {
   Label,
   LineChart,
   Message,
+  IconContract,
 } from '@/components'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
@@ -61,13 +64,11 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
   ssr: false,
 })
-const EventsDataTable = dynamic(() => import('../Tables/EventsDataTable'), {
-  ssr: false,
-})
 
 const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
+  type = 'contract',
   addressInfo,
   chain,
   tokenHoldingsStats,
@@ -176,16 +177,29 @@ const ContractView: FC<IContractViewProps> = ({
     )
   }
 
-  const addressIcon = addressInfo.logoURL ? (
+  const addressIcon =
+    type === 'token' && addressInfo.logoURL ? (
+      <Image
+        src={addressInfo.logoURL}
+        alt={addressInfo.symbol || ''}
+        className={styles.icon}
+        width={32}
+        height={32}
+      />
+    ) : (
+      <Avatar address={address} className={styles.icon} />
+    )
+
+  const tokenIcon = addressInfo.logoURL ? (
     <Image
       src={addressInfo.logoURL}
       alt={addressInfo.symbol || ''}
-      className={styles.icon}
+      className={styles.tokenIcon}
       width={32}
       height={32}
     />
   ) : (
-    <Avatar address={address} className={styles.icon} />
+    <Avatar address={address} className={styles.tokenIcon} />
   )
 
   const contractTitle = addressInfo.symbol
@@ -195,7 +209,7 @@ const ContractView: FC<IContractViewProps> = ({
     : ''
   const pageTitle = `${
     contractTitle ? `${contractTitle} contract` : 'Contract'
-  } ${checkSumAddress} on ${chain.config.chain}`
+  } ${checkSumAddress} on ${chain.config.name}`
 
   return (
     <WagmiConfig config={wagmiConfig}>
@@ -222,33 +236,159 @@ const ContractView: FC<IContractViewProps> = ({
           >
             <Grid>
               <Properties
-                title="Contract Overview:"
+                title="Overview:"
                 header={
                   <Label className={pageStyles.contractName} type="accent">
                     {addressInfo.name}
                   </Label>
                 }
                 data={[
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo.nativeBalance)}
-                        suffix={
-                          <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
-                        }
-                      />
-                    ),
-                  },
-                  {
-                    title: `${chain?.config?.nativeCurrency.symbol} Value:`,
-                    value: (
-                      <Value
-                        value={financialFormat(addressInfo.nativeBalanceUSD)}
-                        prefix="$"
-                      />
-                    ),
-                  },
+                  ...(type === 'contract'
+                    ? [
+                        {
+                          title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
+                          value: (
+                            <Value
+                              value={financialFormat(addressInfo.nativeBalance)}
+                              suffix={
+                                <>
+                                  &nbsp;{chain?.config?.nativeCurrency.symbol}
+                                </>
+                              }
+                            />
+                          ),
+                        },
+                        {
+                          title: `${chain?.config?.nativeCurrency.symbol} Value:`,
+                          value: (
+                            <Value
+                              value={financialFormat(
+                                addressInfo.nativeBalanceUSD
+                              )}
+                              prefix="$"
+                            />
+                          ),
+                        },
+                        {
+                          title: 'Token Holdings:',
+                          value: (
+                            <AddressWallet
+                              address={address}
+                              tokenHoldingsStats={tokenHoldingsStats}
+                              className={pageStyles.addressWallet}
+                            />
+                          ),
+                        },
+                      ]
+                    : []),
+
+                  ...(type === 'token'
+                    ? [
+                        {
+                          title: 'FDV / Max Supply:',
+                          value: (
+                            <Separated>
+                              <Value
+                                value={financialFormat(
+                                  balancesStats?.fullyDilutedValuation || 0
+                                )}
+                                prefix="$"
+                              />
+                              <Value
+                                value={financialFormat(
+                                  balancesStats?.maxTotalSupply || 0
+                                )}
+                              />
+                            </Separated>
+                          ),
+                        },
+                        {
+                          title: 'Total Transfers:',
+                          value: financialFormat(
+                            balancesStats?.totalTransfers || 0
+                          ),
+                        },
+                        {
+                          title: 'Holders:',
+                          value: (
+                            <div className={styles.holders}>
+                              <Separated>
+                                <Value
+                                  value={financialFormat(
+                                    balancesStats?.holders || 0
+                                  )}
+                                  delta={
+                                    balancesStats?.holdersChange
+                                      ? (balancesStats.holdersChange || 0) * 100
+                                      : undefined
+                                  }
+                                />
+                                <LineChart
+                                  className={styles.holdersChart}
+                                  data={holdersSeries}
+                                  options={{
+                                    axis: {
+                                      x: {
+                                        type: 'number',
+                                        dataKey: 'timestamp',
+                                        hide: true,
+                                        tickFormatter: (value: number) => {
+                                          const date = new Date(value * 1000)
+                                          return date.toLocaleDateString(
+                                            'en-GB',
+                                            {
+                                              timeZone: 'UTC',
+                                              month: 'short',
+                                              year: '2-digit',
+                                              day: '2-digit',
+                                            }
+                                          )
+                                        },
+                                        axisLine: false,
+                                        tickLine: false,
+                                      },
+                                      y: {
+                                        hide: true,
+                                        tickFormatter: (value: number) =>
+                                          financialFormat(value, {
+                                            roundBigNumbersFrom: 'K',
+                                          }),
+                                        axisLine: false,
+                                        tickLine: false,
+                                      },
+                                    },
+                                  }}
+                                />
+                              </Separated>
+                            </div>
+                          ),
+                        },
+                      ]
+                    : []),
+                ]}
+              />
+
+              <Properties
+                title="More Info:"
+                data={[
+                  ...(type === 'token'
+                    ? [
+                        {
+                          title: 'Price:',
+                          value: (
+                            <Value
+                              value={financialFormat(balancesStats?.price || 0)}
+                              prefix="Price: $"
+                              delta={
+                                balancesStats?.priceChange
+                                  ? (balancesStats.priceChange || 0) * 100
+                                  : undefined
+                              }
+                            />
+                          ),
+                        },
+                      ]
+                    : []),
 
                   ...(contractCreator
                     ? [
@@ -278,105 +418,57 @@ const ContractView: FC<IContractViewProps> = ({
                         },
                       ]
                     : []),
-                ]}
-              />
 
-              <Properties
-                title="Balances:"
-                header={
-                  <Value
-                    value={financialFormat(balancesStats?.price || 0)}
-                    prefix="Price: $"
-                    delta={
-                      balancesStats?.priceChange
-                        ? (balancesStats.priceChange || 0) * 100
-                        : undefined
-                    }
-                  />
-                }
-                data={[
-                  {
-                    title: 'Token Holdings:',
-                    value: (
-                      <AddressWallet
-                        address={address}
-                        tokenHoldingsStats={tokenHoldingsStats}
-                        className={pageStyles.addressWallet}
-                      />
-                    ),
-                  },
-                  {
-                    title: 'Holders:',
-                    value: (
-                      <div className={styles.holders}>
-                        <Separated>
-                          <Value
-                            value={financialFormat(balancesStats?.holders || 0)}
-                            delta={
-                              balancesStats?.holdersChange
-                                ? (balancesStats.holdersChange || 0) * 100
-                                : undefined
-                            }
-                          />
-                          <LineChart
-                            className={styles.holdersChart}
-                            data={holdersSeries}
-                            options={{
-                              axis: {
-                                x: {
-                                  type: 'number',
-                                  dataKey: 'timestamp',
-                                  hide: true,
-                                  tickFormatter: (value: number) => {
-                                    const date = new Date(value * 1000)
-                                    return date.toLocaleDateString('en-GB', {
-                                      timeZone: 'UTC',
-                                      month: 'short',
-                                      year: '2-digit',
-                                      day: '2-digit',
-                                    })
-                                  },
-                                  axisLine: false,
-                                  tickLine: false,
-                                },
-                                y: {
-                                  hide: true,
-                                  tickFormatter: (value: number) =>
-                                    financialFormat(value, {
-                                      roundBigNumbersFrom: 'K',
-                                    }),
-                                  axisLine: false,
-                                  tickLine: false,
-                                },
-                              },
-                            }}
-                          />
-                        </Separated>
-                      </div>
-                    ),
-                  },
-                  {
-                    title: 'FDV / Max Supply:',
-                    value: (
-                      <Separated>
-                        <Value
-                          value={financialFormat(
-                            balancesStats?.fullyDilutedValuation || 0
-                          )}
-                          prefix="$"
-                        />
-                        <Value
-                          value={financialFormat(
-                            balancesStats?.maxTotalSupply || 0
-                          )}
-                        />
-                      </Separated>
-                    ),
-                  },
-                  {
-                    title: 'Total Transfers:',
-                    value: financialFormat(balancesStats?.totalTransfers || 0),
-                  },
+                  ...(type === 'contract' && addressInfo.symbol
+                    ? [
+                        {
+                          title: 'Token Tracker:',
+                          value: (
+                            <div>
+                              <Link
+                                href={
+                                  AddressValues['token'].url(address || '') ||
+                                  ''
+                                }
+                                className={styles.token}
+                              >
+                                {tokenIcon}{' '}
+                                <span className={styles.tokenName}>
+                                  {addressInfo.name} ({addressInfo.symbol})
+                                </span>{' '}
+                                <span className={styles.tokenPrice}>
+                                  (@$
+                                  {financialFormat(balancesStats?.price || 0)})
+                                </span>
+                              </Link>
+                            </div>
+                          ),
+                        },
+                      ]
+                    : []),
+
+                  ...(type === 'token'
+                    ? [
+                        {
+                          title: 'Token Contract:',
+                          value: (
+                            <Value
+                              className={styles.token}
+                              value={
+                                <Address
+                                  address={address}
+                                  type="account"
+                                  isCopy
+                                />
+                              }
+                              icon={
+                                <IconContract className={styles.contractIcon} />
+                              }
+                            />
+                          ),
+                        },
+                      ]
+                    : []),
                 ]}
               />
             </Grid>
@@ -405,27 +497,30 @@ const ContractView: FC<IContractViewProps> = ({
                   ),
                 },
 
-                {
-                  title: 'ERC-20 Token TXns',
-                  value: 'tokentxns',
-                  to: { pathname, query: { tab: 'tokentxns' } },
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Erc20DataTable address={address} />
-                    </Suspense>
-                  ),
-                },
-
-                {
-                  title: 'NFT Token TXns',
-                  value: 'nfttxns',
-                  to: { pathname, query: { tab: 'nfttxns' } },
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <NftDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
+                ...(type === 'contract'
+                  ? [
+                      {
+                        title: 'ERC-20 Token TXns',
+                        value: 'tokentxns',
+                        to: { pathname, query: { tab: 'tokentxns' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <Erc20DataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
+                      {
+                        title: 'NFT Token TXns',
+                        value: 'nfttxns',
+                        to: { pathname, query: { tab: 'nfttxns' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <NftDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
 
                 {
                   title: 'Contract',
@@ -433,16 +528,6 @@ const ContractView: FC<IContractViewProps> = ({
                   value: 'code',
                   isActive: isSubTab,
                   to: `${pathname}?tab=code`,
-                },
-                {
-                  title: 'Events',
-                  value: 'events',
-                  to: { pathname, query: { tab: 'events' } },
-                  content: (
-                    <Suspense>
-                      <EventsDataTable address={address} />
-                    </Suspense>
-                  ),
                 },
                 {
                   title: 'Analytics',

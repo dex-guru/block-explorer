@@ -68,3 +68,26 @@
   height: 32px !important;
   width: 160px !important;
 }
+
+.token {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+
+  &Icon {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+  }
+
+  &Price {
+    composes: muted from '../../styles/_common.scss';
+  }
+}
+
+.contract {
+  &Icon {
+    width: 16px;
+    height: 16px;
+  }
+}
