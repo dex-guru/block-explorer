@@ -8,6 +8,7 @@ import {
 export interface IContractViewProps {
   address: string
   tab: string | string[] | undefined
+  type?: 'token' | 'contract'
   addressInfo: AddressModel
   chain: {
     stats: ChainStatsModel
