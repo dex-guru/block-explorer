@@ -43,7 +43,7 @@ const AddressView: FC<IAddressViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = addressInfo?.address
-    ? `Address ${checkSumAddress}`
+    ? `Address ${checkSumAddress} on ${chain.config.name}`
     : isAddress(address)
     ? `No address ${address}`
     : 'Not an address'

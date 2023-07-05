@@ -12,4 +12,5 @@ export type DetailsViewProps = {
   className?: string
   type?: OpenWithType
   chainConfig?: ChainConfigModel
+  isCopy?: boolean
 }

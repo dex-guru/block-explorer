@@ -44,6 +44,7 @@ import {
   LineChart,
   Message,
   IconContract,
+  IconNoIcon,
 } from '@/components'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
@@ -199,17 +200,33 @@ const ContractView: FC<IContractViewProps> = ({
       height={32}
     />
   ) : (
-    <Avatar address={address} className={styles.tokenIcon} />
+    <IconNoIcon className={styles.tokenIcon} />
   )
 
-  const contractTitle = addressInfo.symbol
-    ? `${addressInfo.symbol}${
-        addressInfo.name !== addressInfo.symbol ? ` (${addressInfo.name})` : ''
-      }`
-    : ''
+  const detailsTitle =
+    type === 'token' ? (
+      <>
+        Token {addressInfo.symbol}
+        {addressInfo.name !== addressInfo.symbol ? (
+          <>
+            {' '}
+            <span className={styles.muted}>(${addressInfo.name})</span>
+          </>
+        ) : null}
+      </>
+    ) : (
+      'Contract'
+    )
+
   const pageTitle = `${
-    contractTitle ? `${contractTitle} contract` : 'Contract'
-  } ${checkSumAddress} on ${chain.config.name}`
+    type === 'token'
+      ? `Token ${addressInfo.symbol}${
+          addressInfo.name !== addressInfo.symbol
+            ? ` (${addressInfo.name})`
+            : ''
+        }`
+      : `Contract ${checkSumAddress}`
+  } on ${chain.config.name}`
 
   return (
     <WagmiConfig config={wagmiConfig}>
@@ -228,21 +245,21 @@ const ContractView: FC<IContractViewProps> = ({
         <Page chainConfig={chain.config}>
           <DetailsView
             icon={addressIcon}
-            title={contractTitle || 'Contract'}
-            address={checkSumAddress}
+            title={detailsTitle}
+            address={type !== 'token' ? checkSumAddress : undefined}
             isVerified={hasSources}
-            tag="Token Contract"
+            tag={
+              type === 'contract'
+                ? `${addressInfo.symbol ? 'Token' : 'Smart'} Contract`
+                : undefined
+            }
             type="address"
             chainConfig={chain.config}
+            isCopy={type === 'contract'}
           >
             <Grid>
               <Properties
                 title="Overview:"
-                header={
-                  <Label className={pageStyles.contractName} type="accent">
-                    {addressInfo.name}
-                  </Label>
-                }
                 data={[
                   ...(type === 'contract'
                     ? [
