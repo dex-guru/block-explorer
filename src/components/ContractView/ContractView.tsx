@@ -40,7 +40,6 @@ import {
   DateTime,
   Comments,
   Separated,
-  Label,
   LineChart,
   Message,
   IconContract,
