@@ -209,7 +209,7 @@ const ContractView: FC<IContractViewProps> = ({
         {addressInfo.name !== addressInfo.symbol ? (
           <>
             {' '}
-            <span className={styles.muted}>(${addressInfo.name})</span>
+            <span className={styles.muted}>({addressInfo.name})</span>
           </>
         ) : null}
       </>
