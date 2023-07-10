@@ -74,7 +74,8 @@ const AddressView: FC<IAddressViewProps> = ({
             icon={<Avatar address={address} />}
             title="Address"
             address={address}
-            tag="Address"
+            tag="EOA"
+            tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}
           >
@@ -116,7 +117,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 {
                   title: 'Transactions',
                   tooltip:
-                    'Transactions where an EOA (Externally Owned Address aka a wallet address) sends ETH directly to another EOA.',
+                    'The tab shows a list of incoming and outgoing ETH transactions associated with the address, organized in chronological order.',
                   value: '',
                   to: pathname,
                   content: (
@@ -127,7 +128,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
 
                 {
-                  title: 'Token TXs (ERC-20)',
+                  title: 'ERC-20 Token TXns',
                   tooltip: 'Transactions with ERC-20 tokens.',
                   value: 'tokentxns',
                   to: `${pathname}?tab=tokentxns`,
@@ -163,7 +164,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   to: `${pathname}?tab=comments`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Card>Some comments here soon</Card>
+                      <Card>Comments feature is coming soon</Card>
                     </Suspense>
                   ),
                 },

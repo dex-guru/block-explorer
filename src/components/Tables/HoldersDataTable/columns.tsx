@@ -3,7 +3,7 @@ import {
   Address,
   IconContract,
   IconLiquidityPool,
-  IconQuestion,
+  IconNoIcon,
   IconWallet,
   Label,
   Tile,
@@ -32,7 +32,7 @@ export const holdersColumns: IColumn<TokenBalanceModel>[] = [
           Icon = IconLiquidityPool
           break
         default:
-          Icon = IconQuestion
+          Icon = IconNoIcon
       }
 
       return (
@@ -53,10 +53,16 @@ export const holdersColumns: IColumn<TokenBalanceModel>[] = [
 
   {
     accessor: 'percentage',
-    title: '%',
+    title: 'Supply Owned',
     type: 'number',
     render: (data) => (
-      <Value value={financialFormat((data.percentage || 0) * 100)} suffix="%" />
+      <>
+        <Value
+          value={financialFormat((data.percentage || 0) * 100)}
+          suffix="%"
+        />
+        <progress max="100" value={(data.percentage || 0) * 100} />
+      </>
     ),
   },
 

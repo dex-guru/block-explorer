@@ -495,7 +495,7 @@ const ContractView: FC<IContractViewProps> = ({
                 {
                   title: 'Transactions',
                   tooltip:
-                    'Transactions where an EOA (Externally Owned Address aka a wallet address) sends ETH directly to another EOA.',
+                    'The tab shows a list of incoming and outgoing ETH transactions associated with the address, organized in chronological order.',
                   value: '',
                   to: pathname,
                   content: (
