@@ -3,15 +3,16 @@ import clsx from 'clsx'
 import { MessageProps, MessageType } from './types'
 import { Button } from '@/components'
 import IconDanger from '@/images/icons/danger.svg'
-import IconInfo from '@/images/icons/info.svg'
+import IconIdea from '@/images/icons/idea.svg'
 import IconQuestion from '@/images/icons/question.svg'
+import IconSuccess from '@/images/icons/success.svg'
 import IconWarning from '@/images/icons/warning.svg'
 import styles from './Message.module.scss'
 
 const icons: Record<MessageType, ReactNode> = {
-  info: <IconInfo className={styles.icon} />,
+  info: <IconIdea className={styles.icon} />,
   danger: <IconDanger className={styles.icon} />,
-  success: <IconInfo className={styles.icon} />,
+  success: <IconSuccess className={styles.icon} />,
   warn: <IconWarning className={styles.icon} />,
   prompt: <IconQuestion className={styles.icon} />,
 }
