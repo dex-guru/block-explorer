@@ -7962,10 +7962,10 @@ react-syntax-highlighter@15.5.0:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
-react-tooltip@5.11.1:
-  version "5.11.1"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.11.1.tgz#75857ffaed1d13e3e35189934e8a373751fc78c0"
-  integrity sha512-+2a/DvmOlPQd5e1f3s32E/+vv4Tv4UmPxZfCyeVr4BeY3SRCEKGHiE36jH+UtqxSuRP9TKviwmhow4gNDRXCMQ==
+react-tooltip@5.18.0:
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.18.0.tgz#33e5880ef13e473def47714b17c21b3d77bf258a"
+  integrity sha512-qjDK/skUJJ27sc9lTWeNxp2rLzmenBTskSsRiDOCPnupGSz2GhL5IZxDizK/sOsk0hn5iSCywt+3jKxUJ3Y4Sw==
   dependencies:
     "@floating-ui/dom" "^1.0.0"
     classnames "^2.3.0"

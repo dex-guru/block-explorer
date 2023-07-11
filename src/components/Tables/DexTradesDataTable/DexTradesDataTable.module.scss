@@ -1,0 +1,59 @@
+.tag {
+  text-transform: capitalize;
+}
+
+.muted {
+  composes: muted from '../../../styles/_common.scss';
+}
+
+.transfer {
+  composes: info from '../../Label/Label.module.scss';
+}
+
+.mint {
+  composes: mint from '../../Label/Label.module.scss';
+}
+
+.burn {
+  composes: burn from '../../Label/Label.module.scss';
+}
+
+.swap {
+  composes: swap from '../../Label/Label.module.scss';
+}
+
+.buy {
+  composes: buy from '../../Label/Label.module.scss';
+}
+
+.sell {
+  composes: sell from '../../Label/Label.module.scss';
+}
+
+.error {
+  composes: error from '../../Empty/Empty.module.scss';
+}
+
+.retry {
+  composes: lg from '../../Button/Button.module.scss';
+  composes: action from '../../Button/Button.module.scss';
+
+  display: block;
+  margin: auto;
+}
+
+.data {
+  composes: data from '../../Table/Table.module.scss';
+
+  &Row {
+    composes: dataRow from '../../Table/Table.module.scss';
+  }
+
+  &Value {
+    composes: dataValue from '../../Table/Table.module.scss';
+  }
+
+  &Number {
+    composes: dataNumber from '../../Table/Table.module.scss';
+  }
+}

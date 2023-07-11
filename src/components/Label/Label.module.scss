@@ -3,7 +3,7 @@
   --color-label-text: var(--color-text);
 
   width: max-content;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.25em;
   font-weight: 400;
@@ -50,7 +50,8 @@
 }
 
 .tag {
-  padding: 4px;
+  height: 24px;
+  padding: 4px 8px;
   min-width: 20px;
   justify-content: center;
   border-radius: var(--radii-sm);
@@ -58,20 +59,40 @@
 
 .success {
   background: var(--color-positive);
-  color: var(--color-bg-2);
 }
 
 .danger {
   background: var(--color-negative);
-  color: var(--color-bg-2);
 }
 
 .warn {
   background: var(--color-warn);
-  color: var(--color-bg-2);
 }
 
 .info {
   background: var(--color-info);
-  color: var(--color-bg-2);
+}
+
+.buy {
+  background: var(--color-positive);
+}
+
+.sell {
+  background: var(--color-negative);
+}
+
+.swap {
+  background: #3e4854;
+}
+
+.transfer {
+  background: #295985;
+}
+
+.burn {
+  background: #491619;
+}
+
+.mint {
+  background: #877b0d;
 }

@@ -1,10 +1,8 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address, IconNoIcon, Label, TimeAgo } from '@/components'
-import { AddressValues } from '@/components/Address/helpers'
+import { Address, Label, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
+import Token from '@/components/Token'
 import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
@@ -14,7 +12,13 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
     accessor: 'hash',
     title: 'Txn Hash',
     modifier: 'address',
-    render: (data) => <Address address={data.hash} type="tx" isCopy />,
+    render: (data) => (
+      <div className={styles.data}>
+        <div className={styles.dataRow}>
+          <Address address={data.hash} type="tx" isCopy />
+        </div>
+      </div>
+    ),
   },
   {
     accessor: 'eventType',
@@ -29,7 +33,13 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'blockTimestamp',
     title: 'Age',
-    render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
+    render: (data) => (
+      <div className={styles.data}>
+        <div className={styles.dataRow}>
+          <TimeAgo timestamp={data.blockTimestamp} />
+        </div>
+      </div>
+    ),
   },
   {
     accessor: 'fromAddress',
@@ -42,7 +52,11 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" isCopy />
+        <div className={styles.data}>
+          <div className={styles.dataRow}>
+            <Address address={data.fromAddress} type="account" isCopy />
+          </div>
+        </div>
       ) : null,
   },
   {
@@ -55,7 +69,11 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <Address address={data.toAddress} type="account" isCopy />
+        <div className={styles.data}>
+          <div className={styles.dataRow}>
+            <Address address={data.toAddress} type="account" isCopy />
+          </div>
+        </div>
       ) : null,
   },
   {
@@ -93,51 +111,17 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
         return null
       }
 
-      const values = AddressValues.token
-
       return (
         <div className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
-            const logo = data.tokenLogos[idx] ? (
-              <Image
-                src={data.tokenLogos[idx]}
-                width={24}
-                height={24}
-                alt={data.tokenSymbols[idx]}
-                className={styles.icon}
-              />
-            ) : (
-              <IconNoIcon className={styles.icon} />
-            )
-
             return (
               <div className={styles.dataRow} key={idx}>
-                <Link
-                  href={values.url(addr) || ''}
-                  className={styles.dataValue}
-                >
-                  {logo}
-
-                  <span className={styles.token}>
-                    <span className={styles.tokenSymbol}>
-                      <span className={styles.tokenSymbolCaption}>
-                        {data.tokenSymbols[idx]}
-                      </span>
-                    </span>
-
-                    <span
-                      className={styles.tokenName}
-                      data-tooltip-content={data.tokenNames[idx]}
-                      data-tooltip-id="app-tooltip"
-                    >
-                      (
-                      <span className={styles.tokenNameCaption}>
-                        {data.tokenNames[idx]}
-                      </span>
-                      )
-                    </span>
-                  </span>
-                </Link>
+                <Token
+                  address={addr}
+                  name={data.tokenNames[idx]}
+                  logo={data.tokenLogos[idx]}
+                  symbol={data.tokenSymbols[idx]}
+                />
               </div>
             )
           })}

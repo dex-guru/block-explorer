@@ -18,7 +18,7 @@ export const useBodyRows = <T,>(options: {
     options
 
   return data.map((dataItem, idx) => {
-    const cells = columns.map((column) => {
+    const cells = columns.map((column, idx) => {
       const className = clsx(
         styles[column.type || 'text'],
         styles[column.modifier || 'default']
@@ -31,7 +31,11 @@ export const useBodyRows = <T,>(options: {
         : column.placeholder || ''
 
       return (
-        <Cell th={isHeader} key={column.accessor} className={className}>
+        <Cell
+          th={isHeader}
+          key={`${column.accessor}-${idx}`}
+          className={className}
+        >
           {cellDisplay}
         </Cell>
       )
@@ -65,14 +69,14 @@ export const useHeader = <T,>(
   // onFilter?:()=>void,,
   rowClassName?: string
 ) => {
-  const cells = columns.map((column) => {
+  const cells = columns.map((column, idx) => {
     const className = clsx(
       styles[column.type || 'text'],
       styles[column.modifier || 'default']
     )
 
     return (
-      <Cell th={true} key={column.accessor} className={className}>
+      <Cell th={true} key={`${column.accessor}-${idx}`} className={className}>
         {column.title}
       </Cell>
     )

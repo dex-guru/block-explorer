@@ -58,6 +58,12 @@ const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
 const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'), {
   ssr: false,
 })
+const DexTradesDataTable = dynamic(
+  () => import('../Tables/DexTradesDataTable/'),
+  {
+    ssr: false,
+  }
+)
 const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
   ssr: false,
 })
@@ -517,6 +523,16 @@ const ContractView: FC<IContractViewProps> = ({
                           </Suspense>
                         ),
                       },
+                      {
+                        title: 'DEX Trades',
+                        value: 'trades',
+                        to: { pathname, query: { tab: 'trades' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <DexTradesDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
                     ]
                   : []),
 
@@ -547,7 +563,12 @@ const ContractView: FC<IContractViewProps> = ({
 
                 {
                   title: 'Contract',
-                  indicator: hasSources && <IconVerify />,
+                  indicator: hasSources && (
+                    <IconVerify
+                      data-tooltip-id="app-tooltip"
+                      data-tooltip-html="This contract has been verified through <a href='https://sourcify.dev/' rel='noopener noreferrer' target='_blank'>Sourcify</a>."
+                    />
+                  ),
                   value: 'code',
                   isActive: isSubTab,
                   to: `${pathname}?tab=code`,

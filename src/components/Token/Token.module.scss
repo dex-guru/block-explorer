@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  max-width: 100%;
+  gap: 4px;
+  vertical-align: middle;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  color: var(--color-muted);
+  border-radius: var(--radii-sm);
+}
+
+.content {
+  display: flex;
+  gap: 4px;
+}
+
+.nameCaption,
+.symbolCaption {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: text-bottom;
+}
+
+.name {
+  color: var(--color-muted);
+}
+
+.nameCaption {
+  max-width: 12ch;
+}
+
+.symbol {
+}
+
+.symbolCaption {
+  max-width: 8ch;
+}
