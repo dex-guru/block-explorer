@@ -607,12 +607,32 @@ const ContractView: FC<IContractViewProps> = ({
               {isSubTab && (
                 <Card>
                   {!isMatchLoading && !hasSources && abi && (
-                    <Message type="danger">
-                      This smart contract isn&apos;t verified, but we have a
-                      matching hash for the smart contract. Make sure you
-                      understand the risks of interacting with unverified smart
-                      contracts. You may lose your money!
-                    </Message>
+                    <>
+                      <Message type="danger">
+                        This smart contract is not verified according to{' '}
+                        <Link
+                          href="https://sourcify.dev/"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Sourcify
+                        </Link>
+                        . Make sure you understand the risks of interacting with
+                        unverified smart contracts.
+                      </Message>
+                      <Message type="info">
+                        As a contract owner, you can get your smart contract
+                        verified with Sourcify{' '}
+                        <Link
+                          href="/verifyContract"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          here
+                        </Link>
+                        .
+                      </Message>
+                    </>
                   )}
 
                   <TabPanel

@@ -10,21 +10,18 @@
   padding: 10px 16px 10px 8px;
   border-radius: var(--radii-lg);
   color: var(--color-message-text);
-  overflow: hidden;
-  position: relative;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  background: var(--color-message-bg);
 
-  &:before {
-    content: '';
-    background: var(--color-message-bg);
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.25;
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--color-accent);
+    }
   }
 }
 
@@ -42,10 +39,22 @@
   position: relative;
 }
 
+.success {
+  --color-message-bg: var(--color-success);
+}
+
 .danger {
-  --color-message-bg: var(--color-negative);
+  --color-message-bg: var(--color-danger);
 }
 
 .warn {
   --color-message-bg: var(--color-warn);
+}
+
+.info {
+  --color-message-bg: var(--color-info);
+}
+
+.prompt {
+  --color-message-bg: var(--color-prompt);
 }
