@@ -279,7 +279,7 @@ export const GET_BLOCKS_SHORT = gql`
 `
 
 export const GET_TRANSACTIONS_BY_HASH = gql`
-  query TransactionByHash($hash: String!, $eventsCount: Long) {
+  query TransactionByHash($hash: String!) {
     transactions(hash: $hash, first: 1, chainId: ${CHAIN_ID}) {
       blockHash
       blockNumber
@@ -303,19 +303,6 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       transactionIndex
       transactionType
       value
-    }
-    nftEvents(skip:0, first: $eventsCount, hash: $hash, chainId: ${CHAIN_ID}) {
-      data {
-        blockTimestamp
-        fromAddress
-        hash
-        operatorAddress
-        toAddress
-        tokenAddress
-        tokenId
-        value
-      }
-      total
     }
     chainStats(chainId: ${CHAIN_ID}) {
       lastBlockNumber
