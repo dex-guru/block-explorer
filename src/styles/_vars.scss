@@ -36,8 +36,11 @@
 html {
   --color-positive: #12b886;
   --color-negative: #ff646d;
-  --color-info: #46a6ff;
-  --color-warn: #c9b824;
+  --color-success: #279071;
+  --color-danger: #d8545b;
+  --color-info: #4b84b9;
+  --color-warn: #ac9f2a;
+  --color-prompt: #9c58c6;
   --color-neutral: var(--color-muted);
 
   --color-page-bg: var(--color-bg);
