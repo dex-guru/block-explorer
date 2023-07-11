@@ -14,6 +14,7 @@ const DetailsView: FC<DetailsViewProps> = ({
   isVerified,
   icon,
   tag,
+  tagTooltip,
   className,
   children,
   type,
@@ -32,8 +33,13 @@ const DetailsView: FC<DetailsViewProps> = ({
             {!!isCopy && <Copy text={address} />}
           </>
         )}
+        {!address && !!isVerified && <IconVerify className={styles.verified} />}
         <div className={styles.tools}></div>
-        {!!tag && <Label className={styles.tag}>{tag}</Label>}
+        {!!tag && (
+          <Label className={styles.tag} tooltip={tagTooltip}>
+            {tag}
+          </Label>
+        )}
         {!!type && !!address && !!chainConfig && (
           <OpenWith type={type} chainConfig={chainConfig} address={address} />
         )}

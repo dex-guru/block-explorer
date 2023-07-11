@@ -1,27 +1,27 @@
 .react-tooltip {
-  position: fixed;
-  opacity: 0;
-  visibility: hidden;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  transition: opacity 0.25s ease;
-  z-index: 65535;
-  background-color: var(--color-tooltip-bg);
-  color: var(--color-tooltip-text);
-  margin: 0;
-  pointer-events: none;
-  max-width: min(320px, 100vh);
-  word-wrap: break-word;
+  &#app-tooltip {
+    position: fixed;
+    opacity: 0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'IBM Plex Sans Condensed', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    transition: opacity 0.25s ease 0.5s;
+    z-index: 65535;
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-text);
+    margin: 0;
+    pointer-events: none;
+    max-width: min(320px, 100vh);
+    word-wrap: break-word;
 
-  &[class*=' styles-module_show'] {
-    transition-delay: 0s;
-    opacity: 1 !important;
-    visibility: visible !important;
+    &[class*='styles-module_show'] {
+      transition-delay: 0s;
+      opacity: 1 !important;
+    }
   }
 
   &-arrow {
@@ -31,5 +31,14 @@
     height: 16px;
     transform: rotate(45deg);
     z-index: -1;
+  }
+
+  [href] {
+    pointer-events: all;
+    text-decoration: underline;
+
+    &:hover {
+      color: var(--color-accent-a);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
@@ -34,42 +34,36 @@ import StopwatchIcon from '@/images/icons/stop-watch.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
-import { MAX_EVENTS_PER_PAGE, TxEventsData } from '@/pages/tx/[tx]'
+import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
 
 const TxOverview: FC<{
   data: TransactionModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
-  erc20Transfers: TxEventsData<Erc20EventModel>
-  erc20Actions: TxEventsData<Erc20EventModel>
-  nftEvents: TxEventsData<Erc721TransferModel>
-}> = ({
-  data,
-  chainConfig,
-  chainStats,
-  erc20Transfers,
-  erc20Actions,
-  nftEvents,
-}) => {
-  const [erc20TransfersData, setErc20TransfersData] = useState(
-    erc20Transfers.data || []
-  )
+}> = ({ data, chainConfig, chainStats }) => {
+  const [erc20TransfersData, setErc20TransfersData] = useState<
+    Erc20EventModel[]
+  >([])
   const [getErc2Events, { loading: loadingTransfers }] = useLazyQuery<{
     erc20Events: { total: number; data: Erc20EventModel[] }
   }>(GET_ERC20_EVENTS)
 
-  const [erc20ActionsData, setErc20ActionsData] = useState(
-    erc20Actions.data || []
+  const [erc20ActionsData, setErc20ActionsData] = useState<Erc20EventModel[]>(
+    []
   )
   const [getErc2Actions, { loading: loadingActions }] = useLazyQuery<{
     erc20Events: { total: number; data: Erc20EventModel[] }
   }>(GET_ERC20_EVENTS)
 
-  const [nftEventsData, setNftEventsData] = useState(nftEvents.data || [])
+  const [nftEventsData, setNftEventsData] = useState<Erc721TransferModel[]>([])
   const [getNft, { loading: loadingNft }] = useLazyQuery<{
     nftEvents: { total: number; data: Erc721TransferModel[] }
   }>(GET_ERC721_EVENTS)
+
+  const [transfersTotal, setTransfersTotal] = useState(0)
+  const [actionsTotal, setActionsTotal] = useState(0)
+  const [nftTotal, setNftTotal] = useState(0)
 
   const handleClickMoreTransfers = async () => {
     const result = await getErc2Events({
@@ -82,6 +76,7 @@ const TxOverview: FC<{
     })
 
     const newData = result?.data?.erc20Events?.data
+    setTransfersTotal(result?.data?.erc20Events?.total || 0)
 
     if (newData?.length) {
       setErc20TransfersData([...erc20TransfersData, ...newData])
@@ -99,6 +94,7 @@ const TxOverview: FC<{
     })
 
     const newData = result?.data?.erc20Events?.data
+    setActionsTotal(result?.data?.erc20Events?.total || 0)
 
     if (newData?.length) {
       setErc20ActionsData([...erc20ActionsData, ...newData])
@@ -115,11 +111,19 @@ const TxOverview: FC<{
     })
 
     const newData = result?.data?.nftEvents?.data
+    setNftTotal(result?.data?.nftEvents?.total || 0)
 
     if (newData?.length) {
       setNftEventsData([...nftEventsData, ...newData])
     }
   }
+
+  useEffect(() => {
+    handleClickMoreTransfers()
+    handleClickMoreActions()
+    handleClickMoreNft()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
 
@@ -329,27 +333,25 @@ const TxOverview: FC<{
       ),
     })
 
-  const countMoreTransfers = erc20Transfers?.total - erc20TransfersData.length
-  const countMoreNft = erc20Transfers?.total - nftEventsData.length
-  const countMoreActions = erc20Actions?.total - erc20ActionsData.length
+  const countMoreTransfers = transfersTotal - erc20TransfersData.length
+  const countMoreNft = nftTotal - nftEventsData.length
+  const countMoreActions = actionsTotal - erc20ActionsData.length
 
   return (
     <>
       <Properties data={properties} />
-      {(!!erc20Transfers?.total ||
-        !!erc20Actions?.total ||
-        !!nftEvents?.total) && (
+      {(!!transfersTotal || !!actionsTotal || !!nftTotal) && (
         <Card>
-          {!!erc20Transfers?.total && (
+          {!!transfersTotal && (
             <Details
               isOpen
               title={
-                <>
+                <div className={styles.cardTitle}>
                   ERC-20 Tokens Transferred:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {erc20Transfers?.total}
+                    {transfersTotal}
                   </Label>
-                </>
+                </div>
               }
             >
               <Card
@@ -375,16 +377,16 @@ const TxOverview: FC<{
             </Details>
           )}
 
-          {!!nftEvents.total && (
+          {!!nftTotal && (
             <Details
               isOpen
               title={
-                <>
+                <div className={styles.cardTitle}>
                   NFT Tokens Transferred:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {nftEvents.total}
+                    {nftTotal}
                   </Label>
-                </>
+                </div>
               }
             >
               <Card
@@ -410,16 +412,16 @@ const TxOverview: FC<{
             </Details>
           )}
 
-          {!!erc20Actions.total && (
+          {!!actionsTotal && (
             <Details
               isOpen
               title={
-                <>
+                <div className={styles.cardTitle}>
                   Transaction Actions:{' '}
                   <Label className={pageStyles.propertyIndicator}>
-                    {erc20Actions.total}
+                    {actionsTotal}
                   </Label>
-                </>
+                </div>
               }
             >
               <Card

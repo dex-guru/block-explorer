@@ -150,6 +150,41 @@ img {
   }
 }
 
+progress {
+  display: block;
+  appearance: none;
+  background: var(--color-bg);
+  border: 0;
+  border-radius: var(--radii-sm);
+  color: var(--color-accent);
+  height: 4px;
+  position: relative;
+  width: 100%;
+
+  &::-webkit-progress-bar {
+    background: transparent;
+    border-radius: var(--radii-sm);
+  }
+
+  &::-webkit-progress-value {
+    background: var(--color-accent);
+    border-radius: var(--radii-sm);
+  }
+
+  &::-moz-progress-bar {
+    background: var(--color-accent);
+    border-radius: var(--radii-sm);
+  }
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
 .recharts {
   &-brush {
     & > rect {

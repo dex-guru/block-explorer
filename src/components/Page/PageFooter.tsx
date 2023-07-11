@@ -76,7 +76,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
                   rel="noopener noreferrer"
                   className={styles.link}
                 >
-                  On-Chain REST API
+                  Developers API
                 </Link>
               </li>
               <li className={styles.linksItem}>

@@ -17,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
         id="app-tooltip"
         variant="light"
         positionStrategy="fixed"
+        delayHide={500}
         clickable
       />
       <Tooltip
