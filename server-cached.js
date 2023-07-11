@@ -19,7 +19,7 @@ const SSR_URLS_CACHE_TIME = {
   '/txs/*': 60,
   '/address/*': 60,
   '/holdings/*': 60,
-  '/holdings/*': 60,
+  '/token/*': 60,
 }
 const JSON_URLS_CACHE_TIME = {
   '/index.json': 60,
@@ -29,7 +29,7 @@ const JSON_URLS_CACHE_TIME = {
   '/txs/*': 60,
   '/address/*': 60,
   '/holdings/*': 60,
-  '/holdings/*': 60,
+  '/token/*': 60,
 }
 
 const redisURL = process.env.REDIS_URL
@@ -190,7 +190,7 @@ app.prepare().then(async () => {
     console.log(
       `[ Block Explorer Server ] > Page request "${url}" cache for ${time}ms`
     )
-    server.get(url, (req, res) => ssrCache(req, res, time))
+    server.get(url, (req, res) => jsonCache(req, res, time))
   })
 
   Object.entries(JSON_URLS_CACHE_TIME).forEach(([url, time]) => {

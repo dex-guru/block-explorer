@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Index, { IndexProps } from '.'
+import Loading from './loading'
 import {
   BlockModel,
   ChainConfigModel,
@@ -13,7 +15,7 @@ import { getChainConfig } from '@/lib/apollo/apolloServerSideQueries'
 import { GET_BLOCKS_TXNS_CHAIN_STATS } from '@/lib/apollo/queries'
 import { getBlocksWithTimeDiff } from '@/lib/utils'
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const chainConfig = await getChainConfig()
