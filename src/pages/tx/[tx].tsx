@@ -6,8 +6,6 @@ import { isHexString } from '@ethersproject/bytes'
 import {
   ChainConfigModel,
   ChainStatsModel,
-  Erc20EventModel,
-  Erc721TransferModel,
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -15,11 +13,7 @@ import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import {
-  CHAIN_STATS,
-  GET_ERC20_EVENTS,
-  GET_TRANSACTIONS_BY_HASH,
-} from '@/lib/apollo/queries'
+import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
 const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
