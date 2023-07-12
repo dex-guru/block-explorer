@@ -4,6 +4,7 @@ import Empty from '../Empty'
 import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE, Pagination } from '../Pagination'
 import { PerPageSelector } from '../PerPageSelector'
 import { Table } from '../Table'
+import TooltipAnchor from '../TooltipAnchor'
 import { DataTableProps } from './types'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { financialFormat } from '@/lib/utils'
@@ -36,7 +37,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
   const renderPagination = useCallback(() => {
     return (
       <Pagination
-        total={total}
+        total={Math.min(total, 1000)}
         perPage={currentPerPagePage}
         onChange={onPageChange}
         className={styles.pagination}
@@ -46,13 +47,26 @@ export function DataTable<T>(props: DataTableProps<T>) {
     )
   }, [currentPage, currentPerPagePage, onPageChange, total])
 
+  const renderTotal = useCallback(() => {
+    return (
+      <span className={styles.totalRows}>
+        Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
+        {total > 1000 && (
+          <>
+            &nbsp;
+            <TooltipAnchor tooltip="Showing the last 1,000 records" />
+          </>
+        )}
+      </span>
+    )
+  }, [total])
+
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
         {renderPerPage()}
-        <span className={styles.totalRows}>
-          Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
-        </span>
+        {renderTotal()}
+
         {renderPagination()}
       </div>
       <div className={styles.body}>
@@ -64,9 +78,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
       </div>
       <div className={styles.footer}>
         {renderPerPage()}
-        <span className={styles.totalRows}>
-          Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
-        </span>
+        {renderTotal()}
         {renderPagination()}
       </div>
     </div>

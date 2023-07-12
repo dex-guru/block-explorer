@@ -2,7 +2,7 @@ export const getTotalPages = (
   total: number,
   currentPerPage: number
 ): number => {
-  return Math.floor(total / currentPerPage) + 1
+  return Math.ceil(total / currentPerPage)
 }
 
 export const getDisabled = (
