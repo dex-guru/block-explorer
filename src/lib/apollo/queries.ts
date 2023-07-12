@@ -829,6 +829,7 @@ export const GET_ERC20_EVENTS = gql`
         eventType
         fromAddress
         hash
+        prices
         toAddress
         tokenAddresses
         tokenSymbols

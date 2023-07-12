@@ -1,9 +1,12 @@
 import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address, Label, TimeAgo } from '@/components'
+import { Address, Label, TimeAgo, Value } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
-import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+} from '@/lib/utils'
 import styles from './DexTradesDataTable.module.scss'
 
 export const dexTradesColumns = (
@@ -35,7 +38,7 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'blockTimestamp',
-    title: 'Ago',
+    title: 'Age',
     render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
   },
   {
@@ -209,5 +212,13 @@ export const dexTradesColumns = (
       data.toAddress ? (
         <Address address={data.toAddress} type="account" isCopy />
       ) : null,
+  },
+  {
+    accessor: 'prices',
+    title: 'Token Price',
+    type: 'number',
+    render: (data) => (
+      <Value prefix="$" value={financialFormat(data.prices[1])} />
+    ),
   },
 ]

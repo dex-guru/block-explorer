@@ -402,7 +402,7 @@ const ContractView: FC<IContractViewProps> = ({
                           value: (
                             <Value
                               value={financialFormat(balancesStats?.price || 0)}
-                              prefix="Price: $"
+                              prefix="$"
                               delta={
                                 balancesStats?.priceChange
                                   ? (balancesStats.priceChange || 0) * 100

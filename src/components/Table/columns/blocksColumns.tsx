@@ -21,7 +21,7 @@ export const blocksColumns: (
   },
   {
     accessor: 'timestamp',
-    title: 'Ago',
+    title: 'Age',
     type: 'center',
     modifier: 'block-ago',
     render: (data) => <TimeAgo timestamp={data.timestamp} />,

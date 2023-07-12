@@ -26,16 +26,15 @@
 .selector {
   border-radius: 4px;
   border: 1px solid var(--color-page-count-border);
-  background: var(--color-page-count-bg);
+  background-color: var(--color-page-count-bg);
   color: var(--color-page-count-text);
   height: 32px;
-  padding: 0 4px;
   transition: 0.25s ease;
 
   &:hover,
   &:focus {
     border: 1px solid var(--color-page-count-hover-border);
-    background: var(--color-page-count-hover-bg);
+    background-color: var(--color-page-count-hover-bg);
     color: var(--color-page-count-hover-ext);
   }
 }
