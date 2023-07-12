@@ -165,6 +165,7 @@ export type Erc20EventModel = {
   eventType: Scalars['String'];
   fromAddress: Scalars['String'];
   hash: Scalars['String'];
+  prices: Array<Scalars['Decimal']>;
   toAddress: Scalars['String'];
   tokenAddresses: Array<Scalars['String']>;
   tokenLogos: Array<Scalars['String']>;
@@ -829,6 +830,7 @@ export type Erc20EventModelResolvers<ContextType = any, ParentType extends Resol
   eventType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   fromAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  prices?: Resolver<Array<ResolversTypes['Decimal']>, ParentType, ContextType>;
   toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tokenAddresses?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   tokenLogos?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;

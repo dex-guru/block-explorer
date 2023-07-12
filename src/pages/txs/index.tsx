@@ -130,8 +130,8 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                 {
                   title: (
                     <>
-                      Transactions per Second (TPS){' '}
-                      <TooltipAnchor tooltip="Transactions Per Second (TPS) refers to the number of validated transactions that a blockchain network can process and confirm within a single second." />
+                      TPS{' '}
+                      <TooltipAnchor tooltip="Transactions Per Second (TPS) refers to the number of transactions that a blockchain can handle in one second. Calculated as: Amount of TXs in last block / Block time." />
                     </>
                   ),
                   value: financialFormatLowValueHighPrecision(
