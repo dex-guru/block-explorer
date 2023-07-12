@@ -69,7 +69,6 @@ export const useHeader = <T,>(
   // onFilter?:()=>void,,
   rowClassName?: string
 ) => {
-  console.log(columns)
   const cells = columns.map((column, idx) => {
     const className = clsx(
       styles[column.type || 'text'],
