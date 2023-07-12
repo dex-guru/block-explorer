@@ -13,7 +13,16 @@ import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './HoldersDataTable.module.scss'
 
-export const holdersColumns: IColumn<TokenBalanceModel>[] = [
+export const holdersColumns = (skip: number): IColumn<TokenBalanceModel>[] => [
+  {
+    accessor: 'address',
+    title: 'Rank',
+    modifier: 'rank',
+    render: (_data, _placeholder, idx) => (
+      <span className={styles.muted}>{skip + (idx || 0) + 1}</span>
+    ),
+  },
+
   {
     accessor: 'address',
     title: 'Address',
