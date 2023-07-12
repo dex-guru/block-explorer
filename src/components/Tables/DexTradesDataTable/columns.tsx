@@ -3,7 +3,6 @@ import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, Label, TimeAgo } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
-import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './DexTradesDataTable.module.scss'
 
