@@ -35,9 +35,15 @@ export const dexTradesColumns = (
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
   {
+    accessor: 'blockTimestamp',
+    title: 'Ago',
+    render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
+  },
+  {
     accessor: 'amounts',
-    title: 'Amount Out',
+    title: 'Quantity Out',
     type: 'number',
+    modifier: 'tokenAmount',
     render: (data) => {
       if (data.eventType === 'swap') {
         return (
@@ -72,7 +78,7 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'tokenSymbols',
-    title: 'Token Out',
+    modifier: 'tokenSymbol',
     render: (data) => {
       if (data.eventType === 'swap') {
         return (
@@ -114,12 +120,7 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'fromAddress',
-    title: (
-      <>
-        Account Out{' '}
-        <TooltipAnchor tooltip="The address where the token(s) were sent from." />
-      </>
-    ),
+    title: 'From',
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
@@ -128,8 +129,9 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'amounts',
-    title: 'Amount In',
+    title: 'Quantity In',
     type: 'number',
+    modifier: 'tokenAmount',
     render: (data) => {
       if (data.eventType === 'swap') {
         return financialFormatLowValueHighPrecision(data.amounts[1], {
@@ -160,7 +162,7 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'tokenSymbols',
-    title: 'Token In',
+    modifier: 'tokenSymbol',
     render: (data) => {
       if (data.eventType === 'swap') {
         return (
@@ -202,21 +204,11 @@ export const dexTradesColumns = (
   },
   {
     accessor: 'toAddress',
-    title: (
-      <>
-        Account In{' '}
-        <TooltipAnchor tooltip="The address that received the token(s)." />
-      </>
-    ),
+    title: 'To',
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
         <Address address={data.toAddress} type="account" isCopy />
       ) : null,
-  },
-  {
-    accessor: 'blockTimestamp',
-    title: 'Age',
-    render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
   },
 ]

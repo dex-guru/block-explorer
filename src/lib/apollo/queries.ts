@@ -400,7 +400,7 @@ export const GET_TRANSACTION_LOGS = gql`
 `
 
 export const GET_TRANSACTION_TRACES = gql`
-  query TracecByHash($hash: String!) {
+  query TracesByHash($hash: String!) {
     traces(txHash: $hash, chainId: ${CHAIN_ID}) {
       tracesJSON
     }

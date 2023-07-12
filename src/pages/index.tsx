@@ -68,7 +68,7 @@ const Index: NextPage<IndexProps> = (props) => {
 
   const chartData = [
     {
-      id: 'txHistory',
+      id: 'Transactions',
       data: stats.transactionsCountHistory,
     },
   ]

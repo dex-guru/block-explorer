@@ -49,7 +49,13 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
           value={
             <Address address={data.contractAddress} type="account" isCopy />
           }
-          icon={<IconContract className={styles.typeIcon} />}
+          icon={
+            <IconContract
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content="Smart Contract"
+              className={styles.typeIcon}
+            />
+          }
         />
       )
     },

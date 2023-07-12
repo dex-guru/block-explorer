@@ -66,8 +66,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
                     className={styles.tooltipItem}
                     style={{ color: item.stroke }}
                   >
-                    {payload.length > 1 ? `${item.name}: ` : ''}
-                    {`${resultValue}`}
+                    {`${resultValue}`} {item.name}
                   </li>
                 )
               })}

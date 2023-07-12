@@ -277,8 +277,7 @@ const TxOverview: FC<{
   const detailsProperties = [
     {
       title: 'Gas Limit & Usage by Txn:',
-      tooltip:
-        'Maximum amount of gas allocated for the transaction & the amount eventually used. Normal ETH transfers involve 21,000 gas units while contracts involve higher values.',
+      tooltip: `Maximum amount of gas allocated for the transaction & the amount eventually used. Normal  ${chainConfig.nativeCurrency.symbol}  transfers involve 21,000 gas units while contracts involve higher values.`,
       value: (
         <Separated>
           <Value value={financialFormat(data.gas)} />
@@ -333,9 +332,18 @@ const TxOverview: FC<{
       ),
     })
 
-  const countMoreTransfers = transfersTotal - erc20TransfersData.length
-  const countMoreNft = nftTotal - nftEventsData.length
-  const countMoreActions = actionsTotal - erc20ActionsData.length
+  const countMoreTransfers = Math.min(
+    transfersTotal - erc20TransfersData.length,
+    MAX_EVENTS_PER_PAGE
+  )
+  const countMoreNft = Math.min(
+    nftTotal - nftEventsData.length,
+    MAX_EVENTS_PER_PAGE
+  )
+  const countMoreActions = Math.min(
+    actionsTotal - erc20ActionsData.length,
+    MAX_EVENTS_PER_PAGE
+  )
 
   return (
     <>
@@ -359,7 +367,9 @@ const TxOverview: FC<{
                   countMoreTransfers > 0
                     ? [
                         {
-                          caption: `Load ${countMoreTransfers} More Transfers`,
+                          caption: `Load ${countMoreTransfers} More Transfer${
+                            countMoreTransfers > 1 ? 's' : ''
+                          }`,
                           onClick: handleClickMoreTransfers,
                           disabled: loadingTransfers,
                         },
@@ -394,7 +404,9 @@ const TxOverview: FC<{
                   countMoreNft > 0
                     ? [
                         {
-                          caption: `Load ${countMoreNft} More NFT Transfers`,
+                          caption: `Load ${countMoreNft} More NFT Transfer${
+                            countMoreNft > 1 ? 's' : ''
+                          }`,
                           onClick: handleClickMoreNft,
                           disabled: loadingNft,
                         },
@@ -429,7 +441,9 @@ const TxOverview: FC<{
                   countMoreActions > 0
                     ? [
                         {
-                          caption: `Load ${countMoreActions} More Actions`,
+                          caption: `Load ${countMoreActions} More Action${
+                            countMoreActions ? 's' : ''
+                          }`,
                           onClick: handleClickMoreActions,
                           disabled: loadingActions,
                         },
