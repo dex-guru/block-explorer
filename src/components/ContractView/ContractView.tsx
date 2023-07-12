@@ -17,6 +17,7 @@ import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { LoadingCard } from '../Loading'
+import { TransfersDataTable } from '../Tables'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -485,7 +486,11 @@ const ContractView: FC<IContractViewProps> = ({
                                 />
                               }
                               icon={
-                                <IconContract className={styles.contractIcon} />
+                                <IconContract
+                                  data-tooltip-id="app-tooltip"
+                                  data-tooltip-content="Smart Contract"
+                                  className={styles.contractIcon}
+                                />
                               }
                             />
                           ),
@@ -498,21 +503,18 @@ const ContractView: FC<IContractViewProps> = ({
 
             <TabPanel
               tabs={[
-                {
-                  title: 'Transactions',
-                  tooltip:
-                    'The tab shows a list of incoming and outgoing ETH transactions associated with the address, organized in chronological order.',
-                  value: '',
-                  to: pathname,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxsDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
-
                 ...(type === 'token'
                   ? [
+                      {
+                        title: 'Transfers',
+                        value: '',
+                        to: pathname,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TransfersDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
                       {
                         title: 'Holders',
                         value: 'balances',
@@ -538,6 +540,17 @@ const ContractView: FC<IContractViewProps> = ({
 
                 ...(type === 'contract'
                   ? [
+                      {
+                        title: 'Transactions',
+                        tooltip: `The tab shows a list of incoming and outgoing ${chain.config.nativeCurrency.symbol} transactions associated with the address, organized in chronological order.`,
+                        value: '',
+                        to: pathname,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TxsDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
                       {
                         title: 'ERC-20 Token TXns',
                         value: 'tokentxns',

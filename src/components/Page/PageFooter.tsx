@@ -71,7 +71,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
               </li>
               <li className={styles.linksItem}>
                 <Link
-                  href="https://developers.dex.guru/"
+                  href="https://dexguru.readme.io/docs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.link}

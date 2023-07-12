@@ -84,8 +84,17 @@
   color: var(--color-muted);
 }
 
-.tokenValue {
+.tokenAmount {
   padding-right: 2px;
+}
+
+.tokenSymbol {
+  padding-left: 2px;
+}
+
+.rank {
+  width: 3ch;
+  text-align: center;
 }
 
 .valueNativeWithStable {

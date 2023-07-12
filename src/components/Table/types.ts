@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export interface IColumn<T> {
-  render?: (data: T, placeholder?: ReactNode) => ReactNode
+  render?: (data: T, placeholder?: ReactNode, idx?: number) => ReactNode
   accessor: string
   title?: ReactNode
   type?: 'number' | 'text' | 'center'

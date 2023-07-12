@@ -37,7 +37,7 @@ export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
     accessor: 'amounts',
     title: 'For',
     type: 'number',
-    modifier: 'tokenValue',
+    modifier: 'tokenAmount',
     render: (data) => (
       <div className={stylesTabel.data}>
         {data.amounts.map((amount, idx) => {
@@ -55,6 +55,7 @@ export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'tokenSymbols',
     type: 'text',
+    modifier: 'tokenSymbol',
     render: (data) => (
       <div className={stylesTabel.data}>
         {data.amounts.map((amount, idx) => {

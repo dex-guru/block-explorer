@@ -57,3 +57,11 @@
     composes: dataNumber from '../../Table/Table.module.scss';
   }
 }
+
+.tokenAmount {
+  composes: tokenAmount from '../../Table/Table.module.scss';
+}
+
+.tokenSymbol {
+  composes: tokenSymbol from '../../Table/Table.module.scss';
+}

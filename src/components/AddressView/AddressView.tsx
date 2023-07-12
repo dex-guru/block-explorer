@@ -116,8 +116,7 @@ const AddressView: FC<IAddressViewProps> = ({
               tabs={[
                 {
                   title: 'Transactions',
-                  tooltip:
-                    'The tab shows a list of incoming and outgoing ETH transactions associated with the address, organized in chronological order.',
+                  tooltip: `The tab shows a list of incoming and outgoing ${chain.config.nativeCurrency.symbol} transactions associated with the address, organized in chronological order.`,
                   value: '',
                   to: pathname,
                   content: (

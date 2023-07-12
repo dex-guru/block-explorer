@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { holdersColumns } from './columns'
 import {
@@ -26,6 +26,8 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
   }>(GET_ADDRESS_HOLDERS)
   const isMount = useIsMount()
 
+  const [currentSkip, setCurrentSkip] = useState(0)
+
   const getVariables = useCallback(
     (vars?: PaginationVariables) => {
       return {
@@ -42,6 +44,7 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
+      setCurrentSkip(variables.skip)
       getHolders({
         variables: getVariables(variables),
       })
@@ -90,7 +93,7 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
   return (
     <DataTable
       isLoading={loading}
-      columns={holdersColumns}
+      columns={holdersColumns(currentSkip)}
       data={holdersDisplay || []}
       total={displayData?.balancesStats?.holders || 0}
       perPage={PER_PAGE}

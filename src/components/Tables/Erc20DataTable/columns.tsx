@@ -80,6 +80,7 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
     accessor: 'amounts',
     title: 'Quantity',
     type: 'number',
+    modifier: 'tokenAmount',
     render: (data) => {
       if (!data.toAddress) {
         return null
@@ -105,7 +106,7 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'tokenAddresses',
     title: 'Token',
-    modifier: 'address',
+    modifier: 'tokenSymbol',
     render: (data) => {
       if (!data.toAddress) {
         return null
