@@ -108,7 +108,7 @@ export type ChainStatsModel = {
   nativeTokenPriceUsd24hDelta: Scalars['Decimal'];
   smartContractsCount: Scalars['Decimal'];
   tokenSupply: Scalars['Decimal'];
-  transactionsCount: Scalars['Int'];
+  transactionsCount: Scalars['Decimal'];
   transactionsCountHistory: Array<TimeSeriesChartModel>;
   transactionsPerSecond: Scalars['Decimal'];
   volume24hDeltaUsd: Scalars['Decimal'];
@@ -769,7 +769,7 @@ export type ChainStatsModelResolvers<ContextType = any, ParentType extends Resol
   nativeTokenPriceUsd24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   smartContractsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   tokenSupply?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
-  transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  transactionsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   transactionsCountHistory?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>;
   transactionsPerSecond?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   volume24hDeltaUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
