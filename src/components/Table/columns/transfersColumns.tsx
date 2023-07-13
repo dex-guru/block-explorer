@@ -6,7 +6,7 @@ import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 export const transfersColumns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'hash',
-    title: 'Txn Hash',
+    title: 'TX Hash',
     modifier: 'address',
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },

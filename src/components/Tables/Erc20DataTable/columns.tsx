@@ -10,7 +10,7 @@ import styles from './Erc20DataTable.module.scss'
 export const erc20Columns: IColumn<Erc20EventModel>[] = [
   {
     accessor: 'hash',
-    title: 'Txn Hash',
+    title: 'TX Hash',
     modifier: 'address',
     render: (data) => (
       <div className={styles.data}>

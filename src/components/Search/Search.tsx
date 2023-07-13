@@ -66,7 +66,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
             ref={ref}
             className={clsx(styles.query, { [styles.queryLoading]: loading })}
             type="text"
-            placeholder="Search by address / Txn Hash / Block number"
+            placeholder="Search by address / TX Hash / Block number"
             defaultValue={query}
             onBlur={handleBlur}
             onFocus={handleFocus}

@@ -15,7 +15,7 @@ export const txsColumns = (
 ): IColumn<TransactionModel>[] => [
   {
     accessor: 'hash',
-    title: 'Txn Hash',
+    title: 'TX Hash',
     modifier: 'address',
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
