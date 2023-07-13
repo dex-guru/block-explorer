@@ -37,10 +37,14 @@
 .item {
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
 .link {
   color: var(--color-muted);
+  display: block;
+  padding: 0 8px;
+  line-height: 36px;
 }
 
 .active {
@@ -68,4 +72,49 @@
 .icon {
   width: 20px;
   height: 20px;
+}
+
+.submenu {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  position: absolute;
+  min-width: 100%;
+  top: 100%;
+  left: 0;
+  padding-top: 10px;
+  white-space: nowrap;
+
+  &List {
+    display: flex;
+    flex-flow: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px var(--color-accent-a) solid;
+    background: var(--color-bg);
+    padding: 8px;
+    border-radius: 0 0 var(--radii-lg) var(--radii-lg);
+  }
+
+  &Link {
+    background: transparent;
+    border-radius: var(--radii-sm);
+
+    &:hover {
+      background: var(--color-bg-3);
+    }
+  }
+}
+
+.item:hover > .submenu,
+.link:focus + .submenu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.item:last-child > .submenu {
+  left: auto;
+  right: 0;
 }

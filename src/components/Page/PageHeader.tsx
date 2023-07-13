@@ -5,7 +5,7 @@ import Logo from '../Logo'
 import NetworkSelect from '../NetworkSelect'
 import Search from '../Search'
 import InfoBlock from './InfoBlock'
-import PageMenu from './PageMenu'
+import PageMenu, { PageMenuLinks } from './PageMenu'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
@@ -17,20 +17,41 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const links = useMemo(() => {
-    const baseLinks = [
+    const baseLinks: PageMenuLinks = [
       { caption: 'Home', href: '/' },
-      { caption: 'Verify Contract', href: '/verifyContract' },
       {
-        caption: 'API',
-        href: 'https://developers.dex.guru',
+        caption: 'Blockchain',
+        href: '',
+        submenu: [
+          { caption: 'Transactions', href: '/txs' },
+          { caption: 'View Blocks', href: '/blocks' },
+        ],
       },
       {
-        caption: 'Dex Metrics',
-        href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
+        caption: 'Developers',
+        href: '',
+        submenu: [
+          {
+            caption: 'Developers API',
+            href: 'https://developers.dex.guru',
+          },
+          { caption: 'Verify Contract', href: '/verifyContract' },
+        ],
+      },
+      {
+        caption: 'More',
+        href: '',
+        submenu: [
+          {
+            caption: 'Dex Metrics',
+            href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
+          },
+          ...(chainConfig.features.some((x) => x.name === 'csr')
+            ? [{ caption: 'CSR', href: '/csr' }]
+            : []),
+        ],
       },
     ]
-    chainConfig.features.some((x) => x.name === 'csr') &&
-      baseLinks.push({ caption: 'CSR', href: '/csr' })
     return baseLinks
   }, [chainConfig.features, chainConfig.shortName])
 
