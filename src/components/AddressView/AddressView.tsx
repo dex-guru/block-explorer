@@ -116,7 +116,7 @@ const AddressView: FC<IAddressViewProps> = ({
               tabs={[
                 {
                   title: 'Transactions',
-                  tooltip: `The tab shows a list of incoming and outgoing ${chain.config.nativeCurrency.symbol} transactions associated with the address, organized in chronological order.`,
+                  tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
                   value: '',
                   to: pathname,
                   content: (
@@ -127,7 +127,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
 
                 {
-                  title: 'ERC-20 Token TXns',
+                  title: 'Token TXs (ERC-20)',
                   tooltip: 'Transactions with ERC-20 tokens.',
                   value: 'tokentxns',
                   to: `${pathname}?tab=tokentxns`,
@@ -138,7 +138,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   ),
                 },
                 {
-                  title: 'NFT Token TXns',
+                  title: 'NFT Token TXs',
                   value: 'nfttxns',
                   to: `${pathname}?tab=nfttxns`,
                   content: (

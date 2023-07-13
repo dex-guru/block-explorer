@@ -6,7 +6,7 @@ import { IColumn } from '@/components/Table/types'
 export const logsColumns: IColumn<LogModel>[] = [
   {
     accessor: 'hash',
-    title: 'Txn Hash',
+    title: 'TX Hash',
     modifier: 'address',
     render: (data) => (
       <Address address={data.transactionHash} type="tx" isCopy />
