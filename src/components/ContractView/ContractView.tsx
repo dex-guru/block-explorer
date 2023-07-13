@@ -45,10 +45,10 @@ import {
   Message,
   IconContract,
   IconNoIcon,
+  IconShield,
 } from '@/components'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
-import IconVerify from '@/images/icons/verified.svg'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
@@ -253,7 +253,6 @@ const ContractView: FC<IContractViewProps> = ({
             icon={addressIcon}
             title={detailsTitle}
             address={type !== 'token' ? checkSumAddress : undefined}
-            isVerified={hasSources}
             tag={
               type === 'contract'
                 ? `${addressInfo.symbol ? 'Token' : 'Smart'} Contract`
@@ -577,7 +576,7 @@ const ContractView: FC<IContractViewProps> = ({
                 {
                   title: 'Contract',
                   indicator: hasSources && (
-                    <IconVerify
+                    <IconShield
                       data-tooltip-id="app-tooltip"
                       data-tooltip-html="This contract has been verified through <a href='https://sourcify.dev/' rel='noopener noreferrer' target='_blank'>Sourcify</a>."
                     />
