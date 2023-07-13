@@ -541,7 +541,7 @@ const ContractView: FC<IContractViewProps> = ({
                   ? [
                       {
                         title: 'Transactions',
-                        tooltip: `The tab shows a list of incoming and outgoing ${chain.config.nativeCurrency.symbol} transactions associated with the address, organized in chronological order.`,
+                        tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
                         value: '',
                         to: pathname,
                         content: (
@@ -551,7 +551,7 @@ const ContractView: FC<IContractViewProps> = ({
                         ),
                       },
                       {
-                        title: 'ERC-20 Token TXns',
+                        title: 'Token TXs (ERC-20)',
                         value: 'tokentxns',
                         to: { pathname, query: { tab: 'tokentxns' } },
                         content: (
@@ -561,7 +561,7 @@ const ContractView: FC<IContractViewProps> = ({
                         ),
                       },
                       {
-                        title: 'NFT Token TXns',
+                        title: 'NFT Token TXs',
                         value: 'nfttxns',
                         to: { pathname, query: { tab: 'nfttxns' } },
                         content: (

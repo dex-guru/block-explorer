@@ -30,7 +30,7 @@ export const blocksColumns: (
     accessor: 'transactionCount',
     title: (
       <>
-        Txn{' '}
+        TXs{' '}
         <TooltipAnchor tooltip="A total number of transactions found in the block." />
       </>
     ),
@@ -50,7 +50,7 @@ export const blocksColumns: (
     accessor: 'feeRecipient',
     title: 'Fee Recipient',
     modifier: 'block-recipient',
-    render: (data) => <Address type="account" address={data.miner} />,
+    render: (data) => <Address type="account" address={data.miner} isCopy />,
   },
   {
     accessor: 'gasUsed',

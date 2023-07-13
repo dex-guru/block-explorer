@@ -11,7 +11,7 @@ export const searchTxsColumns: IColumn<TransactionModel>[] = [
       <Tile
         title={
           <>
-            TXn <Address address={data.hash} type="tx" isCopy />
+            TX <Address address={data.hash} type="tx" isCopy />
           </>
         }
         postfix={

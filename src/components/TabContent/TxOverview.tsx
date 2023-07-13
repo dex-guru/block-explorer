@@ -276,7 +276,7 @@ const TxOverview: FC<{
 
   const detailsProperties = [
     {
-      title: 'Gas Limit & Usage by Txn:',
+      title: 'Gas Limit & Usage by TX:',
       tooltip: `Maximum amount of gas allocated for the transaction & the amount eventually used. Normal  ${chainConfig.nativeCurrency.symbol}  transfers involve 21,000 gas units while contracts involve higher values.`,
       value: (
         <Separated>

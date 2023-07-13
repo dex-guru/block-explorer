@@ -65,7 +65,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   if (!block) {
     tabs.push(
       {
-        title: 'ERC-20 Token TXns',
+        title: 'Token TXs (ERC-20)',
         value: 'tokentxns',
         to: { pathname, query: { tab: 'tokentxns' } },
         content: (
@@ -75,7 +75,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         ),
       },
       {
-        title: 'NFT Token TXns',
+        title: 'NFT Token TXs',
         value: 'nfttxns',
         to: { pathname, query: { tab: 'nfttxns' } },
         content: (
@@ -88,7 +88,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   }
 
   const pageTitle = block
-    ? `Transactions for block ${block?.toString()}`
+    ? `Transactions in a single block ${block?.toString()}`
     : 'Transactions'
 
   return (
