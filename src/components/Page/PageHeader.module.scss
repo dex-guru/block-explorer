@@ -75,10 +75,15 @@
 
   @media (max-width: 1200px) {
     position: fixed;
-    width: 32px;
-    height: 32px;
-    top: 12px;
-    right: 8px;
+    left: 0;
+    right: 0;
+    top: 56px;
+    bottom: 0;
+    padding: 0 0 56px;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    pointer-events: none;
   }
 }
 

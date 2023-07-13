@@ -3,14 +3,14 @@ import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import { clsx } from 'clsx'
 import Button from '../Button'
-import { IconCross, IconMenu } from '@/components'
+import { IconCross, IconDown, IconMenu } from '@/components'
 import styles from './PageMenu.module.scss'
 
 export type PageMenuLink = LinkProps & { caption: string; className?: string }
-export type PageMenuLinks = (PageMenuLink & { submenu?: PageMenuLink[] })[]
+export type PageMenuMainLink = PageMenuLink & { submenu?: PageMenuLink[] }
 
 const PageMenu: FC<{
-  links: PageMenuLinks
+  links: PageMenuMainLink[]
   className?: string
   onOpenChange?: (value: boolean) => void
 }> = ({ links, className, onOpenChange }) => {
@@ -30,7 +30,11 @@ const PageMenu: FC<{
     document.documentElement.classList.remove('open-menu')
   }
 
-  const renderLink = (link: PageMenuLink, className?: string) => (
+  const renderLink = (
+    link: PageMenuLink,
+    hasSubmenu?: boolean,
+    className?: string
+  ) => (
     <Link
       {...link}
       href={link.href || '#'}
@@ -51,11 +55,16 @@ const PageMenu: FC<{
       )}
     >
       {link.caption}
+      {hasSubmenu && <IconDown className={styles.arrow} />}
     </Link>
   )
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div
+      className={clsx(styles.container, className, {
+        [styles.opened]: isOpen,
+      })}
+    >
       <Button
         icon={<Icon className={styles.icon} />}
         className={clsx(styles.toggle, { [styles.toggled]: isOpen })}
@@ -65,14 +74,14 @@ const PageMenu: FC<{
         {links.map((link, idx) => {
           return (
             <li className={styles.item} key={idx}>
-              {renderLink(link)}
+              {renderLink(link, !!link.submenu?.length)}
               {!!link.submenu?.length && (
                 <div className={styles.submenu}>
                   <ul className={styles.submenuList}>
                     {link.submenu.map((submenuLink, submenuIdx) => {
                       return (
                         <li className={styles.submenuItem} key={submenuIdx}>
-                          {renderLink(submenuLink, styles.submenuLink)}
+                          {renderLink(submenuLink, false, styles.submenuLink)}
                         </li>
                       )
                     })}

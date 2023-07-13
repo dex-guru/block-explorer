@@ -13,20 +13,15 @@
 
   @media (max-width: 1200px) {
     background: var(--color-bg);
-    padding: 56px 16px 56px;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-flow: column;
     gap: 16px;
     font-size: 20px;
     line-height: 28px;
-    position: fixed;
-    z-index: 1000;
-
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    flex: 1 0 0;
+    overflow: auto;
+    padding: 16px;
 
     &:not(.open) {
       display: none !important;
@@ -42,9 +37,26 @@
 
 .link {
   color: var(--color-muted);
-  display: block;
+  display: flex;
+  gap: 2px;
   padding: 0 8px;
   line-height: 36px;
+  align-items: center;
+}
+
+.arrow {
+  width: 20px;
+  height: 20px;
+  transform: none;
+  transition: transform 0.25s ease;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.link:hover > .arrow {
+  transform: rotate(180deg);
 }
 
 .active {
@@ -56,6 +68,11 @@
   composes: lg from '../Button/Button.module.scss';
 
   padding: 0;
+  position: fixed;
+  z-index: 1001;
+  right: 8px;
+  top: 12px;
+  pointer-events: all;
 
   @media (min-width: 1200.1px) {
     display: none !important;
@@ -63,10 +80,13 @@
 }
 
 .toggled {
-  position: fixed;
-  z-index: 1001;
-  right: 8px;
-  top: 12px;
+}
+
+.opened {
+  @media (max-width: 1200px) {
+    background: var(--color-bg);
+    pointer-events: all !important;
+  }
 }
 
 .icon {
@@ -74,47 +94,64 @@
   height: 20px;
 }
 
-.submenu {
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.25s ease;
-  position: absolute;
-  min-width: 100%;
-  top: 100%;
-  left: 0;
-  padding-top: 10px;
-  white-space: nowrap;
-
-  &List {
-    display: flex;
-    flex-flow: column;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 2px var(--color-accent-a) solid;
-    background: var(--color-bg);
-    padding: 8px;
-    border-radius: 0 0 var(--radii-lg) var(--radii-lg);
+@media (max-width: 1200px) {
+  .link {
+    font-weight: 500;
+    font-size: 20px;
   }
 
-  &Link {
-    background: transparent;
-    border-radius: var(--radii-sm);
-
-    &:hover {
-      background: var(--color-bg-3);
+  .submenu {
+    &Link {
+      font-weight: 400;
+      font-size: 16px;
     }
   }
 }
 
-.item:hover > .submenu,
-.link:focus + .submenu {
-  opacity: 1;
-  visibility: visible;
-}
+@media (min-width: 1200.1px) {
+  .submenu {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s ease;
+    position: absolute;
+    min-width: 100%;
+    top: 100%;
+    left: 0;
+    padding-top: 10px;
+    white-space: nowrap;
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
 
-.item:last-child > .submenu {
-  left: auto;
-  right: 0;
+    &List {
+      display: flex;
+      flex-flow: column;
+      gap: 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-top: 2px var(--color-accent-a) solid;
+      background: var(--color-bg);
+      padding: 8px;
+      border-radius: 0 0 var(--radii-lg) var(--radii-lg);
+    }
+
+    &Link {
+      background: transparent;
+      border-radius: var(--radii-sm);
+
+      &:hover {
+        background: var(--color-bg-3);
+      }
+    }
+  }
+
+  .item:hover > .submenu,
+  .link:focus + .submenu {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .item:last-child > .submenu {
+    left: auto;
+    right: 0;
+  }
 }
