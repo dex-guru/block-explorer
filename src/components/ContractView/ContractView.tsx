@@ -17,6 +17,7 @@ import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
 import { LineChartDataset } from '../LineChart'
 import { LoadingCard } from '../Loading'
+import { TransfersDataTable } from '../Tables'
 import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
@@ -44,10 +45,10 @@ import {
   Message,
   IconContract,
   IconNoIcon,
+  IconShield,
 } from '@/components'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
-import IconVerify from '@/images/icons/verified.svg'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
@@ -58,6 +59,12 @@ const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
 const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'), {
   ssr: false,
 })
+const DexTradesDataTable = dynamic(
+  () => import('../Tables/DexTradesDataTable/'),
+  {
+    ssr: false,
+  }
+)
 const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
   ssr: false,
 })
@@ -246,7 +253,6 @@ const ContractView: FC<IContractViewProps> = ({
             icon={addressIcon}
             title={detailsTitle}
             address={type !== 'token' ? checkSumAddress : undefined}
-            isVerified={hasSources}
             tag={
               type === 'contract'
                 ? `${addressInfo.symbol ? 'Token' : 'Smart'} Contract`
@@ -395,7 +401,7 @@ const ContractView: FC<IContractViewProps> = ({
                           value: (
                             <Value
                               value={financialFormat(balancesStats?.price || 0)}
-                              prefix="Price: $"
+                              prefix="$"
                               delta={
                                 balancesStats?.priceChange
                                   ? (balancesStats.priceChange || 0) * 100
@@ -479,7 +485,11 @@ const ContractView: FC<IContractViewProps> = ({
                                 />
                               }
                               icon={
-                                <IconContract className={styles.contractIcon} />
+                                <IconContract
+                                  data-tooltip-id="app-tooltip"
+                                  data-tooltip-content="Smart Contract"
+                                  className={styles.contractIcon}
+                                />
                               }
                             />
                           ),
@@ -492,21 +502,18 @@ const ContractView: FC<IContractViewProps> = ({
 
             <TabPanel
               tabs={[
-                {
-                  title: 'Transactions',
-                  tooltip:
-                    'Transactions where an EOA (Externally Owned Address aka a wallet address) sends ETH directly to another EOA.',
-                  value: '',
-                  to: pathname,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxsDataTable address={address} />
-                    </Suspense>
-                  ),
-                },
-
                 ...(type === 'token'
                   ? [
+                      {
+                        title: 'Transfers',
+                        value: '',
+                        to: pathname,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TransfersDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
                       {
                         title: 'Holders',
                         value: 'balances',
@@ -517,13 +524,34 @@ const ContractView: FC<IContractViewProps> = ({
                           </Suspense>
                         ),
                       },
+                      {
+                        title: 'DEX Trades',
+                        value: 'trades',
+                        to: { pathname, query: { tab: 'trades' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <DexTradesDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
                     ]
                   : []),
 
                 ...(type === 'contract'
                   ? [
                       {
-                        title: 'ERC-20 Token TXns',
+                        title: 'Transactions',
+                        tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
+                        value: '',
+                        to: pathname,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TxsDataTable address={address} />
+                          </Suspense>
+                        ),
+                      },
+                      {
+                        title: 'Token TXs (ERC-20)',
                         value: 'tokentxns',
                         to: { pathname, query: { tab: 'tokentxns' } },
                         content: (
@@ -533,7 +561,7 @@ const ContractView: FC<IContractViewProps> = ({
                         ),
                       },
                       {
-                        title: 'NFT Token TXns',
+                        title: 'NFT Token TXs',
                         value: 'nfttxns',
                         to: { pathname, query: { tab: 'nfttxns' } },
                         content: (
@@ -547,7 +575,12 @@ const ContractView: FC<IContractViewProps> = ({
 
                 {
                   title: 'Contract',
-                  indicator: hasSources && <IconVerify />,
+                  indicator: hasSources && (
+                    <IconShield
+                      data-tooltip-id="app-tooltip"
+                      data-tooltip-html="This contract has been verified through <a href='https://sourcify.dev/' rel='noopener noreferrer' target='_blank'>Sourcify</a>."
+                    />
+                  ),
                   value: 'code',
                   isActive: isSubTab,
                   to: `${pathname}?tab=code`,
@@ -586,12 +619,32 @@ const ContractView: FC<IContractViewProps> = ({
               {isSubTab && (
                 <Card>
                   {!isMatchLoading && !hasSources && abi && (
-                    <Message type="danger">
-                      This smart contract isn&apos;t verified, but we have a
-                      matching hash for the smart contract. Make sure you
-                      understand the risks of interacting with unverified smart
-                      contracts. You may lose your money!
-                    </Message>
+                    <>
+                      <Message type="danger">
+                        This smart contract is not verified according to{' '}
+                        <Link
+                          href="https://sourcify.dev/"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Sourcify
+                        </Link>
+                        . Make sure you understand the risks of interacting with
+                        unverified smart contracts.
+                      </Message>
+                      <Message type="info">
+                        As a contract owner, you can get your smart contract
+                        verified with Sourcify{' '}
+                        <Link
+                          href="/verifyContract"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          here
+                        </Link>
+                        .
+                      </Message>
+                    </>
                   )}
 
                   <TabPanel

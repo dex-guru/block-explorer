@@ -1,3 +1,14 @@
+.pageLoading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 65636;
+  --color-accent: #9c58c6;
+  border-radius: 0;
+  height: 4px !important;
+}
+
 .muted {
   composes: muted from '../styles/_common.scss';
 }

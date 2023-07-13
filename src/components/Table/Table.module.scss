@@ -10,7 +10,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 16px;
-  line-height: 20px;
+  line-height: 24px;
   opacity: 1;
   transition: opacity 0.25s ease;
 
@@ -54,6 +54,7 @@
 
 .tcell {
   padding: 16px 8px;
+  vertical-align: top;
 }
 
 .thcell {
@@ -83,12 +84,17 @@
   color: var(--color-muted);
 }
 
-.tokenValue {
+.tokenAmount {
   padding-right: 2px;
 }
 
 .tokenSymbol {
   padding-left: 2px;
+}
+
+.rank {
+  width: 3ch;
+  text-align: center;
 }
 
 .valueNativeWithStable {
@@ -143,38 +149,5 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: text-bottom;
-  }
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  vertical-align: middle;
-  color: var(--color-muted);
-}
-
-.token {
-  &NameCaption,
-  &SymbolCaption {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    vertical-align: text-bottom;
-  }
-
-  &Name {
-    color: var(--color-muted);
-
-    &Caption {
-      max-width: 12ch;
-    }
-  }
-
-  &Symbol {
-    &Caption {
-      max-width: 8ch;
-    }
   }
 }

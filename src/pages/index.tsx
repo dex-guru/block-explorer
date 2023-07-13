@@ -83,7 +83,7 @@ const Index: NextPage<IndexProps> = (props) => {
 
   const chartData = [
     {
-      id: 'txHistory',
+      id: 'Transactions',
       data: stats.transactionsCountHistory,
     },
   ]
@@ -100,20 +100,22 @@ const Index: NextPage<IndexProps> = (props) => {
     },
     {
       title: 'Transactions',
-      tooltip:
-        'Total Transactions Counter and TPS (Transactions Per Second). TPS refers to the number of validated transactions a blockchain network can process and confirm within a second.',
       value: (
         <Value
           value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
-          suffix={
-            <>
-              &nbsp;
-              {financialFormat(stats.transactionsPerSecond, {
-                decimals: 2,
-              })}{' '}
-              txs/sec
-            </>
-          }
+        />
+      ),
+    },
+    {
+      title: 'TPS',
+      tooltip:
+        'Transactions Per Second (TPS) refers to the number of transactions that a blockchain can handle in one second. Calculated as: Amount of TXs in last block / Block time.',
+      value: (
+        <Value
+          value={financialFormat(stats.transactionsPerSecond, {
+            decimals: 2,
+          })}
+          suffix={<>&nbsp;txs/sec</>}
         />
       ),
     },
@@ -140,12 +142,12 @@ const Index: NextPage<IndexProps> = (props) => {
         />
       ),
     },
-    {
-      title: `${chainConfig.nativeCurrency.symbol} Max Supply`,
-      tooltip:
-        'The maximum number of coins or tokens that will ever exist for a particular cryptocurrency.',
-      value: financialFormatLowValueHighPrecision(stats.tokenSupply),
-    },
+    // {
+    //   title: `${chainConfig.nativeCurrency.symbol} Max Supply`,
+    //   tooltip:
+    //     'The maximum number of coins or tokens that will ever exist for a particular cryptocurrency.',
+    //   value: financialFormatLowValueHighPrecision(stats.tokenSupply),
+    // },
     {
       title: `${chainConfig.nativeCurrency.symbol} Price`,
       value: (

@@ -19,7 +19,7 @@ interface ITokensDataTableProps {
   address?: string
 }
 
-export const HoldersDataTable: FC<ITokensDataTableProps> = ({ address }) => {
+export const TokensDataTable: FC<ITokensDataTableProps> = ({ address }) => {
   const [getHolders, { data, loading, previousData }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
     tokenHoldingsStats: TokenHoldingsStatsModel
@@ -99,4 +99,4 @@ export const HoldersDataTable: FC<ITokensDataTableProps> = ({ address }) => {
   )
 }
 
-export default HoldersDataTable
+export default TokensDataTable

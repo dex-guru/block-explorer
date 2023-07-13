@@ -63,7 +63,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
       return (
         <li className={styles.item} key={idx}>
           <Link
-            href={AddressValues['account'].url(token.contractAddress) || ''}
+            href={AddressValues['token'].url(token.contractAddress) || ''}
             className={styles.tokenLink}
           >
             <Tile

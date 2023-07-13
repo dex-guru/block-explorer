@@ -1,8 +1,10 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import { Address, Delta, IconContract, Tile, Value } from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
-import IconNoImage from '@/images/icons/question.svg'
+import IconNoImage from '@/images/icons/no-icon.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './TokensDataTable.module.scss'
 
@@ -23,7 +25,11 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
         <IconNoImage className={styles.noimage} />
       )
 
-      return <Tile className={styles.token} icon={icon} title={data.asset} />
+      return (
+        <Link href={AddressValues['token'].url(data.contractAddress) || ''}>
+          <Tile className={styles.token} icon={icon} title={data.asset} />
+        </Link>
+      )
     },
   },
 
@@ -43,7 +49,13 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
           value={
             <Address address={data.contractAddress} type="account" isCopy />
           }
-          icon={<IconContract className={styles.typeIcon} />}
+          icon={
+            <IconContract
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content="Smart Contract"
+              className={styles.typeIcon}
+            />
+          }
         />
       )
     },

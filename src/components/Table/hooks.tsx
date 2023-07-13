@@ -17,21 +17,25 @@ export const useBodyRows = <T,>(options: {
   const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } =
     options
 
-  return data.map((dataItem, idx) => {
-    const cells = columns.map((column) => {
+  return data.map((dataItem, rowIdx) => {
+    const cells = columns.map((column, cellIdx) => {
       const className = clsx(
         styles[column.type || 'text'],
         styles[column.modifier || 'default']
       )
 
       const cellDisplay = column.render
-        ? column.render(dataItem || ({} as T), column.placeholder)
+        ? column.render(dataItem || ({} as T), column.placeholder, rowIdx)
         : dataItem
         ? `${(dataItem as Record<string, unknown>)[column.accessor]}`
         : column.placeholder || ''
 
       return (
-        <Cell th={isHeader} key={column.accessor} className={className}>
+        <Cell
+          th={isHeader}
+          key={`${column.accessor}-${cellIdx}`}
+          className={className}
+        >
           {cellDisplay}
         </Cell>
       )
@@ -41,7 +45,7 @@ export const useBodyRows = <T,>(options: {
 
     return (
       <CSSTransition
-        key={getRowKey ? getRowKey(dataItem) : idx}
+        key={getRowKey ? getRowKey(dataItem) : rowIdx}
         timeout={500}
         nodeRef={ref}
         classNames="item"
@@ -65,14 +69,14 @@ export const useHeader = <T,>(
   // onFilter?:()=>void,,
   rowClassName?: string
 ) => {
-  const cells = columns.map((column) => {
+  const cells = columns.map((column, idx) => {
     const className = clsx(
       styles[column.type || 'text'],
       styles[column.modifier || 'default']
     )
 
     return (
-      <Cell th={true} key={column.accessor} className={className}>
+      <Cell th={true} key={`${column.accessor}-${idx}`} className={className}>
         {column.title}
       </Cell>
     )

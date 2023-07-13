@@ -1,27 +1,6 @@
-.progress {
-  appearance: none;
-  background: var(--color-bg);
-  border: 0;
-  border-radius: var(--radii-sm);
-  color: var(--color-accent);
+.container {
   height: 8px;
-  position: relative;
-  width: 100%;
-
-  &::-webkit-progress-bar {
-    background: transparent;
-    border-radius: var(--radii-sm);
-  }
-
-  &::-webkit-progress-value {
-    background: var(--color-accent);
-    border-radius: var(--radii-sm);
-  }
-
-  &::-moz-progress-bar {
-    background: var(--color-accent);
-    border-radius: var(--radii-sm);
-  }
+  max-width: 100%;
 
   &:indeterminate {
     animation: progress-indeterminate 1.5s linear infinite;

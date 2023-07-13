@@ -3,7 +3,7 @@ import {
   Address,
   IconContract,
   IconLiquidityPool,
-  IconQuestion,
+  IconNoIcon,
   IconWallet,
   Label,
   Tile,
@@ -13,33 +13,60 @@ import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './HoldersDataTable.module.scss'
 
-export const holdersColumns: IColumn<TokenBalanceModel>[] = [
+export const holdersColumns = (skip: number): IColumn<TokenBalanceModel>[] => [
+  {
+    accessor: 'address',
+    title: 'Rank',
+    modifier: 'rank',
+    render: (_data, _placeholder, idx) => (
+      <span className={styles.muted}>{skip + (idx || 0) + 1}</span>
+    ),
+  },
+
   {
     accessor: 'address',
     title: 'Address',
     modifier: 'address',
     render: (data) => {
-      let Icon
+      let icon
 
       switch (data.holderType) {
         case 'wallet':
-          Icon = IconWallet
+          icon = (
+            <IconWallet
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content="Externally Owned Account"
+              className={styles.typeIcon}
+            />
+          )
           break
         case 'smart_contract':
-          Icon = IconContract
+          icon = (
+            <IconContract
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content="Smart Contract"
+              className={styles.typeIcon}
+            />
+          )
           break
         case 'liquidity_pool':
-          Icon = IconLiquidityPool
+          icon = (
+            <IconLiquidityPool
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content="Liquidity Pool"
+              className={styles.typeIcon}
+            />
+          )
           break
         default:
-          Icon = IconQuestion
+          icon = <IconNoIcon className={styles.typeIcon} />
       }
 
       return (
         <Value
           className={styles.token}
           value={<Address address={data.address} type="account" isCopy />}
-          icon={<Icon className={styles.typeIcon} />}
+          icon={icon}
         />
       )
     },
@@ -53,10 +80,16 @@ export const holdersColumns: IColumn<TokenBalanceModel>[] = [
 
   {
     accessor: 'percentage',
-    title: '%',
+    title: 'Supply Owned',
     type: 'number',
     render: (data) => (
-      <Value value={financialFormat((data.percentage || 0) * 100)} suffix="%" />
+      <>
+        <Value
+          value={financialFormat((data.percentage || 0) * 100)}
+          suffix="%"
+        />
+        <progress max="100" value={(data.percentage || 0) * 100} />
+      </>
     ),
   },
 

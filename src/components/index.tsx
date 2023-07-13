@@ -53,6 +53,7 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import IconNoIcon from '@/images/icons/no-icon.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconSearch from '@/images/icons/search.svg'
+import IconShield from '@/images/icons/shield.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconTx from '@/images/icons/tx.svg'
 import IconVerify from '@/images/icons/verified.svg'
@@ -116,6 +117,7 @@ export {
   IconWallet,
   IconContract,
   IconVerify,
+  IconShield,
   IconLiquidityPool,
   IconQuestion,
   IconNoIcon,

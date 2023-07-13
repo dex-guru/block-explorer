@@ -8,6 +8,7 @@ export type DetailsViewProps = {
   isVerified?: boolean
   icon?: ReactNode
   tag?: string
+  tagTooltip?: string
   children?: ReactNode | ReactNode[]
   className?: string
   type?: OpenWithType

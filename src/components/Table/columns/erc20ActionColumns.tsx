@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import { Address, Label } from '@/components'
-import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
+import Token from '@/components/Token'
 import { financialFormat } from '@/lib/utils'
+import stylesTabel from '@/components/Table/Table.module.scss'
 import styles from '@/pages/Pages.module.scss'
 
 export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
@@ -37,17 +37,19 @@ export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
     accessor: 'amounts',
     title: 'For',
     type: 'number',
-    modifier: 'tokenValue',
+    modifier: 'tokenAmount',
     render: (data) => (
-      <ul className={styles.tokenValues}>
+      <div className={stylesTabel.data}>
         {data.amounts.map((amount, idx) => {
           return (
-            <li key={idx} className={styles.tokenValue}>
-              {financialFormat(amount)}
-            </li>
+            <div className={stylesTabel.dataRow} key={idx}>
+              <div className={stylesTabel.dataNumber}>
+                {financialFormat(amount)}
+              </div>
+            </div>
           )
         })}
-      </ul>
+      </div>
     ),
   },
   {
@@ -55,21 +57,20 @@ export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
     type: 'text',
     modifier: 'tokenSymbol',
     render: (data) => (
-      <ul className={styles.tokenValues}>
+      <div className={stylesTabel.data}>
         {data.amounts.map((amount, idx) => {
           return (
-            <li key={idx} className={styles.tokenValue}>
-              <Link
-                href={
-                  AddressValues['token'].url(data.tokenAddresses[idx]) || ''
-                }
-              >
-                {data.tokenSymbols[idx]}
-              </Link>
-            </li>
+            <div className={stylesTabel.dataRow} key={idx}>
+              <Token
+                address={data.tokenAddresses[idx]}
+                logo={data.tokenLogos[idx]}
+                symbol={data.tokenSymbols[idx]}
+                name={data.tokenNames[idx]}
+              />
+            </div>
           )
         })}
-      </ul>
+      </div>
     ),
   },
 ]
