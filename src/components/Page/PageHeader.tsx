@@ -5,7 +5,7 @@ import Logo from '../Logo'
 import NetworkSelect from '../NetworkSelect'
 import Search from '../Search'
 import InfoBlock from './InfoBlock'
-import PageMenu, { PageMenuLinks } from './PageMenu'
+import PageMenu, { PageMenuMainLink } from './PageMenu'
 import { PageHeaderProps } from './types'
 import styles from './PageHeader.module.scss'
 
@@ -17,7 +17,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const links = useMemo(() => {
-    const baseLinks: PageMenuLinks = [
+    const baseLinks: PageMenuMainLink[] = [
       { caption: 'Home', href: '/' },
       {
         caption: 'Blockchain',
