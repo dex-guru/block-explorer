@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -46,7 +46,6 @@ const Index: NextPage<IndexProps> = (props) => {
   const [blocks, setBlocks] = useState<BlockModelWithTimeDiff[]>(props.blocks)
 
   const [isCosmos, setIsCosmos] = useState(false)
-  const refIframe = useRef<HTMLIFrameElement>(null)
 
   const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(
     GET_BLOCKS_SHORT,
@@ -66,20 +65,6 @@ const Index: NextPage<IndexProps> = (props) => {
       setBlocks(blocksWithTimeDiff)
     }
   }, [blocksUpdate, loading])
-
-  useEffect(() => {
-    const resizeIframe = (message: MessageEvent) => {
-      if (refIframe.current && message.data.type === 'resize') {
-        refIframe.current.style.height = `${message.data.height}px`
-      }
-    }
-
-    window.addEventListener('message', resizeIframe)
-
-    return (): void => {
-      window.removeEventListener('message', resizeIframe)
-    }
-  })
 
   const chartData = [
     {
@@ -205,13 +190,6 @@ const Index: NextPage<IndexProps> = (props) => {
             ]}
           />
         )}
-
-        <iframe
-          ref={refIframe}
-          src="http://localhost:8080/public/dashboards/L5VIQYNSBWqLmc207lRdA6s0Ub2bVv4kDj6ibG5l?org_slug=default"
-          width="100%"
-          style={{ border: 0, resize: 'vertical' }}
-        />
 
         <Grid>
           <Card
