@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import Button from '../Button'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { Heading } from '@/components'
-import ImgDexGuru from '@/images/dexguru.svg'
+import ImgBlockExplorer from '@/images/blockexplorer.svg'
 import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
 import styles from './PageFooter.module.scss'
@@ -27,7 +27,8 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
           <ImgFooter className={styles.aboutImg} />
           <div className={clsx('text', styles.text)}>
             <p>
-              Powered by DexGuru <ImgDexGuru className={styles.logoDexGuru} />
+              <ImgBlockExplorer className={styles.logoExplorer} /> Block
+              Explorer Powered by DexGuru
             </p>
             <small>
               DexGuru is an Analytics Platform and Block Explorer for{' '}
