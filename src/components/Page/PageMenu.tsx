@@ -34,30 +34,34 @@ const PageMenu: FC<{
     link: PageMenuLink,
     hasSubmenu?: boolean,
     className?: string
-  ) => (
-    <Link
-      {...link}
-      href={link.href || '#'}
-      onClick={(e) => {
-        handleLinkCLick()
-        link.onClick && link.onClick(e)
-        if (!link.href) {
-          e.preventDefault()
-        }
-      }}
-      className={clsx(
-        styles.link,
-        {
-          [styles.active]: router.pathname === link.href,
-        },
-        link.className,
-        className
-      )}
-    >
-      {link.caption}
-      {hasSubmenu && <IconDown className={styles.arrow} />}
-    </Link>
-  )
+  ) => {
+    const props = { ...link, submenu: undefined }
+
+    return (
+      <Link
+        {...props}
+        href={link.href || '#'}
+        onClick={(e) => {
+          handleLinkCLick()
+          link.onClick && link.onClick(e)
+          if (!link.href) {
+            e.preventDefault()
+          }
+        }}
+        className={clsx(
+          styles.link,
+          {
+            [styles.active]: router.pathname === link.href,
+          },
+          link.className,
+          className
+        )}
+      >
+        {link.caption}
+        {hasSubmenu && <IconDown className={styles.arrow} />}
+      </Link>
+    )
+  }
 
   return (
     <div

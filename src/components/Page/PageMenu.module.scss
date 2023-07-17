@@ -141,11 +141,23 @@
 .link:hover,
 .link:focus {
   color: var(--color-accent-a);
+}
 
+.item:hover,
+.link:hover,
+.link:focus {
   & > .submenu,
   & + .submenu {
     display: block;
-    animation: dropdown 0.25s ease 0.15s forwards;
+
+    @media (min-width: 1200.1px) {
+      animation: dropdown 0.25s ease 0.15s forwards;
+    }
+
+    @media (max-width: 1200px) {
+      opacity: 1;
+      visibility: visible;
+    }
 
     @keyframes dropdown {
       from {
