@@ -80,6 +80,10 @@ export const Pagination: FC<IPaginationProps> = ({
     setCurrentPage(defaultCurrentPage)
   }, [isMounted, defaultCurrentPage, total])
 
+  if (!totalPages) {
+    return <div className={clsx(styles.container, className)} />
+  }
+
   const disabled = getDisabled(totalPages, currentPage)
 
   return (
