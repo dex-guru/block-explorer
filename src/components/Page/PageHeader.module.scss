@@ -92,7 +92,7 @@
     display: none;
     position: fixed;
     z-index: 1111;
-    right: 8px;
+    right: 56px;
     bottom: 12px;
 
     .open & {
@@ -106,8 +106,10 @@
 
   @media (max-width: 960px) {
     display: none;
-    position: relative;
+    position: fixed;
     z-index: 1111;
+    right: 8px;
+    bottom: 16px;
 
     .open & {
       display: block;

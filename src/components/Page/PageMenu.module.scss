@@ -2,6 +2,9 @@
 }
 
 .list {
+  font-size: 16px;
+  line-height: 32px;
+  font-weight: 400;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -14,14 +17,12 @@
   @media (max-width: 1200px) {
     background: var(--color-bg);
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: stretch;
     flex-flow: column;
     gap: 16px;
-    font-size: 20px;
-    line-height: 28px;
     flex: 1 0 0;
     overflow: auto;
-    padding: 16px;
+    padding: 16px 8px;
 
     &:not(.open) {
       display: none !important;
@@ -40,7 +41,6 @@
   display: flex;
   gap: 2px;
   padding: 0 8px;
-  line-height: 36px;
   align-items: center;
 }
 
@@ -49,10 +49,7 @@
   height: 20px;
   transform: none;
   transition: transform 0.25s ease;
-
-  @media (max-width: 1200px) {
-    display: none;
-  }
+  margin-left: auto;
 }
 
 .link:hover > .arrow {
@@ -94,64 +91,61 @@
   height: 20px;
 }
 
-@media (max-width: 1200px) {
-  .link {
-    font-weight: 500;
-    font-size: 20px;
+.submenu {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+  pointer-events: none;
+
+  @media (max-width: 1200px) {
+    display: none;
   }
 
-  .submenu {
-    &Link {
-      font-weight: 400;
-      font-size: 16px;
-    }
-  }
-}
-
-@media (min-width: 1200.1px) {
-  .submenu {
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.25s ease;
+  @media (min-width: 1200.1px) {
     position: absolute;
-    min-width: 100%;
+    min-width: max(100%, 180px);
     top: 100%;
     left: 0;
     padding-top: 10px;
     white-space: nowrap;
-    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+  }
 
-    &List {
-      display: flex;
-      flex-flow: column;
-      gap: 8px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      border-top: 2px var(--color-accent-a) solid;
-      background: var(--color-bg);
-      padding: 8px;
-      border-radius: 0 0 var(--radii-lg) var(--radii-lg);
-    }
+  &List {
+    display: flex;
+    flex-flow: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    border: 1px var(--color-accent) solid;
+    background: var(--color-bg);
+    padding: 8px;
+    border-radius: var(--radii-lg);
 
-    &Link {
-      background: transparent;
-      border-radius: var(--radii-sm);
-
-      &:hover {
-        background: var(--color-bg-3);
-      }
+    @media (max-width: 1200px) {
+      padding-top: 48px;
+      margin-top: -40px;
     }
   }
 
-  .item:hover > .submenu,
-  .link:focus + .submenu {
-    opacity: 1;
-    visibility: visible;
-  }
+  &Link {
+    background: transparent;
+    border-radius: var(--radii-sm);
 
-  .item:last-child > .submenu {
-    left: auto;
-    right: 0;
+    &:hover {
+      background: var(--color-bg-2);
+    }
   }
+}
+
+.item:hover > .submenu,
+.link:focus + .submenu {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  pointer-events: all;
+}
+
+.item:last-child > .submenu {
+  left: auto;
+  right: 0;
 }
