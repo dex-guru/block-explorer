@@ -20,7 +20,7 @@
   border: 1px var(--color-button-border) solid;
   border-radius: 4px;
 
-  font: normal 400 12px/20px 'IBM Plex Sans Condensed', sans-serif;
+  font: normal 400 12px/20px var(--font-main), sans-serif;
 
   transition: 0.25s ease;
   transition-property: border, background, color, opacity;
