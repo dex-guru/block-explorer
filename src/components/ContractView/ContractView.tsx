@@ -46,6 +46,7 @@ import {
   IconContract,
   IconNoIcon,
   IconShield,
+  IconVerify,
 } from '@/components'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
@@ -216,7 +217,16 @@ const ContractView: FC<IContractViewProps> = ({
         {addressInfo.name !== addressInfo.symbol ? (
           <>
             {' '}
-            <span className={styles.muted}>({addressInfo.name})</span>
+            <span className={styles.muted}>({addressInfo.name})</span>{' '}
+            {!!addressInfo?.tokenLists?.length && (
+              <IconVerify
+                className={styles.verified}
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content={`This token is verified by ${addressInfo?.tokenLists.join(
+                  ', '
+                )}`}
+              />
+            )}
           </>
         ) : null}
       </>
@@ -260,7 +270,6 @@ const ContractView: FC<IContractViewProps> = ({
             }
             type="address"
             chainConfig={chain.config}
-            isCopy={type === 'contract'}
           >
             <Grid>
               <Properties
