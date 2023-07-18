@@ -106,7 +106,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView
-          title={block ? 'Transactions for block' : 'Transactions'}
+          title={block ? 'Transactions in block' : 'Transactions'}
           address={block?.toString()}
         >
           {!block && (
