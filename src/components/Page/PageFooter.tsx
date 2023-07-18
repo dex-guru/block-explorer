@@ -25,11 +25,11 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
       <div className={styles.body}>
         <div className={styles.about}>
           <ImgFooter className={styles.aboutImg} />
-          <div className={clsx('text', styles.text)}>
-            <p>
+          <div className={styles.text}>
+            <div className={styles.powered}>
               <ImgBlockExplorer className={styles.logoExplorer} /> Block
-              Explorer Powered by DexGuru
-            </p>
+              Explorers Powered by DexGuru
+            </div>
             <small>
               DexGuru is an Analytics Platform and Block Explorer for{' '}
               {chainConfig.name}.
