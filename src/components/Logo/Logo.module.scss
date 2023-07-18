@@ -25,22 +25,19 @@
 }
 
 .subtitle {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 13px;
   line-height: 16px;
-  color: var(--color-bg-5);
+  color: #6046ff;
+}
+
+.explorer {
+  width: 16px;
+  height: 16px;
 }
 
 .link {
   flex: 0 0 auto;
-
-  path {
-    transition: all 0.25s ease;
-  }
-
-  &:hover {
-    path {
-      fill: var(--color-accent-a);
-    }
-  }
 }
