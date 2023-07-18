@@ -23,6 +23,10 @@ interface CSRStatsProps {
 }
 
 const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
+  if (!csrStats || !chainConfig) {
+    return null
+  }
+
   const csrStatsSeries: LineChartDataset[] = [
     {
       id: 'burned',
@@ -113,7 +117,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const logger = getLogger('csr')
 
   if (CHAIN_ID !== CHAIN_IDS.CANTO) {
-    return
+    ctx.res.statusCode = 404
+    return { props: {} }
   }
   const apolloClient = initializeApollo({ ctx })
 

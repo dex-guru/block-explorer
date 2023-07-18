@@ -5,7 +5,8 @@ const OutsideClicker: FC<{
   children: ReactNode
   className?: string
   style?: CSSProperties
-}> = ({ className, onClick, children, style }) => {
+  element?: string
+}> = ({ className, onClick, children, style, element = 'div' }) => {
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handleClickOutside = (event: Event): void => {
@@ -22,11 +23,7 @@ const OutsideClicker: FC<{
     }
   })
 
-  return (
-    <div ref={ref} className={className} style={style}>
-      {children}
-    </div>
-  )
+  return React.createElement(element, { ref, className, style }, children)
 }
 
 export default OutsideClicker

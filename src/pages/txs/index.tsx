@@ -106,7 +106,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView
-          title={block ? 'Transactions for block' : 'Transactions'}
+          title={block ? 'Transactions in block' : 'Transactions'}
           address={block?.toString()}
         >
           {!block && (
@@ -134,9 +134,14 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                       <TooltipAnchor tooltip="Transactions Per Second (TPS) refers to the number of transactions that a blockchain can handle in one second. Calculated as: Amount of TXs in last block / Block time." />
                     </>
                   ),
-                  value: financialFormatLowValueHighPrecision(
-                    props.chainStats?.transactionsPerSecond || 0,
-                    { decimals: 2 }
+                  value: (
+                    <Value
+                      value={financialFormat(
+                        props.chainStats?.transactionsPerSecond || 0,
+                        { decimals: 2 }
+                      )}
+                      suffix={<>&nbsp;txs/sec</>}
+                    />
                   ),
                 },
                 {
