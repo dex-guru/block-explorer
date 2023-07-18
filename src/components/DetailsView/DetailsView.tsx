@@ -19,7 +19,6 @@ const DetailsView: FC<DetailsViewProps> = ({
   children,
   type,
   chainConfig,
-  isCopy,
 }) => {
   return (
     <div className={clsx(styles.container, className)}>
@@ -30,7 +29,7 @@ const DetailsView: FC<DetailsViewProps> = ({
           <>
             <Heading caption={address} size="lg" className={styles.address} />
             {!!isVerified && <IconVerify className={styles.verified} />}
-            {!!isCopy && <Copy text={address} />}
+            <Copy text={address} />
           </>
         )}
         {!address && !!isVerified && <IconVerify className={styles.verified} />}
