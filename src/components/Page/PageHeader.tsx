@@ -28,6 +28,11 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
         ],
       },
       {
+        caption: 'Tokens',
+        href: '',
+        submenu: [{ caption: 'Token Transfers (ERC-20)', href: '/tokentxns' }],
+      },
+      {
         caption: 'Developers',
         href: '',
         submenu: [
