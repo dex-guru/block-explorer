@@ -48,6 +48,7 @@
     "recharts": "^2.6.2",
     "redis": "^4.6.7",
     "swr": "2.1.5",
+    "uniqolor": "^1.1.0",
     "use-debounce": "^9.0.4",
     "viem": "^1.2.6",
     "wagmi": "^1.3.3"

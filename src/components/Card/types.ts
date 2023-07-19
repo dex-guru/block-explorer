@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 import { ButtonProps } from '../Button'
 
 export type CardProps = {
@@ -7,4 +7,6 @@ export type CardProps = {
   children?: React.ReactNode
   actions?: ButtonProps[]
   header?: ReactNode
+  footer?: ReactNode
+  style: CSSProperties
 }

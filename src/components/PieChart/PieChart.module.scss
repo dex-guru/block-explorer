@@ -1,0 +1,59 @@
+.container {
+  --color-chart-tick: var(--color-muted);
+  --color-chart-stroke: var(--color-accent);
+  --color-chart-fill: transparent;
+  --color-chart-value: var(--color-muted);
+
+  aspect-ratio: 16/9;
+  max-height: 75vh !important;
+  user-select: none;
+
+  text {
+    fill: var(--color-chart-tick);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.tooltip {
+  background: var(--color-bg-3);
+  padding: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+
+  &List {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+  }
+
+  &Item {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 4px;
+  }
+
+  &Entry {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:before {
+      content: '';
+      width: 1em;
+      height: 1em;
+      background: var(--color);
+      border-radius: 50%;
+    }
+  }
+}

@@ -8,3 +8,22 @@
   width: calc(100% + 32px);
   border: 0;
 }
+
+.dashboards {
+  margin: 16px 0 0;
+  border-top: 1px var(--color-separator) solid;
+  padding: 16px 0 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.tabs {
+  composes: inner from '../../components/Tabs/Tabs.module.scss';
+}

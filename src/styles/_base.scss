@@ -216,6 +216,11 @@ progress {
       font-size: 12px !important;
     }
   }
+
+  &-sector {
+    stroke: var(--color-bg-2);
+    stroke-width: 4;
+  }
 }
 
 .item-enter {

@@ -1,12 +1,17 @@
+import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { AnalyticsDashboard } from './[id]'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { DetailsView, Page } from '@/components'
+import { Card, DetailsView, Page, TabPanel } from '@/components'
+import Dashboard from '@/components/Dashboard/Dashboard'
+import { DashboardData } from '@/components/Dashboard/types'
+import Tabs, { Tab } from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
+import styles from './Analytics.module.scss'
 
 interface AnalyticsProps {
   chainConfig: ChainConfigModel
@@ -14,12 +19,38 @@ interface AnalyticsProps {
     count: number
     page: number
     page_size: number
-    results: AnalyticsDashboard[]
+    results: DashboardData[]
   }
 }
 
 const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
   const pageTitle = `${chainConfig.name} Charts & Statistics`
+
+  const activeDashboards =
+    dashboards.results?.filter((item) => !item.is_archived && !item.is_draft) ||
+    []
+
+  const tags: string[] = []
+  activeDashboards?.forEach((dashboard) => {
+    if (!dashboard.tags) {
+      return
+    }
+    tags.push(...dashboard.tags)
+  })
+
+  const tagsSet = [...new Set(tags)]
+  const tabs: Tab<string>[] = tagsSet.map((tag) => {
+    return {
+      title: tag,
+      value: tag,
+    }
+  })
+
+  const [currentTab, setCurrentTab] = useState(tabs[0].value || '')
+
+  const handleChange = (value: string) => {
+    setCurrentTab(value)
+  }
 
   return (
     <>
@@ -31,15 +62,28 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
       </Head>
       <Page chainConfig={chainConfig}>
         <DetailsView title={pageTitle}>
-          {dashboards.results
-            ?.filter((item) => !item.is_archived && !item.is_draft)
-            .map((dashboard) => {
-              return (
-                <Link href={`/analytics/${dashboard.id}`} key={dashboard.name}>
-                  {dashboard.name}
-                </Link>
-              )
-            })}
+          <TabPanel
+            tabs={tabs}
+            value={currentTab}
+            onChange={handleChange}
+            tabsClassName={styles.tabs}
+          >
+            <div className={styles.dashboards}>
+              <ul className={styles.list}>
+                {activeDashboards
+                  .filter((dashboard) => dashboard.tags.includes(currentTab))
+                  .map((dashboard) => {
+                    return (
+                      <li className={styles.item} key={dashboard.name}>
+                        <Link href={`/analytics/${dashboard.id}`}>
+                          <Card title={dashboard.name} />
+                        </Link>
+                      </li>
+                    )
+                  })}
+              </ul>
+            </div>
+          </TabPanel>
         </DetailsView>
       </Page>
     </>
@@ -68,10 +112,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_REDASH_API_URL || ''}/api/dashboards`,
+    `${
+      process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
+    }/api/dashboards`,
     {
       headers: {
-        Authorization: process.env.NEXT_PUBLIC_REDASH_API_KEY || '',
+        Authorization:
+          process.env.NEXT_PUBLIC_REDASH_API_KEY ||
+          'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
       },
     }
   )

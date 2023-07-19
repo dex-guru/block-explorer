@@ -1,0 +1,38 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-flow: column;
+  }
+}
+
+.widget {
+}
+
+.query {
+  composes: muted from '../../styles/_common.scss';
+  font-weight: 400;
+}
+
+.counter {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1 0 auto;
+}
+
+.value {
+  font-size: 32px;
+}
+
+.unit {
+}
+
+.footer {
+  font-size: 12px;
+}

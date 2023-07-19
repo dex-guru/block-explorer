@@ -2,27 +2,28 @@ import { useEffect, useRef } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Page } from '@/components'
+import { DetailsView, Page } from '@/components'
+import Dashboard from '@/components/Dashboard/Dashboard'
+import {
+  DashboardData,
+  DashboardWidgetQueryResult,
+} from '@/components/Dashboard/types'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import styles from './Analytics.module.scss'
 
-export interface AnalyticsDashboard {
-  id: number
-  name: string
-  slug: string
-  is_draft: boolean
-  is_archived: boolean
-  public_url: string
-}
-
 interface AnalyticsProps {
   chainConfig: ChainConfigModel
-  dashboard: AnalyticsDashboard
+  dashboard: DashboardData
+  queriesResult: Record<number, DashboardWidgetQueryResult>
 }
 
-const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboard }) => {
+const Analytics: NextPage<AnalyticsProps> = ({
+  chainConfig,
+  dashboard,
+  queriesResult,
+}) => {
   const refIframe = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
@@ -48,6 +49,10 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboard }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
+        <DetailsView title={dashboard.name}>
+          <Dashboard {...dashboard} queriesResults={queriesResult} />
+        </DetailsView>
+
         <div className={styles.container}>
           <iframe
             ref={refIframe}
@@ -92,20 +97,56 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
   )
 
-  let dashboard = null
+  let dashboard: DashboardData | null = null
 
   if (response.ok) {
-    console.log(response)
     dashboard = await response.json()
     logger.info({ msg: `Got redash dashboard ${id} info`, data })
   } else {
     logger.error(error, `Error getting redash dashboard ${id} info`)
   }
 
+  const queriesResult: Record<number, unknown> = {}
+
+  if (dashboard?.widgets?.length) {
+    await Promise.all(
+      dashboard.widgets.map(async (widget) => {
+        const id = widget?.visualization?.query.id
+        if (!id) {
+          return
+        }
+
+        const response = await fetch(
+          `${
+            process.env.NEXT_PUBLIC_REDASH_API_URL || ''
+          }/api/queries/${id}/results`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization:
+                process.env.NEXT_PUBLIC_REDASH_API_KEY ||
+                'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
+            },
+            body: JSON.stringify({
+              parameters: { chain_id: data.chainConfig.chainId },
+            }),
+          }
+        )
+
+        if (response.ok) {
+          const result = await response.json()
+          queriesResult[id] = result.query_result
+        }
+      })
+    )
+  }
+
   return addApolloState(apolloClient, {
     props: {
       chainConfig: data.chainConfig,
       dashboard: dashboard,
+      queriesResult,
     },
   })
 }

@@ -10,6 +10,8 @@ export const Card: FC<CardProps> = ({
   title,
   header,
   actions,
+  footer,
+  style,
   children,
 }) => {
   const renderActions = () => {
@@ -25,7 +27,7 @@ export const Card: FC<CardProps> = ({
   }
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div className={clsx(styles.container, className)} style={style}>
       {(!!title || !!header) && (
         <div className={styles.header}>
           {title && (
@@ -37,9 +39,10 @@ export const Card: FC<CardProps> = ({
         </div>
       )}
       <div className={styles.body}>{children}</div>
-      {!!actions && (
+      {(!!actions || !!footer) && (
         <div className={styles.footer}>
-          <div className={styles.actions}>{renderActions()}</div>
+          {!!actions && <div className={styles.actions}>{renderActions()}</div>}
+          {footer}
         </div>
       )}
     </div>
