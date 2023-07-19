@@ -27,7 +27,9 @@
 }
 
 .value {
-  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+  font-size: clamp(32px, 4vw + 1px, 56px);
 }
 
 .unit {

@@ -118,7 +118,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
         const response = await fetch(
           `${
-            process.env.NEXT_PUBLIC_REDASH_API_URL || ''
+            process.env.NEXT_PUBLIC_REDASH_API_URL ||
+            'https://redash-demo.dex.guru'
           }/api/queries/${id}/results`,
           {
             method: 'POST',

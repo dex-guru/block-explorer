@@ -1,20 +1,19 @@
 import { CSSProperties, FC } from 'react'
 import uniqolor from 'uniqolor'
-import LineChart, { LineChartDataset } from '../LineChart'
 import PieChart from '../PieChart'
-import { Table } from '../Table'
-import {
-  DashboardWidgetQueryResult,
-  DashboardWidgetVisualization,
-} from './types'
+import { DashboardWidgetQueryData, DashboardWidgetVisualization } from './types'
 import { financialFormat } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
 const DashboardWidgetChart: FC<{
   type: 'pie' | 'line'
-  queryResult: DashboardWidgetQueryResult
+  data: DashboardWidgetQueryData
   visualization: DashboardWidgetVisualization
-}> = ({ type, queryResult, visualization }) => {
+}> = ({ type, data, visualization }) => {
+  if (!data) {
+    return null
+  }
+
   // const dataSeries: LineChartDataset[] = [
   //   {
   //     id: 'holders',
@@ -37,7 +36,7 @@ const DashboardWidgetChart: FC<{
         <div className={styles.wrapper}>
           <PieChart
             className={styles.chart}
-            data={queryResult.data.rows}
+            data={data.rows}
             options={{
               dataKey: columnMapping.y[0],
               nameKey: columnMapping.x[0],
@@ -47,7 +46,7 @@ const DashboardWidgetChart: FC<{
         </div>
 
         <ul className={styles.legend}>
-          {queryResult.data.rows.map((item, idx) => {
+          {data.rows.map((item, idx) => {
             return (
               <li
                 key={idx}
@@ -70,12 +69,9 @@ const DashboardWidgetChart: FC<{
   const entities: Record<
     string,
     { name: string; friendly_name: string; type: string }
-  > = queryResult?.data?.columns?.reduce(
-    (obj, curr) => ({ ...obj, [curr.name]: curr }),
-    {}
-  )
+  > = data?.columns?.reduce((obj, curr) => ({ ...obj, [curr.name]: curr }), {})
 
-  console.log(queryResult?.data?.columns, entities)
+  console.log(data?.columns, entities)
 
   return (
     <div className={styles.chart}>{/* <LineChart data={dataSeries} /> */}</div>

@@ -48,15 +48,17 @@ export type DashboardWidgetData = {
   text: string
 }
 
+export type DashboardWidgetQueryData = {
+  columns: Array<{
+    name: string
+    friendly_name: string
+    type: string
+  }>
+  rows: Array<Record<string, number | string>>
+}
+
 export type DashboardWidgetQueryResult = {
-  data: {
-    columns: Array<{
-      name: string
-      friendly_name: string
-      type: string
-    }>
-    rows: Array<Record<string, number | string>>
-  }
+  data: DashboardWidgetQueryData
   retrieved_at: string
 }
 

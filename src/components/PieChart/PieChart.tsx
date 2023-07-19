@@ -62,8 +62,6 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
     return null
   }
 
-  console.log(data)
-
   return (
     <ResponsiveContainer
       width="100%"
@@ -89,7 +87,7 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
               <Cell
                 className={styles.cell}
                 fill={uniqolor(el[options?.nameKey || '']).color}
-                key={el.id}
+                key={el[options?.nameKey]}
               />
             )
           })}

@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import { IconWatch, Value } from '..'
 import Card from '../Card'
+import TooltipAnchor from '../TooltipAnchor'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import { DashboardWidgetData, DashboardWidgetQueryResult } from './types'
@@ -37,7 +38,13 @@ const DashboardWidget: FC<
     <Card
       title={title}
       className={styles.widget}
-      header={visualization?.query?.id}
+      header={
+        <TooltipAnchor
+          tooltip={
+            <pre>{JSON.stringify(visualization?.query || {}, null, 2)}</pre>
+          }
+        />
+      }
       style={{
         gridColumn: `${options?.position.col + 1} / span ${
           options?.position.sizeX
@@ -47,17 +54,19 @@ const DashboardWidget: FC<
         }`,
       }}
       footer={
-        queryResult ? (
+        queryResult?.retrieved_at ? (
           <Value
             className={styles.footer}
             icon={<IconWatch />}
             value={
               <>
-                <TimeAgo
-                  timestamp={
-                    new Date(queryResult.retrieved_at).getTime() / 1000
-                  }
-                />
+                <Suspense fallback={<>&nbsp;</>}>
+                  <TimeAgo
+                    timestamp={
+                      new Date(queryResult.retrieved_at).getTime() / 1000
+                    }
+                  />
+                </Suspense>
               </>
             }
           />
@@ -69,7 +78,7 @@ const DashboardWidget: FC<
       {visualization?.type === 'COUNTER' && (
         <DashboardWidgetCounter
           value={financialFormat(
-            Object.values(queryResult?.data?.rows[0] || {})[0]
+            Object.values(queryResult?.data?.rows[0] || {})[0] || 0
           )}
           unit={visualization?.name}
         />
@@ -81,7 +90,7 @@ const DashboardWidget: FC<
             visualization.options?.globalSeriesType === 'pie' ? 'pie' : 'line'
           }
           visualization={visualization}
-          queryResult={queryResult}
+          data={queryResult?.data}
         />
       )}
     </Card>
