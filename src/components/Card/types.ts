@@ -8,5 +8,5 @@ export type CardProps = {
   actions?: ButtonProps[]
   header?: ReactNode
   footer?: ReactNode
-  style: CSSProperties
+  style?: CSSProperties
 }
