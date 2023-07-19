@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { DetailsView, Page } from '@/components'
+import { DetailsView, Empty, IconSearch, Page } from '@/components'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import {
   DashboardData,
@@ -42,15 +42,21 @@ const Analytics: NextPage<AnalyticsProps> = ({
   return (
     <>
       <Head>
-        <title>{dashboard.name}</title>
-        <meta name="description" content={dashboard.name} />
+        <title>{dashboard?.name || 'No dashboard'}</title>
+        <meta name="description" content={dashboard?.name} />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <DetailsView title={dashboard.name}>
-          <Dashboard {...dashboard} queriesResults={queriesResult} />
-        </DetailsView>
+        {!dashboard && (
+          <Empty icon={<IconSearch />} title="No dashboard  was found" />
+        )}
+
+        {!!dashboard && (
+          <DetailsView title={dashboard.name}>
+            <Dashboard {...dashboard} queriesResults={queriesResult} />
+          </DetailsView>
+        )}
       </Page>
     </>
   )
