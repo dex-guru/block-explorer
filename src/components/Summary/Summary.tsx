@@ -21,7 +21,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
                   x: {
                     dataKey: 'timestamp',
                     type: 'number',
-                    tickFormatter: getShortDate,
+                    tickFormatter: (value: number) => getShortDate(value),
                     axisLine: false,
                     tickLine: false,
                   },

@@ -91,7 +91,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
                 x: {
                   type: 'number',
                   dataKey: 'timestamp',
-                  tickFormatter: getShortDate,
+                  tickFormatter: (value: number) => getShortDate(value),
                   axisLine: false,
                   tickLine: false,
                 },
