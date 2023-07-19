@@ -89,10 +89,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_REDASH_API_URL || ''}/api/dashboards/${id}`,
+    `${
+      process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
+    }/api/dashboards/${id}`,
     {
       headers: {
-        Authorization: process.env.NEXT_PUBLIC_REDASH_API_KEY || '',
+        Authorization:
+          process.env.NEXT_PUBLIC_REDASH_API_KEY ||
+          'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
       },
     }
   )
