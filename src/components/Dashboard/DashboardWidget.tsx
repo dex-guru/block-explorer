@@ -1,7 +1,7 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Button, IconWatch, Table, Value } from '..'
+import { IconWatch, Table, Value } from '..'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'

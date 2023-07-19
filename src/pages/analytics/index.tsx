@@ -3,14 +3,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import {
-  Button,
-  Card,
-  DetailsView,
-  IconQuestion,
-  Page,
-  TabPanel,
-} from '@/components'
+import { Card, DetailsView, IconQuestion, Page, TabPanel } from '@/components'
 import { DashboardData } from '@/components/Dashboard/types'
 import { Tab } from '@/components/Tabs'
 import IconRedash from '@/images/redash.svg'
