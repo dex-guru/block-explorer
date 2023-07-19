@@ -2,6 +2,7 @@ import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { IconWatch, Table, Value } from '..'
+import { marked } from 'marked'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
@@ -73,7 +74,14 @@ const DashboardWidget: FC<
         ) : undefined
       }
     >
-      {text}
+      {!!text && (
+        <div
+          className="text"
+          dangerouslySetInnerHTML={{
+            __html: marked.parse(text, { mangle: false, headerIds: false }),
+          }}
+        />
+      )}
 
       {visualization?.type === 'COUNTER' && (
         <DashboardWidgetCounter
