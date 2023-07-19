@@ -45,7 +45,10 @@ export type DashboardWidgetVisualization = {
   }
   options: unknown & {
     globalSeriesType?: string
-    columnMapping: Record<string, string>
+    columnMapping?: Record<string, string>
+    counterLabel?: string
+    counterColName?: string
+    rowNumber?: 1
   }
 }
 

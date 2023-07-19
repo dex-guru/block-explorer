@@ -1,10 +1,12 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { Button, IconWatch, Table, Value } from '..'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import { DashboardWidgetData, DashboardWidgetQueryResult } from './types'
+import IconRedash from '@/images/redash.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
@@ -16,18 +18,7 @@ const DashboardWidget: FC<
   const title = visualization ? (
     visualization?.type?.toLowerCase() !==
     visualization?.name?.toLowerCase() ? (
-      <>
-        {visualization?.name}
-        {visualization.query?.name &&
-        visualization.name !== visualization.query?.name ? (
-          <>
-            {' '}
-            <span className={styles.query}>
-              &bull; {visualization.query.name}
-            </span>
-          </>
-        ) : null}
-      </>
+      <>{visualization?.name}</>
     ) : (
       visualization.query.name
     )
@@ -39,16 +30,19 @@ const DashboardWidget: FC<
       className={styles.widget}
       header={
         visualization?.query?.id ? (
-          <Button
+          <Link
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
             className={styles.redash}
-            caption="View query"
             target="_blank"
             rel="noreferrer noopener"
             href={`${
               process.env.NEXT_PUBLIC_REDASH_API_URL ||
               'https://redash-demo.dex.guru'
             }/queries/${visualization.query.id}`}
-          />
+          >
+            <IconRedash className={styles.redashIcon} />
+          </Link>
         ) : undefined
       }
       style={{
@@ -84,9 +78,11 @@ const DashboardWidget: FC<
       {visualization?.type === 'COUNTER' && (
         <DashboardWidgetCounter
           value={financialFormat(
-            Object.values(queryResult?.data?.rows[0] || {})[0] || 0
+            queryResult?.data?.rows[(visualization.options.rowNumber || 1) - 1][
+              visualization.options.counterColName || ''
+            ]
           )}
-          unit={visualization?.name}
+          unit={visualization.options.counterLabel || visualization?.name}
         />
       )}
 

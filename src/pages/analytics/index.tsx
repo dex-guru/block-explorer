@@ -13,6 +13,7 @@ import {
 } from '@/components'
 import { DashboardData } from '@/components/Dashboard/types'
 import { Tab } from '@/components/Tabs'
+import IconRedash from '@/images/redash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -88,16 +89,19 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
                             </Link>
                           }
                           header={
-                            <Button
+                            <Link
                               className={styles.redash}
-                              caption="Open in Redash"
+                              data-tooltip-id="app-tooltip"
+                              data-tooltip-content={`Open ${dashboard.name} in Redash`}
                               target="_blank"
                               rel="noreferrer noopener"
                               href={`${
                                 process.env.NEXT_PUBLIC_REDASH_API_URL ||
                                 'https://redash-demo.dex.guru'
                               }/dashboards/${dashboard.id}-${dashboard.slug}`}
-                            />
+                            >
+                              <IconRedash className={styles.redashIcon} />
+                            </Link>
                           }
                         >
                           <Link href={`/analytics/${dashboard.id}`}>
