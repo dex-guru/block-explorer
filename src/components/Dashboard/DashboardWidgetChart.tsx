@@ -16,9 +16,11 @@ const DashboardWidgetChart: FC<{
 
   const columnMapping: Record<string, string[]> = { x: [], y: [] }
 
-  Object.entries(visualization.options.columnMapping).forEach(([key, axis]) => {
-    columnMapping[axis].push(key)
-  })
+  Object.entries(visualization.options.columnMapping || {}).forEach(
+    ([key, axis]) => {
+      columnMapping[axis].push(key)
+    }
+  )
 
   if (type === 'pie') {
     return (
