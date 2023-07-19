@@ -42,7 +42,7 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
                       style={
                         {
                           '--color': uniqolor(
-                            item.payload[options.nameKey] || ''
+                            `${item.payload[options.nameKey] || ''}${idx}`
                           ).color,
                         } as CSSProperties
                       }
@@ -82,11 +82,11 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
           labelLine
           isAnimationActive={false}
         >
-          {data.map((el) => {
+          {data.map((el, idx) => {
             return (
               <Cell
                 className={styles.cell}
-                fill={uniqolor(el[options?.nameKey || '']).color}
+                fill={uniqolor(`${el[options?.nameKey] || ''}${idx}`).color}
                 key={el[options?.nameKey]}
               />
             )

@@ -221,6 +221,14 @@ progress {
     stroke: var(--color-bg-2);
     stroke-width: 4;
   }
+
+  &-line {
+    &:not(.has-color) {
+      path {
+        stroke: var(--color-accent);
+      }
+    }
+  }
 }
 
 .item-enter {

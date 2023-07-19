@@ -38,3 +38,17 @@
 .footer {
   font-size: 12px;
 }
+
+.redash {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.widget {
+  &:hover {
+    .redash {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

@@ -11,7 +11,6 @@ import {
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import styles from './Analytics.module.scss'
 
 interface AnalyticsProps {
   chainConfig: ChainConfigModel
@@ -52,15 +51,6 @@ const Analytics: NextPage<AnalyticsProps> = ({
         <DetailsView title={dashboard.name}>
           <Dashboard {...dashboard} queriesResults={queriesResult} />
         </DetailsView>
-
-        <div className={styles.container}>
-          <iframe
-            ref={refIframe}
-            src={dashboard.public_url}
-            width="100%"
-            className={styles.iframe}
-          />
-        </div>
       </Page>
     </>
   )
@@ -115,10 +105,23 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (dashboard?.widgets?.length) {
     await Promise.all(
       dashboard.widgets.map(async (widget) => {
-        const id = widget?.visualization?.query.id
-        if (!id) {
+        if (!widget?.visualization?.query?.id) {
           return
         }
+
+        const {
+          id,
+          options: { parameters },
+        } = widget.visualization.query
+
+        const params =
+          parameters?.map((param) => {
+            if (param.name === 'chain_id') {
+              return [param.name, data.chainConfig.chainId]
+            }
+
+            return [param.name, param.value]
+          }) || []
 
         const response = await fetch(
           `${
@@ -134,7 +137,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
                 'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
             },
             body: JSON.stringify({
-              parameters: { chain_id: data.chainConfig.chainId },
+              parameters: Object.fromEntries(params),
             }),
           }
         )

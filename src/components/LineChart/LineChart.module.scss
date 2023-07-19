@@ -14,25 +14,11 @@
     font-size: 14px;
     line-height: 20px;
   }
-
-  path {
-    stroke: var(--color-accent);
-  }
 }
 
 .line {
   path {
     stroke-width: 2;
-  }
-}
-
-.axis {
-  &X {
-    fill: red;
-  }
-
-  &Y {
-    fill: green;
   }
 }
 

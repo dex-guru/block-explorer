@@ -1,8 +1,7 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
-import { IconWatch, Value } from '..'
+import { Button, IconWatch, Table, Value } from '..'
 import Card from '../Card'
-import TooltipAnchor from '../TooltipAnchor'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import { DashboardWidgetData, DashboardWidgetQueryResult } from './types'
@@ -39,11 +38,18 @@ const DashboardWidget: FC<
       title={title}
       className={styles.widget}
       header={
-        <TooltipAnchor
-          tooltip={
-            <pre>{JSON.stringify(visualization?.query || {}, null, 2)}</pre>
-          }
-        />
+        visualization?.query?.id ? (
+          <Button
+            className={styles.redash}
+            caption="View query"
+            target="_blank"
+            rel="noreferrer noopener"
+            href={`${
+              process.env.NEXT_PUBLIC_REDASH_API_URL ||
+              'https://redash-demo.dex.guru'
+            }/queries/${visualization.query.id}`}
+          />
+        ) : undefined
       }
       style={{
         gridColumn: `${options?.position.col + 1} / span ${
@@ -91,6 +97,21 @@ const DashboardWidget: FC<
           }
           visualization={visualization}
           data={queryResult?.data}
+        />
+      )}
+
+      {visualization?.type === 'TABLE' && (
+        <Table
+          data={queryResult?.data?.rows}
+          columns={queryResult?.data?.columns.map((col) => {
+            return {
+              accessor: col.name,
+              title: col.friendly_name,
+              type: ['integer', 'number'].includes(col.type)
+                ? 'number'
+                : 'text',
+            }
+          })}
         />
       )}
     </Card>

@@ -3,7 +3,14 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Card, DetailsView, Page, TabPanel } from '@/components'
+import {
+  Button,
+  Card,
+  DetailsView,
+  IconQuestion,
+  Page,
+  TabPanel,
+} from '@/components'
 import { DashboardData } from '@/components/Dashboard/types'
 import { Tab } from '@/components/Tabs'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -73,9 +80,30 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
                   .map((dashboard) => {
                     return (
                       <li className={styles.item} key={dashboard.name}>
-                        <Link href={`/analytics/${dashboard.id}`}>
-                          <Card title={dashboard.name} />
-                        </Link>
+                        <Card
+                          className={styles.card}
+                          title={
+                            <Link href={`/analytics/${dashboard.id}`}>
+                              {dashboard.name}
+                            </Link>
+                          }
+                          header={
+                            <Button
+                              className={styles.redash}
+                              caption="Open in Redash"
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              href={`${
+                                process.env.NEXT_PUBLIC_REDASH_API_URL ||
+                                'https://redash-demo.dex.guru'
+                              }/dashboards/${dashboard.id}-${dashboard.slug}`}
+                            />
+                          }
+                        >
+                          <Link href={`/analytics/${dashboard.id}`}>
+                            <IconQuestion />
+                          </Link>
+                        </Card>
                       </li>
                     )
                   })}

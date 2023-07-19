@@ -34,6 +34,14 @@ export type DashboardWidgetVisualization = {
     id: number
     name: string
     description: string
+    options: {
+      parameters?: Array<{
+        title: string
+        name: string
+        type: string
+        value: string | Record<string, string>
+      }>
+    }
   }
   options: unknown & {
     globalSeriesType?: string
