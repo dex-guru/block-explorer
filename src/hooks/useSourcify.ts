@@ -7,7 +7,7 @@ import { CHAIN_ID } from '@/constants'
 import { Match, Metadata, MatchType, SourcifySource } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
-const ipfsGatewayPrefix = API_URL + '/api'
+const ipfsGatewayPrefix = API_URL + '/api/v2/sourcify'
 
 export const sourcifyPath = (address: string, chainId: number) => {
   return `${ipfsGatewayPrefix}/${chainId}/${address}`

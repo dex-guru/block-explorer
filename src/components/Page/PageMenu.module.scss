@@ -144,8 +144,7 @@
 }
 
 .item:hover,
-.link:hover,
-.link:focus {
+.link:hover {
   & > .submenu,
   & + .submenu {
     display: block;
