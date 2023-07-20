@@ -208,7 +208,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   let dashboards = null
 
   if (response.ok) {
-    console.log(response)
     dashboards = await response.json()
     logger.info({ msg: 'Got redash dashboards info', data })
   } else {

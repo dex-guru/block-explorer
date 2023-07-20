@@ -1,4 +1,5 @@
 import { FC, Suspense } from 'react'
+import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Details, IconWatch, Loading, Table, Value } from '..'
@@ -26,13 +27,10 @@ const DashboardWidget: FC<
   ) : undefined
 
   const renderWidgetVisualization = () => {
-    if (!!query.job?.id) {
-      return <Loading />
-    }
-
     if (visualization?.type === 'COUNTER') {
       return (
         <DashboardWidgetCounter
+          isLoading={!!query?.job?.id}
           value={financialFormat(
             query.query_result?.data?.rows[
               (visualization.options.rowNumber || 1) - 1
@@ -46,6 +44,7 @@ const DashboardWidget: FC<
     if (visualization?.type === 'CHART') {
       return (
         <DashboardWidgetChart
+          isLoading={!!query?.job?.id}
           type={visualization.options?.globalSeriesType || 'unknown'}
           visualization={visualization}
           data={query?.query_result?.data}
@@ -76,7 +75,7 @@ const DashboardWidget: FC<
   }
 
   const renderWidgetFooter = () => {
-    if (!!query.job?.id) {
+    if (!!query?.job?.id) {
       return (
         <Value
           className={styles.footer}
@@ -151,14 +150,18 @@ const DashboardWidget: FC<
 
       {renderWidgetVisualization()}
 
-      <Details title="Debug">
-        <Details title="Visualization">
-          <pre>{JSON.stringify(visualization, null, 2)}</pre>
+      {!!query?.job?.id && <Loading className={styles.loader} />}
+
+      {!!visualization && (
+        <Details title="Debug">
+          <Details title="Visualization">
+            <pre>{JSON.stringify(visualization, null, 2)}</pre>
+          </Details>
+          <Details title="Query">
+            <pre>{JSON.stringify(query, null, 2)}</pre>
+          </Details>
         </Details>
-        <Details title="Query">
-          <pre>{JSON.stringify(query, null, 2)}</pre>
-        </Details>
-      </Details>
+      )}
     </Card>
   )
 }

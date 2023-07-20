@@ -17,6 +17,21 @@
   font-weight: 400;
 }
 
+.loader {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  margin: 0 !important;
+}
+
+.loading {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .counter {
   display: flex;
   flex-flow: column;
@@ -29,7 +44,7 @@
 .value {
   font-weight: 500;
   line-height: 1;
-  font-size: clamp(32px, 4vw + 1px, 56px);
+  font-size: clamp(32px, 4vw + 1px, 64px);
 }
 
 .unit {

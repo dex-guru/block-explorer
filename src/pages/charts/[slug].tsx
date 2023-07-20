@@ -130,38 +130,38 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
               return [param.name, data.chainConfig.chainId]
             }
 
-            if (
-              param.type === 'date-range' &&
-              (typeof param.value === 'string' ||
-                param.value instanceof String) &&
-              isDynamicDateRangePeriod(`${param.value}`)
-            ) {
-              return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
+            if (param.type === 'date-range') {
+              if (
+                (typeof param.value === 'string' ||
+                  param.value instanceof String) &&
+                isDynamicDateRangePeriod(`${param.value}`)
+              ) {
+                return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
+              } else {
+                return [param.name, getDynamicDateRangePeriod('d_last_30_days')]
+              }
             }
 
             return [param.name, param.value]
           }) || []
 
-        const response = await fetch(
-          `${
-            process.env.NEXT_PUBLIC_REDASH_API_URL ||
-            'https://redash-demo.dex.guru'
-          }/api/queries/${id}/results`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization:
-                process.env.NEXT_PUBLIC_REDASH_API_KEY ||
-                'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
-            },
-            body: JSON.stringify({
-              parameters: Object.fromEntries(params),
-            }),
-          }
-        )
+        const url = `${
+          process.env.NEXT_PUBLIC_REDASH_API_URL ||
+          'https://redash-demo.dex.guru'
+        }/api/queries/${id}/results`
 
-        console.log(response.statusText)
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization:
+              process.env.NEXT_PUBLIC_REDASH_API_KEY ||
+              'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4',
+          },
+          body: JSON.stringify({
+            parameters: Object.fromEntries(params),
+          }),
+        })
 
         if (response.ok) {
           queries[id] = await response.json()

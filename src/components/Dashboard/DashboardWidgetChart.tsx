@@ -1,5 +1,6 @@
 import { CSSProperties, FC } from 'react'
 import { CommonChart, Message, PieChart } from '..'
+import clsx from 'clsx'
 import uniqolor from 'uniqolor'
 import {
   DashboardWidgetQueryResultData,
@@ -12,7 +13,8 @@ const DashboardWidgetChart: FC<{
   type: string
   data?: DashboardWidgetQueryResultData
   visualization: DashboardWidgetVisualization
-}> = ({ type, data, visualization }) => {
+  isLoading?: boolean
+}> = ({ type, data, visualization, isLoading }) => {
   const columnMapping: Record<string, string[]> = { x: [], y: [] }
 
   Object.entries(visualization.options.columnMapping || {}).forEach(
@@ -23,10 +25,9 @@ const DashboardWidgetChart: FC<{
 
   if (type === 'pie') {
     return (
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
+      <div className={clsx(styles.container, { [styles.loading]: isLoading })}>
+        <div className={styles.chart}>
           <PieChart
-            className={styles.chart}
             data={data?.rows || []}
             options={{
               dataKey: columnMapping.y[0],
@@ -95,7 +96,7 @@ const DashboardWidgetChart: FC<{
     })
 
     return (
-      <div className={styles.chart}>
+      <div className={clsx(styles.chart, { [styles.loading]: isLoading })}>
         <CommonChart
           type={type || 'line'}
           data={dataset}
