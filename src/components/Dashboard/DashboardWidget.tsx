@@ -138,6 +138,12 @@ const DashboardWidget: FC<
       }}
       footer={renderWidgetFooter()}
     >
+      {!!visualization?.query?.description && (
+        <div className={styles.description}>
+          {visualization.query.description}
+        </div>
+      )}
+
       {!!text && (
         <div
           className="text"

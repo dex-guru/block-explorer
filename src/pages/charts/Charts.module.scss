@@ -17,6 +17,20 @@
   composes: inner from '../../components/Tabs/Tabs.module.scss';
 }
 
+.meta {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.user {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
 .redash {
   display: flex;
   align-items: center;
@@ -66,7 +80,7 @@
   align-items: start;
   grid-template-columns: repeat(6, 1fr);
   gap: 4px;
-  aspect-ratio: 16/10;
+  max-height: 200px;
   overflow: hidden;
   margin-bottom: -16px;
 

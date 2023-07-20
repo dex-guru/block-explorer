@@ -1,9 +1,19 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Card, DetailsView, IconQuestion, Page, TabPanel } from '@/components'
+import {
+  Card,
+  DetailsView,
+  IconQuestion,
+  IconWatch,
+  Page,
+  TabPanel,
+} from '@/components'
+import { Value } from '@/components'
 import { DashboardData } from '@/components/Dashboard/types'
 import { Tab } from '@/components/Tabs'
 import IconRedash from '@/images/redash.svg'
@@ -16,6 +26,9 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import styles from './Charts.module.scss'
 
+const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
+  ssr: false,
+})
 interface ChartsPageProps {
   chainConfig: ChainConfigModel
   dashboards: {
@@ -99,6 +112,36 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
                             >
                               <IconRedash className={styles.redashIcon} />
                             </Link>
+                          }
+                          footer={
+                            <div className={styles.meta}>
+                              <Value
+                                className={styles.created}
+                                icon={<IconWatch />}
+                                value={
+                                  <>
+                                    <Suspense fallback={<>&nbsp;</>}>
+                                      <TimeAgo
+                                        timestamp={
+                                          new Date(
+                                            dashboard.created_at
+                                          ).getTime() / 1000
+                                        }
+                                      />
+                                    </Suspense>
+                                  </>
+                                }
+                              />
+                              <Image
+                                data-tooltip-content={dashboard.user.name}
+                                data-tooltip-id="app-tooltip"
+                                className={styles.user}
+                                src={dashboard.user.profile_image_url}
+                                alt={dashboard.user.name}
+                                width={32}
+                                height={32}
+                              />
+                            </div>
                           }
                         >
                           <Link href={`/charts/${dashboard.slug}`}>

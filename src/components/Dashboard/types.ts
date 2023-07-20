@@ -104,4 +104,14 @@ export type DashboardData = {
       row: number
     }
   }>
+
+  user: {
+    id: number
+    name: string
+    email: string
+    profile_image_url: string
+  }
+
+  updated_at: string
+  created_at: string
 }
