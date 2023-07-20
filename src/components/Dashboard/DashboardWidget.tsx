@@ -1,5 +1,4 @@
 import { FC, Suspense } from 'react'
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Details, IconWatch, Loading, Table, Value } from '..'
