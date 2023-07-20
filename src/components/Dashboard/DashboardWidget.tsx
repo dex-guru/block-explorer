@@ -1,12 +1,12 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { IconWatch, Table, Value } from '..'
+import { Details, IconWatch, Loading, Table, Value } from '..'
 import { marked } from 'marked'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
-import { DashboardWidgetData, DashboardWidgetQueryResult } from './types'
+import { DashboardWidgetQueryData, DashboardWidgetData } from './types'
 import IconRedash from '@/images/redash.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
@@ -14,8 +14,8 @@ import styles from './Dashboard.module.scss'
 const TimeAgo = dynamic(() => import('../TimeAgo'), { ssr: false })
 
 const DashboardWidget: FC<
-  DashboardWidgetData & { queryResult: DashboardWidgetQueryResult }
-> = ({ options, visualization, text, queryResult }) => {
+  DashboardWidgetData & { query: DashboardWidgetQueryData }
+> = ({ options, visualization, text, query }) => {
   const title = visualization ? (
     visualization?.type?.toLowerCase() !==
     visualization?.name?.toLowerCase() ? (
@@ -24,6 +24,90 @@ const DashboardWidget: FC<
       visualization.query.name
     )
   ) : undefined
+
+  const renderWidgetVisualization = () => {
+    if (!!query.job?.id) {
+      return <Loading />
+    }
+
+    if (visualization?.type === 'COUNTER') {
+      return (
+        <DashboardWidgetCounter
+          value={financialFormat(
+            query.query_result?.data?.rows[
+              (visualization.options.rowNumber || 1) - 1
+            ][visualization.options.counterColName || ''] || ''
+          )}
+          unit={visualization.options.counterLabel}
+        />
+      )
+    }
+
+    if (visualization?.type === 'CHART') {
+      return (
+        <DashboardWidgetChart
+          type={visualization.options?.globalSeriesType || 'unknown'}
+          visualization={visualization}
+          data={query?.query_result?.data}
+        />
+      )
+    }
+
+    if (visualization?.type === 'TABLE') {
+      return (
+        <Table
+          data={query.query_result?.data?.rows || []}
+          columns={
+            query.query_result?.data?.columns.map((col) => {
+              return {
+                accessor: col.name,
+                title: col.friendly_name,
+                type: ['integer', 'number'].includes(col.type)
+                  ? 'number'
+                  : 'text',
+              }
+            }) || []
+          }
+        />
+      )
+    }
+
+    return <></>
+  }
+
+  const renderWidgetFooter = () => {
+    if (!!query.job?.id) {
+      return (
+        <Value
+          className={styles.footer}
+          icon={<IconWatch />}
+          value={'Query is in progress'}
+        />
+      )
+    }
+
+    if (query?.query_result?.retrieved_at) {
+      return (
+        <Value
+          className={styles.footer}
+          icon={<IconWatch />}
+          value={
+            <>
+              <Suspense fallback={<>&nbsp;</>}>
+                <TimeAgo
+                  timestamp={
+                    new Date(query.query_result?.retrieved_at).getTime() / 1000
+                  }
+                />
+              </Suspense>
+            </>
+          }
+        />
+      )
+    }
+
+    return undefined
+  }
 
   return (
     <Card
@@ -54,25 +138,7 @@ const DashboardWidget: FC<
           options?.position.sizeY
         }`,
       }}
-      footer={
-        queryResult?.retrieved_at ? (
-          <Value
-            className={styles.footer}
-            icon={<IconWatch />}
-            value={
-              <>
-                <Suspense fallback={<>&nbsp;</>}>
-                  <TimeAgo
-                    timestamp={
-                      new Date(queryResult.retrieved_at).getTime() / 1000
-                    }
-                  />
-                </Suspense>
-              </>
-            }
-          />
-        ) : undefined
-      }
+      footer={renderWidgetFooter()}
     >
       {!!text && (
         <div
@@ -83,39 +149,16 @@ const DashboardWidget: FC<
         />
       )}
 
-      {visualization?.type === 'COUNTER' && (
-        <DashboardWidgetCounter
-          value={financialFormat(
-            queryResult?.data?.rows[(visualization.options.rowNumber || 1) - 1][
-              visualization.options.counterColName || ''
-            ]
-          )}
-          unit={visualization.options.counterLabel}
-        />
-      )}
+      {renderWidgetVisualization()}
 
-      {visualization?.type === 'CHART' && (
-        <DashboardWidgetChart
-          type={visualization.options?.globalSeriesType || 'unknown'}
-          visualization={visualization}
-          data={queryResult?.data}
-        />
-      )}
-
-      {visualization?.type === 'TABLE' && (
-        <Table
-          data={queryResult?.data?.rows}
-          columns={queryResult?.data?.columns.map((col) => {
-            return {
-              accessor: col.name,
-              title: col.friendly_name,
-              type: ['integer', 'number'].includes(col.type)
-                ? 'number'
-                : 'text',
-            }
-          })}
-        />
-      )}
+      <Details title="Debug">
+        <Details title="Visualization">
+          <pre>{JSON.stringify(visualization, null, 2)}</pre>
+        </Details>
+        <Details title="Query">
+          <pre>{JSON.stringify(query, null, 2)}</pre>
+        </Details>
+      </Details>
     </Card>
   )
 }

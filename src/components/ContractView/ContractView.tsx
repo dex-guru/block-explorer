@@ -15,7 +15,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
-import { LineChartDataset } from '../LineChart'
+import CommonChart, { LineChartDataset } from '../CommonChart'
 import { LoadingCard } from '../Loading'
 import { TransfersDataTable } from '../Tables'
 import tabsStyles from '../Tabs/Tabs.module.scss'
@@ -355,7 +355,7 @@ const ContractView: FC<IContractViewProps> = ({
                                       : undefined
                                   }
                                 />
-                                <LineChart
+                                <CommonChart
                                   className={styles.holdersChart}
                                   data={holdersSeries}
                                   options={{

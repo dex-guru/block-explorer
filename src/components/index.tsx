@@ -60,7 +60,7 @@ import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
-const LineChart = dynamic(() => import('./LineChart'), { ssr: false })
+const CommonChart = dynamic(() => import('./CommonChart'), { ssr: false })
 const PieChart = dynamic(() => import('./PieChart'), { ssr: false })
 
 export {
@@ -90,7 +90,7 @@ export {
   Loading,
   LoadingCard,
   Label,
-  LineChart,
+  CommonChart,
   PieChart,
   Logo,
   Message,

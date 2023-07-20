@@ -1,7 +1,7 @@
-import { LineChartDataset } from './types'
+import { CommonChartDataset } from './types'
 
-export const generateLineChartData = (
-  series: LineChartDataset[],
+export const generateCommonChartData = (
+  series: CommonChartDataset[],
   idxKey: string
 ) => {
   const objData: Record<string | number, unknown> = {}

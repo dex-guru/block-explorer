@@ -6,7 +6,7 @@ import { DetailsView, Empty, IconSearch, Page } from '@/components'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import {
   DashboardData,
-  DashboardWidgetQueryResult,
+  DashboardWidgetQueryData,
 } from '@/components/Dashboard/types'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
@@ -19,13 +19,13 @@ import { getLogger } from '@/lib/logger'
 interface СhartsDetailsPageProps {
   chainConfig: ChainConfigModel
   dashboard: DashboardData
-  queriesResult: Record<number, DashboardWidgetQueryResult>
+  queries: Record<number, DashboardWidgetQueryData>
 }
 
 const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
   chainConfig,
   dashboard,
-  queriesResult,
+  queries,
 }) => {
   const refIframe = useRef<HTMLIFrameElement>(null)
 
@@ -58,7 +58,7 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
 
         {!!dashboard && (
           <DetailsView title={dashboard.name}>
-            <Dashboard {...dashboard} queriesResults={queriesResult} />
+            <Dashboard {...dashboard} queries={queries} />
           </DetailsView>
         )}
       </Page>
@@ -110,7 +110,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     logger.error(error, `Error getting redash dashboard ${slug} info`)
   }
 
-  const queriesResult: Record<number, unknown> = {}
+  const queries: Record<number, unknown> = {}
 
   if (dashboard?.widgets?.length) {
     await Promise.all(
@@ -161,9 +161,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           }
         )
 
+        console.log(response.statusText)
+
         if (response.ok) {
-          const result = await response.json()
-          queriesResult[id] = result.query_result
+          queries[id] = await response.json()
         }
       })
     )
@@ -173,7 +174,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     props: {
       chainConfig: data.chainConfig,
       dashboard: dashboard,
-      queriesResult,
+      queries,
     },
   })
 }

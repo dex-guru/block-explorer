@@ -3,7 +3,7 @@
   grid-template-columns: repeat(6, minmax(80px, 1fr));
   gap: 16px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 960px) {
     display: flex;
     flex-flow: column;
   }

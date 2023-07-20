@@ -1,13 +1,16 @@
 import { CSSProperties, FC } from 'react'
-import { LineChart, Message, PieChart } from '..'
+import { CommonChart, Message, PieChart } from '..'
 import uniqolor from 'uniqolor'
-import { DashboardWidgetQueryData, DashboardWidgetVisualization } from './types'
+import {
+  DashboardWidgetQueryResultData,
+  DashboardWidgetVisualization,
+} from './types'
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
 const DashboardWidgetChart: FC<{
   type: string
-  data: DashboardWidgetQueryData
+  data?: DashboardWidgetQueryResultData
   visualization: DashboardWidgetVisualization
 }> = ({ type, data, visualization }) => {
   const columnMapping: Record<string, string[]> = { x: [], y: [] }
@@ -24,7 +27,7 @@ const DashboardWidgetChart: FC<{
         <div className={styles.wrapper}>
           <PieChart
             className={styles.chart}
-            data={data.rows}
+            data={data?.rows || []}
             options={{
               dataKey: columnMapping.y[0],
               nameKey: columnMapping.x[0],
@@ -34,7 +37,7 @@ const DashboardWidgetChart: FC<{
         </div>
 
         <ul className={styles.legend}>
-          {data.rows.map((item, idx) => {
+          {data?.rows.map((item, idx) => {
             return (
               <li
                 key={idx}
@@ -56,7 +59,7 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  if (['line', 'area'].includes(type)) {
+  if (['line', 'area', 'column', 'bar'].includes(type)) {
     const entities: Record<
       string,
       { name: string; friendly_name: string; type: string }
@@ -83,7 +86,7 @@ const DashboardWidgetChart: FC<{
 
       return {
         id: col,
-        data: data?.rows,
+        data: data?.rows || [],
         color: uniqolor(`${idx}-${col}`).color,
         name: entity?.friendly_name || entity?.name,
         key: entity?.name,
@@ -93,10 +96,10 @@ const DashboardWidgetChart: FC<{
 
     return (
       <div className={styles.chart}>
-        <LineChart
+        <CommonChart
+          type={type || 'line'}
           data={dataset}
           options={{
-            isFilled: type === 'area',
             zoom: true,
             axis: {
               x: {
@@ -118,7 +121,11 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  return <Message type="warn">Type {type} is not implemented yet</Message>
+  return (
+    <Message type="warn">
+      Type &quot;{type}&quot; is not implemented yet
+    </Message>
+  )
 }
 
 export default DashboardWidgetChart

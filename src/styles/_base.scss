@@ -208,7 +208,10 @@ progress {
     }
   }
 
-  &-tooltip-wrapper {
+  &-tooltip {
+    &-cursor {
+      opacity: 0.1;
+    }
   }
 
   &-xAxis {

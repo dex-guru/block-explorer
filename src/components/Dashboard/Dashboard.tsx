@@ -1,21 +1,27 @@
 import { FC } from 'react'
 import DashboardWidget from './DashboardWidget'
-import { DashboardData, DashboardWidgetQueryResult } from './types'
+import { DashboardData, DashboardWidgetQueryData } from './types'
 import styles from './Dashboard.module.scss'
 
 const Dashboard: FC<
   DashboardData & {
-    queriesResults: Record<number, DashboardWidgetQueryResult>
+    queries: Record<number, DashboardWidgetQueryData>
   }
-> = ({ widgets, queriesResults }) => {
+> = ({ widgets, queries }) => {
   return (
     <div className={styles.container}>
       {widgets
         ?.filter((widget) => !widget.options.isHidden)
+        .sort((a, b) => {
+          const aPos = a.options.position.row * 100 + a.options.position.col
+          const bPos = b.options.position.row * 100 + b.options.position.col
+
+          return aPos - bPos
+        })
         .map((widget) => (
           <DashboardWidget
             {...widget}
-            queryResult={queriesResults[widget?.visualization?.query?.id]}
+            query={queries[widget?.visualization?.query?.id]}
             key={widget.id}
           />
         ))}

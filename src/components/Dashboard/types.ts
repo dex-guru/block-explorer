@@ -59,7 +59,7 @@ export type DashboardWidgetData = {
   text: string
 }
 
-export type DashboardWidgetQueryData = {
+export type DashboardWidgetQueryResultData = {
   columns: Array<{
     name: string
     friendly_name: string
@@ -69,8 +69,21 @@ export type DashboardWidgetQueryData = {
 }
 
 export type DashboardWidgetQueryResult = {
-  data: DashboardWidgetQueryData
+  data: DashboardWidgetQueryResultData
   retrieved_at: string
+}
+
+export type DashboardJobData = {
+  id: string
+  status: number
+  error: string
+  result: null
+  query_result_id: null
+}
+
+export type DashboardWidgetQueryData = {
+  query_result?: DashboardWidgetQueryResult
+  job?: DashboardJobData
 }
 
 export type DashboardData = {

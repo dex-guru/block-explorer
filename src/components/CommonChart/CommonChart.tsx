@@ -1,10 +1,11 @@
 import { FC } from 'react'
-import { LineChartProps } from '.'
+import { CommonChartProps } from '.'
 import clsx from 'clsx'
 import {
   Brush,
-  AreaChart as AChart,
-  LineChart as LChart,
+  AreaChart,
+  BarChart,
+  Bar,
   Area,
   Line,
   XAxis,
@@ -12,21 +13,38 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
 } from 'recharts'
 import Heading from '../Heading'
-import { generateLineChartData } from './utils'
-import styles from './LineChart.module.scss'
+import { generateCommonChartData } from './utils'
+import styles from './CommonChart.module.scss'
 
-const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
-  const chartData = generateLineChartData(data, options.axis.x.dataKey)
+const CommonChart: FC<CommonChartProps> = ({
+  data,
+  className,
+  type,
+  options,
+}) => {
+  const chartData = generateCommonChartData(data, options.axis.x.dataKey)
 
-  const Chart = options.isFilled ? AChart : LChart
+  let Chart
+
+  switch (type) {
+    case 'area':
+      Chart = AreaChart
+      break
+    case 'bar':
+    case 'column':
+      Chart = BarChart
+      break
+    default:
+      Chart = LineChart
+  }
 
   const renderedSeries = data.map((el) => {
     const params = {
       className: clsx(styles.line, el.className),
       name: el.name || el.id,
-      type: el.type || 'monotone',
       dataKey: el.id || 'value',
       stroke: el.color,
       fill: el.color,
@@ -34,14 +52,18 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
       yAxisId: el.yAxis || 'left',
     }
 
-    if (options.isFilled) {
-      return <Area key={el.id} {...params} />
+    switch (type) {
+      case 'bar':
+      case 'column':
+        return <Bar key={el.id} {...params} />
+      case 'area':
+        return <Area key={el.id} {...params} type={el.type || 'monotone'} />
+      default:
+        return <Line key={el.id} {...params} type={el.type || 'monotone'} />
     }
-
-    return <Line key={el.id} {...params} />
   })
 
-  const LineChartTooltip: FC<{
+  const CommonChartTooltip: FC<{
     active?: boolean
     label?: unknown
     payload?: {
@@ -138,7 +160,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
             orientation="right"
           />
         )}
-        <Tooltip content={<LineChartTooltip />} />
+        <Tooltip content={<CommonChartTooltip />} />
 
         {renderedSeries}
 
@@ -157,4 +179,4 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
   )
 }
 
-export default LineChart
+export default CommonChart

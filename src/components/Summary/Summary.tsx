@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import Card from '../Card'
-import LineChart from '../LineChart'
+import CommonChart from '../CommonChart'
 import Tile from '../Tile'
 import TooltipAnchor from '../TooltipAnchor'
 import { SummaryProps } from './types'
@@ -13,7 +13,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
       return (
         <Tile key={index} prefix={chart.title} className={styles.chartTile}>
           <div className={styles.chart}>
-            <LineChart
+            <CommonChart
               className={chart.className}
               data={chart.data}
               options={{
