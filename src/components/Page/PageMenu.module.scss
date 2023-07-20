@@ -168,10 +168,8 @@
   }
 }
 
-@media (pointer: fine) and (min-width: 1200.1px) {
-  .item:hover > .submenu {
-    @include openedSubmenu();
-  }
+.item:hover > .submenu {
+  @include openedSubmenu();
 }
 
 @media (pointer: coarse), (max-width: 1200px) {
