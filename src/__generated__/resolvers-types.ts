@@ -130,6 +130,10 @@ export type ChainStatsModel = {
   transactionsCountHistory: Array<TimeSeriesChartModel>;
   /** The number of transactions per second. */
   transactionsPerSecond: Scalars['Decimal'];
+  /** Average daily transactions per second. */
+  transactionsPerSecondDailyAVG: Scalars['Decimal'];
+  /** Transactions per second average in 5 minutes */
+  transactionsPerSecondFiveMinutesAVG: Scalars['Decimal'];
   /** The change in trading volume in USD over the last 24 hours. */
   volume24hDeltaUsd: Scalars['Decimal'];
   /** The total trading volume in USD over the last 24 hours. */
@@ -797,6 +801,8 @@ export type ChainStatsModelResolvers<ContextType = any, ParentType extends Resol
   transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   transactionsCountHistory?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>;
   transactionsPerSecond?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  transactionsPerSecondDailyAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  transactionsPerSecondFiveMinutesAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   volume24hDeltaUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   volume24hUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -156,17 +156,6 @@ const DashboardWidget: FC<
       {renderWidgetVisualization()}
 
       {!!query?.job?.id && <Loading className={styles.loader} />}
-
-      {!!visualization && (
-        <Details title="Debug">
-          <Details title="Visualization">
-            <pre>{JSON.stringify(visualization, null, 2)}</pre>
-          </Details>
-          <Details title="Query">
-            <pre>{JSON.stringify(query, null, 2)}</pre>
-          </Details>
-        </Details>
-      )}
     </Card>
   )
 }

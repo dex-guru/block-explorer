@@ -43,8 +43,9 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   const pageTitle = `${chainConfig.name} Charts & Statistics`
 
   const activeDashboards =
-    dashboards.results?.filter((item) => !item.is_archived && !item.is_draft) ||
-    []
+    dashboards?.results?.filter(
+      (item) => !item.is_archived && !item.is_draft
+    ) || []
 
   const tags: string[] = []
   activeDashboards?.forEach((dashboard) => {
@@ -62,7 +63,13 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     }
   })
 
-  const [currentTab, setCurrentTab] = useState(tabs[0].value || '')
+  const [currentTab, setCurrentTab] = useState(tabs[0] ? tabs[0].value : '')
+
+  if (
+    !chainConfig?.features?.some((x: { name: string }) => x.name === 'charts')
+  ) {
+    return null
+  }
 
   const handleChange = (value: string) => {
     setCurrentTab(value)
@@ -233,6 +240,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         chainConfig: data.chainConfig,
       },
     }
+  }
+
+  if (
+    !data.chainConfig.features.some(
+      (x: { name: string }) => x.name === 'charts'
+    )
+  ) {
+    ctx.res.statusCode = 404
+    return { props: { chainConfig: data.chainConfig } }
   }
 
   const response = await fetch(

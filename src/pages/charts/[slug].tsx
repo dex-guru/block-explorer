@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
@@ -27,21 +26,11 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
   dashboard,
   queries,
 }) => {
-  const refIframe = useRef<HTMLIFrameElement>(null)
-
-  useEffect(() => {
-    const resizeIframe = (message: MessageEvent) => {
-      if (refIframe.current && message.data.type === 'resize') {
-        refIframe.current.style.height = `${message.data.height}px`
-      }
-    }
-
-    window.addEventListener('message', resizeIframe)
-
-    return (): void => {
-      window.removeEventListener('message', resizeIframe)
-    }
-  })
+  if (
+    !chainConfig?.features?.some((x: { name: string }) => x.name === 'charts')
+  ) {
+    return null
+  }
 
   return (
     <>
@@ -85,6 +74,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {
         chainConfig: data.chainConfig,
       },
+    }
+  }
+
+  if (
+    !data.chainConfig.features.some(
+      (x: { name: string }) => x.name === 'charts'
+    )
+  ) {
+    ctx.res.statusCode = 404
+    return {
+      props: {},
     }
   }
 
