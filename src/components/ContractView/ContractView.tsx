@@ -41,7 +41,6 @@ import {
   DateTime,
   Comments,
   Separated,
-  LineChart,
   Message,
   IconContract,
   IconNoIcon,
