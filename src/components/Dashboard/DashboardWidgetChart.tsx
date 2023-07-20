@@ -1,19 +1,15 @@
 import { CSSProperties, FC } from 'react'
-import { LineChart, PieChart } from '..'
+import { LineChart, Message, PieChart } from '..'
 import uniqolor from 'uniqolor'
 import { DashboardWidgetQueryData, DashboardWidgetVisualization } from './types'
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
 const DashboardWidgetChart: FC<{
-  type: 'pie' | 'line'
+  type: string
   data: DashboardWidgetQueryData
   visualization: DashboardWidgetVisualization
 }> = ({ type, data, visualization }) => {
-  if (!data) {
-    return null
-  }
-
   const columnMapping: Record<string, string[]> = { x: [], y: [] }
 
   Object.entries(visualization.options.columnMapping || {}).forEach(
@@ -60,14 +56,15 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  if (type === 'line') {
+  if (['line', 'area'].includes(type)) {
     const entities: Record<
       string,
       { name: string; friendly_name: string; type: string }
-    > = data?.columns?.reduce(
-      (obj, curr) => ({ ...obj, [curr.name]: curr }),
-      {}
-    )
+    > =
+      data?.columns?.reduce(
+        (obj, curr) => ({ ...obj, [curr.name]: curr }),
+        {}
+      ) || {}
 
     const tickFormatter = (value: string) => {
       if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
@@ -86,11 +83,11 @@ const DashboardWidgetChart: FC<{
 
       return {
         id: col,
-        data: data.rows,
+        data: data?.rows,
         color: uniqolor(`${idx}-${col}`).color,
-        name: entity.friendly_name || entity.name,
-        key: entity.name,
-        className: `has-color ${entity.name}`,
+        name: entity?.friendly_name || entity?.name,
+        key: entity?.name,
+        className: `has-color ${entity?.name}`,
       }
     })
 
@@ -99,6 +96,7 @@ const DashboardWidgetChart: FC<{
         <LineChart
           data={dataset}
           options={{
+            isFilled: type === 'area',
             zoom: true,
             axis: {
               x: {
@@ -120,7 +118,7 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  return null
+  return <Message type="warn">Type {type} is not implemented yet</Message>
 }
 
 export default DashboardWidgetChart

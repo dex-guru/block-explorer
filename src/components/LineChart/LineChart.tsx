@@ -3,7 +3,9 @@ import { LineChartProps } from '.'
 import clsx from 'clsx'
 import {
   Brush,
-  LineChart as Chart,
+  AreaChart as AChart,
+  LineChart as LChart,
+  Area,
   Line,
   XAxis,
   YAxis,
@@ -18,19 +20,25 @@ import styles from './LineChart.module.scss'
 const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
   const chartData = generateLineChartData(data, options.axis.x.dataKey)
 
+  const Chart = options.isFilled ? AChart : LChart
+
   const renderedSeries = data.map((el) => {
-    return (
-      <Line
-        className={clsx(styles.line, el.className)}
-        name={el.name || el.id}
-        key={el.id}
-        type={el.type || 'monotone'}
-        dataKey={el.id || 'value'}
-        stroke={el.color}
-        dot={false}
-        yAxisId={el.yAxis || 'left'}
-      />
-    )
+    const params = {
+      className: clsx(styles.line, el.className),
+      name: el.name || el.id,
+      type: el.type || 'monotone',
+      dataKey: el.id || 'value',
+      stroke: el.color,
+      fill: el.color,
+      dot: false,
+      yAxisId: el.yAxis || 'left',
+    }
+
+    if (options.isFilled) {
+      return <Area key={el.id} {...params} />
+    }
+
+    return <Line key={el.id} {...params} />
   })
 
   const LineChartTooltip: FC<{

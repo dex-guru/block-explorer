@@ -52,8 +52,8 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
             href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
           },
           {
-            caption: 'Analytics',
-            href: '/analytics',
+            caption: 'Charts & Statistics',
+            href: '/charts',
           },
           ...(chainConfig.features.some((x) => x.name === 'csr')
             ? [{ caption: 'CSR', href: '/csr' }]

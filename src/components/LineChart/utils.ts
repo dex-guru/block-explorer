@@ -7,7 +7,7 @@ export const generateLineChartData = (
   const objData: Record<string | number, unknown> = {}
 
   series.forEach((dataset) => {
-    dataset.data.forEach((el) => {
+    dataset.data?.forEach((el) => {
       if (!el) {
         return
       }

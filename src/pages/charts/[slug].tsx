@@ -10,15 +10,19 @@ import {
 } from '@/components/Dashboard/types'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
+import {
+  getDynamicDateRangePeriod,
+  isDynamicDateRangePeriod,
+} from '@/lib/dates'
 import { getLogger } from '@/lib/logger'
 
-interface AnalyticsProps {
+interface СhartsDetailsPageProps {
   chainConfig: ChainConfigModel
   dashboard: DashboardData
   queriesResult: Record<number, DashboardWidgetQueryResult>
 }
 
-const Analytics: NextPage<AnalyticsProps> = ({
+const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
   chainConfig,
   dashboard,
   queriesResult,
@@ -62,11 +66,11 @@ const Analytics: NextPage<AnalyticsProps> = ({
   )
 }
 
-export default Analytics
+export default ChartsDetailsPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const logger = getLogger('analytics')
-  const { id } = ctx.query as { id: string }
+  const { slug } = ctx.query as { slug: string }
 
   const apolloClient = initializeApollo({ ctx })
 
@@ -87,7 +91,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const response = await fetch(
     `${
       process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
-    }/api/dashboards/${id}`,
+    }/api/dashboards/${slug}?legacy=true`,
     {
       headers: {
         Authorization:
@@ -101,9 +105,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   if (response.ok) {
     dashboard = await response.json()
-    logger.info({ msg: `Got redash dashboard ${id} info`, data })
+    logger.info({ msg: `Got redash dashboard ${slug} info`, data })
   } else {
-    logger.error(error, `Error getting redash dashboard ${id} info`)
+    logger.error(error, `Error getting redash dashboard ${slug} info`)
   }
 
   const queriesResult: Record<number, unknown> = {}
@@ -124,6 +128,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           parameters?.map((param) => {
             if (param.name === 'chain_id') {
               return [param.name, data.chainConfig.chainId]
+            }
+
+            if (
+              param.type === 'date-range' &&
+              (typeof param.value === 'string' ||
+                param.value instanceof String) &&
+              isDynamicDateRangePeriod(`${param.value}`)
+            ) {
+              return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
             }
 
             return [param.name, param.value]

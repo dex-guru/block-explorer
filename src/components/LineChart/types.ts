@@ -21,6 +21,7 @@ export type LineChartOptions = {
     x?: XAxisProps
   }
   zoom?: boolean
+  isFilled?: boolean
 }
 
 export type LineChartProps = {

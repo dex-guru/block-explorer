@@ -83,4 +83,12 @@ export type DashboardData = {
   public_url: string
   tags: string[]
   text: string
+  visualization_types?: Array<{
+    [type: string]: {
+      sizeX: number
+      sizeY: number
+      col: number
+      row: number
+    }
+  }>
 }

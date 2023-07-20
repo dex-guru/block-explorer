@@ -7,12 +7,16 @@ import { Card, DetailsView, IconQuestion, Page, TabPanel } from '@/components'
 import { DashboardData } from '@/components/Dashboard/types'
 import { Tab } from '@/components/Tabs'
 import IconRedash from '@/images/redash.svg'
+import ImageCounter from '@/images/redash/counter.svg'
+import ImageLine from '@/images/redash/line.svg'
+import ImagePie from '@/images/redash/pie.svg'
+import ImageTable from '@/images/redash/table.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import styles from './Analytics.module.scss'
+import styles from './Charts.module.scss'
 
-interface AnalyticsProps {
+interface ChartsPageProps {
   chainConfig: ChainConfigModel
   dashboards: {
     count: number
@@ -22,7 +26,7 @@ interface AnalyticsProps {
   }
 }
 
-const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
+const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   const pageTitle = `${chainConfig.name} Charts & Statistics`
 
   const activeDashboards =
@@ -77,7 +81,7 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
                         <Card
                           className={styles.card}
                           title={
-                            <Link href={`/analytics/${dashboard.id}`}>
+                            <Link href={`/charts/${dashboard.slug}`}>
                               {dashboard.name}
                             </Link>
                           }
@@ -97,8 +101,62 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
                             </Link>
                           }
                         >
-                          <Link href={`/analytics/${dashboard.id}`}>
-                            <IconQuestion />
+                          <Link href={`/charts/${dashboard.slug}`}>
+                            {!dashboard.visualization_types?.length && (
+                              <IconQuestion />
+                            )}
+                            {!!dashboard.visualization_types?.length && (
+                              <div className={styles.illustration}>
+                                {dashboard.visualization_types.map(
+                                  (viz, idx) => {
+                                    const [type, position] =
+                                      Object.entries(viz)[0]
+
+                                    let TypeImage
+
+                                    switch (type.toLowerCase()) {
+                                      case 'counter':
+                                        TypeImage = ImageCounter
+                                        break
+                                      case 'chart':
+                                      case 'line':
+                                        TypeImage = ImageLine
+                                        break
+                                      case 'pie':
+                                        TypeImage = ImagePie
+                                        break
+                                      case 'table':
+                                        TypeImage = ImageTable
+                                        break
+                                      default:
+                                        TypeImage = IconQuestion
+                                    }
+
+                                    return (
+                                      <div
+                                        className={styles.illustrationBlock}
+                                        key={idx}
+                                        style={{
+                                          gridColumn: `${
+                                            position.col + 1
+                                          } / span ${position.sizeX}`,
+                                          gridRow: `${
+                                            position.row + 1
+                                          } / span ${position.sizeY}`,
+                                        }}
+                                      >
+                                        <span
+                                          className={styles.illustrationType}
+                                        >
+                                          {type.toLowerCase()}
+                                        </span>
+                                        {<TypeImage className={styles.type} />}
+                                      </div>
+                                    )
+                                  }
+                                )}
+                              </div>
+                            )}
                           </Link>
                         </Card>
                       </li>
@@ -113,7 +171,7 @@ const Analytics: NextPage<AnalyticsProps> = ({ chainConfig, dashboards }) => {
   )
 }
 
-export default Analytics
+export default ChartsPage
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const logger = getLogger('analytics')

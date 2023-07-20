@@ -90,15 +90,13 @@ const DashboardWidget: FC<
               visualization.options.counterColName || ''
             ]
           )}
-          unit={visualization.options.counterLabel || visualization?.name}
+          unit={visualization.options.counterLabel}
         />
       )}
 
       {visualization?.type === 'CHART' && (
         <DashboardWidgetChart
-          type={
-            visualization.options?.globalSeriesType === 'pie' ? 'pie' : 'line'
-          }
+          type={visualization.options?.globalSeriesType || 'unknown'}
           visualization={visualization}
           data={queryResult?.data}
         />
