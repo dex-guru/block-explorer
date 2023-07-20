@@ -1,7 +1,7 @@
 import { FC, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Details, IconWatch, Loading, Table, Value } from '..'
+import { IconWatch, Loading, Table, Value } from '..'
 import { marked } from 'marked'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
