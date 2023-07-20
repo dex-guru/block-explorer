@@ -15,7 +15,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
-import CommonChart, { LineChartDataset } from '../CommonChart'
+import CommonChart, { CommonChartDataset } from '../CommonChart'
 import { LoadingCard } from '../Loading'
 import { TransfersDataTable } from '../Tables'
 import tabsStyles from '../Tabs/Tabs.module.scss'
@@ -151,7 +151,7 @@ const ContractView: FC<IContractViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
-  const holdersSeries: LineChartDataset[] = [
+  const holdersSeries: CommonChartDataset[] = [
     {
       id: 'holders',
       name: 'Holders',
