@@ -143,32 +143,40 @@
   color: var(--color-accent-a);
 }
 
-.item:hover,
-.link:hover {
-  & > .submenu,
-  & + .submenu {
-    display: block;
+@mixin openedSubmenu {
+  display: block;
 
-    @media (min-width: 1200.1px) {
-      animation: dropdown 0.25s ease 0.15s forwards;
+  @media (min-width: 1200.1px) {
+    animation: dropdown 0.25s ease 0.15s forwards;
+  }
+
+  @media (max-width: 1200px) {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @keyframes dropdown {
+    from {
+      opacity: 0;
+      visibility: hidden;
     }
 
-    @media (max-width: 1200px) {
+    to {
       opacity: 1;
       visibility: visible;
     }
+  }
+}
 
-    @keyframes dropdown {
-      from {
-        opacity: 0;
-        visibility: hidden;
-      }
+@media (pointer: fine) and (min-width: 1200.1px) {
+  .item:hover > .submenu {
+    @include openedSubmenu();
+  }
+}
 
-      to {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
+@media (pointer: coarse), (max-width: 1200px) {
+  .link:focus + .submenu {
+    @include openedSubmenu();
   }
 }
 
