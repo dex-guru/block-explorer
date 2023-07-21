@@ -50,7 +50,7 @@ import {
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
+import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 
 const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
@@ -596,26 +596,34 @@ const ContractView: FC<IContractViewProps> = ({
                   isActive: isSubTab,
                   to: `${pathname}?tab=code`,
                 },
-                {
-                  title: 'Analytics',
-                  value: 'analytics',
-                  to: { pathname, query: { tab: 'analytics' } },
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Analytics
-                        tag={
-                          type === 'token' ? 'Token Contract' : 'Smart Contract'
-                        }
-                        params={
-                          type === 'token'
-                            ? { token_address_requested: address.toLowerCase() }
-                            : { address: address.toLowerCase() }
-                        }
-                      />
-                    </Suspense>
-                  ),
-                },
-
+                ...(checkChainFeature(chain.config, 'charts')
+                  ? [
+                      {
+                        title: 'Analytics',
+                        value: 'analytics',
+                        to: { pathname, query: { tab: 'analytics' } },
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <Analytics
+                              tag={
+                                type === 'token'
+                                  ? 'Token Contract'
+                                  : 'Smart Contract'
+                              }
+                              params={
+                                type === 'token'
+                                  ? {
+                                      token_address_requested:
+                                        address.toLowerCase(),
+                                    }
+                                  : { address: address.toLowerCase() }
+                              }
+                            />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
                 {
                   title: 'Comments',
                   value: 'comments',

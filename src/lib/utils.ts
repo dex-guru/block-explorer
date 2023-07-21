@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BlockModel } from '@/__generated__/resolvers-types'
+import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
 export const getRootElement = () =>
@@ -342,3 +342,8 @@ export const rgbToHsl = (rI: number, gI: number, bI: number) => {
 }
 
 export const hexToHsl = (hex: string) => rgbToHsl(...hexToRgb(hex))
+
+export const checkChainFeature = (
+  chainConfig: ChainConfigModel,
+  feature: string
+) => chainConfig?.features?.some((x) => x.name === feature)

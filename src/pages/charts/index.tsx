@@ -25,6 +25,7 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { getRedashDashboardsAll } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
+import { checkChainFeature } from '@/lib/utils'
 import styles from './Charts.module.scss'
 
 const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
@@ -61,9 +62,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
 
   const [currentTab, setCurrentTab] = useState(tabs[0] ? tabs[0].value : '')
 
-  if (
-    !chainConfig?.features?.some((x: { name: string }) => x.name === 'charts')
-  ) {
+  if (!checkChainFeature(chainConfig, 'charts')) {
     return null
   }
 
@@ -232,11 +231,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
   }
 
-  if (
-    !data.chainConfig.features.some(
-      (x: { name: string }) => x.name === 'charts'
-    )
-  ) {
+  if (!checkChainFeature(data.chainConfig, 'charts')) {
     ctx.res.statusCode = 404
     return { props: { chainConfig: data.chainConfig } }
   }
