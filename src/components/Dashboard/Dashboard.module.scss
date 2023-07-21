@@ -1,4 +1,18 @@
 .container {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.analyzer {
+  --color-card-bg: var(--color-prompt);
+}
+
+.output {
+  composes: text from '../../styles/_typography.scss';
+}
+
+.dashboard {
   display: grid;
   grid-template-columns: repeat(6, minmax(80px, 1fr));
   gap: 16px;

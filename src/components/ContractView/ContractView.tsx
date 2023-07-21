@@ -608,8 +608,8 @@ const ContractView: FC<IContractViewProps> = ({
                         }
                         params={
                           type === 'token'
-                            ? { token_address_requested: address }
-                            : { address }
+                            ? { token_address_requested: address.toLowerCase() }
+                            : { address: address.toLowerCase() }
                         }
                       />
                     </Suspense>

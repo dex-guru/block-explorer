@@ -50,12 +50,14 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   })
 
   const tagsSet = [...new Set(tags)]
-  const tabs: Tab<string>[] = tagsSet.map((tag) => {
-    return {
-      title: tag,
-      value: tag,
-    }
-  })
+  const tabs: Tab<string>[] = tagsSet
+    .filter((tag) => !['Token Contract', 'Smart Contract', 'EOA'].includes(tag))
+    .map((tag) => {
+      return {
+        title: tag,
+        value: tag,
+      }
+    })
 
   const [currentTab, setCurrentTab] = useState(tabs[0] ? tabs[0].value : '')
 

@@ -10,6 +10,11 @@
   min-width: 240px;
 }
 
+.loading {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .legend {
   composes: muted from '../../styles/_common.scss';
   flex: 1 0 auto;

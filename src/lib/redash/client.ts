@@ -1,5 +1,5 @@
 import { isString } from 'lodash'
-import { getDynamicDateRangePeriod, isDynamicDateRangePeriod } from '../dates'
+import { getDynamicDateRangePeriod } from '../dates'
 import { getLogger } from '../logger'
 import {
   TRedashDashboard,
@@ -132,12 +132,13 @@ export const getRedashQueriesResponse = async (
           }
 
           if (param.type === 'date-range') {
-            if (
-              isString(param.value) &&
-              isDynamicDateRangePeriod(`${param.value}`)
-            ) {
-              return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
-            }
+            // TODO: date-range default value pickup
+            // if (
+            //   isString(param.value) &&
+            //   isDynamicDateRangePeriod(`${param.value}`)
+            // ) {
+            //   return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
+            // }
 
             return [param.name, getDynamicDateRangePeriod('d_last_30_days')]
           }

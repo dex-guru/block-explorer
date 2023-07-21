@@ -156,7 +156,10 @@ const AddressView: FC<IAddressViewProps> = ({
                   to: `${pathname}?tab=analytics`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Analytics tag="EOA" params={{ address }} />
+                      <Analytics
+                        tag="EOA"
+                        params={{ address: address.toLowerCase() }}
+                      />
                     </Suspense>
                   ),
                 },

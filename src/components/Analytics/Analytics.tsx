@@ -13,12 +13,20 @@ import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
 const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
+  const [isMounted, setIsMounted] = useState(false)
   const [dashboardsData, setDashboardsData] = useState<Array<{
     dashboard: TRedashDashboard
     queries: Record<number, TRedashQueryResponse>
   }> | null>(null)
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isMounted) {
+      return
+    }
     const getData = async () => {
       if (!tag) {
         return
@@ -47,7 +55,7 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
     }
 
     getData()
-  }, [tag, params])
+  }, [isMounted])
 
   if (!dashboardsData?.length) {
     return <LoadingCard />
