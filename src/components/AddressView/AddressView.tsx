@@ -19,7 +19,7 @@ import {
   Error,
   IconSearch,
 } from '@/components'
-import { financialFormat } from '@/lib/utils'
+import { checkChainFeature, financialFormat } from '@/lib/utils'
 
 const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
   ssr: false,
@@ -150,19 +150,26 @@ const AddressView: FC<IAddressViewProps> = ({
                     </Suspense>
                   ),
                 },
-                {
-                  title: 'Analytics',
-                  value: 'analytics',
-                  to: `${pathname}?tab=analytics`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Analytics
-                        tag="EOA"
-                        params={{ address: address.toLowerCase() }}
-                      />
-                    </Suspense>
-                  ),
-                },
+                ...(checkChainFeature(chain.config, 'charts')
+                  ? [
+                      {
+                        title: 'Analytics',
+                        value: 'analytics',
+                        to: `${pathname}?tab=analytics`,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <Analytics
+                              tag="EOA"
+                              params={{
+                                chain_id: chain.config.chainId,
+                                address: address.toLowerCase(),
+                              }}
+                            />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
                 {
                   title: 'Comments',
                   value: 'comments',

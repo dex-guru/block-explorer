@@ -25,6 +25,7 @@ import {
 } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import {
+  checkChainFeature,
   financialFormat,
   financialFormatLowValueHighPrecision,
   getBlocksWithTimeDiff,
@@ -213,7 +214,7 @@ const Index: NextPage<IndexProps> = (props) => {
           <Card
             title="Latest Transactions"
             header={
-              chainConfig.features.some((x) => x.name === 'cosmos') ? (
+              checkChainFeature(chainConfig, 'cosmos') ? (
                 <Tabs
                   tabs={[
                     { title: 'EVM', value: 'evm' },

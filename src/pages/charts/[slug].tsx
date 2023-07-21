@@ -8,6 +8,7 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { getRadashDashboardWithResults } from '@/lib/redash/client'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
+import { checkChainFeature } from '@/lib/utils'
 
 interface СhartsDetailsPageProps {
   chainConfig: ChainConfigModel
@@ -20,9 +21,7 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
   dashboard,
   queries,
 }) => {
-  if (
-    !chainConfig?.features?.some((x: { name: string }) => x.name === 'charts')
-  ) {
+  if (!checkChainFeature(chainConfig, 'charts')) {
     return null
   }
 
@@ -71,11 +70,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
   }
 
-  if (
-    !data.chainConfig.features.some(
-      (x: { name: string }) => x.name === 'charts'
-    )
-  ) {
+  if (!checkChainFeature(data.chainConfig, 'charts')) {
     ctx.res.statusCode = 404
     return {
       props: {},

@@ -207,6 +207,7 @@ app.prepare().then(async () => {
   })
 
   server.get('*', (req, res) => handle(req, res))
+  server.post('*', (req, res) => handle(req, res))
 
   server.listen(3000, (err) => {
     if (err) {

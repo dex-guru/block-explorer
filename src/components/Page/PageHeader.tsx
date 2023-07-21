@@ -7,6 +7,7 @@ import Search from '../Search'
 import InfoBlock from './InfoBlock'
 import PageMenu, { PageMenuMainLink } from './PageMenu'
 import { PageHeaderProps } from './types'
+import { checkChainFeature } from '@/lib/utils'
 import styles from './PageHeader.module.scss'
 
 const ThemeToggle = dynamic(() => import('../ThemeToggle'), {
@@ -51,7 +52,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
             caption: 'Dex Metrics',
             href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
           },
-          ...(chainConfig.features.some((x) => x.name === 'charts')
+          ...(checkChainFeature(chainConfig, 'charts')
             ? [
                 {
                   caption: 'Charts & Statistics',
@@ -59,14 +60,14 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                 },
               ]
             : []),
-          ...(chainConfig.features.some((x) => x.name === 'csr')
+          ...(checkChainFeature(chainConfig, 'csr')
             ? [{ caption: 'CSR', href: '/csr' }]
             : []),
         ],
       },
     ]
     return baseLinks
-  }, [chainConfig.features, chainConfig.shortName])
+  }, [chainConfig])
 
   const onOpenChange = (value: boolean) => {
     setIsMenuOpen(value)
