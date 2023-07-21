@@ -26,7 +26,12 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['assets-stage.dex.guru', 'assets.dex.guru'],
+    domains: [
+      'assets-stage.dex.guru',
+      'assets.dex.guru',
+      'gravatar.com',
+      'www.gravatar.com',
+    ],
   },
   generateBuildId: () => nextBuildId.sync({ dir: __dirname }).slice(0, 7),
   async headers() {

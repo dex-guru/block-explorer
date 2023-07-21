@@ -4,8 +4,8 @@ import {
   ChainConfigModel,
   CsrStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Grid, LineChart, Page, Value } from '@/components'
-import { LineChartDataset } from '@/components/LineChart'
+import { Card, Grid, CommonChart, Page, Value } from '@/components'
+import { CommonChartDataset } from '@/components/CommonChart'
 import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
@@ -27,7 +27,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
     return null
   }
 
-  const csrStatsSeries: LineChartDataset[] = [
+  const csrStatsSeries: CommonChartDataset[] = [
     {
       id: 'burned',
       name: 'Burned',
@@ -84,14 +84,14 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
           </Card>
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
-          <LineChart
+          <CommonChart
             data={csrStatsSeries}
             options={{
               axis: {
                 x: {
                   type: 'number',
                   dataKey: 'timestamp',
-                  tickFormatter: getShortDate,
+                  tickFormatter: (value: number) => getShortDate(value),
                   axisLine: false,
                   tickLine: false,
                 },

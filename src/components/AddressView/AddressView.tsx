@@ -30,6 +30,9 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
   ssr: false,
 })
+const Analytics = dynamic(() => import('../Analytics'), {
+  ssr: false,
+})
 
 const AddressView: FC<IAddressViewProps> = ({
   address,
@@ -153,7 +156,10 @@ const AddressView: FC<IAddressViewProps> = ({
                   to: `${pathname}?tab=analytics`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Card>Some analytics here soon</Card>
+                      <Analytics
+                        tag="EOA"
+                        params={{ address: address.toLowerCase() }}
+                      />
                     </Suspense>
                   ),
                 },

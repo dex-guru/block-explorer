@@ -7,8 +7,8 @@ export const getRootElement = () =>
   document.getElementById('__next') ||
   document.body
 
-export const getShortDate = (value: number) => {
-  const date = new Date(value * 1000)
+export const getShortDate = (value: number, isSeconds = true) => {
+  const date = new Date(value * (isSeconds ? 1000 : 1))
   return date.toLocaleDateString('en-GB', {
     timeZone: 'UTC',
     month: 'short',

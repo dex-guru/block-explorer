@@ -1,0 +1,49 @@
+.container {
+  --color-chart-tick: var(--color-muted);
+  --color-chart-stroke: var(--color-accent);
+  --color-chart-fill: transparent;
+  --color-chart-value: var(--color-muted);
+
+  aspect-ratio: 8/3;
+  max-height: 75vh !important;
+  user-select: none;
+
+  text {
+    fill: var(--color-chart-tick);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.line {
+  path {
+    stroke-width: 2;
+  }
+}
+
+.tooltip {
+  background: var(--color-bg-3);
+  padding: 8px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+
+  &List {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    gap: 4px;
+  }
+
+  &Item {
+    margin: 0;
+    padding: 0;
+  }
+}

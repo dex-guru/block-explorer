@@ -19,7 +19,9 @@ const SSR_URLS_CACHE_TIME = {
   '/txs/*': 60,
   '/address/*': 60,
   '/holdings/*': 60,
-  '/holdings/*': 60,
+  '/token/*': 60,
+  '/charts': 60,
+  '/charts/*': 60,
 }
 const JSON_URLS_CACHE_TIME = {
   '/index.json': 60,
@@ -29,7 +31,9 @@ const JSON_URLS_CACHE_TIME = {
   '/txs/*': 60,
   '/address/*': 60,
   '/holdings/*': 60,
-  '/holdings/*': 60,
+  '/token/*': 60,
+  '/charts': 60,
+  '/charts/*': 60,
 }
 
 const redisURL = process.env.REDIS_URL

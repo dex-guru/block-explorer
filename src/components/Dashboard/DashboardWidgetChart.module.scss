@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-flow: row wrap;
+  gap: 16px;
+}
+
+.chart {
+  flex: 1 1 50%;
+  min-width: 240px;
+}
+
+.loading {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.legend {
+  composes: muted from '../../styles/_common.scss';
+  flex: 1 0 auto;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &:before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    background: var(--color);
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.analyzer {
+  --color-card-bg: var(--color-prompt);
+}
+
+.output {
+  composes: text from '../../styles/_typography.scss';
+  position: relative;
+
+  &Placeholder {
+    visibility: hidden;
+  }
+
+  &Typing {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  gap: 16px;
+
+  @media (max-width: 960px) {
+    display: flex;
+    flex-flow: column;
+  }
+}
+
+.widget {
+}
+
+.query {
+  composes: muted from '../../styles/_common.scss';
+  font-weight: 400;
+}
+
+.description {
+  composes: muted from '../../pages/Pages.module.scss';
+}
+
+.loader {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  margin: 0 !important;
+}
+
+.loading {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.counter {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1 0 auto;
+}
+
+.value {
+  font-weight: 500;
+  line-height: 1;
+  font-size: clamp(32px, 4vw + 1px, 64px);
+}
+
+.unit {
+}
+
+.footer {
+  font-size: 12px;
+}
+
+.redash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+
+  &Icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.widget {
+  &:hover {
+    .redash {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

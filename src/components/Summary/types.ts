@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { LineChartDataset } from '../LineChart'
+import { CommonChartDataset } from '../CommonChart'
 
 export type SummaryStat = {
   title?: ReactNode
@@ -14,7 +14,7 @@ export type SummaryProps = {
 
   charts?: {
     title?: string
-    data: LineChartDataset[]
+    data: CommonChartDataset[]
     color?: string
     className?: string
   }[]

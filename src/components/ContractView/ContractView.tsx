@@ -15,7 +15,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import pageStyles from '../../pages/Pages.module.scss'
 import { AddressValues } from '../Address/helpers'
 import AddressWallet from '../AddressWallet'
-import { LineChartDataset } from '../LineChart'
+import CommonChart, { CommonChartDataset } from '../CommonChart'
 import { LoadingCard } from '../Loading'
 import { TransfersDataTable } from '../Tables'
 import tabsStyles from '../Tabs/Tabs.module.scss'
@@ -41,7 +41,6 @@ import {
   DateTime,
   Comments,
   Separated,
-  LineChart,
   Message,
   IconContract,
   IconNoIcon,
@@ -70,6 +69,9 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
   ssr: false,
 })
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
+  ssr: false,
+})
+const Analytics = dynamic(() => import('../Analytics'), {
   ssr: false,
 })
 
@@ -152,7 +154,7 @@ const ContractView: FC<IContractViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
-  const holdersSeries: LineChartDataset[] = [
+  const holdersSeries: CommonChartDataset[] = [
     {
       id: 'holders',
       name: 'Holders',
@@ -355,7 +357,7 @@ const ContractView: FC<IContractViewProps> = ({
                                       : undefined
                                   }
                                 />
-                                <LineChart
+                                <CommonChart
                                   className={styles.holdersChart}
                                   data={holdersSeries}
                                   options={{
@@ -600,7 +602,16 @@ const ContractView: FC<IContractViewProps> = ({
                   to: { pathname, query: { tab: 'analytics' } },
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Card>Some analytics here soon</Card>
+                      <Analytics
+                        tag={
+                          type === 'token' ? 'Token Contract' : 'Smart Contract'
+                        }
+                        params={
+                          type === 'token'
+                            ? { token_address_requested: address.toLowerCase() }
+                            : { address: address.toLowerCase() }
+                        }
+                      />
                     </Suspense>
                   ),
                 },

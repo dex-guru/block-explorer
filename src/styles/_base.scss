@@ -208,12 +208,28 @@ progress {
     }
   }
 
-  &-tooltip-wrapper {
+  &-tooltip {
+    &-cursor {
+      opacity: 0.1;
+    }
   }
 
   &-xAxis {
     text {
       font-size: 12px !important;
+    }
+  }
+
+  &-sector {
+    stroke: var(--color-bg-2);
+    stroke-width: 4;
+  }
+
+  &-line {
+    &:not(.has-color) {
+      path {
+        stroke: var(--color-accent);
+      }
     }
   }
 }
