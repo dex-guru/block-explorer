@@ -610,14 +610,15 @@ const ContractView: FC<IContractViewProps> = ({
                                   ? 'Token Contract'
                                   : 'Smart Contract'
                               }
-                              params={
-                                type === 'token'
+                              params={{
+                                chain_id: chain.config.chainId,
+                                ...(type === 'token'
                                   ? {
                                       token_address_requested:
                                         address.toLowerCase(),
                                     }
-                                  : { address: address.toLowerCase() }
-                              }
+                                  : { address: address.toLowerCase() }),
+                              }}
                             />
                           </Suspense>
                         ),

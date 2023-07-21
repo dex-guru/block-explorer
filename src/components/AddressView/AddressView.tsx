@@ -160,7 +160,10 @@ const AddressView: FC<IAddressViewProps> = ({
                           <Suspense fallback={<LoadingCard />}>
                             <Analytics
                               tag="EOA"
-                              params={{ address: address.toLowerCase() }}
+                              params={{
+                                chain_id: chain.config.chainId,
+                                address: address.toLowerCase(),
+                              }}
                             />
                           </Suspense>
                         ),
