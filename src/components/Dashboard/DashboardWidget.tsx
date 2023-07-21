@@ -6,16 +6,19 @@ import { marked } from 'marked'
 import Card from '../Card'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
-import { DashboardWidgetQueryData, DashboardWidgetData } from './types'
 import IconRedash from '@/images/redash.svg'
+import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
 const TimeAgo = dynamic(() => import('../TimeAgo'), { ssr: false })
 
-const DashboardWidget: FC<
-  DashboardWidgetData & { query: DashboardWidgetQueryData }
-> = ({ options, visualization, text, query }) => {
+const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
+  options,
+  visualization,
+  text,
+  query,
+}) => {
   const title = visualization ? (
     visualization?.type?.toLowerCase() !==
     visualization?.name?.toLowerCase() ? (
@@ -31,7 +34,7 @@ const DashboardWidget: FC<
         <DashboardWidgetCounter
           isLoading={!!query?.job?.id}
           value={financialFormat(
-            query.query_result?.data?.rows[
+            query?.query_result?.data?.rows[
               (visualization.options.rowNumber || 1) - 1
             ][visualization.options.counterColName || ''] || ''
           )}
@@ -54,9 +57,9 @@ const DashboardWidget: FC<
     if (visualization?.type === 'TABLE') {
       return (
         <Table
-          data={query.query_result?.data?.rows || []}
+          data={query?.query_result?.data?.rows || []}
           columns={
-            query.query_result?.data?.columns.map((col) => {
+            query?.query_result?.data?.columns.map((col) => {
               return {
                 accessor: col.name,
                 title: col.friendly_name,

@@ -71,6 +71,9 @@ const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
 const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
   ssr: false,
 })
+const Analytics = dynamic(() => import('../Analytics'), {
+  ssr: false,
+})
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -599,7 +602,16 @@ const ContractView: FC<IContractViewProps> = ({
                   to: { pathname, query: { tab: 'analytics' } },
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <Card>Some analytics here soon</Card>
+                      <Analytics
+                        tag={
+                          type === 'token' ? 'Token Contract' : 'Smart Contract'
+                        }
+                        params={
+                          type === 'token'
+                            ? { token_address_requested: address }
+                            : { address }
+                        }
+                      />
                     </Suspense>
                   ),
                 },

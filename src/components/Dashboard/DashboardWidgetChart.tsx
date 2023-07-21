@@ -3,16 +3,16 @@ import { CommonChart, Message, PieChart } from '..'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
 import {
-  DashboardWidgetQueryResultData,
-  DashboardWidgetVisualization,
-} from './types'
+  TRedashQueryResultData,
+  TRedashVisualization,
+} from '@/lib/redash/types'
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
 const DashboardWidgetChart: FC<{
   type: string
-  data?: DashboardWidgetQueryResultData
-  visualization: DashboardWidgetVisualization
+  data?: TRedashQueryResultData
+  visualization: TRedashVisualization
   isLoading?: boolean
 }> = ({ type, data, visualization, isLoading }) => {
   const columnMapping: Record<string, string[]> = { x: [], y: [] }

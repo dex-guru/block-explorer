@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import DashboardWidget from './DashboardWidget'
-import { DashboardData, DashboardWidgetQueryData } from './types'
+import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
 const Dashboard: FC<
-  DashboardData & {
-    queries: Record<number, DashboardWidgetQueryData>
+  TRedashDashboard & {
+    queries: Record<number, TRedashQueryResponse>
   }
 > = ({ widgets, queries }) => {
   return (
