@@ -16,6 +16,7 @@ import {
 import { Value } from '@/components'
 import { Tab } from '@/components/Tabs'
 import IconRedash from '@/images/redash.svg'
+import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
 import ImageLine from '@/images/redash/line.svg'
 import ImagePie from '@/images/redash/pie.svg'
@@ -78,17 +79,24 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     return (
       <div className={styles.illustration}>
         {dashboard.visualization_types.map((viz, idx) => {
-          const [type, position] = Object.entries(viz)[0]
+          const [type, options] = Object.entries(viz)[0]
 
           let TypeImage
 
-          switch (type.toLowerCase()) {
+          const exactType = (options?.globalSeriesType || type).toLowerCase()
+
+          switch (exactType) {
             case 'counter':
               TypeImage = ImageCounter
               break
             case 'chart':
             case 'line':
+            case 'area':
               TypeImage = ImageLine
+              break
+            case 'column':
+            case 'bar':
+              TypeImage = ImageBar
               break
             case 'pie':
               TypeImage = ImagePie
@@ -105,8 +113,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               className={styles.illustrationBlock}
               key={idx}
               style={{
-                gridColumn: `${position.col + 1} / span ${position.sizeX}`,
-                gridRow: `${position.row + 1} / span ${position.sizeY}`,
+                gridColumn: `${options.col + 1} / span ${options.sizeX}`,
+                gridRow: `${options.row + 1} / span ${options.sizeY}`,
               }}
             >
               <span className={styles.illustrationType}>

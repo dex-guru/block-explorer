@@ -101,6 +101,7 @@ export type TRedashDashboard = {
       sizeY: number
       col: number
       row: number
+      globalSeriesType: string
     }
   }>
 
