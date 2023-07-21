@@ -1,21 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import { isString } from 'lodash'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { DetailsView, Empty, IconSearch, Page } from '@/components'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
-import {
-  getDynamicDateRangePeriod,
-  isDynamicDateRangePeriod,
-} from '@/lib/dates'
 import { getLogger } from '@/lib/logger'
-import {
-  getRadashDashboardWithResults,
-  getRedashDashboard,
-  getRedashQueryResponse,
-} from '@/lib/redash/client'
+import { getRadashDashboardWithResults } from '@/lib/redash/client'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 
 interface СhartsDetailsPageProps {
