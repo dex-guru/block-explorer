@@ -5,7 +5,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const response = await fetch(
-      'https://langchain-stage.dexguru.biz/api/endpoints.dashboard_analyze_chain.sequential_chain/run',
+      'https://langchain-stage.dexguru.biz/endpoints.dashboard_analyze_chain.sequential_chain/run',
       {
         method: 'POST',
         body: JSON.stringify({
