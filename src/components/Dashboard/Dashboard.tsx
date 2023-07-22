@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { Card, Message } from '..'
+import { sanitize } from 'isomorphic-dompurify'
 import DashboardWidget from './DashboardWidget'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
@@ -61,7 +62,7 @@ const Dashboard: FC<{
             <div
               className={styles.outputPlaceholder}
               dangerouslySetInnerHTML={{
-                __html: aiResponse,
+                __html: sanitize(aiResponse),
               }}
             />
             <TypeAnimation

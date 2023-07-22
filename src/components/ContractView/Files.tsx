@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter'
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'

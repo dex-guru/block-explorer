@@ -40,6 +40,8 @@
 }
 
 .code {
+  composes: container from '../Code/Code.module.scss';
+  background: var(--code-bg) !important;
   max-height: 75vh;
   margin: 0;
 }

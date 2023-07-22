@@ -2,6 +2,7 @@ import { FC, Suspense, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { IconWatch, Message, Table, Value } from '..'
+import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import { useIntervalWhen } from 'rooks'
 import Card from '../Card'
@@ -63,7 +64,7 @@ const DashboardWidget: FC<{
 
   useIntervalWhen(
     () => {
-      const getData = async () => {
+      const getJob = async () => {
         if (!queryJob?.id) {
           return
         }
@@ -77,7 +78,7 @@ const DashboardWidget: FC<{
         getQueryData()
       }
 
-      getData()
+      getJob()
     },
     5 * 1000,
     !!queryJob?.id,
@@ -152,27 +153,29 @@ const DashboardWidget: FC<{
   }
 
   const renderWidgetFooter = () => {
-    if (!visualization) {
-      return undefined
-    }
+    return (
+      <div className={styles.footer}>
+        {!queryJob && !queryResult && (
+          <Value
+            className={styles.footer}
+            icon={<IconWatch />}
+            value={'Querying data'}
+          />
+        )}
 
-    if (!!queryJob?.id) {
-      return (
-        <Value
-          className={styles.footer}
-          icon={<IconWatch />}
-          value={'Query is in progress'}
-        />
-      )
-    }
+        {!!queryJob?.id && (
+          <Value
+            className={styles.timestamp}
+            icon={<IconWatch />}
+            value={'Calculating data'}
+          />
+        )}
 
-    if (queryResult?.retrieved_at) {
-      return (
-        <Value
-          className={styles.footer}
-          icon={<IconWatch />}
-          value={
-            <>
+        {!queryJob?.id && !!queryResult?.retrieved_at && (
+          <Value
+            className={styles.timestamp}
+            icon={<IconWatch />}
+            value={
               <Suspense fallback={<>&nbsp;</>}>
                 <TimeAgo
                   timestamp={
@@ -180,18 +183,12 @@ const DashboardWidget: FC<{
                   }
                 />
               </Suspense>
-            </>
-          }
-        />
-      )
-    }
+            }
+          />
+        )}
 
-    return (
-      <Value
-        className={styles.footer}
-        icon={<IconWatch />}
-        value={'Fetching data'}
-      />
+        {renderDateRangeSwitch()}
+      </div>
     )
   }
 
@@ -212,7 +209,7 @@ const DashboardWidget: FC<{
           { title: '3M', value: 'd_last_90_days' },
           { title: '1Y', value: 'd_last_12_months' },
         ]}
-        value="d_last_30_days"
+        value={currentDateRange}
         onChange={(value) => {
           setQueryResult(undefined)
           setQueryJob(undefined)
@@ -222,32 +219,26 @@ const DashboardWidget: FC<{
     )
   }
 
+  const tools = visualization?.query?.id ? (
+    <Link
+      data-tooltip-id="app-tooltip"
+      data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
+      className={styles.redash}
+      target="_blank"
+      rel="noreferrer noopener"
+      href={`${
+        process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
+      }/queries/${visualization.query.id}`}
+    >
+      <IconRedash className={styles.redashIcon} />
+    </Link>
+  ) : undefined
+
   return (
     <Card
-      title={
-        !!title ? (
-          <div className={styles.title}>
-            {title}{' '}
-            {visualization?.query?.id ? (
-              <Link
-                data-tooltip-id="app-tooltip"
-                data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
-                className={styles.redash}
-                target="_blank"
-                rel="noreferrer noopener"
-                href={`${
-                  process.env.NEXT_PUBLIC_REDASH_API_URL ||
-                  'https://redash-demo.dex.guru'
-                }/queries/${visualization.query.id}`}
-              >
-                <IconRedash className={styles.redashIcon} />
-              </Link>
-            ) : undefined}
-          </div>
-        ) : undefined
-      }
+      title={title}
       className={styles.widget}
-      header={renderDateRangeSwitch()}
+      header={tools}
       style={{
         gridColumn: `${options?.position.col + 1} / span ${
           options?.position.sizeX
@@ -256,7 +247,7 @@ const DashboardWidget: FC<{
           options?.position.sizeY
         }`,
       }}
-      footer={renderWidgetFooter()}
+      footer={visualization ? renderWidgetFooter() : undefined}
     >
       {!!visualization?.query?.description && (
         <div className={styles.description}>
@@ -268,7 +259,9 @@ const DashboardWidget: FC<{
         <div
           className="text"
           dangerouslySetInnerHTML={{
-            __html: marked.parse(text, { mangle: false, headerIds: false }),
+            __html: sanitize(
+              marked.parse(text, { mangle: false, headerIds: false })
+            ),
           }}
         />
       )}

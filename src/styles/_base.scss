@@ -195,6 +195,52 @@ progress {
   }
 }
 
+pre {
+  .comment,
+  .builtin,
+  .linenumber {
+    color: var(--color-muted);
+  }
+
+  .builtin {
+    font-style: italic;
+  }
+
+  .punctuation {
+    color: var(--color-prompt);
+  }
+
+  .property {
+    color: var(--color-warn);
+  }
+
+  .operator {
+    color: var(--color-warn);
+  }
+
+  .string {
+    color: var(--color-info);
+  }
+
+  .boolean {
+    color: var(--color-success);
+  }
+
+  .keyword {
+    color: var(--color-danger);
+  }
+
+  .class-name {
+    color: var(--color-success);
+    font-weight: 600;
+  }
+
+  .function {
+    color: var(--color-warn);
+    font-weight: 600;
+  }
+}
+
 .recharts {
   &-brush {
     & > rect {
