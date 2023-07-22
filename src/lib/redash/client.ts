@@ -99,6 +99,30 @@ export const getRedashQueryResponse = (
   })
 }
 
+export const generateRedashQueryParams = (
+  query: TRedashQuery,
+  globalParams?: Record<string, unknown>
+) => {
+  const {
+    options: { parameters: queryParameters },
+  } = query
+
+  const params =
+    queryParameters?.map((param) => {
+      if (globalParams && globalParams[param.name]) {
+        return [param.name, globalParams[param.name]]
+      }
+
+      if (param.type === 'date-range') {
+        return [param.name, getDynamicDateRangePeriod('d_last_30_days')]
+      }
+
+      return [param.name, param.value]
+    }) || []
+
+  return Object.fromEntries(params)
+}
+
 export const getRedashQueriesResponse = async (
   queries: TRedashQuery[],
   globalParams?: Record<string, unknown>
@@ -115,36 +139,9 @@ export const getRedashQueriesResponse = async (
         return
       }
 
-      const {
-        id,
-        options: { parameters: queryParameters },
-      } = query
+      const params = generateRedashQueryParams(query, globalParams)
 
-      const params =
-        queryParameters?.map((param) => {
-          if (globalParams && globalParams[param.name]) {
-            return [param.name, globalParams[param.name]]
-          }
-
-          if (param.type === 'date-range') {
-            // TODO: date-range default value pickup
-            // if (
-            //   isString(param.value) &&
-            //   isDynamicDateRangePeriod(`${param.value}`)
-            // ) {
-            //   return [param.name, getDynamicDateRangePeriod(`${param.value}`)]
-            // }
-
-            return [param.name, getDynamicDateRangePeriod('d_last_30_days')]
-          }
-
-          return [param.name, param.value]
-        }) || []
-
-      queriesData[id] = await getRedashQueryResponse(
-        id,
-        Object.fromEntries(params)
-      )
+      queriesData[query.id] = await getRedashQueryResponse(query.id, params)
     })
   )
 

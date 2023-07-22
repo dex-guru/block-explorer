@@ -40,11 +40,7 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
 
         {!!dashboard && (
           <DetailsView title={dashboard.name}>
-            <Dashboard
-              {...dashboard}
-              queriesResponse={queries}
-              chainConfig={chainConfig}
-            />
+            <Dashboard data={dashboard} queriesResponse={queries} />
           </DetailsView>
         )}
       </Page>

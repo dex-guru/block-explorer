@@ -18,13 +18,15 @@
 }
 
 .loading {
-  pointer-events: none;
-  visibility: hidden;
+  composes: loading from './Dashboard.module.scss';
+
+  .chart {
+    opacity: 0;
+  }
 }
 
 .loader {
   composes: loader from './Dashboard.module.scss';
-  visibility: visible;
 }
 
 .legend {

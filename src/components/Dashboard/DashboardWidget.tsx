@@ -8,22 +8,24 @@ import Card from '../Card'
 import Tabs from '../Tabs'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
-import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import IconRedash from '@/images/redash.svg'
 import { getDynamicDateRangePeriod } from '@/lib/dates'
-import { getRedashJob, getRedashQueryResponse } from '@/lib/redash/client'
+import {
+  getRedashJob,
+  getRedashQueryResponse,
+  generateRedashQueryParams,
+} from '@/lib/redash/client'
 import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
 const TimeAgo = dynamic(() => import('../TimeAgo'), { ssr: false })
 
-const DashboardWidget: FC<
-  TRedashWidget & {
-    queryResponse: TRedashQueryResponse
-    chainConfig: ChainConfigModel
-  }
-> = ({ chainConfig, options, visualization, text, queryResponse }) => {
+const DashboardWidget: FC<{
+  data: TRedashWidget
+  queryResponse: TRedashQueryResponse
+  params?: Record<string, unknown>
+}> = ({ data: { options, visualization, text }, queryResponse, params }) => {
   const [queryResult, setQueryResult] = useState(queryResponse?.query_result)
   const [queryJob, setQueryJob] = useState(queryResponse?.job)
   const [currentDateRange, setCurrentDateRange] = useState('d_last_30_days')
@@ -34,10 +36,15 @@ const DashboardWidget: FC<
         return
       }
 
-      const queryData = await getRedashQueryResponse(visualization?.query?.id, {
-        chain_id: chainConfig?.chainId,
+      const queryParams = generateRedashQueryParams(visualization.query, {
+        ...(params || {}),
         dates: getDynamicDateRangePeriod(currentDateRange),
       })
+
+      const queryData = await getRedashQueryResponse(
+        visualization?.query?.id,
+        queryParams
+      )
 
       setQueryResult(queryData.query_result)
       setQueryJob(queryData.job)
@@ -86,11 +93,13 @@ const DashboardWidget: FC<
     )
   ) : undefined
 
+  const isFetching = !!queryJob?.id || (!queryJob && !queryResult)
+
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
       return (
         <DashboardWidgetCounter
-          isLoading={!!queryJob?.id}
+          isLoading={isFetching}
           value={financialFormat(
             queryResult?.data?.rows[(visualization.options.rowNumber || 1) - 1][
               visualization.options.counterColName || ''
@@ -104,7 +113,7 @@ const DashboardWidget: FC<
     if (visualization?.type === 'CHART') {
       return (
         <DashboardWidgetChart
-          isLoading={!!queryJob?.id}
+          isLoading={isFetching}
           type={visualization.options?.globalSeriesType || 'unknown'}
           visualization={visualization}
           data={queryResult?.data}
@@ -143,6 +152,10 @@ const DashboardWidget: FC<
   }
 
   const renderWidgetFooter = () => {
+    if (!visualization) {
+      return undefined
+    }
+
     if (!!queryJob?.id) {
       return (
         <Value
@@ -173,7 +186,13 @@ const DashboardWidget: FC<
       )
     }
 
-    return undefined
+    return (
+      <Value
+        className={styles.footer}
+        icon={<IconWatch />}
+        value={'Fetching data'}
+      />
+    )
   }
 
   const renderDateRangeSwitch = () => {

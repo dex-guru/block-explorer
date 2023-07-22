@@ -16,7 +16,7 @@
 }
 
 .switch {
-  composes: inner from '../Tabs/Tabs.module.scss';
+  composes: switch from '../Tabs/Tabs.module.scss';
 }
 
 .output {
@@ -95,6 +95,7 @@
 
 .footer {
   font-size: 12px;
+  line-height: 20px;
 }
 
 .redash {

@@ -12,12 +12,7 @@ import {
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
-const Analytics: FC<AnalyticsProps> = ({
-  chainConfig,
-  tag,
-  params,
-  className,
-}) => {
+const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [dashboardsData, setDashboardsData] = useState<Array<{
     dashboard: TRedashDashboard
@@ -71,11 +66,7 @@ const Analytics: FC<AnalyticsProps> = ({
       title: dashboard.name,
       value: dashboard.id,
       content: (
-        <Dashboard
-          {...dashboard}
-          queriesResponse={queries}
-          chainConfig={chainConfig}
-        />
+        <Dashboard data={dashboard} queriesResponse={queries} params={params} />
       ),
     }
   })

@@ -2,16 +2,14 @@ import { FC, useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { Card, Message } from '..'
 import DashboardWidget from './DashboardWidget'
-import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
-const Dashboard: FC<
-  TRedashDashboard & {
-    queriesResponse: Record<number, TRedashQueryResponse>
-    chainConfig: ChainConfigModel
-  }
-> = ({ chainConfig, slug, widgets, queriesResponse }) => {
+const Dashboard: FC<{
+  data: TRedashDashboard
+  queriesResponse: Record<number, TRedashQueryResponse>
+  params?: Record<string, unknown>
+}> = ({ data: { slug, widgets }, queriesResponse, params }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [aiResponse, setAiResponse] = useState<string | null>(null)
@@ -86,10 +84,10 @@ const Dashboard: FC<
           })
           .map((widget) => (
             <DashboardWidget
-              {...widget}
+              data={widget}
+              params={params}
               queryResponse={queriesResponse[widget?.visualization?.query?.id]}
               key={widget.id}
-              chainConfig={chainConfig}
             />
           ))}
       </div>
