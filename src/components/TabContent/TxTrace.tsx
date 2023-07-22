@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter'
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useLazyQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import Trace from '../Trace'
@@ -95,6 +95,7 @@ const TxTrace: FC<{
                 language="json"
                 wrapLongLines
                 showLineNumbers
+                useInlineStyles={false}
               >
                 {JSON.stringify(tracesObj, null, 4)}
               </SyntaxHighlighter>

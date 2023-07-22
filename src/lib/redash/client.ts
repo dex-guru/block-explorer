@@ -1,4 +1,4 @@
-import { isString } from 'lodash'
+import isString from 'lodash/isString'
 import { getDynamicDateRangePeriod } from '../dates'
 import { getLogger } from '../logger'
 import { TRedashDashboard, TRedashQuery, TRedashQueryResponse } from './types'

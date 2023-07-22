@@ -72,6 +72,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
               language="json"
               wrapLongLines
               showLineNumbers
+              useInlineStyles={false}
             >
               {JSON.stringify(match?.metadata?.output.abi, null, '  ') ?? ''}
             </SyntaxHighlighter>
@@ -94,6 +95,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
                     showLineNumbers
                     wrapLongLines
                     className={styles.code}
+                    useInlineStyles={false}
                   >
                     {sourcecode}
                   </SyntaxHighlighter>
