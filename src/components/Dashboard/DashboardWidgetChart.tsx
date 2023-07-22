@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from 'react'
-import { CommonChart, Message, PieChart } from '..'
+import { CommonChart, Loading, Message, PieChart } from '..'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
 import {
@@ -26,8 +26,11 @@ const DashboardWidgetChart: FC<{
   if (type === 'pie') {
     return (
       <div className={clsx(styles.container, { [styles.loading]: isLoading })}>
-        <div className={styles.chart}>
+        {isLoading && <Loading className={styles.loader} />}
+
+        <div className={styles.wrapper}>
           <PieChart
+            className={styles.chart}
             data={data?.rows || []}
             options={{
               dataKey: columnMapping.y[0],
@@ -96,8 +99,11 @@ const DashboardWidgetChart: FC<{
     })
 
     return (
-      <div className={clsx(styles.chart, { [styles.loading]: isLoading })}>
+      <div className={clsx(styles.wrapper, { [styles.loading]: isLoading })}>
+        {isLoading && <Loading className={styles.loader} />}
+
         <CommonChart
+          className={styles.chart}
           type={type || 'line'}
           data={dataset}
           options={{

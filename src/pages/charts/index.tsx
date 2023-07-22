@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import {
   Card,
@@ -26,7 +27,7 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { getRedashDashboardsAll } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
-import { checkChainFeature } from '@/lib/utils'
+import { checkChainFeature, getSlug } from '@/lib/utils'
 import styles from './Charts.module.scss'
 
 const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
@@ -38,6 +39,10 @@ interface ChartsPageProps {
 }
 
 const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
+  const { tab } = router.query
+
   const pageTitle = `${chainConfig.name} Charts & Statistics`
 
   const activeDashboards =
@@ -55,13 +60,17 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   const tabs: Tab<string>[] = tagsSet
     .filter((tag) => !['Token Contract', 'Smart Contract', 'EOA'].includes(tag))
     .map((tag) => {
+      const slug = getSlug(tag)
       return {
         title: tag,
-        value: tag,
+        value: slug,
+        to: { pathname, query: { tab: slug } },
       }
     })
 
-  const [currentTab, setCurrentTab] = useState(tabs[0] ? tabs[0].value : '')
+  const [currentTab, setCurrentTab] = useState(
+    tab || tabs[0] ? tabs[0].value : ''
+  )
 
   if (!checkChainFeature(chainConfig, 'charts')) {
     return null
@@ -184,6 +193,11 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     )
   }
 
+  const currentTabTag =
+    tabs.find((tab) => {
+      return tab.value === (currentTab || '')
+    })?.title || ''
+
   return (
     <>
       <Head>
@@ -203,7 +217,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             <div className={styles.dashboards}>
               <ul className={styles.list}>
                 {activeDashboards
-                  .filter((dashboard) => dashboard.tags.includes(currentTab))
+                  .filter((dashboard) => dashboard.tags.includes(currentTabTag))
                   .map((dashboard) => (
                     <li className={styles.item} key={dashboard.id}>
                       {renderDashboardCard(dashboard)}

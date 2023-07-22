@@ -1,24 +1,82 @@
-import { FC, Suspense } from 'react'
+import { FC, Suspense, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { IconWatch, Loading, Table, Value } from '..'
+import { IconWatch, Message, Table, Value } from '..'
 import { marked } from 'marked'
+import { useIntervalWhen } from 'rooks'
 import Card from '../Card'
+import Tabs from '../Tabs'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import IconRedash from '@/images/redash.svg'
+import { getDynamicDateRangePeriod } from '@/lib/dates'
+import { getRedashJob, getRedashQueryResponse } from '@/lib/redash/client'
 import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
 const TimeAgo = dynamic(() => import('../TimeAgo'), { ssr: false })
 
-const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
-  options,
-  visualization,
-  text,
-  query,
-}) => {
+const DashboardWidget: FC<
+  TRedashWidget & {
+    queryResponse: TRedashQueryResponse
+    chainConfig: ChainConfigModel
+  }
+> = ({ chainConfig, options, visualization, text, queryResponse }) => {
+  const [queryResult, setQueryResult] = useState(queryResponse?.query_result)
+  const [queryJob, setQueryJob] = useState(queryResponse?.job)
+  const [currentDateRange, setCurrentDateRange] = useState('d_last_30_days')
+
+  const getQueryData = () => {
+    const getData = async () => {
+      if (!visualization?.query?.id) {
+        return
+      }
+
+      const queryData = await getRedashQueryResponse(visualization?.query?.id, {
+        chain_id: chainConfig?.chainId,
+        dates: getDynamicDateRangePeriod(currentDateRange),
+      })
+
+      setQueryResult(queryData.query_result)
+      setQueryJob(queryData.job)
+    }
+
+    getData()
+  }
+
+  useEffect(() => {
+    if (queryResult) {
+      return
+    }
+
+    getQueryData()
+  }, [currentDateRange])
+
+  useIntervalWhen(
+    () => {
+      const getData = async () => {
+        if (!queryJob?.id) {
+          return
+        }
+
+        const jobData = await getRedashJob(queryJob.id)
+
+        if (!jobData?.job?.query_result_id) {
+          return
+        }
+
+        getQueryData()
+      }
+
+      getData()
+    },
+    5 * 1000,
+    !!queryJob?.id,
+    true
+  )
+
   const title = visualization ? (
     visualization?.type?.toLowerCase() !==
     visualization?.name?.toLowerCase() ? (
@@ -32,11 +90,11 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
     if (visualization?.type === 'COUNTER') {
       return (
         <DashboardWidgetCounter
-          isLoading={!!query?.job?.id}
+          isLoading={!!queryJob?.id}
           value={financialFormat(
-            query?.query_result?.data?.rows[
-              (visualization.options.rowNumber || 1) - 1
-            ][visualization.options.counterColName || ''] || ''
+            queryResult?.data?.rows[(visualization.options.rowNumber || 1) - 1][
+              visualization.options.counterColName || ''
+            ] || ''
           )}
           unit={visualization.options.counterLabel}
         />
@@ -46,10 +104,10 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
     if (visualization?.type === 'CHART') {
       return (
         <DashboardWidgetChart
-          isLoading={!!query?.job?.id}
+          isLoading={!!queryJob?.id}
           type={visualization.options?.globalSeriesType || 'unknown'}
           visualization={visualization}
-          data={query?.query_result?.data}
+          data={queryResult?.data}
         />
       )
     }
@@ -57,9 +115,9 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
     if (visualization?.type === 'TABLE') {
       return (
         <Table
-          data={query?.query_result?.data?.rows || []}
+          data={queryResult?.data?.rows || []}
           columns={
-            query?.query_result?.data?.columns.map((col) => {
+            queryResult?.data?.columns.map((col) => {
               return {
                 accessor: col.name,
                 title: col.friendly_name,
@@ -73,11 +131,19 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
       )
     }
 
-    return <></>
+    if (visualization?.type) {
+      return (
+        <Message type="danger">
+          Visualization type {visualization.type} is not supported yet
+        </Message>
+      )
+    }
+
+    return null
   }
 
   const renderWidgetFooter = () => {
-    if (!!query?.job?.id) {
+    if (!!queryJob?.id) {
       return (
         <Value
           className={styles.footer}
@@ -87,7 +153,7 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
       )
     }
 
-    if (query?.query_result?.retrieved_at) {
+    if (queryResult?.retrieved_at) {
       return (
         <Value
           className={styles.footer}
@@ -97,7 +163,7 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
               <Suspense fallback={<>&nbsp;</>}>
                 <TimeAgo
                   timestamp={
-                    new Date(query.query_result?.retrieved_at).getTime() / 1000
+                    new Date(queryResult?.retrieved_at).getTime() / 1000
                   }
                 />
               </Suspense>
@@ -110,27 +176,59 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
     return undefined
   }
 
+  const renderDateRangeSwitch = () => {
+    if (
+      !visualization?.query?.options?.parameters?.find(
+        (param) => param.type === 'date-range'
+      )
+    ) {
+      return undefined
+    }
+
+    return (
+      <Tabs
+        className={styles.switch}
+        tabs={[
+          { title: '1M', value: 'd_last_30_days' },
+          { title: '3M', value: 'd_last_90_days' },
+          { title: '1Y', value: 'd_last_12_months' },
+        ]}
+        value="d_last_30_days"
+        onChange={(value) => {
+          setQueryResult(undefined)
+          setQueryJob(undefined)
+          setCurrentDateRange(value)
+        }}
+      />
+    )
+  }
+
   return (
     <Card
-      title={title}
-      className={styles.widget}
-      header={
-        visualization?.query?.id ? (
-          <Link
-            data-tooltip-id="app-tooltip"
-            data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
-            className={styles.redash}
-            target="_blank"
-            rel="noreferrer noopener"
-            href={`${
-              process.env.NEXT_PUBLIC_REDASH_API_URL ||
-              'https://redash-demo.dex.guru'
-            }/queries/${visualization.query.id}`}
-          >
-            <IconRedash className={styles.redashIcon} />
-          </Link>
+      title={
+        !!title ? (
+          <div className={styles.title}>
+            {title}{' '}
+            {visualization?.query?.id ? (
+              <Link
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
+                className={styles.redash}
+                target="_blank"
+                rel="noreferrer noopener"
+                href={`${
+                  process.env.NEXT_PUBLIC_REDASH_API_URL ||
+                  'https://redash-demo.dex.guru'
+                }/queries/${visualization.query.id}`}
+              >
+                <IconRedash className={styles.redashIcon} />
+              </Link>
+            ) : undefined}
+          </div>
         ) : undefined
       }
+      className={styles.widget}
+      header={renderDateRangeSwitch()}
       style={{
         gridColumn: `${options?.position.col + 1} / span ${
           options?.position.sizeX
@@ -157,8 +255,6 @@ const DashboardWidget: FC<TRedashWidget & { query: TRedashQueryResponse }> = ({
       )}
 
       {renderWidgetVisualization()}
-
-      {!!query?.job?.id && <Loading className={styles.loader} />}
     </Card>
   )
 }

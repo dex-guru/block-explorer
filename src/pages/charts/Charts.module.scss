@@ -32,14 +32,7 @@
 }
 
 .redash {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  width: 24px;
-  height: 24px;
-  padding: 0;
+  composes: redash from '@/components/Dashboard/Dashboard.module.scss';
 
   &Icon {
     width: 20px;
@@ -76,6 +69,7 @@
 }
 
 .illustration {
+  pointer-events: none;
   display: grid;
   align-items: start;
   grid-template-columns: repeat(6, 1fr);

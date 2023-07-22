@@ -347,3 +347,10 @@ export const checkChainFeature = (
   chainConfig: ChainConfigModel,
   feature: string
 ) => chainConfig?.features?.some((x) => x.name === feature)
+
+export const getSlug = (value: string) => {
+  return value
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '')
+}

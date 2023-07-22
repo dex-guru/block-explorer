@@ -159,6 +159,7 @@ const AddressView: FC<IAddressViewProps> = ({
                         content: (
                           <Suspense fallback={<LoadingCard />}>
                             <Analytics
+                              chainConfig={chain.config}
                               tag="EOA"
                               params={{
                                 chain_id: chain.config.chainId,

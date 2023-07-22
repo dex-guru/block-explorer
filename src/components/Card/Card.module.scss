@@ -6,6 +6,7 @@
   --color-card-gap: 16px;
 
   background: var(--color-card-bg);
+  color: var(--color-card-text);
   border-radius: var(--radii-lg);
   display: flex;
   flex-flow: column;
@@ -36,7 +37,6 @@
 
 .body {
   flex: 1 1 auto;
-  position: relative;
 }
 
 .body,

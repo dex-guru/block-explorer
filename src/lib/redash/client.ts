@@ -1,12 +1,7 @@
 import { isString } from 'lodash'
 import { getDynamicDateRangePeriod } from '../dates'
 import { getLogger } from '../logger'
-import {
-  TRedashDashboard,
-  TRedashJob,
-  TRedashQuery,
-  TRedashQueryResponse,
-} from './types'
+import { TRedashDashboard, TRedashQuery, TRedashQueryResponse } from './types'
 
 export const redashFetch = async (
   url: string,
@@ -171,6 +166,6 @@ export const getRadashDashboardWithResults = async (
   }
 }
 
-export const getRedashJob = (id: number): Promise<TRedashJob> => {
-  return redashFetch(`/job/${id}`)
+export const getRedashJob = (id: string): Promise<TRedashQueryResponse> => {
+  return redashFetch(`/jobs/${id}`)
 }

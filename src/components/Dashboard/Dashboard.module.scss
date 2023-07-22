@@ -1,11 +1,22 @@
 .container {
   display: flex;
   flex-flow: column;
-  gap: 16px;
+  gap: 8px;
+}
+
+.title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .analyzer {
   --color-card-bg: var(--color-prompt);
+  --color-card-text: #fff;
+}
+
+.switch {
+  composes: inner from '../Tabs/Tabs.module.scss';
 }
 
 .output {
@@ -56,6 +67,7 @@
   transform: translateY(-50%);
   width: auto;
   margin: 0 !important;
+  visibility: visible;
 }
 
 .loading {
@@ -89,11 +101,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
   width: 24px;
   height: 24px;
   padding: 0;
+
+  @media (pointer: fine) {
+    opacity: 0;
+    visibility: hidden;
+  }
 
   &Icon {
     width: 20px;

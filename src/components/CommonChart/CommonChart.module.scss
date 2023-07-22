@@ -4,7 +4,6 @@
   --color-chart-fill: transparent;
   --color-chart-value: var(--color-muted);
 
-  aspect-ratio: 8/3;
   max-height: 75vh !important;
   user-select: none;
 
@@ -23,7 +22,8 @@
 }
 
 .tooltip {
-  background: var(--color-bg-3);
+  background: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
   padding: 8px;
   font-weight: 400;
   font-size: 14px;

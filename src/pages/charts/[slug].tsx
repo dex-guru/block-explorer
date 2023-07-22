@@ -40,7 +40,11 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
 
         {!!dashboard && (
           <DetailsView title={dashboard.name}>
-            <Dashboard {...dashboard} queries={queries} />
+            <Dashboard
+              {...dashboard}
+              queriesResponse={queries}
+              chainConfig={chainConfig}
+            />
           </DetailsView>
         )}
       </Page>
@@ -78,7 +82,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   const { dashboard, queries } = await getRadashDashboardWithResults(slug, {
-    chaind_id: data.chainConfig.chainId,
+    chain_id: data.chainConfig.chainId,
   })
 
   return addApolloState(apolloClient, {
