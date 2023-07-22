@@ -22,6 +22,7 @@ import ImageCounter from '@/images/redash/counter.svg'
 import ImageLine from '@/images/redash/line.svg'
 import ImagePie from '@/images/redash/pie.svg'
 import ImageTable from '@/images/redash/table.svg'
+import ImageText from '@/images/redash/text.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -112,6 +113,9 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               break
             case 'table':
               TypeImage = ImageTable
+              break
+            case 'text':
+              TypeImage = ImageText
               break
             default:
               TypeImage = IconQuestion
