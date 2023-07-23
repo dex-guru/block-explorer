@@ -1,7 +1,6 @@
 import { FC, Suspense, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { IconWatch, Message, Table, Value } from '..'
+import { IconWatch, Message, Table, TimeAgo, Value } from '..'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import { useIntervalWhen } from 'rooks'
@@ -19,8 +18,6 @@ import {
 import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
-
-const TimeAgo = dynamic(() => import('../TimeAgo'), { ssr: false })
 
 const DashboardWidget: FC<{
   data: TRedashWidget
