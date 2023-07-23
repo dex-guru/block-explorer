@@ -8,6 +8,7 @@ import Button from './Button'
 import Card from './Card'
 import Code from './Code'
 import Comments from './Comments'
+import CommonChart from './CommonChart'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
 import Copy from './Copy'
@@ -29,6 +30,7 @@ import OpenWith from './OpenWith'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
+import PieChart from './PieChart'
 import Properties from './Properties'
 import Search from './Search'
 import Separated from './Separated'
@@ -60,8 +62,6 @@ import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
-const CommonChart = dynamic(() => import('./CommonChart'), { ssr: false })
-const PieChart = dynamic(() => import('./PieChart'), { ssr: false })
 
 export {
   Address,

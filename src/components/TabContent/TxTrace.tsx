@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useLazyQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import Trace from '../Trace'

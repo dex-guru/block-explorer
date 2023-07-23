@@ -50,6 +50,7 @@ export type TRedashVisualization = {
     counterLabel?: string
     counterColName?: string
     rowNumber?: 1
+    seriesOptions?: Record<string, { name?: string }>
   }
 }
 
