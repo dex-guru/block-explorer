@@ -85,6 +85,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
         </Grid>
         <Card title={`${chainConfig.name} Emissions`}>
           <CommonChart
+            className={styles.csrChart}
             data={csrStatsSeries}
             options={{
               axis: {
