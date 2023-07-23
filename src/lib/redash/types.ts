@@ -23,17 +23,19 @@ export type TRedashWidgetOptions = {
   }
 }
 
+export type TRedashQueryParam = {
+  title: string
+  name: string
+  type: string
+  value: string | Record<string, string>
+}
+
 export type TRedashQuery = {
   id: number
   name: string
   description: string
   options: {
-    parameters?: Array<{
-      title: string
-      name: string
-      type: string
-      value: string | Record<string, string>
-    }>
+    parameters?: TRedashQueryParam[]
   }
 }
 
@@ -101,6 +103,7 @@ export type TRedashDashboard = {
       sizeY: number
       col: number
       row: number
+      globalSeriesType: string
     }
   }>
 

@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react'
-import SyntaxHighlighter from 'react-syntax-highlighter'
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useQuery } from '@apollo/client'
 import { LoadingCard } from '../Loading'
 import { Property } from '../Properties/types'
@@ -72,6 +72,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
               language="json"
               wrapLongLines
               showLineNumbers
+              useInlineStyles={false}
             >
               {JSON.stringify(match?.metadata?.output.abi, null, '  ') ?? ''}
             </SyntaxHighlighter>
@@ -94,6 +95,7 @@ const Files: FC<IFilesProps> = ({ match, address }) => {
                     showLineNumbers
                     wrapLongLines
                     className={styles.code}
+                    useInlineStyles={false}
                   >
                     {sourcecode}
                   </SyntaxHighlighter>

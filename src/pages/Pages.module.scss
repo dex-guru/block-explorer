@@ -160,8 +160,10 @@
 
 .tabsInner {
   composes: inner from '../components/Tabs/Tabs.module.scss';
-  margin: -6px 0;
-  font-size: 14px;
+}
+
+.switch {
+  composes: switch from '../components/Tabs/Tabs.module.scss';
 }
 
 .addressWallet {

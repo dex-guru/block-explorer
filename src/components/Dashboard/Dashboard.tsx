@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { Card, Message } from '..'
+import { sanitize } from 'isomorphic-dompurify'
 import DashboardWidget from './DashboardWidget'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
-const Dashboard: FC<
-  TRedashDashboard & {
-    queries: Record<number, TRedashQueryResponse>
-  }
-> = ({ slug, widgets, queries }) => {
+const Dashboard: FC<{
+  data: TRedashDashboard
+  queriesResponse: Record<number, TRedashQueryResponse>
+  params?: Record<string, unknown>
+}> = ({ data: { slug, widgets }, queriesResponse, params }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [aiResponse, setAiResponse] = useState<string | null>(null)
@@ -61,7 +62,7 @@ const Dashboard: FC<
             <div
               className={styles.outputPlaceholder}
               dangerouslySetInnerHTML={{
-                __html: aiResponse,
+                __html: sanitize(aiResponse),
               }}
             />
             <TypeAnimation
@@ -84,8 +85,9 @@ const Dashboard: FC<
           })
           .map((widget) => (
             <DashboardWidget
-              {...widget}
-              query={queries[widget?.visualization?.query?.id]}
+              data={widget}
+              params={params}
+              queryResponse={queriesResponse[widget?.visualization?.query?.id]}
               key={widget.id}
             />
           ))}

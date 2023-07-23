@@ -14,7 +14,8 @@
   color: var(--color-tooltip-text);
   margin: 0;
   pointer-events: none;
-  max-width: clamp(320px, max-content, calc(100vw - 16px));
+  width: max-content;
+  max-width: clamp(320px, calc(100vw - 16px), 400px);
   word-wrap: break-word;
 
   &[class*='styles-module_show'] {

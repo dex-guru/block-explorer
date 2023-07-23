@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 152 111">
+    <path fill="#5A92E4" d="M32 61h24v32a4 4 0 0 1-4 4H36a4 4 0 0 1-4-4V61Z" />
+    <path fill="#6700E9" d="M32 42h24v19H32V42Z" />
+    <path fill="#78DDBF" d="M32 29a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v13H32V29Z" />
+    <path fill="#5A92E4" d="M64 44h24v49a4 4 0 0 1-4 4H68a4 4 0 0 1-4-4V44Z" />
+    <path fill="#6700E9" d="M64 31h24v13H64V31Z" />
+    <path fill="#78DDBF" d="M64 4a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v27H64V4Z" />
+    <path fill="#5A92E4" d="M96 83h24v10a4 4 0 0 1-4 4h-16a4 4 0 0 1-4-4V83Z" />
+    <path fill="#6700E9" d="M96 78h24v5H96v-5Z" />
+    <path fill="#78DDBF" d="M96 68a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v10H96V68Z" />
+    <path fill="#5A92E4" d="M128 75h24v18a4 4 0 0 1-4 4h-16a4 4 0 0 1-4-4V75Z" />
+    <path fill="#6700E9" d="M128 60h24v15h-24V60Z" />
+    <path fill="#78DDBF" d="M128 32a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v28h-24V32Z" />
+    <path fill="#5A92E4" d="M0 71h24v22a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V71Z" />
+    <path fill="#6700E9" d="M0 49h24v22H0V49Z" />
+    <path fill="#78DDBF" d="M0 40a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v9H0v-9Z" />
+    <path fill="#3E4854"
+        d="M70 108a3 3 0 0 1 3-3h6a3 3 0 1 1 0 6h-6a3 3 0 0 1-3-3Zm-32 0a3 3 0 0 1 3-3h6a3 3 0 1 1 0 6h-6a3 3 0 0 1-3-3Zm-32 0a3 3 0 0 1 3-3h6a3 3 0 1 1 0 6H9a3 3 0 0 1-3-3Zm96 0a3 3 0 0 1 3-3h6a3 3 0 1 1 0 6h-6a3 3 0 0 1-3-3Zm32 0a3 3 0 0 1 3-3h6a3 3 0 1 1 0 6h-6a3 3 0 0 1-3-3Z" />
+</svg>

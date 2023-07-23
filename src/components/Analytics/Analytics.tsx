@@ -65,7 +65,9 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
     return {
       title: dashboard.name,
       value: dashboard.id,
-      content: <Dashboard {...dashboard} queries={queries} />,
+      content: (
+        <Dashboard data={dashboard} queriesResponse={queries} params={params} />
+      ),
     }
   })
 

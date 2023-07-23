@@ -605,6 +605,7 @@ const ContractView: FC<IContractViewProps> = ({
                         content: (
                           <Suspense fallback={<LoadingCard />}>
                             <Analytics
+                              chainConfig={chain.config}
                               tag={
                                 type === 'token'
                                   ? 'Token Contract'

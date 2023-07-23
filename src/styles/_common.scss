@@ -1,10 +1,13 @@
 .icon {
   vertical-align: middle;
-  display: inline-flex;
   gap: 4px;
   align-items: center;
   justify-content: center;
   speak: never;
+
+  &:not(svg) {
+    display: inline-flex;
+  }
 
   img,
   svg {

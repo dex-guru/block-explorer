@@ -59,6 +59,7 @@
   }
 }
 
+.switch,
 .inner {
   --color-tab-border: transparent;
   --color-tab-hover-border: transparent;
@@ -75,4 +76,9 @@
   --tab-radius: var(--radii-sm);
 
   --tabs-gap: 0;
+}
+
+.switch {
+  font-size: 12px;
+  --tab-height: 24px;
 }

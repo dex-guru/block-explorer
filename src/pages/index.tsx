@@ -220,7 +220,7 @@ const Index: NextPage<IndexProps> = (props) => {
                     { title: 'EVM', value: 'evm' },
                     { title: 'Cosmos', value: 'cosmos' },
                   ]}
-                  className={styles.tabsInner}
+                  className={styles.switch}
                   value={isCosmos ? 'cosmos' : 'evm'}
                   onChange={(value) => {
                     setIsCosmos(value === 'cosmos')

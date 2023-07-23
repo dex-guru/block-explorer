@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import {
   Card,
@@ -16,16 +17,18 @@ import {
 import { Value } from '@/components'
 import { Tab } from '@/components/Tabs'
 import IconRedash from '@/images/redash.svg'
+import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
 import ImageLine from '@/images/redash/line.svg'
 import ImagePie from '@/images/redash/pie.svg'
 import ImageTable from '@/images/redash/table.svg'
+import ImageText from '@/images/redash/text.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { getRedashDashboardsAll } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
-import { checkChainFeature } from '@/lib/utils'
+import { checkChainFeature, getSlug } from '@/lib/utils'
 import styles from './Charts.module.scss'
 
 const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
@@ -37,6 +40,10 @@ interface ChartsPageProps {
 }
 
 const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
+  const router = useRouter()
+  const pathname = router.asPath.split('?')[0]
+  const { tab } = router.query
+
   const pageTitle = `${chainConfig.name} Charts & Statistics`
 
   const activeDashboards =
@@ -54,13 +61,17 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   const tabs: Tab<string>[] = tagsSet
     .filter((tag) => !['Token Contract', 'Smart Contract', 'EOA'].includes(tag))
     .map((tag) => {
+      const slug = getSlug(tag)
       return {
         title: tag,
-        value: tag,
+        value: slug,
+        to: { pathname, query: { tab: slug } },
       }
     })
 
-  const [currentTab, setCurrentTab] = useState(tabs[0] ? tabs[0].value : '')
+  const [currentTab, setCurrentTab] = useState(
+    tab || tabs[0] ? tabs[0].value : ''
+  )
 
   if (!checkChainFeature(chainConfig, 'charts')) {
     return null
@@ -78,23 +89,33 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     return (
       <div className={styles.illustration}>
         {dashboard.visualization_types.map((viz, idx) => {
-          const [type, position] = Object.entries(viz)[0]
+          const [type, options] = Object.entries(viz)[0]
 
           let TypeImage
 
-          switch (type.toLowerCase()) {
+          const exactType = (options?.globalSeriesType || type).toLowerCase()
+
+          switch (exactType) {
             case 'counter':
               TypeImage = ImageCounter
               break
             case 'chart':
             case 'line':
+            case 'area':
               TypeImage = ImageLine
+              break
+            case 'column':
+            case 'bar':
+              TypeImage = ImageBar
               break
             case 'pie':
               TypeImage = ImagePie
               break
             case 'table':
               TypeImage = ImageTable
+              break
+            case 'text':
+              TypeImage = ImageText
               break
             default:
               TypeImage = IconQuestion
@@ -105,8 +126,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               className={styles.illustrationBlock}
               key={idx}
               style={{
-                gridColumn: `${position.col + 1} / span ${position.sizeX}`,
-                gridRow: `${position.row + 1} / span ${position.sizeY}`,
+                gridColumn: `${options.col + 1} / span ${options.sizeX}`,
+                gridRow: `${options.row + 1} / span ${options.sizeY}`,
               }}
             >
               <span className={styles.illustrationType}>
@@ -176,6 +197,11 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     )
   }
 
+  const currentTabTag =
+    tabs.find((tab) => {
+      return tab.value === (currentTab || '')
+    })?.title || ''
+
   return (
     <>
       <Head>
@@ -195,7 +221,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             <div className={styles.dashboards}>
               <ul className={styles.list}>
                 {activeDashboards
-                  .filter((dashboard) => dashboard.tags.includes(currentTab))
+                  .filter((dashboard) => dashboard.tags.includes(currentTabTag))
                   .map((dashboard) => (
                     <li className={styles.item} key={dashboard.id}>
                       {renderDashboardCard(dashboard)}
