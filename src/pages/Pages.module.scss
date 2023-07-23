@@ -9,6 +9,11 @@
   height: 4px !important;
 }
 
+.csrChart {
+  flex: 0 0 auto;
+  min-height: clamp(240px, 50vh, 800px);
+}
+
 .muted {
   composes: muted from '../styles/_common.scss';
 }
