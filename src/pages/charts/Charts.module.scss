@@ -20,6 +20,8 @@
 .dashboard {
   min-height: 100%;
   overflow: hidden;
+  display: flex;
+  flex-flow: column;
 
   color: var(--color-accent);
 
@@ -30,6 +32,10 @@
       color: var(--color-accent);
     }
   }
+}
+
+.card {
+  flex: 1 0 auto;
 }
 
 .illustration {
