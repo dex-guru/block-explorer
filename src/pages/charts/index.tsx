@@ -21,6 +21,7 @@ import ImageTable from '@/images/redash/table.svg'
 import ImageText from '@/images/redash/text.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
+import { getDate } from '@/lib/dates'
 import { getLogger } from '@/lib/logger'
 import { getRedashDashboardsAll } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
@@ -151,6 +152,10 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
 
           <div className={styles.dashboardAuthor}>
             <Image
+              data-tooltip-id="app-tooltip"
+              data-tooltip-content={`${dashboard.user.name} on ${getDate(
+                dashboard.created_at
+              )} UTC`}
               src={dashboard.user.profile_image_url}
               className={styles.dashboardAvatar}
               alt={dashboard.user.name}
