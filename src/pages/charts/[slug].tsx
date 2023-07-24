@@ -1,8 +1,10 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { DetailsView, Empty, IconSearch, Page } from '@/components'
 import Dashboard from '@/components/Dashboard/Dashboard'
+import { IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -35,13 +37,11 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
       </Head>
       <Page chainConfig={chainConfig}>
         {!dashboard && (
-          <Empty icon={<IconSearch />} title="No dashboard  was found" />
+          <StateView icon={<IconSearch />} title="No dashboard  was found" />
         )}
 
         {!!dashboard && (
-          <DetailsView title={dashboard.name}>
-            <Dashboard data={dashboard} queriesResponse={queries} />
-          </DetailsView>
+          <Dashboard data={dashboard} queriesResponse={queries} />
         )}
       </Page>
     </>

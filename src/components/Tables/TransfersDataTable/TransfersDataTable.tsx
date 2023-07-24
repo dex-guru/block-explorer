@@ -1,10 +1,9 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
-import Error from '@/components/Error'
-import Loading from '@/components/Loading'
+import { IconNoData } from '@/components/Icons'
+import StateView from '@/components/StateView'
 import { transfersColumns } from '@/components/Table/columns/transfersColumns'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
@@ -59,7 +58,8 @@ export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
 
   if (isMount && !data && !loading) {
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving transfers"
         subtitle={subtitle}
@@ -74,14 +74,6 @@ export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
           },
         ]}
       />
-    )
-  }
-
-  if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
     )
   }
 

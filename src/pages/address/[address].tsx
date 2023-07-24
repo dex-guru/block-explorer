@@ -8,7 +8,8 @@ import {
   ChainStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import { ContractView, AddressView } from '@/components'
+import AddressView from '@/components/AddressView'
+import ContractView from '@/components/ContractView'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'

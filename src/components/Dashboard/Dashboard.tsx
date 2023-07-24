@@ -1,8 +1,12 @@
 import { FC, useEffect, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
-import { Card, Message } from '..'
+import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
+import DetailsView from '../DetailsView'
 import DashboardWidget from './DashboardWidget'
+import Card from '@/components/Card'
+import Message from '@/components/Message'
+import IconRedash from '@/images/redash.svg'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
@@ -10,7 +14,7 @@ const Dashboard: FC<{
   data: TRedashDashboard
   queriesResponse: Record<number, TRedashQueryResponse>
   params?: Record<string, unknown>
-}> = ({ data: { slug, widgets }, queriesResponse, params }) => {
+}> = ({ data: { id, name, slug, widgets }, queriesResponse, params }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [aiResponse, setAiResponse] = useState<string | null>(null)
@@ -44,7 +48,24 @@ const Dashboard: FC<{
   }, [slug, isMounted])
 
   return (
-    <div className={styles.container}>
+    <DetailsView
+      title={name}
+      header={
+        <Link
+          className={styles.redash}
+          data-tooltip-id="app-tooltip"
+          data-tooltip-content={`Open ${name} in Redash`}
+          target="_blank"
+          rel="noreferrer noopener"
+          href={`${
+            process.env.NEXT_PUBLIC_REDASH_API_URL ||
+            'https://redash-demo.dex.guru'
+          }/dashboards/${id}-${slug}`}
+        >
+          <IconRedash className={styles.redashIcon} />
+        </Link>
+      }
+    >
       {isLoading && (
         <Message
           text="🤔 DexGuruGPT takes ~30 sec to analyze this dashboard data"
@@ -92,7 +113,7 @@ const Dashboard: FC<{
             />
           ))}
       </div>
-    </div>
+    </DetailsView>
   )
 }
 

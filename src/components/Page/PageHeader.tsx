@@ -1,16 +1,16 @@
 import { FC, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import clsx from 'clsx'
-import Logo from '../Logo'
-import NetworkSelect from '../NetworkSelect'
-import Search from '../Search'
 import InfoBlock from './InfoBlock'
 import PageMenu, { PageMenuMainLink } from './PageMenu'
 import { PageHeaderProps } from './types'
+import Logo from '@/components/Logo'
+import NetworkSelect from '@/components/NetworkSelect'
+import Search from '@/components/Search'
 import { checkChainFeature } from '@/lib/utils'
 import styles from './PageHeader.module.scss'
 
-const ThemeToggle = dynamic(() => import('../ThemeToggle'), {
+const ThemeToggle = dynamic(() => import('@/components/ThemeToggle'), {
   ssr: false,
 })
 

@@ -1,7 +1,3 @@
-.error {
-  composes: error from '../../Empty/Empty.module.scss';
-}
-
 .retry {
   composes: lg from '../../Button/Button.module.scss';
   composes: action from '../../Button/Button.module.scss';

@@ -1,14 +1,17 @@
 import { FC, useEffect, useState } from 'react'
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { useLazyQuery } from '@apollo/client'
-import { LoadingCard } from '../Loading'
-import Trace from '../Trace'
 import {
   ChainConfigModel,
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Empty, Error, TabPanel } from '@/components'
+import Card from '@/components/Card'
+import { IconNoData } from '@/components/Icons'
+import { LoadingCard } from '@/components/Loading'
+import StateView from '@/components/StateView'
+import TabPanel from '@/components/TabPanel'
+import Trace from '@/components/Trace'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 
@@ -32,9 +35,10 @@ const TxTrace: FC<{
     return <LoadingCard />
   }
 
-  const renderEmpty = () => <Empty title="This transaction left no trace" />
+  const renderEmpty = () => <StateView title="This transaction left no trace" />
   const renderError = () => (
-    <Error
+    <StateView
+      icon={<IconNoData className={styles.icon} />}
       className={styles.error}
       title="Error while receiving trace info"
       subtitle={`for ${hash}`}

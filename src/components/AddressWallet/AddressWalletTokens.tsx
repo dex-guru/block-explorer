@@ -4,14 +4,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
-import { AddressValues } from '../Address/helpers'
-import Loading from '../Loading'
-import OutsideClicker from '../OutsideClicker'
-import Tile from '../Tile'
-import Value from '../Value'
 import { AddressWalletTokensProps } from './types'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
-import IconNoImage from '@/images/icons/question.svg'
+import { AddressValues } from '@/components/Address/helpers'
+import { IconNoIcon } from '@/components/Icons'
+import Loading from '@/components/Loading'
+import OutsideClicker from '@/components/OutsideClicker'
+import Tile from '@/components/Tile'
+import Value from '@/components/Value'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
   financialFormat,
@@ -57,7 +57,7 @@ const AddressWalletTokens: FC<AddressWalletTokensProps> = ({
           className={styles.image}
         />
       ) : (
-        <IconNoImage className={styles.noimage} />
+        <IconNoIcon className={styles.noimage} />
       )
 
       return (

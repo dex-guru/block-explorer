@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import { DEFAULT_PER_PAGE } from '../Pagination/Pagination'
+import { DEFAULT_PER_PAGE } from '@/components/Pagination/Pagination'
 import { useIsMount } from '@/hooks'
 import styles from './PerPageSelector.module.scss'
 

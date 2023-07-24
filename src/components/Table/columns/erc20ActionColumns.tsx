@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address, Label } from '@/components'
+import Address from '@/components/Address'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import { financialFormat } from '@/lib/utils'

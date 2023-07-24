@@ -1,7 +1,10 @@
 import { CSSProperties, FC } from 'react'
-import { CommonChart, Loading, Message, PieChart } from '..'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
+import CommonChart from '@/components/CommonChart'
+import Loading from '@/components/Loading'
+import Message from '@/components/Message'
+import PieChart from '@/components/PieChart'
 import {
   TRedashQueryResultData,
   TRedashVisualization,
@@ -88,11 +91,15 @@ const DashboardWidgetChart: FC<{
     const dataset = columnMapping.y.map((col, idx) => {
       const entity = entities[col]
 
+      const entityTitle = visualization.options?.seriesOptions
+        ? visualization.options?.seriesOptions[entity?.name]?.name
+        : entity?.friendly_name || entity?.name
+
       return {
         id: col,
         data: data?.rows || [],
         color: uniqolor(`${idx}-${col}`).color,
-        name: entity?.friendly_name || entity?.name,
+        name: entityTitle,
         key: entity?.name,
         className: `has-color ${entity?.name}`,
       }

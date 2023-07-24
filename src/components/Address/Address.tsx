@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import Copy from '../Copy'
 import { AddressValues } from './helpers'
 import { AddressProps } from './types'
+import Copy from '@/components/Copy'
 import styles from './Address.module.scss'
 
 const Address: FC<AddressProps> = ({

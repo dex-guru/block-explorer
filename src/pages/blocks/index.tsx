@@ -8,9 +8,12 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { DetailsView, Page, Summary, Value } from '@/components'
 import DataTable from '@/components/DataTable'
+import DetailsView from '@/components/DetailsView'
+import Page from '@/components/Page'
+import Summary from '@/components/Summary'
 import { blocksColumns } from '@/components/Table/columns'
+import Value from '@/components/Value'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS } from '@/lib/apollo/queries'

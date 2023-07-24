@@ -6,8 +6,10 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Empty, Error, IconSearch, Page } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import { IconNoData, IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'
@@ -43,10 +45,12 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
       </Head>
 
       <Page chainConfig={chainConfig}>
-        {!isValidBlockNumber(block) && <Error title="This is not a block" />}
+        {!isValidBlockNumber(block) && (
+          <StateView icon={<IconNoData />} title="This is not a block" />
+        )}
 
         {!data?.number && isValidBlockNumber(block) && (
-          <Empty icon={<IconSearch />} title="No block  was found" />
+          <StateView icon={<IconSearch />} title="No block  was found" />
         )}
 
         {!!data?.number && (

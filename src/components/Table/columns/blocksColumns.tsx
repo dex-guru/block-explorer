@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import styles from '../Table.module.scss'
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Address, TimeAgo, Value } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import TimeAgo from '@/components/TimeAgo'
 import TooltipAnchor from '@/components/TooltipAnchor'
+import Value from '@/components/Value'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
@@ -17,7 +19,9 @@ export const blocksColumns: (
     accessor: 'number',
     title: 'Block',
     modifier: 'block-number',
-    render: (data) => <Address address={`${data.number}`} type="block" />,
+    render: (data) => (
+      <Address address={`${data.number}`} type="block" isCopy />
+    ),
   },
   {
     accessor: 'timestamp',

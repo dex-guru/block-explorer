@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import styles from '../../../pages/Pages.module.scss'
 import { BlockModel } from '@/__generated__/resolvers-types'
-import { Address, IconBlock, Label, Tile, TimeAgo } from '@/components'
+import Address from '@/components/Address'
+import { IconBlock } from '@/components/Icons'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import TimeAgo from '@/components/TimeAgo'
 import { financialFormat } from '@/lib/utils'
 
 export type BlockModelWithTimeDiff = BlockModel & { timeDiff: number }

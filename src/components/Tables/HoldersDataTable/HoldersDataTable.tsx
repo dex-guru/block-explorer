@@ -5,9 +5,9 @@ import {
   TokenBalanceModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Error } from '@/components'
 import DataTable from '@/components/DataTable'
-import { LoadingCard } from '@/components/Loading'
+import { IconNoData } from '@/components/Icons'
+import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_HOLDERS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -64,7 +64,8 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
     const subtitle = address ? `for ${address}` : undefined
 
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving holders"
         subtitle={subtitle}
@@ -80,10 +81,6 @@ export const HoldersDataTable: FC<IHoldersDataTableProps> = ({ address }) => {
         ]}
       />
     )
-  }
-
-  if (!previousData && loading) {
-    return <LoadingCard />
   }
 
   const holdersDisplay = displayData?.balances?.filter(

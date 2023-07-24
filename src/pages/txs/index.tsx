@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {
@@ -7,17 +8,15 @@ import {
   ChainStatsModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Delta,
-  DetailsView,
-  Page,
-  Summary,
-  TabPanel,
-  Value,
-} from '@/components'
+import Delta from '@/components/Delta'
+import DetailsView from '@/components/DetailsView'
 import { LoadingCard } from '@/components/Loading'
+import Page from '@/components/Page'
+import Summary from '@/components/Summary'
+import TabPanel from '@/components/TabPanel'
 import { Tab } from '@/components/Tabs'
 import TooltipAnchor from '@/components/TooltipAnchor'
+import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -26,11 +25,11 @@ import {
   financialFormatLowValueHighPrecision,
 } from '@/lib/utils'
 
-const TxsDataTable = lazy(() => import('../../components/Tables/TxsDataTable/'))
-const Erc20DataTable = lazy(
-  () => import('../../components/Tables/Erc20DataTable/')
+const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
+const Erc20DataTable = dynamic(
+  () => import('@/components/Tables/Erc20DataTable/')
 )
-const NftDataTable = lazy(() => import('../../components/Tables/NftDataTable'))
+const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 
 interface ITxsProps {
   transactionStats: TransactionStatsModel
@@ -68,21 +67,13 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         title: 'Token TXs (ERC-20)',
         value: 'tokentxns',
         to: { pathname, query: { tab: 'tokentxns' } },
-        content: (
-          <Suspense fallback={<LoadingCard />}>
-            <Erc20DataTable />
-          </Suspense>
-        ),
+        content: <Erc20DataTable />,
       },
       {
         title: 'NFT Token TXs',
         value: 'nfttxns',
         to: { pathname, query: { tab: 'nfttxns' } },
-        content: (
-          <Suspense fallback={<LoadingCard />}>
-            <NftDataTable />
-          </Suspense>
-        ),
+        content: <NftDataTable />,
       }
     )
   }

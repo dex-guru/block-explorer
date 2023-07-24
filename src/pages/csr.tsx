@@ -4,8 +4,11 @@ import {
   ChainConfigModel,
   CsrStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Grid, CommonChart, Page, Value } from '@/components'
-import { CommonChartDataset } from '@/components/CommonChart'
+import Card from '@/components/Card'
+import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
+import Grid from '@/components/Grid'
+import Page from '@/components/Page'
+import Value from '@/components/Value'
 import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'

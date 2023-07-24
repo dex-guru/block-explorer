@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react'
-import { Loading } from '..'
 import clsx from 'clsx'
+import Loading from '@/components/Loading'
 import styles from './Dashboard.module.scss'
 
 const DashboardWidgetCounter: FC<{

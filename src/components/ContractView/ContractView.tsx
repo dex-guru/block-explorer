@@ -1,4 +1,4 @@
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -12,68 +12,58 @@ import { Abi, AbiFunction } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import pageStyles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
-import AddressWallet from '../AddressWallet'
-import CommonChart, { CommonChartDataset } from '../CommonChart'
-import { LoadingCard } from '../Loading'
-import { TransfersDataTable } from '../Tables'
-import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
+import Files from './Files'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
+import Address from '@/components/Address'
+import { AddressValues } from '@/components/Address/helpers'
+import AddressWallet from '@/components/AddressWallet'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import Comments from '@/components/Comments'
+import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
+import ConnectButton from '@/components/ConnectButton'
+import DateTime from '@/components/DateTime'
+import DetailsView from '@/components/DetailsView'
+import Grid from '@/components/Grid'
 import {
-  Address,
-  Avatar,
-  DetailsView,
-  Page,
-  Properties,
-  TabPanel,
-  Files,
-  Grid,
-  ConnectButton,
-  Card,
-  Value,
-  DateTime,
-  Comments,
-  Separated,
-  Message,
   IconContract,
   IconNoIcon,
   IconShield,
   IconVerify,
-} from '@/components'
+} from '@/components/Icons'
+import Message from '@/components/Message'
+import Page from '@/components/Page'
+import Properties from '@/components/Properties'
+import Separated from '@/components/Separated'
+import TabPanel from '@/components/TabPanel'
+import { TransfersDataTable } from '@/components/Tables'
+import Value from '@/components/Value'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
+import tabsStyles from '@/components/Tabs/Tabs.module.scss'
+import pageStyles from '@/pages/Pages.module.scss'
 
-const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
-  ssr: false,
-})
-const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'), {
-  ssr: false,
-})
-const DexTradesDataTable = dynamic(
-  () => import('../Tables/DexTradesDataTable/'),
-  {
-    ssr: false,
-  }
+const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
+const HoldersDataTable = dynamic(
+  () => import('@/components/Tables/HoldersDataTable/')
 )
-const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
-  ssr: false,
-})
-const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
-  ssr: false,
-})
-const Analytics = dynamic(() => import('../Analytics'), {
-  ssr: false,
-})
+const DexTradesDataTable = dynamic(
+  () => import('@/components/Tables/DexTradesDataTable/')
+)
+const Erc20DataTable = dynamic(
+  () => import('@/components/Tables/Erc20DataTable')
+)
+const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
+const Analytics = dynamic(() => import('@/components/Analytics'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -519,31 +509,19 @@ const ContractView: FC<IContractViewProps> = ({
                         title: 'Transfers',
                         value: '',
                         to: pathname,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TransfersDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <TransfersDataTable address={address} />,
                       },
                       {
                         title: 'Holders',
                         value: 'balances',
                         to: { pathname, query: { tab: 'balances' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <HoldersDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <HoldersDataTable address={address} />,
                       },
                       {
                         title: 'DEX Trades',
                         value: 'trades',
                         to: { pathname, query: { tab: 'trades' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <DexTradesDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <DexTradesDataTable address={address} />,
                       },
                     ]
                   : []),
@@ -555,31 +533,19 @@ const ContractView: FC<IContractViewProps> = ({
                         tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
                         value: '',
                         to: pathname,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TxsDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <TxsDataTable address={address} />,
                       },
                       {
                         title: 'Token TXs (ERC-20)',
                         value: 'tokentxns',
                         to: { pathname, query: { tab: 'tokentxns' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <Erc20DataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <Erc20DataTable address={address} />,
                       },
                       {
                         title: 'NFT Token TXs',
                         value: 'nfttxns',
                         to: { pathname, query: { tab: 'nfttxns' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <NftDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <NftDataTable address={address} />,
                       },
                     ]
                   : []),
@@ -603,25 +569,23 @@ const ContractView: FC<IContractViewProps> = ({
                         value: 'analytics',
                         to: { pathname, query: { tab: 'analytics' } },
                         content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <Analytics
-                              chainConfig={chain.config}
-                              tag={
-                                type === 'token'
-                                  ? 'Token Contract'
-                                  : 'Smart Contract'
-                              }
-                              params={{
-                                chain_id: chain.config.chainId,
-                                ...(type === 'token'
-                                  ? {
-                                      token_address_requested:
-                                        address.toLowerCase(),
-                                    }
-                                  : { address: address.toLowerCase() }),
-                              }}
-                            />
-                          </Suspense>
+                          <Analytics
+                            chainConfig={chain.config}
+                            tag={
+                              type === 'token'
+                                ? 'Token Contract'
+                                : 'Smart Contract'
+                            }
+                            params={{
+                              chain_id: chain.config.chainId,
+                              ...(type === 'token'
+                                ? {
+                                    token_address_requested:
+                                      address.toLowerCase(),
+                                  }
+                                : { address: address.toLowerCase() }),
+                            }}
+                          />
                         ),
                       },
                     ]
@@ -631,14 +595,12 @@ const ContractView: FC<IContractViewProps> = ({
                   value: 'comments',
                   to: { pathname, query: { tab: 'comments' } },
                   content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>
-                        <Comments
-                          id={`address/${address}`}
-                          title={`Contract ${address}`}
-                        />
-                      </Card>
-                    </Suspense>
+                    <Card>
+                      <Comments
+                        id={`address/${address}`}
+                        title={`Contract ${address}`}
+                      />
+                    </Card>
                   ),
                 },
               ]}

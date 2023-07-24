@@ -1,5 +1,5 @@
-import Label from './Value'
+import Value from './Value'
 import { ValueProps } from './types'
 
 export type { ValueProps }
-export default Label
+export default Value

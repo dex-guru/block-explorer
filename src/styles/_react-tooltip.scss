@@ -1,6 +1,4 @@
 .react-tooltip {
-  position: fixed;
-  opacity: 0;
   border-radius: 8px;
   padding: 8px 12px;
   font-family: 'IBM Plex Sans Condensed', sans-serif;
@@ -17,11 +15,6 @@
   width: max-content;
   max-width: clamp(320px, calc(100vw - 16px), 400px);
   word-wrap: break-word;
-
-  &[class*='styles-module_show'] {
-    transition-delay: 0s;
-    opacity: 1 !important;
-  }
 
   &-arrow {
     position: absolute;

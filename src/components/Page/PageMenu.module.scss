@@ -11,14 +11,14 @@
 
   display: flex;
   flex-flow: row;
-  gap: 8px;
   justify-content: flex-end;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1260px) {
     background: var(--color-bg);
     justify-content: flex-start;
     align-items: stretch;
     flex-flow: column;
+    gap: 8px;
     gap: 16px;
     flex: 1 0 0;
     overflow: auto;
@@ -34,7 +34,7 @@
   margin: 0;
   padding: 0;
 
-  @media (min-width: 1200.1px) {
+  @media (min-width: 1260.1px) {
     position: relative;
   }
 }
@@ -72,7 +72,7 @@
   top: 12px;
   pointer-events: all;
 
-  @media (min-width: 1200.1px) {
+  @media (min-width: 1260.1px) {
     display: none !important;
   }
 }
@@ -81,7 +81,7 @@
 }
 
 .opened {
-  @media (max-width: 1200px) {
+  @media (max-width: 1260px) {
     background: var(--color-bg);
     pointer-events: all !important;
   }
@@ -97,7 +97,7 @@
   opacity: 0;
   visibility: hidden;
 
-  @media (min-width: 1200.1px) {
+  @media (min-width: 1260.1px) {
     animation: dropdown 0.25s ease 0.15s forwards;
     position: absolute;
     min-width: max(100%, 180px);
@@ -107,7 +107,7 @@
     white-space: nowrap;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1260px) {
     opacity: 1;
     visibility: visible;
   }
@@ -123,7 +123,7 @@
     padding: 8px;
     border-radius: var(--radii-lg);
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1260px) {
       padding-top: 48px;
       margin-top: -40px;
     }
@@ -157,7 +157,7 @@
   }
 }
 
-@media (pointer: fine) and (min-width: 1200.1px) {
+@media (pointer: fine) and (min-width: 1260.1px) {
   .link:hover > .arrow {
     transform: rotate(180deg);
   }
@@ -166,7 +166,7 @@
   }
 }
 
-@media (pointer: fine) and (max-width: 1200px) {
+@media (pointer: fine) and (max-width: 1260px) {
   .link:focus > .arrow {
     transform: rotate(180deg);
   }

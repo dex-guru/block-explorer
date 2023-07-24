@@ -1,22 +1,18 @@
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import clsx from 'clsx'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import {
-  Card,
-  DetailsView,
-  IconQuestion,
-  IconWatch,
-  Page,
-  TabPanel,
-} from '@/components'
-import { Value } from '@/components'
+import DetailsView from '@/components/DetailsView'
+import Heading from '@/components/Heading'
+import { IconQuestion } from '@/components/Icons'
+import Page from '@/components/Page'
+import TabPanel from '@/components/TabPanel'
 import { Tab } from '@/components/Tabs'
-import IconRedash from '@/images/redash.svg'
+import ImageArea from '@/images/redash/area.svg'
 import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
 import ImageLine from '@/images/redash/line.svg'
@@ -31,9 +27,6 @@ import { TRedashDashboard } from '@/lib/redash/types'
 import { checkChainFeature, getSlug } from '@/lib/utils'
 import styles from './Charts.module.scss'
 
-const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
-  ssr: false,
-})
 interface ChartsPageProps {
   chainConfig: ChainConfigModel
   dashboards: TRedashDashboard[]
@@ -91,9 +84,24 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
         {dashboard.visualization_types.map((viz, idx) => {
           const [type, options] = Object.entries(viz)[0]
 
-          let TypeImage
-
           const exactType = (options?.globalSeriesType || type).toLowerCase()
+
+          const typeProps = {
+            className: clsx(
+              styles.illustrationBlock,
+              styles[`illustrationBlock-${exactType}`]
+            ),
+            style: {
+              gridColumn: `${options.col + 1} / span ${options.sizeX}`,
+              gridRow: `${options.row + 1} / span ${options.sizeY}`,
+            },
+          }
+
+          if (exactType === 'text') {
+            return <div {...typeProps} key={idx} />
+          }
+
+          let TypeImage
 
           switch (exactType) {
             case 'counter':
@@ -101,8 +109,10 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               break
             case 'chart':
             case 'line':
-            case 'area':
               TypeImage = ImageLine
+              break
+            case 'area':
+              TypeImage = ImageArea
               break
             case 'column':
             case 'bar':
@@ -122,18 +132,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
           }
 
           return (
-            <div
-              className={styles.illustrationBlock}
-              key={idx}
-              style={{
-                gridColumn: `${options.col + 1} / span ${options.sizeX}`,
-                gridRow: `${options.row + 1} / span ${options.sizeY}`,
-              }}
-            >
-              <span className={styles.illustrationType}>
-                {type.toLowerCase()}
-              </span>
-              {<TypeImage className={styles.type} />}
+            <div {...typeProps} key={idx}>
+              <TypeImage className={styles.illustrationType} />
             </div>
           )
         })}
@@ -141,59 +141,28 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     )
   }
 
-  const renderDashboardCardFooter = (dashboard: TRedashDashboard) => {
-    return (
-      <div className={styles.meta}>
-        <Value
-          className={styles.created}
-          icon={<IconWatch />}
-          value={
-            <Suspense fallback={<>&nbsp;</>}>
-              <TimeAgo
-                timestamp={new Date(dashboard.created_at).getTime() / 1000}
-              />
-            </Suspense>
-          }
-        />
-        <Image
-          data-tooltip-content={dashboard.user.name}
-          data-tooltip-id="app-tooltip"
-          className={styles.user}
-          src={dashboard.user.profile_image_url}
-          alt={dashboard.user.name}
-          width={32}
-          height={32}
-        />
-      </div>
-    )
-  }
-
   const renderDashboardCard = (dashboard: TRedashDashboard) => {
     return (
-      <Card
-        className={styles.card}
-        title={<Link href={`/charts/${dashboard.slug}`}>{dashboard.name}</Link>}
-        header={
-          <Link
-            className={styles.redash}
-            data-tooltip-id="app-tooltip"
-            data-tooltip-content={`Open ${dashboard.name} in Redash`}
-            target="_blank"
-            rel="noreferrer noopener"
-            href={`${
-              process.env.NEXT_PUBLIC_REDASH_API_URL ||
-              'https://redash-demo.dex.guru'
-            }/dashboards/${dashboard.id}-${dashboard.slug}`}
-          >
-            <IconRedash className={styles.redashIcon} />
-          </Link>
-        }
-        footer={renderDashboardCardFooter(dashboard)}
-      >
-        <Link href={`/charts/${dashboard.slug}`}>
+      <Link href={`/charts/${dashboard.slug}`} className={styles.dashboard}>
+        <div className={styles.dashboardHeader}>
+          <Heading size="sm" className={styles.dashboardTitle}>
+            {dashboard.name}
+          </Heading>
+
+          <div className={styles.dashboardAuthor}>
+            <Image
+              src={dashboard.user.profile_image_url}
+              className={styles.dashboardAvatar}
+              alt={dashboard.user.name}
+              width={24}
+              height={24}
+            />
+          </div>
+        </div>
+        <div className={styles.dashboardBody}>
           {renderDashboardCardIllustration(dashboard)}
-        </Link>
-      </Card>
+        </div>
+      </Link>
     )
   }
 

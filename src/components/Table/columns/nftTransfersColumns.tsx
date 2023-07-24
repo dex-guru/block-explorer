@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
-import { Address } from '@/components'
+import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import { IColumn } from '@/components/Table/types'
 import { financialFormat } from '@/lib/utils'

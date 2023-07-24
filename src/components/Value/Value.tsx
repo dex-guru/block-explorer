@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import Delta from '../Delta'
 import { ValueProps } from './types'
+import Delta from '@/components/Delta'
 import styles from './Value.module.scss'
 
 const Value: FC<ValueProps> = ({

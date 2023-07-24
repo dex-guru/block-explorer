@@ -10,7 +10,11 @@ import {
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Grid, Page, Summary, Table, Value } from '@/components'
+import Card from '@/components/Card'
+import Grid from '@/components/Grid'
+import Page from '@/components/Page'
+import Summary from '@/components/Summary'
+import Table from '@/components/Table'
 import {
   BlockModelWithTimeDiff,
   lastBlocksColumns,
@@ -18,6 +22,7 @@ import {
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Tabs from '@/components/Tabs'
+import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,

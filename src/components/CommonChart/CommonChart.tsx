@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { CommonChartProps } from '.'
 import clsx from 'clsx'
 import {
   Brush,
@@ -15,14 +14,15 @@ import {
   ResponsiveContainer,
   LineChart,
 } from 'recharts'
-import Heading from '../Heading'
+import { CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
+import Heading from '@/components/Heading'
 import styles from './CommonChart.module.scss'
 
 const CommonChart: FC<CommonChartProps> = ({
   data,
   className,
-  type,
+  type = 'line',
   options,
 }) => {
   const chartData = generateCommonChartData(data, options.axis.x.dataKey)
@@ -122,7 +122,7 @@ const CommonChart: FC<CommonChartProps> = ({
         {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
-          type={options?.axis.x.type}
+          type={options?.axis.x.type || 'category'}
           domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
           className={clsx(

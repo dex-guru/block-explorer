@@ -4,7 +4,8 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { DetailsView, Page } from '@/components'
+import DetailsView from '@/components/DetailsView'
+import Page from '@/components/Page'
 import { Erc20DataTable } from '@/components/Tables'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
