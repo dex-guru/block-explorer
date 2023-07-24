@@ -237,3 +237,41 @@ export const DYNAMIC_DATE_RANGES: Record<
     },
   },
 }
+
+export const getDateTime = (
+  time: number | string | Date,
+  options: Intl.DateTimeFormatOptions = {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    weekday: 'short',
+    hour12: false,
+  }
+): string => {
+  const date = new Date(time)
+  return date.toLocaleString('en-GB', options)
+}
+
+export const getDate = (time: number | string | Date): string => {
+  return getDateTime(time, {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour12: false,
+  })
+}
+
+export const getTime = (time: number | string | Date): string => {
+  return getDateTime(time, {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+}

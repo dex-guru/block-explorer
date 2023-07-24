@@ -54,7 +54,7 @@ body {
   min-width: 320px;
   scroll-behavior: smooth;
 
-  .open-menu & {
+  &.open-menu {
     overflow: hidden;
   }
 }

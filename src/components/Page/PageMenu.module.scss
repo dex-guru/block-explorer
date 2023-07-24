@@ -170,7 +170,9 @@
   .link:focus > .arrow {
     transform: rotate(180deg);
   }
-  .link:focus + .submenu {
+
+  .link:focus + .submenu,
+  .submenu:hover {
     display: block;
   }
 }
