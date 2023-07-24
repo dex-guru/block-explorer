@@ -30,7 +30,7 @@ const PageMenu: FC<{
   }
 
   useEffect(() => {
-    document.body.classList[isOpen ? 'remove' : 'add']('open-menu')
+    document.body.classList[!isOpen ? 'remove' : 'add']('open-menu')
   }, [isOpen])
 
   const renderLink = (
