@@ -18,8 +18,11 @@ const DetailsView: FC<DetailsViewProps> = ({
   className,
   children,
   type,
+  header,
   chainConfig,
 }) => {
+  const isOpenWith = !!type && !!address && !!chainConfig
+
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
@@ -33,14 +36,22 @@ const DetailsView: FC<DetailsViewProps> = ({
           </>
         )}
         {!address && !!isVerified && <IconVerify className={styles.verified} />}
-        <div className={styles.tools}></div>
         {!!tag && (
           <Label className={styles.tag} tooltip={tagTooltip}>
             {tag}
           </Label>
         )}
-        {!!type && !!address && !!chainConfig && (
-          <OpenWith type={type} chainConfig={chainConfig} address={address} />
+        {(!!header || isOpenWith) && (
+          <div className={styles.tools}>
+            {header}
+            {isOpenWith && (
+              <OpenWith
+                type={type}
+                chainConfig={chainConfig}
+                address={address}
+              />
+            )}
+          </div>
         )}
       </div>
       <div className={styles.body}>{children}</div>

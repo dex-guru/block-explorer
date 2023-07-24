@@ -2,7 +2,6 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Dashboard from '@/components/Dashboard/Dashboard'
-import DetailsView from '@/components/DetailsView'
 import { IconSearch } from '@/components/Icons'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
@@ -42,9 +41,7 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
         )}
 
         {!!dashboard && (
-          <DetailsView title={dashboard.name}>
-            <Dashboard data={dashboard} queriesResponse={queries} />
-          </DetailsView>
+          <Dashboard data={dashboard} queriesResponse={queries} />
         )}
       </Page>
     </>

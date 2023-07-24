@@ -17,53 +17,17 @@
   composes: inner from '../../components/Tabs/Tabs.module.scss';
 }
 
-.meta {
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.user {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.redash {
-  composes: redash from '@/components/Dashboard/Dashboard.module.scss';
-
-  &Icon {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.card {
+.dashboard {
   min-height: 100%;
-  position: relative;
   overflow: hidden;
 
-  &:after {
-    content: '';
-    position: absolute;
-    z-index: 2;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 16px;
-    background: linear-gradient(
-      0deg,
-      var(--color-card-bg) 0%,
-      transparent 100%
-    );
-  }
+  color: var(--color-accent);
 
   &:hover {
-    .redash {
-      opacity: 1;
-      visibility: visible;
+    color: var(--color-accent-a);
+
+    .illustration {
+      color: var(--color-accent);
     }
   }
 }
@@ -76,22 +40,22 @@
   gap: 4px;
   max-height: 200px;
   overflow: hidden;
-  margin-bottom: -16px;
+  transition: 0.25s ease;
+  color: var(--color-bg-3);
+
+  [fill='gray'],
+  [fill='grey'] {
+    fill: var(--color-bg-3) !important;
+    opacity: 0.5;
+  }
 
   &Block {
-    position: relative;
-  }
+    max-width: unset;
+    max-height: unset;
+    min-height: 32px;
 
-  &Type {
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 12px;
+    &-text {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 110 31'%3E%3Crect width='48' height='8' fill='%232C353F' rx='4'/%3E%3Crect width='58' height='8' x='50' fill='%232C353F' rx='4'/%3E%3Crect width='66' height='8' y='16' fill='%232C353F' rx='4'/%3E%3Crect width='40' height='8' x='68' y='16' fill='%232C353F' rx='4'/%3E%3C/svg%3E");
+    }
   }
-}
-
-.type {
-  display: block;
-  width: 100%;
-  height: 100%;
 }

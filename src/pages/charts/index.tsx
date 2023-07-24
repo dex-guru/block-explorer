@@ -1,19 +1,17 @@
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import clsx from 'clsx'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Card from '@/components/Card'
 import DetailsView from '@/components/DetailsView'
-import { IconQuestion, IconWatch } from '@/components/Icons'
+import { IconQuestion } from '@/components/Icons'
 import Page from '@/components/Page'
 import TabPanel from '@/components/TabPanel'
 import { Tab } from '@/components/Tabs'
-import TimeAgo from '@/components/TimeAgo'
-import Value from '@/components/Value'
-import IconRedash from '@/images/redash.svg'
+import ImageArea from '@/images/redash/area.svg'
 import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
 import ImageLine from '@/images/redash/line.svg'
@@ -85,9 +83,24 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
         {dashboard.visualization_types.map((viz, idx) => {
           const [type, options] = Object.entries(viz)[0]
 
-          let TypeImage
-
           const exactType = (options?.globalSeriesType || type).toLowerCase()
+
+          const typeProps = {
+            className: clsx(
+              styles.illustrationBlock,
+              styles[`illustrationBlock-${exactType}`]
+            ),
+            style: {
+              gridColumn: `${options.col + 1} / span ${options.sizeX}`,
+              gridRow: `${options.row + 1} / span ${options.sizeY}`,
+            },
+          }
+
+          if (exactType === 'text') {
+            return <div {...typeProps} key={idx} />
+          }
+
+          let TypeImage
 
           switch (exactType) {
             case 'counter':
@@ -95,8 +108,10 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               break
             case 'chart':
             case 'line':
-            case 'area':
               TypeImage = ImageLine
+              break
+            case 'area':
+              TypeImage = ImageArea
               break
             case 'column':
             case 'bar':
@@ -115,79 +130,24 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               TypeImage = IconQuestion
           }
 
-          return (
-            <div
-              className={styles.illustrationBlock}
-              key={idx}
-              style={{
-                gridColumn: `${options.col + 1} / span ${options.sizeX}`,
-                gridRow: `${options.row + 1} / span ${options.sizeY}`,
-              }}
-            >
-              <span className={styles.illustrationType}>
-                {type.toLowerCase()}
-              </span>
-              {<TypeImage className={styles.type} />}
-            </div>
-          )
+          return <TypeImage {...typeProps} key={idx} />
         })}
-      </div>
-    )
-  }
-
-  const renderDashboardCardFooter = (dashboard: TRedashDashboard) => {
-    return (
-      <div className={styles.meta}>
-        <Value
-          className={styles.created}
-          icon={<IconWatch />}
-          value={
-            <Suspense fallback={<>&nbsp;</>}>
-              <TimeAgo
-                timestamp={new Date(dashboard.created_at).getTime() / 1000}
-              />
-            </Suspense>
-          }
-        />
-        <Image
-          data-tooltip-content={dashboard.user.name}
-          data-tooltip-id="app-tooltip"
-          className={styles.user}
-          src={dashboard.user.profile_image_url}
-          alt={dashboard.user.name}
-          width={32}
-          height={32}
-        />
       </div>
     )
   }
 
   const renderDashboardCard = (dashboard: TRedashDashboard) => {
     return (
-      <Card
-        className={styles.card}
-        title={<Link href={`/charts/${dashboard.slug}`}>{dashboard.name}</Link>}
-        header={
-          <Link
-            className={styles.redash}
-            data-tooltip-id="app-tooltip"
-            data-tooltip-content={`Open ${dashboard.name} in Redash`}
-            target="_blank"
-            rel="noreferrer noopener"
-            href={`${
-              process.env.NEXT_PUBLIC_REDASH_API_URL ||
-              'https://redash-demo.dex.guru'
-            }/dashboards/${dashboard.id}-${dashboard.slug}`}
-          >
-            <IconRedash className={styles.redashIcon} />
-          </Link>
-        }
-        footer={renderDashboardCardFooter(dashboard)}
-      >
-        <Link href={`/charts/${dashboard.slug}`}>
+      <Link href={`/charts/${dashboard.slug}`} className={styles.dashboard}>
+        <Card
+          className={styles.card}
+          title={
+            <Link href={`/charts/${dashboard.slug}`}>{dashboard.name}</Link>
+          }
+        >
           {renderDashboardCardIllustration(dashboard)}
-        </Link>
-      </Card>
+        </Card>
+      </Link>
     )
   }
 

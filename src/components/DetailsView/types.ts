@@ -9,6 +9,7 @@ export type DetailsViewProps = {
   icon?: ReactNode
   tag?: string
   tagTooltip?: string
+  header?: ReactNode
   children?: ReactNode | ReactNode[]
   className?: string
   type?: OpenWithType

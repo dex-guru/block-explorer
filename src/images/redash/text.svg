@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 219 24">
-    <path fill="#3E4854"
-        d="M0 4a4 4 0 0 1 4-4h98a4 4 0 0 1 0 8H4a4 4 0 0 1-4-4Zm0 16a4 4 0 0 1 4-4h118a4 4 0 0 1 0 8H4a4 4 0 0 1-4-4Z" />
-    <path fill="#12B886" d="M112 4a4 4 0 0 1 4-4h37a4 4 0 0 1 0 8h-37a4 4 0 0 1-4-4Z" />
-    <path fill="#3E4854" d="M163 4a4 4 0 0 1 4-4h48a4 4 0 0 1 0 8h-48a4 4 0 0 1-4-4Z" />
+<svg width="191" height="12" viewBox="0 0 191 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="72" height="12" rx="6" fill="grey" />
+    <rect x="74" width="29" height="12" rx="6" fill="grey" />
+    <rect x="105" width="86" height="12" rx="6" fill="grey" />
 </svg>
