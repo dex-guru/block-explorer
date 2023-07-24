@@ -63,7 +63,7 @@
     "@graphql-codegen/typescript": "3.0.4",
     "@graphql-codegen/typescript-resolvers": "3.2.1",
     "@next/bundle-analyzer": "^13.4.12",
-    "@svgr/webpack": "7.0.0",
+    "@svgr/webpack": "8.0.1",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "@types/bytes": "^3.1.1",
     "@types/lodash": "4.14.194",

@@ -17,15 +17,27 @@ const nextConfig = {
   },
   reactStrictMode: true,
   webpack: (config, { webpack, buildId }) => {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        test: /\.svg$/i,
+        type: 'asset',
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        resourceQuery: { not: /url/ }, // exclude if *.svg?url
+        use: ['@svgr/webpack'],
+      }
+    )
+
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.GIT_COMMIT': JSON.stringify(buildId),
       })
     )
+
     config.resolve.fallback = { fs: false, net: false, tls: false }
 
     return config

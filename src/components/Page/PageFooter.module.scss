@@ -62,6 +62,10 @@
     transform-origin: bottom center;
     animation: imgSwing 5s infinite alternate;
 
+    &::after {
+      content: none;
+    }
+
     @keyframes imgSwing {
       from {
         transform: rotate(-5deg);

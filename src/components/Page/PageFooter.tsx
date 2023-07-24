@@ -1,11 +1,11 @@
 import { FC } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import ImgBlockExplorer from '@/images/blockexplorer.svg'
-import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
 import styles from './PageFooter.module.scss'
 
@@ -24,7 +24,13 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
       </div>
       <div className={styles.body}>
         <div className={styles.about}>
-          <ImgFooter className={styles.aboutImg} />
+          <Image
+            src="/assets/images/mascot.svg"
+            className={styles.aboutImg}
+            alt="DexGuru"
+            width={0}
+            height={0}
+          />
           <div className={styles.text}>
             <div className={styles.powered}>
               <ImgBlockExplorer className={styles.logoExplorer} /> Block

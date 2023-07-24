@@ -169,6 +169,7 @@
 
 .switch {
   composes: switch from '../components/Tabs/Tabs.module.scss';
+  margin: -2px 0;
 }
 
 .addressWallet {

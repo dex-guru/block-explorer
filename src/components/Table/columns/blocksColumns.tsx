@@ -19,7 +19,9 @@ export const blocksColumns: (
     accessor: 'number',
     title: 'Block',
     modifier: 'block-number',
-    render: (data) => <Address address={`${data.number}`} type="block" />,
+    render: (data) => (
+      <Address address={`${data.number}`} type="block" isCopy />
+    ),
   },
   {
     accessor: 'timestamp',
