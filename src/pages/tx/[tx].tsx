@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
@@ -16,9 +17,11 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
-const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
-const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
-const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
+const TxOverview = dynamic(
+  () => import('../../components/TabContent/TxOverview')
+)
+const TxLogs = dynamic(() => import('../../components/TabContent/TxLogs'))
+const TxTrace = dynamic(() => import('../../components/TabContent/TxTrace'))
 
 export const MAX_EVENTS_PER_PAGE = 10
 

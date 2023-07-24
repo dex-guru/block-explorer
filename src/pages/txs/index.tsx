@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import {
@@ -26,11 +27,15 @@ import {
   financialFormatLowValueHighPrecision,
 } from '@/lib/utils'
 
-const TxsDataTable = lazy(() => import('../../components/Tables/TxsDataTable/'))
-const Erc20DataTable = lazy(
+const TxsDataTable = dynamic(
+  () => import('../../components/Tables/TxsDataTable/')
+)
+const Erc20DataTable = dynamic(
   () => import('../../components/Tables/Erc20DataTable/')
 )
-const NftDataTable = lazy(() => import('../../components/Tables/NftDataTable'))
+const NftDataTable = dynamic(
+  () => import('../../components/Tables/NftDataTable')
+)
 
 interface ITxsProps {
   transactionStats: TransactionStatsModel
@@ -68,21 +73,13 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         title: 'Token TXs (ERC-20)',
         value: 'tokentxns',
         to: { pathname, query: { tab: 'tokentxns' } },
-        content: (
-          <Suspense fallback={<LoadingCard />}>
-            <Erc20DataTable />
-          </Suspense>
-        ),
+        content: <Erc20DataTable />,
       },
       {
         title: 'NFT Token TXs',
         value: 'nfttxns',
         to: { pathname, query: { tab: 'nfttxns' } },
-        content: (
-          <Suspense fallback={<LoadingCard />}>
-            <NftDataTable />
-          </Suspense>
-        ),
+        content: <NftDataTable />,
       }
     )
   }

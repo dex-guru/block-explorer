@@ -62,6 +62,7 @@ import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 
 const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
+const Tooltip = dynamic(() => import('./Tooltip'), { ssr: false })
 
 export {
   Address,
@@ -130,5 +131,6 @@ export {
   IconSearch,
   TxOverview,
   TxLogs,
+  Tooltip,
   TxTrace,
 }

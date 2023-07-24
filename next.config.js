@@ -13,6 +13,8 @@ const nextConfig = {
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
     gTagManagerId: 'GTM-K8HGVLW',
+    REACT_TOOLTIP_DISABLE_CORE_STYLES: true,
+    REACT_TOOLTIP_DISABLE_BASE_STYLES: true,
   },
   reactStrictMode: true,
   webpack: (config, { webpack, buildId }) => {

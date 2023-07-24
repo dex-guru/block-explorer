@@ -1,11 +1,10 @@
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
 import styles from '../../pages/Pages.module.scss'
 import AddressWallet from '../AddressWallet'
-import { LoadingCard } from '../Loading'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -21,18 +20,10 @@ import {
 } from '@/components'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 
-const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
-  ssr: false,
-})
-const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
-  ssr: false,
-})
-const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
-  ssr: false,
-})
-const Analytics = dynamic(() => import('../Analytics'), {
-  ssr: false,
-})
+const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'))
+const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'))
+const NftDataTable = dynamic(() => import('../Tables/NftDataTable'))
+const Analytics = dynamic(() => import('../Analytics'))
 
 const AddressView: FC<IAddressViewProps> = ({
   address,
@@ -122,11 +113,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
                   value: '',
                   to: pathname,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxsDataTable address={address} />
-                    </Suspense>
-                  ),
+                  content: <TxsDataTable address={address} />,
                 },
 
                 {
@@ -134,21 +121,13 @@ const AddressView: FC<IAddressViewProps> = ({
                   tooltip: 'Transactions with ERC-20 tokens.',
                   value: 'tokentxns',
                   to: `${pathname}?tab=tokentxns`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Erc20DataTable address={address} isWalletAddress />
-                    </Suspense>
-                  ),
+                  content: <Erc20DataTable address={address} isWalletAddress />,
                 },
                 {
                   title: 'NFT Token TXs',
                   value: 'nfttxns',
                   to: `${pathname}?tab=nfttxns`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <NftDataTable address={address} />
-                    </Suspense>
-                  ),
+                  content: <NftDataTable address={address} />,
                 },
                 ...(checkChainFeature(chain.config, 'charts')
                   ? [
@@ -157,16 +136,14 @@ const AddressView: FC<IAddressViewProps> = ({
                         value: 'analytics',
                         to: `${pathname}?tab=analytics`,
                         content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <Analytics
-                              chainConfig={chain.config}
-                              tag="EOA"
-                              params={{
-                                chain_id: chain.config.chainId,
-                                address: address.toLowerCase(),
-                              }}
-                            />
-                          </Suspense>
+                          <Analytics
+                            chainConfig={chain.config}
+                            tag="EOA"
+                            params={{
+                              chain_id: chain.config.chainId,
+                              address: address.toLowerCase(),
+                            }}
+                          />
                         ),
                       },
                     ]
@@ -175,11 +152,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   title: 'Comments',
                   value: 'comments',
                   to: `${pathname}?tab=comments`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>Comments feature is coming soon</Card>
-                    </Suspense>
-                  ),
+                  content: <Card>Comments feature is coming soon</Card>,
                 },
               ]}
               value={tab || ''}

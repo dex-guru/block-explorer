@@ -4273,7 +4273,12 @@ clsx@1.1.1:
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
-clsx@1.2.1, clsx@^1.1.0:
+clsx@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.0.0.tgz#12658f3fd98fafe62075595a5c30e43d18f3d00b"
+  integrity sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==
+
+clsx@^1.1.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
   integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
@@ -8199,10 +8204,10 @@ react-syntax-highlighter@15.5.0:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
-react-tooltip@5.12.0:
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.12.0.tgz#421c1b2bc673bcca80f9c41a6d2ab544c626526c"
-  integrity sha512-1e9jQPg3H0wd8Gpn5p7cVSAjXLtzyq+7MESEtB825nPm4QrgLm2V8/XI073u8yEJN/nkDpKY/a8pA8bZlN65/Q==
+react-tooltip@5.18.0:
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.18.0.tgz#33e5880ef13e473def47714b17c21b3d77bf258a"
+  integrity sha512-qjDK/skUJJ27sc9lTWeNxp2rLzmenBTskSsRiDOCPnupGSz2GhL5IZxDizK/sOsk0hn5iSCywt+3jKxUJ3Y4Sw==
   dependencies:
     "@floating-ui/dom" "^1.0.0"
     classnames "^2.3.0"
