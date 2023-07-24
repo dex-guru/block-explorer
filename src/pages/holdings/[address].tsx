@@ -11,9 +11,9 @@ import {
   DetailsView,
   Summary,
   Value,
-  Empty,
-  Error,
   IconSearch,
+  StateView,
+  IconNoData,
 } from '@/components'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
@@ -69,14 +69,19 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
 
       <Page chainConfig={chainConfig}>
         {isAddress(address) && !tokenHoldingsStats && (
-          <Empty
+          <StateView
             icon={<IconSearch />}
             title="No holdings"
             subtitle={address ? `for address ${checkSumAddress}` : undefined}
           />
         )}
 
-        {!isAddress(address) && <Error title="No correct address provided" />}
+        {!isAddress(address) && (
+          <StateView
+            icon={<IconNoData />}
+            title="No correct address provided"
+          />
+        )}
 
         {!!tokenHoldingsStats && (
           <DetailsView

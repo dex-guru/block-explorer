@@ -1,13 +1,10 @@
 import { FC } from 'react'
-import Address from '../Address'
-import Code from '../Code'
-import Properties from '../Properties'
-import { Property } from '../Properties/types'
-import { Table } from '../Table'
 import { DecodedText } from './DecodedText'
 import { Topics } from './Topics'
 import { decodedLogsColumns } from './decodedLogsColumns'
 import { LogModel } from '@/__generated__/resolvers-types'
+import { Address, Code, Properties, Table } from '@/components'
+import { Property } from '@/components/Properties/types'
 
 interface ILogsViewProps {
   log: LogModel

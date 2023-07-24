@@ -2,14 +2,19 @@ import { FC, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
-import { AddressValues } from '../Address/helpers'
-import Avatar from '../Avatar'
-import Card from '../Card'
-import TabPanel from '../TabPanel'
-import { searchTxsColumns } from '../Table/columns/searchTxsColumns'
-import Tile from '../Tile'
 import { SearchVariantsProps } from './types'
-import { Address, IconBlock, Label, Table } from '@/components'
+import {
+  Tile,
+  Avatar,
+  Card,
+  TabPanel,
+  Address,
+  IconBlock,
+  Label,
+  Table,
+} from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
+import { searchTxsColumns } from '@/components/Table/columns/searchTxsColumns'
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {

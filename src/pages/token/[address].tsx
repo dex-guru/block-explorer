@@ -9,7 +9,7 @@ import {
   ChainStatsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import { ContractView, Error, Page } from '@/components'
+import { ContractView, IconNoData, Page, StateView } from '@/components'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -65,7 +65,7 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <Error title="No address provided" />
+        <StateView icon={<IconNoData />} title="No address provided" />
       </Page>
     </>
   )

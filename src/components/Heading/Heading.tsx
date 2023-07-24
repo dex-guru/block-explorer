@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import clsx from 'clsx'
-import TooltipAnchor from '../TooltipAnchor'
 import { HeadingProps, HeadingSize } from './type'
+import { TooltipAnchor } from '@/components'
 import styles from './Heading.module.scss'
 
 const elements: Record<HeadingSize, string> = {

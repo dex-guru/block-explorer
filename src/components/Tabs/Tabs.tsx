@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import clsx from 'clsx'
-import Button from '../Button'
-import TooltipAnchor from '../TooltipAnchor'
 import { TabsProps } from './types'
+import { Button, TooltipAnchor } from '@/components'
 import styles from './Tabs.module.scss'
 
 // <T,> because it is a cleaner alternative to <T extends unknown> (moreover, unknown isn't allowed by our rules, so I would have to disable ESlint for that line which isn't ok): https://devtrium.com/posts/react-typescript-using-generics-in-react

@@ -1,16 +1,29 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import Heading from '../Heading'
-import { EmptyProps } from './types'
-import styles from './Empty.module.scss'
+import { StateViewProps } from './types'
+import { Button, Heading } from '@/components'
+import styles from './StateView.module.scss'
 
-const Empty: FC<EmptyProps> = ({
+const StateView: FC<StateViewProps> = ({
   icon,
   title,
   subtitle,
   className,
+  actions,
   children,
 }) => {
+  const renderActions = () => {
+    return actions?.map((action, idx) => {
+      return (
+        <Button
+          key={idx}
+          {...action}
+          className={clsx(styles.action, action.className)}
+        />
+      )
+    })
+  }
+
   return (
     <div className={clsx(styles.container, className)}>
       {!!icon && <div className={styles.icon}>{icon}</div>}
@@ -25,8 +38,9 @@ const Empty: FC<EmptyProps> = ({
         </div>
       )}
       {!!children && <div className={styles.body}>{children}</div>}
+      {!!actions && <div className={styles.actions}>{renderActions()}</div>}
     </div>
   )
 }
 
-export default Empty
+export default StateView

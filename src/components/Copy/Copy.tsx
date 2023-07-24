@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import clsx from 'clsx'
-import Button from '../Button'
 import { CopyProps } from './types'
+import { Button } from '@/components'
 import IconCopy from '@/images/icons/copy.svg'
 import styles from './Copy.module.scss'
 

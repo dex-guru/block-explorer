@@ -12,12 +12,6 @@ import { Abi, AbiFunction } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import pageStyles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
-import AddressWallet from '../AddressWallet'
-import CommonChart, { CommonChartDataset } from '../CommonChart'
-import { TransfersDataTable } from '../Tables'
-import tabsStyles from '../Tabs/Tabs.module.scss'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
@@ -25,6 +19,7 @@ import {
   ContractCreatorModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
+import { AddressWallet, CommonChart } from '@/components'
 import {
   Address,
   Avatar,
@@ -46,11 +41,16 @@ import {
   IconShield,
   IconVerify,
 } from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
+import { CommonChartDataset } from '@/components/CommonChart'
+import { TransfersDataTable } from '@/components/Tables'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
+import tabsStyles from '@/components/Tabs/Tabs.module.scss'
+import pageStyles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'))
 const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'))

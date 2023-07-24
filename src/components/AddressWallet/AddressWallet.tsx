@@ -1,11 +1,9 @@
 import { FC, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 import clsx from 'clsx'
-import Label from '../Label'
-import Value from '../Value'
 import AddressWalletTokens from './AddressWalletTokens'
 import { AddressWalletProps } from './types'
-import { Button, IconDown, IconWallet } from '@/components'
+import { Value, Label, Button, IconDown, IconWallet } from '@/components'
 import { financialFormat } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 

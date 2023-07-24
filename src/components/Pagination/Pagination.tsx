@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import Button from '../Button'
 import { getDisabled, getTotalPages } from './utils'
+import { Button } from '@/components'
 import { useIsMount } from '@/hooks'
 import ArrowLeft from '@/images/icons/arrow-left.svg'
 import ArrowRight from '@/images/icons/arrow-right.svg'

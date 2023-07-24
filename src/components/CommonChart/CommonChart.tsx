@@ -14,9 +14,9 @@ import {
   ResponsiveContainer,
   LineChart,
 } from 'recharts'
-import Heading from '../Heading'
 import { CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
+import { Heading } from '@/components'
 import styles from './CommonChart.module.scss'
 
 const CommonChart: FC<CommonChartProps> = ({

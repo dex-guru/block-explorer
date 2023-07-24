@@ -5,9 +5,8 @@ import {
   TokenHoldingsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Error } from '@/components'
+import { IconNoData, StateView } from '@/components'
 import DataTable from '@/components/DataTable'
-import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -61,7 +60,8 @@ export const TokensDataTable: FC<ITokensDataTableProps> = ({ address }) => {
     const subtitle = address ? `for ${address}` : undefined
 
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving transactions"
         subtitle={subtitle}
@@ -77,10 +77,6 @@ export const TokensDataTable: FC<ITokensDataTableProps> = ({ address }) => {
         ]}
       />
     )
-  }
-
-  if (!previousData && loading) {
-    return <LoadingCard />
   }
 
   return (

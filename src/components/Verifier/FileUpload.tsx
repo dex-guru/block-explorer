@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import clsx from 'clsx'
-import Button from '../Button'
-import Card from '../Card'
-import Label from '../Label'
-import { LoadingCard } from '../Loading'
-import Message from '../Message'
+import { Button, Card, Label, LoadingCard, Message } from '@/components'
 import styles from './Verifier.module.scss'
 
 type FileUploadProps = {

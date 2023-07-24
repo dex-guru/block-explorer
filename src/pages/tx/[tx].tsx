@@ -10,7 +10,7 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Empty, Page, TabPanel } from '@/components'
+import { Page, StateView, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -58,7 +58,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         {!props.data?.hash && (
-          <Empty icon={<IconEmpty />} title="No TX was found" />
+          <StateView icon={<IconEmpty />} title="No TX was found" />
         )}
 
         {!!props.data?.hash && (

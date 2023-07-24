@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
-import { EmptyProps } from '../Empty'
+import { StateViewProps } from '../StateView'
 import { ITableProps } from '../Table'
 import { PaginationVariables } from '@/types'
 
 export type DataTableProps<T> = ITableProps<T> & {
   className?: string
   children?: ReactNode | ReactNode[]
-  empty?: EmptyProps
+  empty?: StateViewProps
 
   onPageChange: (variables: PaginationVariables) => void
   total?: number

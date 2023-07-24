@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { logsColumns } from './columns'
-import { Error, LoadingCard } from '@/components'
+import { IconNoData, StateView } from '@/components'
 import DataTable from '@/components/DataTable'
 import { useIsMount } from '@/hooks'
 import { GET_LOGS_BY_ADDRESS } from '@/lib/apollo/queries'
@@ -52,7 +52,8 @@ export const EventsDataTable: FC<IEventsDataTableProps> = ({ address }) => {
 
   if (isMount && !data && !loading) {
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving ERC-20 events"
         subtitle={address ? `for ${address}` : undefined}
@@ -65,10 +66,6 @@ export const EventsDataTable: FC<IEventsDataTableProps> = ({ address }) => {
         ]}
       />
     )
-  }
-
-  if (!previousData && loading) {
-    return <LoadingCard />
   }
 
   return (

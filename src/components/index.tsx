@@ -12,36 +12,42 @@ import CommonChart from './CommonChart'
 import ConnectButton from './ConnectButton'
 import ContractView, { Files } from './ContractView'
 import Copy from './Copy'
+import Dashboard from './Dashboard'
 import DataTable from './DataTable'
 import DateTime from './DateTime'
 import Delta from './Delta'
 import Details from './Details'
 import DetailsView from './DetailsView'
-import Empty from './Empty'
-import Error from './Error'
 import Grid from './Grid'
 import Heading from './Heading'
 import Label from './Label'
 import Loading, { LoadingCard } from './Loading'
 import Logo from './Logo'
+import { LogsView } from './LogsView'
 import Message from './Message'
 import NetworkSelect from './NetworkSelect'
 import OpenWith from './OpenWith'
 import OutsideClicker from './OutsideClicker'
 import Page from './Page'
 import { Pagination } from './Pagination'
+import { PerPageSelector } from './PerPageSelector'
 import PieChart from './PieChart'
 import Properties from './Properties'
 import Search from './Search'
 import Separated from './Separated'
 import Socials from './Socials'
+import StateView from './StateView'
 import Summary from './Summary'
 import { BlockOverview, TxLogs, TxOverview, TxTrace } from './TabContent'
 import TabPanel from './TabPanel'
 import { Table } from './Table'
+import Tabs from './Tabs'
 import Tile from './Tile'
+import TooltipAnchor from './TooltipAnchor'
+import Trace from './Trace'
 import Value from './Value'
 import IconDown from '@/images/icons/arrow-down.svg'
+import IconArrowDown from '@/images/icons/arrow-down.svg'
 import IconLeft from '@/images/icons/arrow-left.svg'
 import IconRight from '@/images/icons/arrow-right.svg'
 import IconBlock from '@/images/icons/block.svg'
@@ -65,6 +71,7 @@ const TimeAgo = dynamic(() => import('./TimeAgo'), { ssr: false })
 const Tooltip = dynamic(() => import('./Tooltip'), { ssr: false })
 
 export {
+  Copy,
   Address,
   AddressView,
   AddressWallet,
@@ -74,17 +81,16 @@ export {
   BlockOverview,
   Card,
   Code,
-  Copy,
   ConnectButton,
   Comments,
   ContractView,
+  Dashboard,
   DataTable,
   DateTime,
   Delta,
   Details,
   DetailsView,
-  Empty,
-  Error,
+  StateView,
   Files,
   Grid,
   Heading,
@@ -93,6 +99,7 @@ export {
   Label,
   CommonChart,
   PieChart,
+  Tabs,
   Logo,
   Message,
   NetworkSelect,
@@ -100,6 +107,7 @@ export {
   OpenWith,
   Page,
   Pagination,
+  PerPageSelector,
   Properties,
   Separated,
   Summary,
@@ -109,6 +117,7 @@ export {
   TabPanel,
   Tile,
   TimeAgo,
+  TooltipAnchor,
   Value,
   IconLeft,
   IconRight,
@@ -133,4 +142,7 @@ export {
   TxLogs,
   Tooltip,
   TxTrace,
+  IconArrowDown,
+  LogsView,
+  Trace,
 }

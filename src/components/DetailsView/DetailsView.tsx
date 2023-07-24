@@ -1,10 +1,7 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import Copy from '../Copy'
-import Heading from '../Heading'
-import Label from '../Label'
-import OpenWith from '../OpenWith'
 import { DetailsViewProps } from './types'
+import { Copy, Heading, Label, OpenWith } from '@/components'
 import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
 

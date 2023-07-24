@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
-import styles from '../../pages/Pages.module.scss'
-import AddressWallet from '../AddressWallet'
 import { IAddressViewProps } from './types'
 import {
   Avatar,
@@ -14,11 +12,13 @@ import {
   TabPanel,
   Card,
   Value,
-  Empty,
-  Error,
   IconSearch,
+  IconNoData,
 } from '@/components'
+import AddressWallet from '@/components/AddressWallet'
+import StateView from '@/components/StateView'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
+import styles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'))
 const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'))
@@ -55,13 +55,18 @@ const AddressView: FC<IAddressViewProps> = ({
       </Head>
       <Page chainConfig={chain.config}>
         {!addressInfo?.address && isAddress(address) && (
-          <Empty
+          <StateView
             icon={<IconSearch />}
             title={<>Address {checkSumAddress} not&nbsp;found</>}
           />
         )}
 
-        {!isAddress(address) && <Error title="No correct address provided" />}
+        {!isAddress(address) && (
+          <StateView
+            icon={<IconNoData className={styles.icon} />}
+            title="No correct address provided"
+          />
+        )}
 
         {!!addressInfo?.address && (
           <DetailsView

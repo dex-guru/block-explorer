@@ -1,11 +1,15 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
-import Empty from '../Empty'
-import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE, Pagination } from '../Pagination'
-import { PerPageSelector } from '../PerPageSelector'
-import { Table } from '../Table'
-import TooltipAnchor from '../TooltipAnchor'
 import { DataTableProps } from './types'
+import {
+  IconSearch,
+  StateView,
+  TooltipAnchor,
+  Table,
+  Pagination,
+  PerPageSelector,
+} from '@/components'
+import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE } from '@/components/Pagination'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './DataTable.module.scss'
@@ -71,7 +75,11 @@ export function DataTable<T>(props: DataTableProps<T>) {
       </div>
       <div className={styles.body}>
         {!tablePropsRest.isLoading && !total && props.empty && (
-          <Empty icon={<IconEmpty />} {...props.empty} />
+          <StateView icon={<IconEmpty />} {...props.empty} />
+        )}
+
+        {!total && tablePropsRest.isLoading && (
+          <StateView icon={<IconSearch />} title="Querying for data..." />
         )}
 
         {!!total && <Table {...tablePropsRest} className={styles.table} />}

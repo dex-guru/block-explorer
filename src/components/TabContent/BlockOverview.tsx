@@ -1,8 +1,6 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
 import {
   Address,
   Code,
@@ -16,8 +14,10 @@ import {
   TimeAgo,
   Value,
 } from '@/components'
+import { AddressValues } from '@/components/Address/helpers'
 import { financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
 import { IBlockProps } from '@/pages/block/[block]'
+import styles from '@/pages/Pages.module.scss'
 
 const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   if (!data?.number) {

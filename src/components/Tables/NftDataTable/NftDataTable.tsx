@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { nftColumns } from './columns'
-import { Error } from '@/components'
+import { IconNoData, StateView } from '@/components'
 import DataTable from '@/components/DataTable'
-import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -54,7 +53,8 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
 
   if (isMount && !data && !loading) {
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving NFT events"
         subtitle={address ? `for ${address}` : undefined}
@@ -72,15 +72,11 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
     )
   }
 
-  if (!previousData && loading) {
-    return <LoadingCard />
-  }
-
   return (
     <DataTable
       isLoading={loading}
       columns={nftColumns}
-      data={displayData?.nftEvents?.data || []}
+      data={displayData?.nftEvents?.data}
       total={displayData?.nftEvents?.total}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}

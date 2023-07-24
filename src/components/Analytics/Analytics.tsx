@@ -1,10 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import Card from '../Card'
-import Dashboard from '../Dashboard/Dashboard'
-import { LoadingCard } from '../Loading'
-import TabPanel from '../TabPanel'
 import { AnalyticsProps } from './types'
+import { Dashboard, LoadingCard, TabPanel, Card } from '@/components'
 import {
   getRadashDashboardWithResults,
   getRedashDashboardsByTag,

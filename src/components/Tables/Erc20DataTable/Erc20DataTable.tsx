@@ -1,9 +1,8 @@
 import { FC, useCallback, useEffect, useMemo } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { erc20Columns } from './columns'
-import { Error } from '@/components'
+import { IconNoData, StateView } from '@/components'
 import DataTable from '@/components/DataTable'
-import { LoadingCard } from '@/components/Loading'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
@@ -65,7 +64,8 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
 
   if (isMount && !data && !loading) {
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving ERC-20 events"
         subtitle={address ? `for ${address}` : undefined}
@@ -78,10 +78,6 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
         ]}
       />
     )
-  }
-
-  if (!previousData && loading) {
-    return <LoadingCard />
   }
 
   return (

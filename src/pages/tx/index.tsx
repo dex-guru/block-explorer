@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Error, Page } from '@/components'
+import { IconNoData, Page, StateView } from '@/components'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
@@ -21,7 +21,7 @@ const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
       </Head>
 
       <Page chainConfig={chainConfig}>
-        <Error title="No TX hash was provided" />
+        <StateView icon={<IconNoData />} title="No TX hash was provided" />
       </Page>
     </>
   )

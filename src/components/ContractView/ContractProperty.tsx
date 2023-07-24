@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Abi, AbiFunction } from 'abitype'
 import { useContractRead } from 'wagmi'
-import Details from '../Details'
+import { Details } from '@/components'
 import { CHAIN_ID } from '@/constants'
 
 export interface IContractPropertyProps {

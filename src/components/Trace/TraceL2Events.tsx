@@ -1,11 +1,7 @@
 import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
-import Address from '../Address'
-import Code from '../Code'
-import Label from '../Label'
-import Properties from '../Properties'
 import { TraceL2EventsProps } from './types'
-import IconArrow from '@/images/icons/arrow-down.svg'
+import { Address, Code, Label, Properties, IconArrowDown } from '@/components'
 import styles from './Trace.module.scss'
 
 const TraceL2Events: FC<TraceL2EventsProps> = ({ title, events }) => {
@@ -24,7 +20,7 @@ const TraceL2Events: FC<TraceL2EventsProps> = ({ title, events }) => {
   return (
     <details className={clsx(styles.container, styles.events)}>
       <summary className={styles.header}>
-        <IconArrow className={styles.arrow} />
+        <IconArrowDown className={styles.arrow} />
         <Label type="tag" className={styles.info}>
           {title}
         </Label>

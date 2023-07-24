@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import Code from '../Code'
+import { Code } from '@/components'
 import styles from './Topics.module.scss'
 
 interface ITopicsProps {

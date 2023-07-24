@@ -1,5 +1,5 @@
-import Code from '../Code'
 import { DecodedInputModel } from '@/__generated__/resolvers-types'
+import { Code } from '@/components'
 import { IColumn } from '@/components/Table/types'
 import styles from './LogsView.module.scss'
 
