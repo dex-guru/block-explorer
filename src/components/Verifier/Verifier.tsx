@@ -16,7 +16,8 @@ import {
   VerificationInput,
   VerifyResponse,
 } from './types'
-import { Grid, Message } from '@/components'
+import Grid from '@/components/Grid'
+import Message from '@/components/Message'
 import styles from './Verifier.module.scss'
 
 const UI_MAX_FILE_SIZE = 30 * 1024 * 1024

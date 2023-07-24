@@ -1,7 +1,11 @@
 import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
 import { TraceL2EventsProps } from './types'
-import { Address, Code, Label, Properties, IconArrowDown } from '@/components'
+import Address from '@/components/Address'
+import Code from '@/components/Code'
+import { IconArrowDown } from '@/components/Icons'
+import Label from '@/components/Label'
+import Properties from '@/components/Properties'
 import styles from './Trace.module.scss'
 
 const TraceL2Events: FC<TraceL2EventsProps> = ({ title, events }) => {

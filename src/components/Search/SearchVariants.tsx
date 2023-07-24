@@ -3,18 +3,16 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { SearchVariantsProps } from './types'
-import {
-  Tile,
-  Avatar,
-  Card,
-  TabPanel,
-  Address,
-  IconBlock,
-  Label,
-  Table,
-} from '@/components'
+import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import { IconBlock } from '@/components/Icons'
+import Label from '@/components/Label'
+import TabPanel from '@/components/TabPanel'
+import Table from '@/components/Table'
 import { searchTxsColumns } from '@/components/Table/columns/searchTxsColumns'
+import Tile from '@/components/Tile'
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {

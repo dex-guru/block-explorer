@@ -6,17 +6,14 @@ import {
   ChainConfigModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Page,
-  DetailsView,
-  Summary,
-  Value,
-  IconSearch,
-  StateView,
-  IconNoData,
-} from '@/components'
+import DetailsView from '@/components/DetailsView'
+import { IconNoData, IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
+import Summary from '@/components/Summary'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
+import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'

@@ -6,8 +6,10 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { IconNoData, IconSearch, Page, StateView } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
+import { IconNoData, IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_BLOCKS_BY_NUMBER } from '@/lib/apollo/queries'

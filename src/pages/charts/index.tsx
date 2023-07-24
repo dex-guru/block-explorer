@@ -1,21 +1,18 @@
 import { Suspense, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import {
-  Card,
-  DetailsView,
-  IconQuestion,
-  IconWatch,
-  Page,
-  TabPanel,
-} from '@/components'
-import { Value } from '@/components'
+import Card from '@/components/Card'
+import DetailsView from '@/components/DetailsView'
+import { IconQuestion, IconWatch } from '@/components/Icons'
+import Page from '@/components/Page'
+import TabPanel from '@/components/TabPanel'
 import { Tab } from '@/components/Tabs'
+import TimeAgo from '@/components/TimeAgo'
+import Value from '@/components/Value'
 import IconRedash from '@/images/redash.svg'
 import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
@@ -31,9 +28,6 @@ import { TRedashDashboard } from '@/lib/redash/types'
 import { checkChainFeature, getSlug } from '@/lib/utils'
 import styles from './Charts.module.scss'
 
-const TimeAgo = dynamic(() => import('../../components/TimeAgo'), {
-  ssr: false,
-})
 interface ChartsPageProps {
   chainConfig: ChainConfigModel
   dashboards: TRedashDashboard[]

@@ -4,8 +4,10 @@ import { readContract, writeContract, prepareWriteContract } from '@wagmi/core'
 import { Abi, AbiFunction } from 'abitype'
 import { useAccount, useChainId } from 'wagmi'
 import { getValidator } from './validators'
-import { Loading } from '@/components'
-import { Details, Heading, Button } from '@/components'
+import Button from '@/components/Button'
+import Details from '@/components/Details'
+import Heading from '@/components/Heading'
+import Loading from '@/components/Loading'
 import styles from './ContractView.module.scss'
 
 export interface IFormProps {

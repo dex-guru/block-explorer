@@ -10,18 +10,18 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Page, StateView, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import IconEmpty from '@/images/icons/no-flash.svg'
+import { IconEmpty } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
+import TabPanel from '@/components/TabPanel'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
-const TxOverview = dynamic(
-  () => import('../../components/TabContent/TxOverview')
-)
-const TxLogs = dynamic(() => import('../../components/TabContent/TxLogs'))
-const TxTrace = dynamic(() => import('../../components/TabContent/TxTrace'))
+const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
+const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
+const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
 
 export const MAX_EVENTS_PER_PAGE = 10
 

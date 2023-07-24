@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
-import { Address, Delta, IconContract, Tile, Value } from '@/components'
+import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
+import Delta from '@/components/Delta'
+import { IconContract, IconNoIcon } from '@/components/Icons'
 import { IColumn } from '@/components/Table/types'
-import IconNoImage from '@/images/icons/no-icon.svg'
+import Tile from '@/components/Tile'
+import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
 import styles from './TokensDataTable.module.scss'
 
@@ -22,7 +25,7 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
           className={styles.image}
         />
       ) : (
-        <IconNoImage className={styles.noimage} />
+        <IconNoIcon className={styles.noimage} />
       )
 
       return (

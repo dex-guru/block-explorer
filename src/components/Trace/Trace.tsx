@@ -3,14 +3,12 @@ import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import TraceL2Events from './TraceL2Events'
 import { TraceProps } from './types'
-import {
-  Address,
-  Code,
-  Label,
-  Properties,
-  Value,
-  IconArrowDown,
-} from '@/components'
+import Address from '@/components/Address'
+import Code from '@/components/Code'
+import { IconArrowDown } from '@/components/Icons'
+import Label from '@/components/Label'
+import Properties from '@/components/Properties'
+import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
 import styles from './Trace.module.scss'
 

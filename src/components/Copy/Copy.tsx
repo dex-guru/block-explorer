@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import clsx from 'clsx'
 import { CopyProps } from './types'
-import { Button } from '@/components'
-import IconCopy from '@/images/icons/copy.svg'
+import Button from '@/components/Button'
+import { IconCopy } from '@/components/Icons'
 import styles from './Copy.module.scss'
 
 const CopyToClipboard: FC<CopyProps> = ({

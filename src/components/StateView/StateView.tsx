@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import clsx from 'clsx'
 import { StateViewProps } from './types'
-import { Button, Heading } from '@/components'
+import Button from '@/components/Button'
+import Heading from '@/components/Heading'
 import styles from './StateView.module.scss'
 
 const StateView: FC<StateViewProps> = ({

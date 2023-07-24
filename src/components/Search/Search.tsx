@@ -4,14 +4,14 @@ import clsx from 'clsx'
 import { useDebouncedCallback } from 'use-debounce'
 import SearchVariants from './SearchVariants'
 import { SearchProps, SearchResults } from './types'
-import { Button, OutsideClicker } from '@/components'
+import Button from '@/components/Button'
+import { IconSearch } from '@/components/Icons'
+import OutsideClicker from '@/components/OutsideClicker'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
-import IconQR from '@/images/icons/qr.svg'
-import IconSearch from '@/images/icons/search.svg'
 import { GET_SEARCH } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
 
-const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
+const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
   const [isFocus, setIsFocus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [getSearch, { data, loading }] = useLazyQuery<{
@@ -72,7 +72,6 @@ const Search: FC<SearchProps> = ({ showFilter, query, withQR, className }) => {
             onChange={handleChange}
           />
           <div className={styles.actions}>
-            {withQR && <Button icon={<IconQR />} className={styles.action} />}
             <Button
               disabled={!canSubmit}
               icon={

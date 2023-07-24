@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { LoadingCard, LogsView } from '@/components'
-import { StateView } from '@/components'
-import IconEmpty from '@/images/icons/no-flash.svg'
+import { IconEmpty } from '@/components/Icons'
+import { LoadingCard } from '@/components/Loading'
+import LogsView from '@/components/LogsView'
+import StateView from '@/components/StateView'
 import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 
 const TxLogs: FC<{ data: TransactionModel }> = (props) => {

@@ -6,8 +6,8 @@ import {
   TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import { IconNoData } from '@/components'
 import DataTable from '@/components/DataTable'
+import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { txsColumns } from '@/components/Table'
 import { useIsMount } from '@/hooks'

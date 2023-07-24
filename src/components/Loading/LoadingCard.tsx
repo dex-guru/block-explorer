@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import { Card, Loading } from '@/components'
+import Loading from './Loading'
+import Card from '@/components/Card'
 import styles from './Loading.module.scss'
 
 const LoadingCard: FC<{ className?: string }> = ({ className }) => {

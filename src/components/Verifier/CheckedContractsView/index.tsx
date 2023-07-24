@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../Verifier.module.scss'
 import { SendableContract, VerificationInput, VerifyResponse } from '../types'
 import CheckedContract from './CheckedContract'
-import { Card } from '@/components'
+import Card from '@/components/Card'
 
 type CheckedContractsViewProps = {
   checkedContracts: SendableContract[]

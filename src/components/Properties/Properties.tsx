@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import clsx from 'clsx'
 import { PropertiesProps } from './types'
-import { Card, Heading } from '@/components'
+import Card from '@/components/Card'
+import Heading from '@/components/Heading'
 import styles from './Properties.module.scss'
 
 const Properties: FC<PropertiesProps> = (props) => {

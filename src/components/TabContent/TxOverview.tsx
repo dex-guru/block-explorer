@@ -9,28 +9,22 @@ import {
   Erc721TransferModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Address,
-  Card,
-  Code,
-  DateTime,
-  Details,
-  IconCross,
-  Label,
-  Properties,
-  Table,
-  TimeAgo,
-  Value,
-} from '@/components'
-import { Property } from '@/components/Properties'
+import Address from '@/components/Address'
+import Card from '@/components/Card'
+import Code from '@/components/Code'
+import DateTime from '@/components/DateTime'
+import Details from '@/components/Details'
+import { IconCross, IconVerify, IconWatch } from '@/components/Icons'
+import Label from '@/components/Label'
+import Properties, { Property } from '@/components/Properties'
 import Separated from '@/components/Separated/Separated'
-import {
+import Table, {
   erc20ActionColumns,
   erc20TransfersColumns,
   nftTransfersColumns,
 } from '@/components/Table'
-import StopwatchIcon from '@/images/icons/stop-watch.svg'
-import IconVerify from '@/images/icons/verified.svg'
+import TimeAgo from '@/components/TimeAgo'
+import Value from '@/components/Value'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import {
   checkChainFeature,
@@ -159,7 +153,7 @@ const TxOverview: FC<{
       tooltip: 'The date and time at which a transaction is produced.',
       value: (
         <Value
-          icon={<StopwatchIcon className={pageStyles.muted} />}
+          icon={<IconWatch className={pageStyles.muted} />}
           value={<TimeAgo timestamp={data.blockTimestamp} />}
           suffix={
             <>

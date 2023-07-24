@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Abi, AbiFunction } from 'abitype'
 import { useContractRead } from 'wagmi'
-import { Details } from '@/components'
+import Details from '@/components/Details'
 import { CHAIN_ID } from '@/constants'
 
 export interface IContractPropertyProps {
@@ -23,9 +23,7 @@ const ContractProperty: FC<IContractPropertyProps> = ({
   const result = `${data}`
   return (
     <Details title={method.name}>
-      <>
-        {isLoading ? 'Loading...' : result} ({method.type})
-      </>
+      {isLoading ? 'Loading...' : result} ({method.type})
     </Details>
   )
 }

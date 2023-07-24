@@ -5,8 +5,9 @@ import {
   TokenHoldingsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import { IconNoData, StateView } from '@/components'
 import DataTable from '@/components/DataTable'
+import { IconNoData } from '@/components/Icons'
+import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'

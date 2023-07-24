@@ -14,36 +14,36 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import ContractMethodForm from './ContractMethodForm'
 import ContractProperty from './ContractProperty'
+import Files from './Files'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
-import { AddressWallet, CommonChart } from '@/components'
+import Address from '@/components/Address'
+import { AddressValues } from '@/components/Address/helpers'
+import AddressWallet from '@/components/AddressWallet'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import Comments from '@/components/Comments'
+import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
+import ConnectButton from '@/components/ConnectButton'
+import DateTime from '@/components/DateTime'
+import DetailsView from '@/components/DetailsView'
+import Grid from '@/components/Grid'
 import {
-  Address,
-  Avatar,
-  DetailsView,
-  Page,
-  Properties,
-  TabPanel,
-  Files,
-  Grid,
-  ConnectButton,
-  Card,
-  Value,
-  DateTime,
-  Comments,
-  Separated,
-  Message,
   IconContract,
   IconNoIcon,
   IconShield,
   IconVerify,
-} from '@/components'
-import { AddressValues } from '@/components/Address/helpers'
-import { CommonChartDataset } from '@/components/CommonChart'
+} from '@/components/Icons'
+import Message from '@/components/Message'
+import Page from '@/components/Page'
+import Properties from '@/components/Properties'
+import Separated from '@/components/Separated'
+import TabPanel from '@/components/TabPanel'
 import { TransfersDataTable } from '@/components/Tables'
+import Value from '@/components/Value'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
@@ -52,14 +52,18 @@ import styles from './ContractView.module.scss'
 import tabsStyles from '@/components/Tabs/Tabs.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
 
-const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'))
-const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'))
-const DexTradesDataTable = dynamic(
-  () => import('../Tables/DexTradesDataTable/')
+const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
+const HoldersDataTable = dynamic(
+  () => import('@/components/Tables/HoldersDataTable/')
 )
-const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'))
-const NftDataTable = dynamic(() => import('../Tables/NftDataTable'))
-const Analytics = dynamic(() => import('../Analytics'))
+const DexTradesDataTable = dynamic(
+  () => import('@/components/Tables/DexTradesDataTable/')
+)
+const Erc20DataTable = dynamic(
+  () => import('@/components/Tables/Erc20DataTable')
+)
+const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
+const Analytics = dynamic(() => import('@/components/Analytics'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,

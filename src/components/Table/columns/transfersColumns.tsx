@@ -1,6 +1,7 @@
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address, TimeAgo } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import TimeAgo from '@/components/TimeAgo'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 export const transfersColumns: IColumn<Erc20EventModel>[] = [

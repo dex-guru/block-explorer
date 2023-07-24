@@ -3,8 +3,11 @@ import { DecodedText } from './DecodedText'
 import { Topics } from './Topics'
 import { decodedLogsColumns } from './decodedLogsColumns'
 import { LogModel } from '@/__generated__/resolvers-types'
-import { Address, Code, Properties, Table } from '@/components'
+import Address from '@/components/Address'
+import Code from '@/components/Code'
+import Properties from '@/components/Properties'
 import { Property } from '@/components/Properties/types'
+import Table from '@/components/Table'
 
 interface ILogsViewProps {
   log: LogModel

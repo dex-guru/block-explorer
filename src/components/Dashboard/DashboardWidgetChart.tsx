@@ -1,7 +1,10 @@
 import { CSSProperties, FC } from 'react'
-import { CommonChart, Loading, Message, PieChart } from '..'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
+import CommonChart from '@/components/CommonChart'
+import Loading from '@/components/Loading'
+import Message from '@/components/Message'
+import PieChart from '@/components/PieChart'
 import {
   TRedashQueryResultData,
   TRedashVisualization,

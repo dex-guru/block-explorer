@@ -6,8 +6,12 @@ import {
   TransactionModel,
   TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
-import { LoadingCard, StateView, Trace } from '@/components'
-import { Card, IconNoData, TabPanel } from '@/components'
+import Card from '@/components/Card'
+import { IconNoData } from '@/components/Icons'
+import { LoadingCard } from '@/components/Loading'
+import StateView from '@/components/StateView'
+import TabPanel from '@/components/TabPanel'
+import Trace from '@/components/Trace'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
 import styles from './TxTrace.module.scss'
 

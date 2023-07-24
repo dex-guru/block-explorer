@@ -1,15 +1,15 @@
 import { TokenBalanceModel } from '@/__generated__/resolvers-types'
+import Address from '@/components/Address'
 import {
-  Address,
   IconContract,
   IconLiquidityPool,
   IconNoIcon,
   IconWallet,
-  Label,
-  Tile,
-  Value,
-} from '@/components'
+} from '@/components/Icons'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
 import styles from './HoldersDataTable.module.scss'
 

@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react'
 import clsx from 'clsx'
 import { DataTableProps } from './types'
-import {
-  IconSearch,
-  StateView,
-  TooltipAnchor,
-  Table,
-  Pagination,
-  PerPageSelector,
-} from '@/components'
-import { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE } from '@/components/Pagination'
+import { IconSearch } from '@/components/Icons'
+import Pagination, {
+  DEFAULT_FIRST_PAGE,
+  DEFAULT_PER_PAGE,
+} from '@/components/Pagination'
+import PerPageSelector from '@/components/PerPageSelector'
+import StateView from '@/components/StateView'
+import Table from '@/components/Table'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import { financialFormat } from '@/lib/utils'
 import styles from './DataTable.module.scss'

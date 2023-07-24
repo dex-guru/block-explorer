@@ -16,7 +16,7 @@ import {
 } from 'recharts'
 import { CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
-import { Heading } from '@/components'
+import Heading from '@/components/Heading'
 import styles from './CommonChart.module.scss'
 
 const CommonChart: FC<CommonChartProps> = ({

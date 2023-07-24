@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
-import { Loading, Tooltip } from '@/components'
+import Loading from '@/components/Loading'
 import { useApollo } from '@/lib/apollo/client'
 import { initApm } from '@/services/apmService'
 import styles from './Pages.module.scss'
 import '@/styles/index.scss'
+
+const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 initApm()
 

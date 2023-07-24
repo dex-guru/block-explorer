@@ -4,26 +4,25 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
 import { IAddressViewProps } from './types'
-import {
-  Avatar,
-  DetailsView,
-  Page,
-  Properties,
-  TabPanel,
-  Card,
-  Value,
-  IconSearch,
-  IconNoData,
-} from '@/components'
 import AddressWallet from '@/components/AddressWallet'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import DetailsView from '@/components/DetailsView'
+import { IconNoData, IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import Properties from '@/components/Properties'
 import StateView from '@/components/StateView'
+import TabPanel from '@/components/TabPanel'
+import Value from '@/components/Value'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
 
-const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'))
-const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'))
-const NftDataTable = dynamic(() => import('../Tables/NftDataTable'))
-const Analytics = dynamic(() => import('../Analytics'))
+const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
+const Erc20DataTable = dynamic(
+  () => import('@/components/Tables/Erc20DataTable')
+)
+const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
+const Analytics = dynamic(() => import('@/components/Analytics'))
 
 const AddressView: FC<IAddressViewProps> = ({
   address,

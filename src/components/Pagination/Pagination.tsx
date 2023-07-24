@@ -1,10 +1,9 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { getDisabled, getTotalPages } from './utils'
-import { Button } from '@/components'
+import Button from '@/components/Button'
+import { IconArrowLeft, IconArrowRight } from '@/components/Icons'
 import { useIsMount } from '@/hooks'
-import ArrowLeft from '@/images/icons/arrow-left.svg'
-import ArrowRight from '@/images/icons/arrow-right.svg'
 import { financialFormat } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 import styles from './Pagination.module.scss'
@@ -98,7 +97,7 @@ export const Pagination: FC<IPaginationProps> = ({
         onClick={getPrevHandler}
         disabled={disabled.prev}
         className={styles.button}
-        icon={<ArrowLeft />}
+        icon={<IconArrowLeft />}
       />
 
       <span className={styles.counter}>
@@ -106,7 +105,7 @@ export const Pagination: FC<IPaginationProps> = ({
       </span>
 
       <Button
-        icon={<ArrowRight />}
+        icon={<IconArrowRight />}
         onClick={getNextHandler}
         disabled={disabled.next}
         className={styles.button}

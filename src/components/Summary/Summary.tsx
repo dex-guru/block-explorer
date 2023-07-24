@@ -1,6 +1,9 @@
 import { FC } from 'react'
 import { SummaryProps } from './types'
-import { Card, CommonChart, Tile, TooltipAnchor } from '@/components'
+import Card from '@/components/Card'
+import CommonChart from '@/components/CommonChart'
+import Tile from '@/components/Tile'
+import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './Summary.module.scss'
 
