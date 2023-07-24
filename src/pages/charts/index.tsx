@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import Card from '@/components/Card'
 import DetailsView from '@/components/DetailsView'
+import Heading from '@/components/Heading'
 import { IconQuestion } from '@/components/Icons'
 import Page from '@/components/Page'
 import TabPanel from '@/components/TabPanel'
@@ -130,7 +131,11 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
               TypeImage = IconQuestion
           }
 
-          return <TypeImage {...typeProps} key={idx} />
+          return (
+            <div {...typeProps} key={idx}>
+              <TypeImage className={styles.illustrationType} />
+            </div>
+          )
         })}
       </div>
     )
@@ -139,14 +144,24 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
   const renderDashboardCard = (dashboard: TRedashDashboard) => {
     return (
       <Link href={`/charts/${dashboard.slug}`} className={styles.dashboard}>
-        <Card
-          className={styles.card}
-          title={
-            <Link href={`/charts/${dashboard.slug}`}>{dashboard.name}</Link>
-          }
-        >
+        <div className={styles.dashboardHeader}>
+          <Heading size="sm" className={styles.dashboardTitle}>
+            {dashboard.name}
+          </Heading>
+
+          <div className={styles.dashboardAuthor}>
+            <Image
+              src={dashboard.user.profile_image_url}
+              className={styles.dashboardAvatar}
+              alt={dashboard.user.name}
+              width={24}
+              height={24}
+            />
+          </div>
+        </div>
+        <div className={styles.dashboardBody}>
           {renderDashboardCardIllustration(dashboard)}
-        </Card>
+        </div>
       </Link>
     )
   }
