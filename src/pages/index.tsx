@@ -154,7 +154,8 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
   ]
-  props.csrStats &&
+
+  if (checkChainFeature(chainConfig, 'csr') && props.csrStats) {
     statsDisplay.push({
       title: 'Contract Secured Revenue (CSR)',
       tooltip:
@@ -173,6 +174,7 @@ const Index: NextPage<IndexProps> = (props) => {
         </Link>
       ),
     })
+  }
 
   const pageTitle = `${chainConfig.name}${
     chainConfig.chain ? ` ${chainConfig.chain}` : ''
