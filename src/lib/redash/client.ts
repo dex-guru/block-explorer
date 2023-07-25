@@ -99,10 +99,37 @@ export const getRedashQueryResponse = (
   })
 }
 
+export const generateRedashDashboardParams = (
+  dashboard: TRedashDashboard,
+  globalParams?: Record<string, unknown>
+): Record<string, unknown> => {
+  const params: Array<Record<string, unknown>> = []
+
+  dashboard?.widgets?.forEach((widget) => {
+    if (!widget?.visualization?.query?.options?.parameters) {
+      return
+    }
+
+    params.push(
+      generateRedashQueryParams(widget?.visualization?.query, globalParams)
+    )
+  })
+
+  const resultParams: Record<string, unknown> = {}
+
+  params.forEach((param) => {
+    Object.entries(param).forEach(([key, value]) => {
+      resultParams[key] = value
+    })
+  })
+
+  return resultParams
+}
+
 export const generateRedashQueryParams = (
   query: TRedashQuery,
   globalParams?: Record<string, unknown>
-) => {
+): Record<string, unknown> => {
   const {
     options: { parameters: queryParameters },
   } = query
