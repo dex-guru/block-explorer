@@ -1,8 +1,8 @@
 import { FC, FocusEventHandler, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { useDebouncedCallback } from 'use-debounce'
-import SearchVariants from './SearchVariants'
 import { SearchProps, SearchResults } from './types'
 import Button from '@/components/Button'
 import { IconSearch } from '@/components/Icons'
@@ -10,6 +10,8 @@ import OutsideClicker from '@/components/OutsideClicker'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import { GET_SEARCH } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
+
+const SearchVariants = dynamic(() => import('./SearchVariants'), { ssr: false })
 
 const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
   const [isFocus, setIsFocus] = useState(false)
