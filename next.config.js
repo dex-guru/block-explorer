@@ -14,6 +14,8 @@ const nextConfig = {
     pollInterval: 6000,
     gTagManagerId: 'GTM-K8HGVLW',
     REACT_TOOLTIP_DISABLE_BASE_STYLES: true,
+    APP_NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL
+    APP_NEXT_PUBLIC_CHAIN_ID: process.env.NEXT_PUBLIC_CHAIN_I
   },
   reactStrictMode: true,
   webpack: (config, { webpack, buildId }) => {
