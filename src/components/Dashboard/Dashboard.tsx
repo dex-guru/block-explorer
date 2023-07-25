@@ -7,6 +7,8 @@ import DashboardWidget from './DashboardWidget'
 import Card from '@/components/Card'
 import Message from '@/components/Message'
 import IconRedash from '@/images/redash.svg'
+import { getDynamicDateRangePeriod } from '@/lib/dates'
+import { generateRedashDashboardParams } from '@/lib/redash/client'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
@@ -14,7 +16,9 @@ const Dashboard: FC<{
   data: TRedashDashboard
   queriesResponse: Record<number, TRedashQueryResponse>
   params?: Record<string, unknown>
-}> = ({ data: { id, name, slug, widgets }, queriesResponse, params }) => {
+}> = ({ data, queriesResponse, params }) => {
+  const { id, name, slug, widgets } = data
+
   const [isMounted, setIsMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [aiResponse, setAiResponse] = useState<string | null>(null)
@@ -29,8 +33,21 @@ const Dashboard: FC<{
     }
 
     const getData = async () => {
+      const parameters = generateRedashDashboardParams(data, {
+        chain_id: process.env.NEXT_PUBLIC_CHAIN_ID || 7700,
+        dates: getDynamicDateRangePeriod('d_last_30_days'),
+      })
+
+      const queryParams = {
+        dashboard_slug: slug,
+        parameters,
+      }
+
       try {
-        const response = await fetch(`/api/dashboard-analyzer/${slug}`)
+        const response = await fetch(`/api/dashboard-analyzer`, {
+          method: 'POST',
+          body: JSON.stringify(queryParams),
+        })
 
         if (response.ok) {
           const data = await response.json()
@@ -45,7 +62,17 @@ const Dashboard: FC<{
     }
 
     getData()
-  }, [slug, isMounted])
+  }, [data, slug, isMounted])
+
+  const sortedWidgets =
+    widgets
+      ?.filter((widget) => !widget.options.isHidden)
+      .sort((a, b) => {
+        const aPos = a.options.position.row * 100 + a.options.position.col
+        const bPos = b.options.position.row * 100 + b.options.position.col
+
+        return aPos - bPos
+      }) || []
 
   return (
     <DetailsView
@@ -96,22 +123,14 @@ const Dashboard: FC<{
       )}
 
       <div className={styles.dashboard}>
-        {widgets
-          ?.filter((widget) => !widget.options.isHidden)
-          .sort((a, b) => {
-            const aPos = a.options.position.row * 100 + a.options.position.col
-            const bPos = b.options.position.row * 100 + b.options.position.col
-
-            return aPos - bPos
-          })
-          .map((widget) => (
-            <DashboardWidget
-              data={widget}
-              params={params}
-              queryResponse={queriesResponse[widget?.visualization?.query?.id]}
-              key={widget.id}
-            />
-          ))}
+        {sortedWidgets.map((widget) => (
+          <DashboardWidget
+            data={widget}
+            params={params}
+            queryResponse={queriesResponse[widget?.visualization?.query?.id]}
+            key={widget.id}
+          />
+        ))}
       </div>
     </DetailsView>
   )
