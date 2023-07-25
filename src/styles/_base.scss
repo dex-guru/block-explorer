@@ -179,11 +179,13 @@ progress {
   &::-webkit-progress-value {
     background: var(--color-accent);
     border-radius: var(--radii-sm);
+    transition: 0.25s ease;
   }
 
   &::-moz-progress-bar {
     background: var(--color-accent);
     border-radius: var(--radii-sm);
+    transition: 0.25s ease;
   }
 
   &:not(:first-child) {

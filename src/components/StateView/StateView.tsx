@@ -7,6 +7,7 @@ import styles from './StateView.module.scss'
 
 const StateView: FC<StateViewProps> = ({
   icon,
+  illustration,
   title,
   subtitle,
   className,
@@ -28,6 +29,9 @@ const StateView: FC<StateViewProps> = ({
   return (
     <div className={clsx(styles.container, className)}>
       {!!icon && <div className={styles.icon}>{icon}</div>}
+      {!!illustration && (
+        <div className={styles.illustration}>{illustration}</div>
+      )}
       {(!!title || !!subtitle) && (
         <div className={styles.header}>
           {!!title && (
