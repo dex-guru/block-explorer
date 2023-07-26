@@ -1,20 +1,15 @@
-import { FC } from 'react'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import '@rainbow-me/rainbowkit/styles.css'
-import { Abi, AbiFunction } from 'abitype'
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import ContractMethodForm from './ContractMethodForm'
-import ContractProperty from './ContractProperty'
-import Files from './Files'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
@@ -27,7 +22,6 @@ import Avatar from '@/components/Avatar'
 import Card from '@/components/Card'
 import Comments from '@/components/Comments'
 import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
-import ConnectButton from '@/components/ConnectButton'
 import DateTime from '@/components/DateTime'
 import DetailsView from '@/components/DetailsView'
 import Grid from '@/components/Grid'
@@ -37,7 +31,6 @@ import {
   IconShield,
   IconVerify,
 } from '@/components/Icons'
-import Message from '@/components/Message'
 import Page from '@/components/Page'
 import Properties from '@/components/Properties'
 import Separated from '@/components/Separated'
@@ -49,7 +42,6 @@ import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
-import tabsStyles from '@/components/Tabs/Tabs.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
@@ -65,6 +57,8 @@ const Erc20DataTable = dynamic(
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
 
+const ContractTab = dynamic(() => import('./ContractTab'))
+
 const ContractView: FC<IContractViewProps> = ({
   address,
   tab,
@@ -74,9 +68,6 @@ const ContractView: FC<IContractViewProps> = ({
   tokenHoldingsStats,
 }) => {
   const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
-
-  const contractCreator: ContractCreatorModel = data?.contractCreator
-  const balancesStats: TokenBalancesStatsModel = data?.balancesStats
 
   const { chains, publicClient } = useMemo(() => {
     const currentChain = {
@@ -129,11 +120,12 @@ const ContractView: FC<IContractViewProps> = ({
     [connectors, publicClient]
   )
 
+  const contractCreator: ContractCreatorModel = data?.contractCreator
+  const balancesStats: TokenBalancesStatsModel = data?.balancesStats
+
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, CHAIN_ID)
-
-  const isMatchLoading = match === undefined
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
@@ -609,109 +601,11 @@ const ContractView: FC<IContractViewProps> = ({
               {/* Content here should depend on Tab's query param value */}
 
               {isSubTab && (
-                <Card>
-                  {!isMatchLoading && !hasSources && abi && (
-                    <>
-                      <Message type="danger">
-                        This smart contract is not verified according to{' '}
-                        <Link
-                          href="https://sourcify.dev/"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          Sourcify
-                        </Link>
-                        . Make sure you understand the risks of interacting with
-                        unverified smart contracts.
-                      </Message>
-                      <Message type="info">
-                        As a contract owner, you can get your smart contract
-                        verified with Sourcify{' '}
-                        <Link
-                          href="/verifyContract"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          here
-                        </Link>
-                        .
-                      </Message>
-                    </>
-                  )}
-
-                  <TabPanel
-                    tabsClassName={tabsStyles.inner}
-                    tabs={contractTabs}
-                    value={tab}
-                  >
-                    {abi &&
-                      ['readContract', 'writeContract'].includes(
-                        tab as string
-                      ) && <ConnectButton />}
-
-                    {(tab === 'code' || !abi) && (
-                      <Files match={match} address={address} />
-                    )}
-
-                    {tab === 'readContract' && (
-                      <>
-                        {!!abi &&
-                          (abi as Abi)
-                            .filter(
-                              (item) =>
-                                item.type === 'function' &&
-                                item.stateMutability === 'view'
-                            )
-                            .map((method, index) => {
-                              const contractMethod = method as AbiFunction & {
-                                type: 'function'
-                              }
-                              return contractMethod.inputs.length === 0 ? (
-                                <ContractProperty
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                />
-                              ) : (
-                                <ContractMethodForm
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                />
-                              )
-                            })}
-                      </>
-                    )}
-                    {tab === 'writeContract' && (
-                      <>
-                        {!!abi &&
-                          (abi as Abi)
-                            .filter(
-                              (item) =>
-                                item.type === 'function' &&
-                                (item.stateMutability === 'nonpayable' ||
-                                  item.stateMutability === 'payable')
-                            )
-                            .map((method, index) => {
-                              const contractMethod = method as AbiFunction & {
-                                type: 'function'
-                              }
-                              return (
-                                <ContractMethodForm
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                  isWrite
-                                />
-                              )
-                            })}
-                      </>
-                    )}
-                  </TabPanel>
-                </Card>
+                <ContractTab
+                  match={match}
+                  address={address}
+                  tab={tab as string}
+                />
               )}
             </TabPanel>
           </DetailsView>
