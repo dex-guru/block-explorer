@@ -14,6 +14,7 @@ import {
 import Card from '@/components/Card'
 import Grid from '@/components/Grid'
 import Page from '@/components/Page'
+import Separated from '@/components/Separated'
 import Summary from '@/components/Summary'
 import Table from '@/components/Table'
 import {
@@ -106,12 +107,26 @@ const Index: NextPage<IndexProps> = (props) => {
       tooltip:
         'Transactions Per Second (TPS) refers to the number of transactions that a blockchain can handle in one second. Calculated as: Amount of TXs in last block / Block time.',
       value: (
-        <Value
-          value={financialFormat(stats.transactionsPerSecond, {
-            decimals: 2,
-          })}
-          suffix={<>&nbsp;txs/sec</>}
-        />
+        <Separated>
+          <Value
+            tooltip="TPS for last block"
+            value={financialFormat(stats.transactionsPerSecond, {
+              decimals: 2,
+            })}
+          />
+          <Value
+            tooltip="TPS for 5 minutes"
+            value={financialFormat(stats.transactionsPerSecondFiveMinutesAVG, {
+              decimals: 2,
+            })}
+          />
+          <Value
+            tooltip="TPS for this day"
+            value={financialFormat(stats.transactionsPerSecondDailyAVG, {
+              decimals: 2,
+            })}
+          />
+        </Separated>
       ),
     },
     {
