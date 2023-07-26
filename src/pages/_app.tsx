@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import Loading from '@/components/Loading'
@@ -9,6 +10,17 @@ import { initApm } from '@/services/apmService'
 import styles from './Pages.module.scss'
 import '@/styles/index.scss'
 
+export const sora = Sora({
+  weight: ['500', '600'],
+  subsets: ['latin-ext'],
+  variable: '--font-sora',
+})
+
+export const ibm = IBM_Plex_Sans_Condensed({
+  weight: ['400', '500'],
+  subsets: ['latin-ext'],
+  variable: '--font-ibm',
+})
 const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 initApm()
@@ -35,6 +47,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
+      <style jsx global>{`
+        html {
+          --font-sora: ${sora.style.fontFamily};
+          --font-ibm: ${ibm.style.fontFamily};
+        }
+      `}</style>
+      <style></style>
       {isPageLoading && <Loading className={styles.pageLoading} />}
       <Component {...pageProps} />
       <Tooltip
