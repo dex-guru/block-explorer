@@ -7,6 +7,7 @@ import {
 } from 'react'
 import { NextRouter, useRouter } from 'next/router'
 import { isAddress, isHex } from 'viem'
+import { AddressValues } from '@/components/Address/helpers'
 
 const doSearch = async (q: string, router: NextRouter) => {
   // Cleanup
@@ -22,8 +23,8 @@ const doSearch = async (q: string, router: NextRouter) => {
 
   // Plain address?
   if (isAddress(maybeAddress)) {
-    router.replace(
-      `/address/${maybeAddress}${
+    router.push(
+      `${AddressValues['account'].url(maybeAddress)}${
         maybeIndex !== '' ? `?nonce=${maybeIndex}` : ''
       }`
     )
@@ -31,15 +32,15 @@ const doSearch = async (q: string, router: NextRouter) => {
   }
 
   // Tx hash?
-  if (isHex(q) && q.length === 32) {
-    router.replace(`/tx/${q}`)
+  if (isHex(q)) {
+    router.push(`${AddressValues['tx'].url(maybeAddress)}`)
     return
   }
 
   // Block number?
   const blockNumber = parseInt(q)
   if (!isNaN(blockNumber)) {
-    router.replace(`/block/${blockNumber}`)
+    router.push(`${AddressValues['block'].url(maybeAddress)}`)
     return
   }
 }
