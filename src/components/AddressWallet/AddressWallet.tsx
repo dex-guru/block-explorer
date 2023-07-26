@@ -1,11 +1,12 @@
 import { FC, useState } from 'react'
 import { useResizeDetector } from 'react-resize-detector'
 import clsx from 'clsx'
-import Label from '../Label'
-import Value from '../Value'
 import AddressWalletTokens from './AddressWalletTokens'
 import { AddressWalletProps } from './types'
-import { Button, IconDown, IconWallet } from '@/components'
+import Button from '@/components/Button'
+import { IconArrowDown, IconWallet } from '@/components/Icons'
+import Label from '@/components/Label'
+import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
@@ -61,7 +62,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
               onClose={handleClose}
             />
           )}
-          <IconDown
+          <IconArrowDown
             className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
           />
         </div>

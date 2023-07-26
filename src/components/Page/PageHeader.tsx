@@ -1,15 +1,18 @@
 import { FC, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import clsx from 'clsx'
-import Logo from '../Logo'
-import NetworkSelect from '../NetworkSelect'
-import Search from '../Search'
 import InfoBlock from './InfoBlock'
 import PageMenu, { PageMenuMainLink } from './PageMenu'
 import { PageHeaderProps } from './types'
+import Logo from '@/components/Logo'
+import Search from '@/components/Search'
+import { checkChainFeature } from '@/lib/utils'
 import styles from './PageHeader.module.scss'
 
-const ThemeToggle = dynamic(() => import('../ThemeToggle'), {
+const ThemeToggle = dynamic(() => import('@/components/ThemeToggle'), {
+  ssr: false,
+})
+const NetworkSelect = dynamic(() => import('@/components/NetworkSelect'), {
   ssr: false,
 })
 
@@ -26,6 +29,11 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
           { caption: 'Transactions', href: '/txs' },
           { caption: 'View Blocks', href: '/blocks' },
         ],
+      },
+      {
+        caption: 'Tokens',
+        href: '',
+        submenu: [{ caption: 'ERC-20 Token TXns', href: '/tokentxns' }],
       },
       {
         caption: 'Developers',
@@ -46,14 +54,22 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
             caption: 'Dex Metrics',
             href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
           },
-          ...(chainConfig.features.some((x) => x.name === 'csr')
+          ...(checkChainFeature(chainConfig, 'charts')
+            ? [
+                {
+                  caption: 'Charts & Statistics',
+                  href: '/charts',
+                },
+              ]
+            : []),
+          ...(checkChainFeature(chainConfig, 'csr')
             ? [{ caption: 'CSR', href: '/csr' }]
             : []),
         ],
       },
     ]
     return baseLinks
-  }, [chainConfig.features, chainConfig.shortName])
+  }, [chainConfig])
 
   const onOpenChange = (value: boolean) => {
     setIsMenuOpen(value)

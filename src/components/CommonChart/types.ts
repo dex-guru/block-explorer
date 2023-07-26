@@ -3,7 +3,7 @@ import { Props as XAxisProps } from 'recharts/types/cartesian/XAxis'
 import { Props as YAxisProps } from 'recharts/types/cartesian/YAxis'
 import { CurveType } from 'recharts/types/shape/Curve'
 
-export type LineChartDataset = {
+export type CommonChartDataset = {
   id: string
   data: { [key: string]: number | string }[]
   name?: string
@@ -14,7 +14,7 @@ export type LineChartDataset = {
   type?: CurveType
 }
 
-export type LineChartOptions = {
+export type CommonChartOptions = {
   grid?: GridProps
   axis?: {
     y?: YAxisProps
@@ -23,8 +23,9 @@ export type LineChartOptions = {
   zoom?: boolean
 }
 
-export type LineChartProps = {
-  data: LineChartDataset[]
+export type CommonChartProps = {
+  data: CommonChartDataset[]
+  type?: string
   className?: string
-  options: LineChartOptions & { axis: { x: { dataKey: string } } }
+  options: CommonChartOptions & { axis: { x: { dataKey: string } } }
 }

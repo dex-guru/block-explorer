@@ -1,7 +1,9 @@
 import { FC, Suspense, lazy, useState } from 'react'
 import clsx from 'clsx'
 import { NetworkSelectProps } from './types'
-import { Button, IconDown, IconQuestion, OutsideClicker } from '@/components'
+import Button from '@/components/Button'
+import { IconArrowDown, IconQuestion } from '@/components/Icons'
+import OutsideClicker from '@/components/OutsideClicker'
 import styles from './NetworkSelect.module.scss'
 
 const NetworkSelect: FC<NetworkSelectProps> = ({
@@ -33,7 +35,7 @@ const NetworkSelect: FC<NetworkSelectProps> = ({
         onClick={handleClick}
       >
         <span className={styles.caption}>{current}</span>
-        <IconDown
+        <IconArrowDown
           className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
         />
       </div>

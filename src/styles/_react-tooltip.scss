@@ -1,6 +1,6 @@
 .react-tooltip {
-  position: fixed;
-  opacity: 0;
+  --rt-opacity: 1;
+
   border-radius: 8px;
   padding: 8px 12px;
   font-family: var(--font-main), sans-serif;
@@ -8,19 +8,13 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  transition: opacity 0.25s ease 0.5s;
   z-index: 65535;
   background-color: var(--color-tooltip-bg);
   color: var(--color-tooltip-text);
   margin: 0;
-  pointer-events: none;
-  max-width: min(320px, 100vh);
+  width: max-content;
+  max-width: clamp(320px, calc(100vw - 16px), 400px);
   word-wrap: break-word;
-
-  &[class*='styles-module_show'] {
-    transition-delay: 0s;
-    opacity: 1 !important;
-  }
 
   &-arrow {
     position: absolute;

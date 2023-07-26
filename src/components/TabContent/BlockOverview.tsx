@@ -1,23 +1,23 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
-import styles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
+import Address from '@/components/Address'
+import { AddressValues } from '@/components/Address/helpers'
+import Code from '@/components/Code'
+import DateTime from '@/components/DateTime'
 import {
-  Address,
-  Code,
-  DateTime,
-  IconLeft,
-  IconRight,
+  IconArrowLeft,
+  IconArrowRight,
   IconVerify,
   IconWatch,
-  Properties,
-  Separated,
-  TimeAgo,
-  Value,
-} from '@/components'
+} from '@/components/Icons'
+import Properties from '@/components/Properties'
+import Separated from '@/components/Separated'
+import TimeAgo from '@/components/TimeAgo'
+import Value from '@/components/Value'
 import { financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
 import { IBlockProps } from '@/pages/block/[block]'
+import styles from '@/pages/Pages.module.scss'
 
 const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   if (!data?.number) {
@@ -43,7 +43,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
                 [styles.disabled]: data.number < 2,
               })}
             >
-              <IconLeft className={styles.icon} />
+              <IconArrowLeft className={styles.icon} />
             </Link>{' '}
             <Link
               data-tooltip-content="Next Block"
@@ -53,7 +53,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
                 [styles.disabled]: chainStats?.lastBlockNumber === data.number,
               })}
             >
-              <IconRight className={styles.icon} />
+              <IconArrowRight className={styles.icon} />
             </Link>
           </div>
         </Separated>

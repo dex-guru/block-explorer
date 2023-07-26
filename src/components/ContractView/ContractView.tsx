@@ -1,76 +1,63 @@
-import { FC, Suspense } from 'react'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery } from '@apollo/client'
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import '@rainbow-me/rainbowkit/styles.css'
-import { Abi, AbiFunction } from 'abitype'
+import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import pageStyles from '../../pages/Pages.module.scss'
-import { AddressValues } from '../Address/helpers'
-import AddressWallet from '../AddressWallet'
-import { LineChartDataset } from '../LineChart'
-import { LoadingCard } from '../Loading'
-import { TransfersDataTable } from '../Tables'
-import tabsStyles from '../Tabs/Tabs.module.scss'
-import ContractMethodForm from './ContractMethodForm'
-import ContractProperty from './ContractProperty'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
   TokenBalancesStatsModel,
 } from '@/__generated__/resolvers-types'
+import Address from '@/components/Address'
+import { AddressValues } from '@/components/Address/helpers'
+import AddressWallet from '@/components/AddressWallet'
+import Avatar from '@/components/Avatar'
+import Card from '@/components/Card'
+import Comments from '@/components/Comments'
+import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
+import DateTime from '@/components/DateTime'
+import DetailsView from '@/components/DetailsView'
+import Grid from '@/components/Grid'
 import {
-  Address,
-  Avatar,
-  DetailsView,
-  Page,
-  Properties,
-  TabPanel,
-  Files,
-  Grid,
-  ConnectButton,
-  Card,
-  Value,
-  DateTime,
-  Comments,
-  Separated,
-  LineChart,
-  Message,
   IconContract,
   IconNoIcon,
   IconShield,
-} from '@/components'
+  IconVerify,
+} from '@/components/Icons'
+import Page from '@/components/Page'
+import Properties from '@/components/Properties'
+import Separated from '@/components/Separated'
+import TabPanel from '@/components/TabPanel'
+import { TransfersDataTable } from '@/components/Tables'
+import Value from '@/components/Value'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
-import { financialFormat } from '@/lib/utils'
+import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
+import pageStyles from '@/pages/Pages.module.scss'
 
-const TxsDataTable = dynamic(() => import('../Tables/TxsDataTable/'), {
-  ssr: false,
-})
-const HoldersDataTable = dynamic(() => import('../Tables/HoldersDataTable/'), {
-  ssr: false,
-})
-const DexTradesDataTable = dynamic(
-  () => import('../Tables/DexTradesDataTable/'),
-  {
-    ssr: false,
-  }
+const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
+const HoldersDataTable = dynamic(
+  () => import('@/components/Tables/HoldersDataTable/')
 )
-const Erc20DataTable = dynamic(() => import('../Tables/Erc20DataTable'), {
-  ssr: false,
-})
-const NftDataTable = dynamic(() => import('../Tables/NftDataTable'), {
-  ssr: false,
-})
+const DexTradesDataTable = dynamic(
+  () => import('@/components/Tables/DexTradesDataTable/')
+)
+const Erc20DataTable = dynamic(
+  () => import('@/components/Tables/Erc20DataTable')
+)
+const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
+const Analytics = dynamic(() => import('@/components/Analytics'))
+
+const ContractTab = dynamic(() => import('./ContractTab'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -81,9 +68,6 @@ const ContractView: FC<IContractViewProps> = ({
   tokenHoldingsStats,
 }) => {
   const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
-
-  const contractCreator: ContractCreatorModel = data?.contractCreator
-  const balancesStats: TokenBalancesStatsModel = data?.balancesStats
 
   const { chains, publicClient } = useMemo(() => {
     const currentChain = {
@@ -136,11 +120,12 @@ const ContractView: FC<IContractViewProps> = ({
     [connectors, publicClient]
   )
 
+  const contractCreator: ContractCreatorModel = data?.contractCreator
+  const balancesStats: TokenBalancesStatsModel = data?.balancesStats
+
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
   const match = useSourcifyMetadata(address, CHAIN_ID)
-
-  const isMatchLoading = match === undefined
 
   const abi = (match?.metadata?.output?.abi as Abi) || undefined
 
@@ -151,7 +136,7 @@ const ContractView: FC<IContractViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
-  const holdersSeries: LineChartDataset[] = [
+  const holdersSeries: CommonChartDataset[] = [
     {
       id: 'holders',
       name: 'Holders',
@@ -216,7 +201,16 @@ const ContractView: FC<IContractViewProps> = ({
         {addressInfo.name !== addressInfo.symbol ? (
           <>
             {' '}
-            <span className={styles.muted}>({addressInfo.name})</span>
+            <span className={styles.muted}>({addressInfo.name})</span>{' '}
+            {!!addressInfo?.tokenLists?.length && (
+              <IconVerify
+                className={styles.verified}
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content={`This token is verified by ${addressInfo?.tokenLists.join(
+                  ', '
+                )}`}
+              />
+            )}
           </>
         ) : null}
       </>
@@ -260,7 +254,6 @@ const ContractView: FC<IContractViewProps> = ({
             }
             type="address"
             chainConfig={chain.config}
-            isCopy={type === 'contract'}
           >
             <Grid>
               <Properties
@@ -346,7 +339,7 @@ const ContractView: FC<IContractViewProps> = ({
                                       : undefined
                                   }
                                 />
-                                <LineChart
+                                <CommonChart
                                   className={styles.holdersChart}
                                   data={holdersSeries}
                                   options={{
@@ -508,31 +501,19 @@ const ContractView: FC<IContractViewProps> = ({
                         title: 'Transfers',
                         value: '',
                         to: pathname,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TransfersDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <TransfersDataTable address={address} />,
                       },
                       {
                         title: 'Holders',
                         value: 'balances',
                         to: { pathname, query: { tab: 'balances' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <HoldersDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <HoldersDataTable address={address} />,
                       },
                       {
                         title: 'DEX Trades',
                         value: 'trades',
                         to: { pathname, query: { tab: 'trades' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <DexTradesDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <DexTradesDataTable address={address} />,
                       },
                     ]
                   : []),
@@ -544,31 +525,19 @@ const ContractView: FC<IContractViewProps> = ({
                         tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
                         value: '',
                         to: pathname,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TxsDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <TxsDataTable address={address} />,
                       },
                       {
                         title: 'Token TXs (ERC-20)',
                         value: 'tokentxns',
                         to: { pathname, query: { tab: 'tokentxns' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <Erc20DataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <Erc20DataTable address={address} />,
                       },
                       {
                         title: 'NFT Token TXs',
                         value: 'nfttxns',
                         to: { pathname, query: { tab: 'nfttxns' } },
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <NftDataTable address={address} />
-                          </Suspense>
-                        ),
+                        content: <NftDataTable address={address} />,
                       },
                     ]
                   : []),
@@ -585,30 +554,45 @@ const ContractView: FC<IContractViewProps> = ({
                   isActive: isSubTab,
                   to: `${pathname}?tab=code`,
                 },
-                {
-                  title: 'Analytics',
-                  value: 'analytics',
-                  to: { pathname, query: { tab: 'analytics' } },
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>Some analytics here soon</Card>
-                    </Suspense>
-                  ),
-                },
-
+                ...(checkChainFeature(chain.config, 'charts')
+                  ? [
+                      {
+                        title: 'Analytics',
+                        value: 'analytics',
+                        to: { pathname, query: { tab: 'analytics' } },
+                        content: (
+                          <Analytics
+                            chainConfig={chain.config}
+                            tag={
+                              type === 'token'
+                                ? 'Token Contract'
+                                : 'Smart Contract'
+                            }
+                            params={{
+                              chain_id: chain.config.chainId,
+                              ...(type === 'token'
+                                ? {
+                                    token_address_requested:
+                                      address.toLowerCase(),
+                                  }
+                                : { address: address.toLowerCase() }),
+                            }}
+                          />
+                        ),
+                      },
+                    ]
+                  : []),
                 {
                   title: 'Comments',
                   value: 'comments',
                   to: { pathname, query: { tab: 'comments' } },
                   content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <Card>
-                        <Comments
-                          id={`address/${address}`}
-                          title={`Contract ${address}`}
-                        />
-                      </Card>
-                    </Suspense>
+                    <Card>
+                      <Comments
+                        id={`address/${address}`}
+                        title={`Contract ${address}`}
+                      />
+                    </Card>
                   ),
                 },
               ]}
@@ -617,109 +601,11 @@ const ContractView: FC<IContractViewProps> = ({
               {/* Content here should depend on Tab's query param value */}
 
               {isSubTab && (
-                <Card>
-                  {!isMatchLoading && !hasSources && abi && (
-                    <>
-                      <Message type="danger">
-                        This smart contract is not verified according to{' '}
-                        <Link
-                          href="https://sourcify.dev/"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          Sourcify
-                        </Link>
-                        . Make sure you understand the risks of interacting with
-                        unverified smart contracts.
-                      </Message>
-                      <Message type="info">
-                        As a contract owner, you can get your smart contract
-                        verified with Sourcify{' '}
-                        <Link
-                          href="/verifyContract"
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          here
-                        </Link>
-                        .
-                      </Message>
-                    </>
-                  )}
-
-                  <TabPanel
-                    tabsClassName={tabsStyles.inner}
-                    tabs={contractTabs}
-                    value={tab}
-                  >
-                    {abi &&
-                      ['readContract', 'writeContract'].includes(
-                        tab as string
-                      ) && <ConnectButton />}
-
-                    {(tab === 'code' || !abi) && (
-                      <Files match={match} address={address} />
-                    )}
-
-                    {tab === 'readContract' && (
-                      <>
-                        {!!abi &&
-                          (abi as Abi)
-                            .filter(
-                              (item) =>
-                                item.type === 'function' &&
-                                item.stateMutability === 'view'
-                            )
-                            .map((method, index) => {
-                              const contractMethod = method as AbiFunction & {
-                                type: 'function'
-                              }
-                              return contractMethod.inputs.length === 0 ? (
-                                <ContractProperty
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                />
-                              ) : (
-                                <ContractMethodForm
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                />
-                              )
-                            })}
-                      </>
-                    )}
-                    {tab === 'writeContract' && (
-                      <>
-                        {!!abi &&
-                          (abi as Abi)
-                            .filter(
-                              (item) =>
-                                item.type === 'function' &&
-                                (item.stateMutability === 'nonpayable' ||
-                                  item.stateMutability === 'payable')
-                            )
-                            .map((method, index) => {
-                              const contractMethod = method as AbiFunction & {
-                                type: 'function'
-                              }
-                              return (
-                                <ContractMethodForm
-                                  key={`${index}-${contractMethod}`}
-                                  method={contractMethod}
-                                  address={address}
-                                  abi={abi}
-                                  isWrite
-                                />
-                              )
-                            })}
-                      </>
-                    )}
-                  </TabPanel>
-                </Card>
+                <ContractTab
+                  match={match}
+                  address={address}
+                  tab={tab as string}
+                />
               )}
             </TabPanel>
           </DetailsView>

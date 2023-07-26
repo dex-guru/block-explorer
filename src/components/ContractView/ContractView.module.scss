@@ -3,6 +3,12 @@
   height: 32px;
 }
 
+.verified {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-top;
+}
+
 .submit {
   composes: button from '../Button/Button.module.scss';
   composes: xl from '../Button/Button.module.scss';
@@ -34,6 +40,8 @@
 }
 
 .code {
+  composes: container from '../Code/Code.module.scss';
+  background: var(--code-bg) !important;
   max-height: 75vh;
   margin: 0;
 }

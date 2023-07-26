@@ -46,7 +46,7 @@
   position: relative;
   padding: 0 160px 68px 0;
 
-  @media (max-width: 440px) {
+  @media (max-width: 640px) {
     padding: 0;
     margin: 0;
   }
@@ -62,6 +62,10 @@
     transform-origin: bottom center;
     animation: imgSwing 5s infinite alternate;
 
+    &::after {
+      content: none;
+    }
+
     @keyframes imgSwing {
       from {
         transform: rotate(-5deg);
@@ -72,7 +76,7 @@
       }
     }
 
-    @media (max-width: 440px) {
+    @media (max-width: 640px) {
       display: none;
     }
   }
@@ -86,7 +90,7 @@
   align-items: flex-start;
   justify-content: space-between;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1260px) {
     flex: 0 0 100%;
   }
 
@@ -164,6 +168,15 @@
 
 .text {
   max-width: 560px;
+  display: flex;
+  flex-flow: column;
+  gap: 24px;
+}
+
+.powered {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .logoExplorer {

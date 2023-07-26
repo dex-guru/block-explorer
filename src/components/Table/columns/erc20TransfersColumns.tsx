@@ -1,5 +1,5 @@
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
-import { Address } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import TooltipAnchor from '@/components/TooltipAnchor'

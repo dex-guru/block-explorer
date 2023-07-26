@@ -9,6 +9,11 @@
   height: 4px !important;
 }
 
+.csrChart {
+  flex: 0 0 auto;
+  min-height: clamp(240px, 50vh, 800px);
+}
+
 .muted {
   composes: muted from '../styles/_common.scss';
 }
@@ -160,8 +165,11 @@
 
 .tabsInner {
   composes: inner from '../components/Tabs/Tabs.module.scss';
-  margin: -6px 0;
-  font-size: 14px;
+}
+
+.switch {
+  composes: switch from '../components/Tabs/Tabs.module.scss';
+  margin: -2px 0;
 }
 
 .addressWallet {
@@ -234,4 +242,19 @@
   &-transfer {
     composes: warn from '../components/Label/Label.module.scss';
   }
+}
+
+.retry {
+  font-size: 16px;
+  height: 32px;
+  background: var(--color-accent);
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-accent-a);
+  }
+}
+
+.errorPage {
+  min-height: 100vh;
 }

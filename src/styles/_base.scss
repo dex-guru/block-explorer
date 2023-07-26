@@ -54,7 +54,7 @@ body {
   min-width: 320px;
   scroll-behavior: smooth;
 
-  .open-menu & {
+  &.open-menu {
     overflow: hidden;
   }
 }
@@ -179,11 +179,13 @@ progress {
   &::-webkit-progress-value {
     background: var(--color-accent);
     border-radius: var(--radii-sm);
+    transition: 0.25s ease;
   }
 
   &::-moz-progress-bar {
     background: var(--color-accent);
     border-radius: var(--radii-sm);
+    transition: 0.25s ease;
   }
 
   &:not(:first-child) {
@@ -192,6 +194,53 @@ progress {
 
   &:not(:last-child) {
     margin-bottom: 8px;
+  }
+}
+
+pre {
+  .comment,
+  .builtin,
+  .linenumber {
+    color: var(--color-muted);
+  }
+
+  .builtin {
+    font-style: italic;
+  }
+
+  .punctuation {
+    color: var(--color-prompt);
+  }
+
+  .number,
+  .property {
+    color: var(--color-warn);
+  }
+
+  .operator {
+    color: var(--color-warn);
+  }
+
+  .string {
+    color: var(--color-info);
+  }
+
+  .boolean {
+    color: var(--color-success);
+  }
+
+  .keyword {
+    color: var(--color-danger);
+  }
+
+  .class-name {
+    color: var(--color-success);
+    font-weight: 600;
+  }
+
+  .function {
+    color: var(--color-warn);
+    font-weight: 600;
   }
 }
 
@@ -208,12 +257,28 @@ progress {
     }
   }
 
-  &-tooltip-wrapper {
+  &-tooltip {
+    &-cursor {
+      opacity: 0.1;
+    }
   }
 
   &-xAxis {
     text {
       font-size: 12px !important;
+    }
+  }
+
+  &-sector {
+    stroke: var(--color-bg-2);
+    stroke-width: 4;
+  }
+
+  &-line {
+    &:not(.has-color) {
+      path {
+        stroke: var(--color-accent);
+      }
     }
   }
 }

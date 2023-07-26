@@ -14,26 +14,6 @@
     font-size: 14px;
     line-height: 20px;
   }
-
-  path {
-    stroke: var(--color-accent);
-  }
-}
-
-.line {
-  path {
-    stroke-width: 2;
-  }
-}
-
-.axis {
-  &X {
-    fill: red;
-  }
-
-  &Y {
-    fill: green;
-  }
 }
 
 .tooltip {
@@ -56,8 +36,24 @@
     gap: 4px;
   }
 
-  &List {
+  &Item {
     margin: 0;
     padding: 0;
+    display: flex;
+    gap: 4px;
+  }
+
+  &Entry {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:before {
+      content: '';
+      width: 1em;
+      height: 1em;
+      background: var(--color);
+      border-radius: 50%;
+    }
   }
 }

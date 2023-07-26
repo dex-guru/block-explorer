@@ -1,5 +1,6 @@
 import { LogModel } from '@/__generated__/resolvers-types'
-import { Address, Label } from '@/components'
+import Address from '@/components/Address'
+import Label from '@/components/Label'
 import { LogsView } from '@/components/LogsView'
 import { IColumn } from '@/components/Table/types'
 

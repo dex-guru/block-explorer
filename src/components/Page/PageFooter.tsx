@@ -1,11 +1,11 @@
 import { FC } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import Button from '../Button'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Heading } from '@/components'
+import Button from '@/components/Button'
+import Heading from '@/components/Heading'
 import ImgBlockExplorer from '@/images/blockexplorer.svg'
-import ImgFooter from '@/images/footer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
 import styles from './PageFooter.module.scss'
 
@@ -24,12 +24,18 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
       </div>
       <div className={styles.body}>
         <div className={styles.about}>
-          <ImgFooter className={styles.aboutImg} />
-          <div className={clsx('text', styles.text)}>
-            <p>
+          <Image
+            src="/assets/images/mascot.svg"
+            className={styles.aboutImg}
+            alt="DexGuru"
+            width={0}
+            height={0}
+          />
+          <div className={styles.text}>
+            <div className={styles.powered}>
               <ImgBlockExplorer className={styles.logoExplorer} /> Block
-              Explorer Powered by DexGuru
-            </p>
+              Explorers Powered by DexGuru
+            </div>
             <small>
               DexGuru is an Analytics Platform and Block Explorer for{' '}
               {chainConfig.name}.

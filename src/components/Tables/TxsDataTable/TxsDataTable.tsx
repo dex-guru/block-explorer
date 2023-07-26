@@ -6,10 +6,9 @@ import {
   TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
-import Card from '@/components/Card'
 import DataTable from '@/components/DataTable'
-import Error from '@/components/Error'
-import Loading from '@/components/Loading'
+import { IconNoData } from '@/components/Icons'
+import StateView from '@/components/StateView'
 import { txsColumns } from '@/components/Table'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
@@ -70,7 +69,8 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
 
   if (isMount && !data && !loading) {
     return (
-      <Error
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
         className={styles.error}
         title="Error while receiving transactions"
         subtitle={subtitle}
@@ -85,14 +85,6 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
           },
         ]}
       />
-    )
-  }
-
-  if (!previousData && loading) {
-    return (
-      <Card>
-        <Loading />
-      </Card>
     )
   }
 

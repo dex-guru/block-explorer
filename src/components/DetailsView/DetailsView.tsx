@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import clsx from 'clsx'
-import Copy from '../Copy'
-import Heading from '../Heading'
-import Label from '../Label'
-import OpenWith from '../OpenWith'
 import { DetailsViewProps } from './types'
+import Copy from '@/components/Copy'
+import Heading from '@/components/Heading'
+import Label from '@/components/Label'
+import OpenWith from '@/components/OpenWith'
 import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
 
@@ -18,9 +18,11 @@ const DetailsView: FC<DetailsViewProps> = ({
   className,
   children,
   type,
+  header,
   chainConfig,
-  isCopy,
 }) => {
+  const isOpenWith = !!type && !!address && !!chainConfig
+
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
@@ -30,18 +32,26 @@ const DetailsView: FC<DetailsViewProps> = ({
           <>
             <Heading caption={address} size="lg" className={styles.address} />
             {!!isVerified && <IconVerify className={styles.verified} />}
-            {!!isCopy && <Copy text={address} />}
+            <Copy text={address} />
           </>
         )}
         {!address && !!isVerified && <IconVerify className={styles.verified} />}
-        <div className={styles.tools}></div>
         {!!tag && (
           <Label className={styles.tag} tooltip={tagTooltip}>
             {tag}
           </Label>
         )}
-        {!!type && !!address && !!chainConfig && (
-          <OpenWith type={type} chainConfig={chainConfig} address={address} />
+        {(!!header || isOpenWith) && (
+          <div className={styles.tools}>
+            {header}
+            {isOpenWith && (
+              <OpenWith
+                type={type}
+                chainConfig={chainConfig}
+                address={address}
+              />
+            )}
+          </div>
         )}
       </div>
       <div className={styles.body}>{children}</div>

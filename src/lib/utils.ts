@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BlockModel } from '@/__generated__/resolvers-types'
+import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
 export const getRootElement = () =>
@@ -7,8 +7,8 @@ export const getRootElement = () =>
   document.getElementById('__next') ||
   document.body
 
-export const getShortDate = (value: number) => {
-  const date = new Date(value * 1000)
+export const getShortDate = (value: number, isSeconds = true) => {
+  const date = new Date(value * (isSeconds ? 1000 : 1))
   return date.toLocaleDateString('en-GB', {
     timeZone: 'UTC',
     month: 'short',
@@ -342,3 +342,15 @@ export const rgbToHsl = (rI: number, gI: number, bI: number) => {
 }
 
 export const hexToHsl = (hex: string) => rgbToHsl(...hexToRgb(hex))
+
+export const checkChainFeature = (
+  chainConfig: ChainConfigModel,
+  feature: string
+) => chainConfig?.features?.some((x) => x.name === feature)
+
+export const getSlug = (value: string) => {
+  return value
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '')
+}

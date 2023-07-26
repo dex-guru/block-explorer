@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
@@ -9,16 +10,18 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Empty, Page, TabPanel } from '@/components'
 import DetailsView from '@/components/DetailsView/DetailsView'
-import IconEmpty from '@/images/icons/no-flash.svg'
+import { IconEmpty } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
+import TabPanel from '@/components/TabPanel'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
-const TxOverview = lazy(() => import('../../components/TabContent/TxOverview'))
-const TxLogs = lazy(() => import('../../components/TabContent/TxLogs'))
-const TxTrace = lazy(() => import('../../components/TabContent/TxTrace'))
+const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
+const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
+const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
 
 export const MAX_EVENTS_PER_PAGE = 10
 
@@ -55,7 +58,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         {!props.data?.hash && (
-          <Empty icon={<IconEmpty />} title="No TX was found" />
+          <StateView icon={<IconEmpty />} title="No TX was found" />
         )}
 
         {!!props.data?.hash && (

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 340 148">
+    <rect width="42" height="4" x="9" y="29" fill="grey" rx="2" />
+    <rect width="97" height="8" x="9" y="15" fill="currentColor" rx="4" />
+    <rect width="85" height="8" x="62" y="60" fill="grey" rx="4" />
+    <rect width="85" height="8" x="62" y="104" fill="grey" rx="4" />
+    <rect width="43" height="8" x="62" y="74" fill="grey" rx="4" />
+    <rect width="43" height="8" x="62" y="118" fill="grey" rx="4" />
+    <rect width="22" height="20" x="29" y="54" fill="currentColor" rx="8" />
+    <rect width="22" height="20" x="29" y="54" fill="grey" rx="8" />
+    <rect width="22" height="20" x="29" y="98" fill="currentColor" rx="8" />
+    <path fill="grey" fill-rule="evenodd"
+        d="M244.5 35C223.237 35 206 52.237 206 73.5s17.237 38.5 38.5 38.5S283 94.763 283 73.5 265.763 35 244.5 35ZM174 73.5C174 34.564 205.564 3 244.5 3S315 34.564 315 73.5 283.436 144 244.5 144 174 112.436 174 73.5Z"
+        clip-rule="evenodd" />
+    <path fill="currentColor" fill-rule="evenodd" d="M283 73c0-20.987-17.013-38-38-38V3c38.66 0 70 31.34 70 70h-32Z"
+        clip-rule="evenodd" />
+</svg>

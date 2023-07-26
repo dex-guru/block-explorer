@@ -5,8 +5,11 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
-import { Address, Tile, TimeAgo, Value } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import TimeAgo from '@/components/TimeAgo'
+import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
 
 export const txsColumns = (

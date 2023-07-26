@@ -6,17 +6,14 @@ import {
   ChainConfigModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Page,
-  DetailsView,
-  Summary,
-  Value,
-  Empty,
-  Error,
-  IconSearch,
-} from '@/components'
+import DetailsView from '@/components/DetailsView'
+import { IconNoData, IconSearch } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
+import Summary from '@/components/Summary'
 import { SummaryStat } from '@/components/Summary/types'
 import TokensDataTable from '@/components/Tables/TokensDataTable'
+import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_TOKENS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -69,14 +66,19 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
 
       <Page chainConfig={chainConfig}>
         {isAddress(address) && !tokenHoldingsStats && (
-          <Empty
+          <StateView
             icon={<IconSearch />}
             title="No holdings"
             subtitle={address ? `for address ${checkSumAddress}` : undefined}
           />
         )}
 
-        {!isAddress(address) && <Error title="No correct address provided" />}
+        {!isAddress(address) && (
+          <StateView
+            icon={<IconNoData />}
+            title="No correct address provided"
+          />
+        )}
 
         {!!tokenHoldingsStats && (
           <DetailsView

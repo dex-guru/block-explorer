@@ -1,39 +1,69 @@
 import { FC } from 'react'
-import { LineChartProps } from '.'
 import clsx from 'clsx'
 import {
   Brush,
-  LineChart as Chart,
+  AreaChart,
+  BarChart,
+  Bar,
+  Area,
   Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
 } from 'recharts'
-import Heading from '../Heading'
-import { generateLineChartData } from './utils'
-import styles from './LineChart.module.scss'
+import { CommonChartProps } from './types'
+import { generateCommonChartData } from './utils'
+import Heading from '@/components/Heading'
+import styles from './CommonChart.module.scss'
 
-const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
-  const chartData = generateLineChartData(data, options.axis.x.dataKey)
+const CommonChart: FC<CommonChartProps> = ({
+  data,
+  className,
+  type = 'line',
+  options,
+}) => {
+  const chartData = generateCommonChartData(data, options.axis.x.dataKey)
+
+  let Chart
+
+  switch (type) {
+    case 'area':
+      Chart = AreaChart
+      break
+    case 'bar':
+    case 'column':
+      Chart = BarChart
+      break
+    default:
+      Chart = LineChart
+  }
 
   const renderedSeries = data.map((el) => {
-    return (
-      <Line
-        className={clsx(styles.line, el.className)}
-        name={el.name || el.id}
-        key={el.id}
-        type={el.type || 'monotone'}
-        dataKey={el.id || 'value'}
-        stroke={el.color}
-        dot={false}
-        yAxisId={el.yAxis || 'left'}
-      />
-    )
+    const params = {
+      className: clsx(styles.line, el.className),
+      name: el.name || el.id,
+      dataKey: el.id || 'value',
+      stroke: el.color,
+      fill: el.color,
+      dot: false,
+      yAxisId: el.yAxis || 'left',
+    }
+
+    switch (type) {
+      case 'bar':
+      case 'column':
+        return <Bar key={el.id} {...params} />
+      case 'area':
+        return <Area key={el.id} {...params} type={el.type || 'monotone'} />
+      default:
+        return <Line key={el.id} {...params} type={el.type || 'monotone'} />
+    }
   })
 
-  const LineChartTooltip: FC<{
+  const CommonChartTooltip: FC<{
     active?: boolean
     label?: unknown
     payload?: {
@@ -92,7 +122,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
         {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
         <XAxis
-          type={options?.axis.x.type}
+          type={options?.axis.x.type || 'category'}
           domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
           className={clsx(
@@ -130,7 +160,7 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
             orientation="right"
           />
         )}
-        <Tooltip content={<LineChartTooltip />} />
+        <Tooltip content={<CommonChartTooltip />} />
 
         {renderedSeries}
 
@@ -149,4 +179,4 @@ const LineChart: FC<LineChartProps> = ({ data, className, options }) => {
   )
 }
 
-export default LineChart
+export default CommonChart

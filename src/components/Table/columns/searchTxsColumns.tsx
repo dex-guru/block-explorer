@@ -1,6 +1,8 @@
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import { Address, Tile, TimeAgo } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import TimeAgo from '@/components/TimeAgo'
 import { getNormalizedValue } from '@/lib/utils'
 
 export const searchTxsColumns: IColumn<TransactionModel>[] = [

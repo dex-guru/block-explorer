@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
-import { Loading } from '@/components'
+import Loading from '@/components/Loading'
 import { useApollo } from '@/lib/apollo/client'
 import { initApm } from '@/services/apmService'
 import styles from './Pages.module.scss'
@@ -21,6 +21,7 @@ export const ibm = IBM_Plex_Sans_Condensed({
   subsets: ['latin-ext'],
   variable: '--font-ibm',
 })
+const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 initApm()
 

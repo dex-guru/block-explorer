@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const nextBuildId = require('next-build-id')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const nextConfig = {
   output: 'standalone',
@@ -9,24 +13,42 @@ const nextConfig = {
     disqusName: 'your-disqus-shortname',
     pollInterval: 6000,
     gTagManagerId: 'GTM-K8HGVLW',
+    REACT_TOOLTIP_DISABLE_BASE_STYLES: true,
   },
   reactStrictMode: true,
   webpack: (config, { webpack, buildId }) => {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
+    config.module.rules.push(
+      // Reapply the existing rule, but only for svg imports ending in ?url
+      {
+        test: /\.svg$/i,
+        type: 'asset',
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Convert all other *.svg imports to React components
+      {
+        test: /\.svg$/i,
+        resourceQuery: { not: /url/ }, // exclude if *.svg?url
+        use: ['@svgr/webpack'],
+      }
+    )
+
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.GIT_COMMIT': JSON.stringify(buildId),
       })
     )
+
     config.resolve.fallback = { fs: false, net: false, tls: false }
 
     return config
   },
   images: {
-    domains: ['assets-stage.dex.guru', 'assets.dex.guru'],
+    domains: [
+      'assets-stage.dex.guru',
+      'assets.dex.guru',
+      'gravatar.com',
+      'www.gravatar.com',
+    ],
   },
   generateBuildId: () => nextBuildId.sync({ dir: __dirname }).slice(0, 7),
   async headers() {
@@ -45,4 +67,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

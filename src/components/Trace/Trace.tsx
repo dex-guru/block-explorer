@@ -1,14 +1,14 @@
 import { FC, ReactNode } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import Address from '../Address'
-import Code from '../Code'
-import Label from '../Label'
-import Properties from '../Properties'
-import Value from '../Value'
 import TraceL2Events from './TraceL2Events'
 import { TraceProps } from './types'
-import IconArrow from '@/images/icons/arrow-down.svg'
+import Address from '@/components/Address'
+import Code from '@/components/Code'
+import { IconArrowDown } from '@/components/Icons'
+import Label from '@/components/Label'
+import Properties from '@/components/Properties'
+import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
 import styles from './Trace.module.scss'
 
@@ -99,7 +99,7 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
   return (
     <details className={styles.container}>
       <summary className={styles.header}>
-        <IconArrow className={styles.arrow} />
+        <IconArrowDown className={styles.arrow} />
         {content}
       </summary>
       <div className={styles.body}>

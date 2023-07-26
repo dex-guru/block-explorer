@@ -1,7 +1,9 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { Error, Page } from '@/components'
+import { IconNoData } from '@/components/Icons'
+import Page from '@/components/Page'
+import StateView from '@/components/StateView'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
@@ -20,7 +22,7 @@ const AddressIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <Error title="No address provided" />
+        <StateView icon={<IconNoData />} title="No address provided" />
       </Page>
     </>
   )

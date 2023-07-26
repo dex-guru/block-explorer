@@ -11,7 +11,10 @@ import { Status } from '../../types'
 import ChainAddressForm from './ChainAddressForm'
 import Invalid from './Invalid'
 import Missing from './Missing'
-import { Details, Label, LoadingCard, Properties } from '@/components'
+import Details from '@/components/Details'
+import Label from '@/components/Label'
+import { LoadingCard } from '@/components/Loading'
+import Properties from '@/components/Properties'
 
 type CheckedContractProps = {
   isOpen?: boolean

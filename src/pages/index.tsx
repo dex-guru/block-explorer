@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useQuery } from '@apollo/client'
@@ -10,14 +11,18 @@ import {
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Card, Grid, Page, Summary, Table, Value } from '@/components'
+import Card from '@/components/Card'
+import Grid from '@/components/Grid'
+import Page from '@/components/Page'
+import Summary from '@/components/Summary'
+import Table from '@/components/Table'
 import {
   BlockModelWithTimeDiff,
   lastBlocksColumns,
 } from '@/components/Table/columns/lastBlocksColumns'
 import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
-import Tabs from '@/components/Tabs'
+import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import {
   GET_BLOCKS_SHORT,
@@ -25,11 +30,16 @@ import {
 } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import {
+  checkChainFeature,
   financialFormat,
   financialFormatLowValueHighPrecision,
   getBlocksWithTimeDiff,
 } from '@/lib/utils'
 import styles from './Pages.module.scss'
+
+const Tabs = dynamic(() => import('@/components/Tabs'), {
+  ssr: false,
+})
 
 interface IndexProps {
   transactions: TransactionModel[]
@@ -144,7 +154,8 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
   ]
-  props.csrStats &&
+
+  if (checkChainFeature(chainConfig, 'csr') && props.csrStats) {
     statsDisplay.push({
       title: 'Contract Secured Revenue (CSR)',
       tooltip:
@@ -163,6 +174,7 @@ const Index: NextPage<IndexProps> = (props) => {
         </Link>
       ),
     })
+  }
 
   const pageTitle = `${chainConfig.name}${
     chainConfig.chain ? ` ${chainConfig.chain}` : ''
@@ -213,13 +225,13 @@ const Index: NextPage<IndexProps> = (props) => {
           <Card
             title="Latest Transactions"
             header={
-              chainConfig.features.some((x) => x.name === 'cosmos') ? (
+              checkChainFeature(chainConfig, 'cosmos') ? (
                 <Tabs
                   tabs={[
                     { title: 'EVM', value: 'evm' },
                     { title: 'Cosmos', value: 'cosmos' },
                   ]}
-                  className={styles.tabsInner}
+                  className={styles.switch}
                   value={isCosmos ? 'cosmos' : 'evm'}
                   onChange={(value) => {
                     setIsCosmos(value === 'cosmos')

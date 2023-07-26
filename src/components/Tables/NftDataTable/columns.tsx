@@ -1,6 +1,7 @@
 import { Erc721TransferModel } from '@/__generated__/resolvers-types'
-import { Address, TimeAgo } from '@/components'
+import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import TimeAgo from '@/components/TimeAgo'
 
 export const nftColumns: IColumn<Erc721TransferModel>[] = [
   {

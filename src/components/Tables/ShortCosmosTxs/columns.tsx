@@ -1,7 +1,10 @@
 import styles from '../../../pages/Pages.module.scss'
 import { CosmosTransactionModel } from '@/__generated__/resolvers-types'
-import { Address, IconTx, Tile, TimeAgo } from '@/components'
+import Address from '@/components/Address'
+import { IconTx } from '@/components/Icons'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import TimeAgo from '@/components/TimeAgo'
 
 export const cosmosTxsColumns = (): IColumn<CosmosTransactionModel>[] => [
   {

@@ -3,8 +3,12 @@ import {
   ChainConfigModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import { Address, IconTx, Label, Tile, TimeAgo } from '@/components'
+import Address from '@/components/Address'
+import { IconTx } from '@/components/Icons'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
+import Tile from '@/components/Tile'
+import TimeAgo from '@/components/TimeAgo'
 import { getNormalizedValue } from '@/lib/utils'
 
 export const lastTxsColumns = (

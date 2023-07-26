@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import bytes from 'bytes'
-import Grid from '../Grid'
-import Message from '../Message'
 import CheckedContractsView from './CheckedContractsView'
 import FileUpload from './FileUpload'
 import {
@@ -18,6 +16,8 @@ import {
   VerificationInput,
   VerifyResponse,
 } from './types'
+import Grid from '@/components/Grid'
+import Message from '@/components/Message'
 import styles from './Verifier.module.scss'
 
 const UI_MAX_FILE_SIZE = 30 * 1024 * 1024

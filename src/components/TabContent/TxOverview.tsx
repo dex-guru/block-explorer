@@ -2,13 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import pageStyles from '../../pages/Pages.module.scss'
-import { Property } from '../Properties/types'
-import {
-  erc20ActionColumns,
-  erc20TransfersColumns,
-  nftTransfersColumns,
-} from '../Table'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -16,26 +9,31 @@ import {
   Erc721TransferModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
-import {
-  Address,
-  Card,
-  Code,
-  DateTime,
-  Details,
-  IconCross,
-  Label,
-  Properties,
-  Table,
-  TimeAgo,
-  Value,
-} from '@/components'
+import Address from '@/components/Address'
+import Card from '@/components/Card'
+import Code from '@/components/Code'
+import DateTime from '@/components/DateTime'
+import Details from '@/components/Details'
+import { IconCross, IconVerify, IconWatch } from '@/components/Icons'
+import Label from '@/components/Label'
+import Properties, { Property } from '@/components/Properties'
 import Separated from '@/components/Separated/Separated'
-import StopwatchIcon from '@/images/icons/stop-watch.svg'
-import IconVerify from '@/images/icons/verified.svg'
+import Table, {
+  erc20ActionColumns,
+  erc20TransfersColumns,
+  nftTransfersColumns,
+} from '@/components/Table'
+import TimeAgo from '@/components/TimeAgo'
+import Value from '@/components/Value'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
-import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import {
+  checkChainFeature,
+  financialFormat,
+  getNormalizedValue,
+} from '@/lib/utils'
 import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
+import pageStyles from '@/pages/Pages.module.scss'
 
 const TxOverview: FC<{
   data: TransactionModel
@@ -155,7 +153,7 @@ const TxOverview: FC<{
       tooltip: 'The date and time at which a transaction is produced.',
       value: (
         <Value
-          icon={<StopwatchIcon className={pageStyles.muted} />}
+          icon={<IconWatch className={pageStyles.muted} />}
           value={<TimeAgo timestamp={data.blockTimestamp} />}
           suffix={
             <>
@@ -306,7 +304,8 @@ const TxOverview: FC<{
       ),
     },
   ]
-  chainConfig.features.some((x) => x.name === 'EIP1559') &&
+
+  checkChainFeature(chainConfig, 'EIP1559') &&
     detailsProperties.splice(1, 0, {
       title: 'Gas Fees:',
       tooltip:

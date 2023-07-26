@@ -28,6 +28,7 @@ export type AddressModel = {
   nativeBalance: Scalars['Float'];
   nativeBalanceUSD: Scalars['Float'];
   symbol?: Maybe<Scalars['String']>;
+  tokenLists: Array<Scalars['String']>;
 };
 
 export type BlockModel = {
@@ -63,10 +64,15 @@ export type BlockStatsModel = {
 
 export type CsrStatsModel = {
   __typename?: 'CSRStatsModel';
+  /** List of burned assets time series data. */
   burned: Array<TimeSeriesChartModel>;
+  /** List of net emissions time series data. */
   netEmissions: Array<TimeSeriesChartModel>;
+  /** The total number of contracts. */
   sumContracts: Scalars['Int'];
+  /** The total revenue. */
   sumRevenue: Scalars['Decimal'];
+  /** The total number of transactions. */
   sumTx: Scalars['Int'];
 };
 
@@ -98,20 +104,39 @@ export type ChainFeatureModel = {
 
 export type ChainStatsModel = {
   __typename?: 'ChainStatsModel';
+  /** The number of active addresses. */
   activeAddressesCount: Scalars['Decimal'];
+  /** The number of the last block. */
   lastBlockNumber: Scalars['Int'];
+  /** The change in liquidity in USD over the last 24 hours. */
   liquidity24hDelta: Scalars['Decimal'];
+  /** The current liquidity in USD. */
   liquidityUsd: Scalars['Decimal'];
+  /** The current market capitalization. */
   marketCap: Scalars['Decimal'];
+  /** The medium gas price. */
   mediumGasPrice: Scalars['Decimal'];
+  /** The current price of the native token in USD. */
   nativeTokenPriceUsd: Scalars['Decimal'];
+  /** The change in the price of the native token in USD over the last 24 hours. */
   nativeTokenPriceUsd24hDelta: Scalars['Decimal'];
+  /** The number of smart contracts. */
   smartContractsCount: Scalars['Decimal'];
+  /** The current supply of the native token. */
   tokenSupply: Scalars['Decimal'];
-  transactionsCount: Scalars['Decimal'];
+  /** The total count of transactions. */
+  transactionsCount: Scalars['Int'];
+  /** The history of transaction counts represented as a time series. */
   transactionsCountHistory: Array<TimeSeriesChartModel>;
+  /** The number of transactions per second. */
   transactionsPerSecond: Scalars['Decimal'];
+  /** Average daily transactions per second. */
+  transactionsPerSecondDailyAVG: Scalars['Decimal'];
+  /** Transactions per second average in 5 minutes */
+  transactionsPerSecondFiveMinutesAVG: Scalars['Decimal'];
+  /** The change in trading volume in USD over the last 24 hours. */
   volume24hDeltaUsd: Scalars['Decimal'];
+  /** The total trading volume in USD over the last 24 hours. */
   volume24hUsd: Scalars['Decimal'];
 };
 
@@ -228,19 +253,19 @@ export type NativeCurrencyModel = {
 
 export type Query = {
   __typename?: 'Query';
-  /** Get address */
+  /** Address Info for EOA and SmartContracts */
   address: AddressModel;
-  /** Get token stats */
+  /** Account Balances */
   balances: Array<TokenBalanceModel>;
-  /** Get token stats */
+  /** ERC-20 Token stats */
   balancesStats?: Maybe<TokenBalancesStatsModel>;
-  /** Get block stats */
+  /** Blocks stats for filtered chunk */
   blockStats: BlockStatsModel;
-  /** Get blocks */
+  /** RAW Blocks in filtered chunks or one by one */
   blocks: Array<BlockModel>;
-  /** Get chain config */
+  /** Chain Config by chainId */
   chainConfig: ChainConfigModel;
-  /** Get transactions */
+  /** Chains stats returns chain statistics seen at the firstpage of blocks explorer */
   chainStats: ChainStatsModel;
   /** Get contract code */
   contractCode?: Maybe<ContractCodeModel>;
@@ -248,25 +273,25 @@ export type Query = {
   contractCreator?: Maybe<ContractCreatorModel>;
   /** Get last cosmos blocks and/or transactions */
   cosmos: CosmosModel;
-  /** Get CSRStats */
+  /** CSRStats */
   csrStats: CsrStatsModel;
-  /** Get ERC20 Transactions. Types: all, actions, transfers */
+  /** Parsed ERC20 Transactions Transfers and DeFi Swaps/Burn/Mints */
   erc20Events: Erc20EventsModel;
-  /** Get logs */
+  /** RAW Receipt Logs hooked up to transaction or address */
   logs: Array<LogModel>;
-  /** Get ERC721 and ERC1155 Transfers */
+  /** NFT ERC721 and ERC1155 Transfers */
   nftEvents: NftTransfersModel;
-  /** Search Blocks/Address/Transactions/Logs */
+  /** Search for Blocks/Address/Transactions/Logs */
   search: Search;
-  /** Get tokens holdings for address */
+  /** Tokens holdings for address */
   tokenHoldings: Array<TokenHoldingsModel>;
-  /** Get total stats for token holdings */
+  /** Total stats for token holdings */
   tokenHoldingsStats?: Maybe<TokenHoldingsStatsModel>;
-  /** Get traces for a transaction */
+  /** Traces for a transaction */
   traces: TransactionTraceModel;
-  /** Get transaction stats */
+  /** Transactions stats for filtered chunk of transactions */
   transactionStats: TransactionStatsModel;
-  /** Get transactions */
+  /** RAW Transactions Data, in filtered chunks or one by one */
   transactions: Array<TransactionModel>;
 };
 
@@ -437,7 +462,9 @@ export type Subscription = {
 
 export type TimeSeriesChartModel = {
   __typename?: 'TimeSeriesChartModel';
+  /** The timestamp of the data point. */
   timestamp: Scalars['Int'];
+  /** The value of the data point at the given timestamp. */
   value: Scalars['Float'];
 };
 
@@ -516,6 +543,7 @@ export type TransactionStatsModel = {
   avgTransactionsFeeDelta24H: Scalars['Float'];
   networkTransactionsFee24H: Scalars['Decimal'];
   networkTransactionsFeeDelta24H: Scalars['Float'];
+  /** Transactions Over 24H */
   transactions24H: Scalars['Int'];
   transactionsCount: Scalars['Int'];
   transactionsDelta24H: Scalars['Float'];
@@ -689,6 +717,7 @@ export type AddressModelResolvers<ContextType = any, ParentType extends Resolver
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   symbol?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tokenLists?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -769,9 +798,11 @@ export type ChainStatsModelResolvers<ContextType = any, ParentType extends Resol
   nativeTokenPriceUsd24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   smartContractsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   tokenSupply?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
-  transactionsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   transactionsCountHistory?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>;
   transactionsPerSecond?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  transactionsPerSecondDailyAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  transactionsPerSecondFiveMinutesAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   volume24hDeltaUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   volume24hUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

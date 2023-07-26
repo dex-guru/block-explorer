@@ -1,9 +1,9 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import { clsx } from 'clsx'
-import Button from '../Button'
-import { IconCross, IconDown, IconMenu } from '@/components'
+import Button from '@/components/Button'
+import { IconArrowDown, IconCross, IconMenu } from '@/components/Icons'
 import styles from './PageMenu.module.scss'
 
 export type PageMenuLink = LinkProps & { caption: string; className?: string }
@@ -19,7 +19,6 @@ const PageMenu: FC<{
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
-    document.documentElement.classList[isOpen ? 'remove' : 'add']('open-menu')
     onOpenChange && onOpenChange(!isOpen)
     setIsOpen(!isOpen)
   }
@@ -27,8 +26,12 @@ const PageMenu: FC<{
   const Icon = isOpen ? IconCross : IconMenu
 
   const handleLinkCLick = () => {
-    document.documentElement.classList.remove('open-menu')
+    setIsOpen(false)
   }
+
+  useEffect(() => {
+    document.body.classList[!isOpen ? 'remove' : 'add']('open-menu')
+  }, [isOpen])
 
   const renderLink = (
     link: PageMenuLink,
@@ -42,7 +45,9 @@ const PageMenu: FC<{
         {...props}
         href={link.href || '#'}
         onClick={(e) => {
-          handleLinkCLick()
+          if (link.href || link.onClick) {
+            handleLinkCLick()
+          }
           link.onClick && link.onClick(e)
           if (!link.href) {
             e.preventDefault()
@@ -58,7 +63,7 @@ const PageMenu: FC<{
         )}
       >
         {link.caption}
-        {hasSubmenu && <IconDown className={styles.arrow} />}
+        {hasSubmenu && <IconArrowDown className={styles.arrow} />}
       </Link>
     )
   }

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import clsx from 'clsx'
 import { formatTime } from './helpers'
 import { TimeAgoProps } from './types'
+import { getDateTime } from '@/lib/dates'
 import styles from './TimeAgo.module.scss'
 
 const TimeAgo: FC<TimeAgoProps> = ({
@@ -21,17 +22,7 @@ const TimeAgo: FC<TimeAgoProps> = ({
   const tooltipData = showTooltip
     ? {
         'data-tooltip-id': 'app-tooltip',
-        'data-tooltip-content': `${dueDate.toLocaleString('en-GB', {
-          timeZone: 'UTC',
-          year: 'numeric',
-          month: 'short',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          weekday: 'short',
-          hour12: false,
-        })} UTC`,
+        'data-tooltip-content': `${getDateTime(dueDate)} UTC`,
       }
     : {}
 

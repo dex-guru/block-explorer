@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import clsx from 'clsx'
-import Button from '../Button'
-import Heading from '../Heading'
 import { CardProps } from './types'
+import Button from '@/components/Button'
+import Heading from '@/components/Heading'
 import styles from './Card.module.scss'
 
 export const Card: FC<CardProps> = ({
@@ -10,6 +10,8 @@ export const Card: FC<CardProps> = ({
   title,
   header,
   actions,
+  footer,
+  style,
   children,
 }) => {
   const renderActions = () => {
@@ -25,7 +27,7 @@ export const Card: FC<CardProps> = ({
   }
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div className={clsx(styles.container, className)} style={style}>
       {(!!title || !!header) && (
         <div className={styles.header}>
           {title && (
@@ -37,9 +39,10 @@ export const Card: FC<CardProps> = ({
         </div>
       )}
       <div className={styles.body}>{children}</div>
-      {!!actions && (
+      {(!!actions || !!footer) && (
         <div className={styles.footer}>
-          <div className={styles.actions}>{renderActions()}</div>
+          {!!actions && <div className={styles.actions}>{renderActions()}</div>}
+          {footer}
         </div>
       )}
     </div>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 340 148">
+    <rect width="16" height="4" x="27" y="136" fill="grey" rx="2" />
+    <rect width="42" height="34" x="14" y="94" fill="grey" rx="4" />
+    <rect width="16" height="4" x="81" y="136" fill="grey" rx="2" />
+    <rect width="42" height="65" x="68" y="63" fill="grey" rx="4" />
+    <rect width="16" height="4" x="135" y="136" fill="grey" rx="2" />
+    <rect width="42" height="91" x="122" y="37" fill="grey" rx="4" />
+    <path fill="currentColor"
+        d="M122 94h42v30a4 4 0 0 1-4 4h-34a4 4 0 0 1-4-4V94Zm-54 20h42v10a4 4 0 0 1-4 4H72a4 4 0 0 1-4-4v-10Zm-54 9h42v1a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4v-1Z" />
+    <rect width="16" height="4" x="189" y="136" fill="grey" rx="2" />
+    <rect width="42" height="123" x="176" y="5" fill="grey" rx="4" />
+    <rect width="16" height="4" x="243" y="136" fill="grey" rx="2" />
+    <rect width="42" height="24" x="230" y="104" fill="grey" rx="4" />
+    <rect width="16" height="4" x="297" y="136" fill="grey" rx="2" />
+    <rect width="42" height="91" x="284" y="37" fill="grey" rx="4" />
+    <rect width="17" height="4" x="9" y="29" fill="grey" rx="2" />
+    <rect width="82" height="8" x="9" y="15" fill="currentColor" rx="4" />
+    <path fill="currentColor"
+        d="M176 59h42v65a4 4 0 0 1-4 4h-34a4 4 0 0 1-4-4V59Zm54 63h42v2a4 4 0 0 1-4 4h-34a4 4 0 0 1-4-4v-2Zm54-28h42v30a4 4 0 0 1-4 4h-34a4 4 0 0 1-4-4V94Z" />
+</svg>

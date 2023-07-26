@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { LogoProps } from './types'
+import ImgBlockExplorer from '@/images/blockexplorer.svg'
 import styles from './Logo.module.scss'
 
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
@@ -17,7 +18,10 @@ const Logo: FC<LogoProps> = ({ title, to, url }) => {
       {!!title && (
         <div className={styles.content}>
           <strong className={styles.title}>{title} Explorer</strong>{' '}
-          <span className={styles.subtitle}>by DexGuru</span>
+          <span className={styles.subtitle}>
+            <ImgBlockExplorer className={styles.explorer} />
+            by DexGuru
+          </span>
         </div>
       )}
     </div>
