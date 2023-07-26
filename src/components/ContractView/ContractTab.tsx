@@ -15,7 +15,7 @@ const ContractMethodForm = dynamic(() => import('./ContractMethodForm'))
 const ContractProperty = dynamic(() => import('./ContractProperty'))
 const ConnectButton = dynamic(() => import('@/components/ConnectButton'))
 
-const ContractViewContractTab: FC<{
+const ContractTab: FC<{
   match?: Match | null
   address: string
   tab: string
@@ -161,4 +161,4 @@ const ContractViewContractTab: FC<{
   )
 }
 
-export default ContractViewContractTab
+export default ContractTab

@@ -57,9 +57,7 @@ const Erc20DataTable = dynamic(
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
 
-const ContractViewContractTab = dynamic(
-  () => import('./ContractViewContractTab')
-)
+const ContractTab = dynamic(() => import('./ContractTab'))
 
 const ContractView: FC<IContractViewProps> = ({
   address,
@@ -603,7 +601,7 @@ const ContractView: FC<IContractViewProps> = ({
               {/* Content here should depend on Tab's query param value */}
 
               {isSubTab && (
-                <ContractViewContractTab
+                <ContractTab
                   match={match}
                   address={address}
                   tab={tab as string}
