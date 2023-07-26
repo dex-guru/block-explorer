@@ -1,5 +1,8 @@
 import { FC } from 'react'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import Button from '../Button'
+import { IconShare } from '../Icons'
 import { DetailsViewProps } from './types'
 import Copy from '@/components/Copy'
 import Heading from '@/components/Heading'
@@ -41,8 +44,9 @@ const DetailsView: FC<DetailsViewProps> = ({
             {tag}
           </Label>
         )}
-        {(!!header || isOpenWith) && (
+        {(!!header || isOpenWith || true) && (
           <div className={styles.tools}>
+            <Share />
             {header}
             {isOpenWith && (
               <OpenWith
@@ -56,6 +60,39 @@ const DetailsView: FC<DetailsViewProps> = ({
       </div>
       <div className={styles.body}>{children}</div>
     </div>
+  )
+}
+
+const Share: FC = () => {
+  const router = useRouter()
+
+  if (!navigator.canShare || !navigator?.canShare()) {
+    return <>no share</>
+  }
+
+  const data = {
+    title: document.querySelector('head title')?.innerHTML || undefined,
+    text:
+      document
+        .querySelector('head meta[name="description"]')
+        ?.getAttribute('content') || undefined,
+    url:
+      document
+        .querySelector('head link[rel="canonical"]')
+        ?.getAttribute('href') || router.asPath,
+  }
+
+  return (
+    <Button
+      icon={<IconShare />}
+      onClick={async () => {
+        try {
+          await navigator.share(data)
+        } catch (err) {
+          //
+        }
+      }}
+    />
   )
 }
 

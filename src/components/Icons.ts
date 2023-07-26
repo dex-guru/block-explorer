@@ -15,6 +15,7 @@ import IconEmpty from '@/images/icons/no-flash.svg'
 import IconNoIcon from '@/images/icons/no-icon.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconSearch from '@/images/icons/search.svg'
+import IconShare from '@/images/icons/share.svg'
 import IconShield from '@/images/icons/shield.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconSuccess from '@/images/icons/success.svg'
@@ -40,6 +41,7 @@ export {
   IconNoIcon,
   IconQuestion,
   IconSearch,
+  IconShare,
   IconShield,
   IconTx,
   IconVerify,
