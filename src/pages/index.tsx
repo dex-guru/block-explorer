@@ -105,23 +105,23 @@ const Index: NextPage<IndexProps> = (props) => {
     {
       title: 'TPS',
       tooltip:
-        'Transactions Per Second (TPS) refers to the number of transactions that a blockchain can handle in one second. Calculated as: Amount of TXs in last block / Block time.',
+        'Transactions Per Second (TPS) refers to the number of transactions a blockchain can handle in one second. Calculated as: Amount of TXs / Average Block Time.',
       value: (
         <Separated>
           <Value
-            tooltip="TPS for last block"
+            tooltip="TPS of the last indexed block"
             value={financialFormat(stats.transactionsPerSecond, {
               decimals: 2,
             })}
           />
           <Value
-            tooltip="TPS for 5 minutes"
+            tooltip="TPS over the last 5 minutes"
             value={financialFormat(stats.transactionsPerSecondFiveMinutesAVG, {
               decimals: 2,
             })}
           />
           <Value
-            tooltip="TPS for this day"
+            tooltip="TPS over the last 24 hours"
             value={financialFormat(stats.transactionsPerSecondDailyAVG, {
               decimals: 2,
             })}
