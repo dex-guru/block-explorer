@@ -1,7 +1,7 @@
 html {
   margin: 0;
   padding: 0;
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-family: var(--font-main), sans-serif;
   min-width: 320px;
   color-scheme: dark light;
   scroll-behavior: smooth;
