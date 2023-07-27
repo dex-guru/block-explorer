@@ -37,7 +37,7 @@ const DateTime: FC<DateTimeProps> = ({
         second: '2-digit',
         weekday: 'short',
         hour12: false,
-      })}{' '}
+      }).replace(' at ', ', ')}{' '}
       UTC
     </span>
   )

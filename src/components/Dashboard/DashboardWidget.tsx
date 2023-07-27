@@ -1,4 +1,4 @@
-import { FC, Suspense, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC, Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
@@ -6,13 +6,16 @@ import { useIntervalWhen } from 'rooks'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import Card from '@/components/Card'
-import { IconRedash, IconWatch } from '@/components/Icons'
+import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
 import Table from '@/components/Table'
-import Tabs from '@/components/Tabs'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
-import { getDynamicDateRangePeriod } from '@/lib/dates'
+import {
+  DYNAMIC_DATE_RANGES,
+  DYNAMIC_DATE_PREFIX,
+  getDynamicDateRangePeriod,
+} from '@/lib/dates'
 import {
   getRedashJob,
   getRedashQueryResponse,
@@ -94,7 +97,8 @@ const DashboardWidget: FC<{
     )
   ) : undefined
 
-  const isFetching = !!queryJob?.id || (!queryJob && !queryResult)
+  const isFetching =
+    (!!queryJob?.status && queryJob?.status < 3) || (!queryJob && !queryResult)
 
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
@@ -163,18 +167,20 @@ const DashboardWidget: FC<{
           />
         )}
 
-        {!!queryJob?.id && (
+        {!!queryJob?.status && (
           <Value
             className={styles.timestamp}
             icon={<IconWatch />}
-            value={'Calculating data'}
+            value={
+              queryJob?.status < 3 ? 'Calculating data' : 'Query failed...'
+            }
           />
         )}
 
-        {!queryJob?.id && !!queryResult?.retrieved_at && (
+        {!queryJob?.status && !!queryResult?.retrieved_at && (
           <Value
             className={styles.timestamp}
-            icon={<IconWatch />}
+            icon={<IconAgo />}
             value={
               <Suspense fallback={<>&nbsp;</>}>
                 <TimeAgo
@@ -192,6 +198,12 @@ const DashboardWidget: FC<{
     )
   }
 
+  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setQueryResult(undefined)
+    setQueryJob(undefined)
+    setCurrentDateRange(e.target.value)
+  }
+
   const renderDateRangeSwitch = () => {
     if (
       !visualization?.query?.options?.parameters?.find(
@@ -202,20 +214,15 @@ const DashboardWidget: FC<{
     }
 
     return (
-      <Tabs
-        className={styles.switch}
-        tabs={[
-          { title: '1M', value: 'd_last_30_days' },
-          { title: '3M', value: 'd_last_90_days' },
-          { title: '1Y', value: 'd_last_12_months' },
-        ]}
-        value={currentDateRange}
-        onChange={(value) => {
-          setQueryResult(undefined)
-          setQueryJob(undefined)
-          setCurrentDateRange(value)
-        }}
-      />
+      <select value={currentDateRange} onChange={handleChange}>
+        {Object.entries(DYNAMIC_DATE_RANGES).map(([key, value]) => {
+          return (
+            <option key={key} value={`${DYNAMIC_DATE_PREFIX}${key}`}>
+              {value.name}
+            </option>
+          )
+        })}
+      </select>
     )
   }
 
@@ -226,9 +233,7 @@ const DashboardWidget: FC<{
       className={styles.redash}
       target="_blank"
       rel="noreferrer noopener"
-      href={`${
-        process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
-      }/queries/${visualization.query.id}`}
+      href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${visualization.query.id}`}
     >
       <IconRedash className={styles.redashIcon} />
     </Link>

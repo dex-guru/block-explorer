@@ -50,6 +50,7 @@ const CommonChart: FC<CommonChartProps> = ({
       fill: el.color,
       dot: false,
       yAxisId: el.yAxis || 'left',
+      isAnimationActive: options?.isAnimated ?? false,
     }
 
     switch (type) {

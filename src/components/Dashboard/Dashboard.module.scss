@@ -15,10 +15,6 @@
   --color-card-text: #fff;
 }
 
-.switch {
-  composes: switch from '../Tabs/Tabs.module.scss';
-}
-
 .output {
   composes: text from '../../styles/_typography.scss';
   position: relative;
@@ -70,11 +66,6 @@
   visibility: visible;
 }
 
-.loading {
-  pointer-events: none;
-  visibility: hidden;
-}
-
 .counter {
   display: flex;
   flex-flow: column;
@@ -84,13 +75,20 @@
   flex: 1 0 auto;
 }
 
+.loading {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .value {
   font-weight: 500;
   line-height: 1;
   font-size: clamp(32px, 4vw + 1px, 64px);
 }
 
+.muted,
 .unit {
+  composes: muted from '../../styles/_common.scss';
 }
 
 .footer {

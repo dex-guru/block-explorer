@@ -5,13 +5,11 @@ import Copy from '@/components/Copy'
 import Heading from '@/components/Heading'
 import Label from '@/components/Label'
 import OpenWith from '@/components/OpenWith'
-import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
 
 const DetailsView: FC<DetailsViewProps> = ({
   title,
   address,
-  isVerified,
   icon,
   tag,
   tagTooltip,
@@ -31,11 +29,9 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!address && (
           <>
             <Heading caption={address} size="lg" className={styles.address} />
-            {!!isVerified && <IconVerify className={styles.verified} />}
             <Copy text={address} />
           </>
         )}
-        {!address && !!isVerified && <IconVerify className={styles.verified} />}
         {!!tag && (
           <Label className={styles.tag} tooltip={tagTooltip}>
             {tag}

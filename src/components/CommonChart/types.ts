@@ -21,6 +21,7 @@ export type CommonChartOptions = {
     x?: XAxisProps
   }
   zoom?: boolean
+  isAnimated?: boolean
 }
 
 export type CommonChartProps = {

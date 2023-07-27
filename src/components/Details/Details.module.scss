@@ -38,8 +38,10 @@
   border-radius: var(--radii-lg);
   display: flex;
 
-  &::marker {
+  &::marker,
+  &::-webkit-details-marker {
     content: none;
+    display: none;
   }
 
   &:after {
