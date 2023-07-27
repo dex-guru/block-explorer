@@ -233,9 +233,7 @@ const DashboardWidget: FC<{
       className={styles.redash}
       target="_blank"
       rel="noreferrer noopener"
-      href={`${
-        process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
-      }/queries/${visualization.query.id}`}
+      href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${visualization.query.id}`}
     >
       <IconRedash className={styles.redashIcon} />
     </Link>
