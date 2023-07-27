@@ -27,6 +27,9 @@
 
 .tools {
   margin-left: auto;
+  display: flex;
+  flex-flow: row;
+  gap: 16px;
 }
 
 .tag {

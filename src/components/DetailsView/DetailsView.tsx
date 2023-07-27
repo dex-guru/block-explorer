@@ -1,6 +1,8 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
+import { useTimeoutWhen } from 'rooks'
 import Button from '../Button'
 import { IconShare } from '../Icons'
 import { DetailsViewProps } from './types'
@@ -10,6 +12,8 @@ import Label from '@/components/Label'
 import OpenWith from '@/components/OpenWith'
 import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
+
+const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 const DetailsView: FC<DetailsViewProps> = ({
   title,
@@ -65,34 +69,60 @@ const DetailsView: FC<DetailsViewProps> = ({
 
 const Share: FC = () => {
   const router = useRouter()
+  const [data, setData] = useState<ShareData | undefined>(undefined)
+  const [isShowTooltip, setIsShowTooltip] = useState(false)
 
-  if (!navigator.canShare || !navigator?.canShare()) {
-    return <>no share</>
-  }
-
-  const data = {
-    title: document.querySelector('head title')?.innerHTML || undefined,
-    text:
-      document
-        .querySelector('head meta[name="description"]')
-        ?.getAttribute('content') || undefined,
-    url:
+  useEffect(() => {
+    const url =
       document
         .querySelector('head link[rel="canonical"]')
-        ?.getAttribute('href') || router.asPath,
+        ?.getAttribute('href') || router.asPath
+
+    const result = {
+      title: document.querySelector('head title')?.innerHTML || undefined,
+      text:
+        document
+          .querySelector('head meta[name="description"]')
+          ?.getAttribute('content') || undefined,
+      url,
+    }
+
+    setData(result)
+  }, [router.asPath])
+
+  const handleClick = async () => {
+    try {
+      await navigator.share(data)
+    } catch (err) {
+      await navigator.clipboard.writeText(data?.url || '')
+      setIsShowTooltip(true)
+    }
   }
 
+  useTimeoutWhen(
+    () => {
+      setIsShowTooltip(false)
+    },
+    1500,
+    isShowTooltip
+  )
+
   return (
-    <Button
-      icon={<IconShare />}
-      onClick={async () => {
-        try {
-          await navigator.share(data)
-        } catch (err) {
-          //
-        }
-      }}
-    />
+    <>
+      <Button
+        data-tooltip-id="share-tooltip"
+        icon={<IconShare />}
+        onClick={handleClick}
+      />
+      <Tooltip
+        content="URL copied to clipboard!"
+        variant="light"
+        place="bottom"
+        id="share-tooltip"
+        delayHide={1500}
+        isOpen={isShowTooltip}
+      />
+    </>
   )
 }
 

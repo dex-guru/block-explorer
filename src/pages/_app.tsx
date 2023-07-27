@@ -21,6 +21,7 @@ export const ibm = IBM_Plex_Sans_Condensed({
   subsets: ['latin-ext'],
   variable: '--font-ibm',
 })
+
 const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 initApm()
