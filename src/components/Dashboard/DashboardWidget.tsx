@@ -6,7 +6,7 @@ import { useIntervalWhen } from 'rooks'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import Card from '@/components/Card'
-import { IconRedash, IconWatch } from '@/components/Icons'
+import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
 import Table from '@/components/Table'
 import Tabs from '@/components/Tabs'
@@ -174,7 +174,7 @@ const DashboardWidget: FC<{
         {!queryJob?.id && !!queryResult?.retrieved_at && (
           <Value
             className={styles.timestamp}
-            icon={<IconWatch />}
+            icon={<IconAgo />}
             value={
               <Suspense fallback={<>&nbsp;</>}>
                 <TimeAgo
