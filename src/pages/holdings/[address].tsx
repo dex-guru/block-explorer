@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import '@rainbow-me/rainbowkit/styles.css'
 import { isAddress, getAddress } from 'viem'
 import {
   ChainConfigModel,
