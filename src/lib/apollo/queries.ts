@@ -877,6 +877,8 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       tokenSupply
       transactionsCount
       transactionsPerSecond
+      transactionsPerSecondDailyAVG
+      transactionsPerSecondFiveMinutesAVG
       transactionsCountHistory {
         timestamp
         value
