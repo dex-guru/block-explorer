@@ -35,6 +35,9 @@
 }
 
 html {
+  --font-main: var(--font-ibm, 'IBM Plex Sans Condensed');
+  --font-heading: var(--font-sora, 'Sora');
+
   --color-positive: #12b886;
   --color-negative: #ff646d;
   --color-success: #279071;

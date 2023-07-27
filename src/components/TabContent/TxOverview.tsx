@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
+import { LoadingCard } from '../Loading'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -347,6 +348,7 @@ const TxOverview: FC<{
   return (
     <>
       <Properties data={properties} />
+      {(loadingTransfers || loadingActions || loadingNft) && <LoadingCard />}
       {(!!transfersTotal || !!actionsTotal || !!nftTotal) && (
         <Card>
           {!!transfersTotal && (
