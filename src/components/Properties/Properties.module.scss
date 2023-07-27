@@ -65,11 +65,7 @@
     flex-direction: row-reverse;
     justify-content: flex-end;
 
-    .caption {
-      order: 1;
-    }
-
-    .tooltip-anchor {
+    [data-tooltip-id] {
       margin: 0;
     }
   }
