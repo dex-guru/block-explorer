@@ -1,4 +1,4 @@
-import { FC, Suspense, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC, Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
@@ -12,7 +12,11 @@ import Table from '@/components/Table'
 import Tabs from '@/components/Tabs'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
-import { getDynamicDateRangePeriod } from '@/lib/dates'
+import {
+  DYNAMIC_DATE_RANGES,
+  DYNAMIC_DATE_PREFIX,
+  getDynamicDateRangePeriod,
+} from '@/lib/dates'
 import {
   getRedashJob,
   getRedashQueryResponse,
@@ -94,7 +98,8 @@ const DashboardWidget: FC<{
     )
   ) : undefined
 
-  const isFetching = !!queryJob?.id || (!queryJob && !queryResult)
+  const isFetching =
+    (!!queryJob?.status && queryJob?.status < 3) || (!queryJob && !queryResult)
 
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
@@ -163,15 +168,17 @@ const DashboardWidget: FC<{
           />
         )}
 
-        {!!queryJob?.id && (
+        {!!queryJob?.status && (
           <Value
             className={styles.timestamp}
             icon={<IconWatch />}
-            value={'Calculating data'}
+            value={
+              queryJob?.status < 3 ? 'Calculating data' : 'Query failed...'
+            }
           />
         )}
 
-        {!queryJob?.id && !!queryResult?.retrieved_at && (
+        {!queryJob?.status && !!queryResult?.retrieved_at && (
           <Value
             className={styles.timestamp}
             icon={<IconAgo />}
@@ -192,6 +199,12 @@ const DashboardWidget: FC<{
     )
   }
 
+  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setQueryResult(undefined)
+    setQueryJob(undefined)
+    setCurrentDateRange(e.target.value)
+  }
+
   const renderDateRangeSwitch = () => {
     if (
       !visualization?.query?.options?.parameters?.find(
@@ -202,20 +215,15 @@ const DashboardWidget: FC<{
     }
 
     return (
-      <Tabs
-        className={styles.switch}
-        tabs={[
-          { title: '1M', value: 'd_last_30_days' },
-          { title: '3M', value: 'd_last_90_days' },
-          { title: '1Y', value: 'd_last_12_months' },
-        ]}
-        value={currentDateRange}
-        onChange={(value) => {
-          setQueryResult(undefined)
-          setQueryJob(undefined)
-          setCurrentDateRange(value)
-        }}
-      />
+      <select value={currentDateRange} onChange={handleChange}>
+        {Object.entries(DYNAMIC_DATE_RANGES).map(([key, value]) => {
+          return (
+            <option key={key} value={`${DYNAMIC_DATE_PREFIX}${key}`}>
+              {value.name}
+            </option>
+          )
+        })}
+      </select>
     )
   }
 

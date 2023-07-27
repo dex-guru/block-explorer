@@ -18,7 +18,7 @@ import {
   subMinutes,
 } from 'date-fns'
 
-const DYNAMIC_DATE_PREFIX = 'd_'
+export const DYNAMIC_DATE_PREFIX = 'd_'
 const DATE_FORMAT = 'yyyy-MM-dd'
 
 export const isDynamicDateRangePeriod = (value: string): boolean => {
