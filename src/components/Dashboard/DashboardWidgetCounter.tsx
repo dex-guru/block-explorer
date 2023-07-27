@@ -11,7 +11,9 @@ const DashboardWidgetCounter: FC<{
   return (
     <div className={clsx(styles.counter, { [styles.loading]: isLoading })}>
       {isLoading && <Loading className={styles.loader} />}
-      <span className={styles.value}>{value || <>&nbsp;</>}</span>{' '}
+      <span className={styles.value}>
+        {value !== '' ? value : <span className={styles.muted}>&mdash;</span>}
+      </span>{' '}
       <span className={styles.unit}>{unit || <>&nbsp;</>}</span>
     </div>
   )
