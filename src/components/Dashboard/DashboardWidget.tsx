@@ -9,7 +9,6 @@ import Card from '@/components/Card'
 import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
 import Table from '@/components/Table'
-import Tabs from '@/components/Tabs'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import {
