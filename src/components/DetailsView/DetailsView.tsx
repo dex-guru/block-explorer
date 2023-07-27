@@ -4,7 +4,6 @@ import { DetailsViewProps } from './types'
 import Copy from '@/components/Copy'
 import Heading from '@/components/Heading'
 import Label from '@/components/Label'
-import OpenWith from '@/components/OpenWith'
 import styles from './DetaisView.module.scss'
 
 const DetailsView: FC<DetailsViewProps> = ({
@@ -15,12 +14,8 @@ const DetailsView: FC<DetailsViewProps> = ({
   tagTooltip,
   className,
   children,
-  type,
   header,
-  chainConfig,
 }) => {
-  const isOpenWith = !!type && !!address && !!chainConfig
-
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
@@ -37,18 +32,7 @@ const DetailsView: FC<DetailsViewProps> = ({
             {tag}
           </Label>
         )}
-        {(!!header || isOpenWith) && (
-          <div className={styles.tools}>
-            {header}
-            {isOpenWith && (
-              <OpenWith
-                type={type}
-                chainConfig={chainConfig}
-                address={address}
-              />
-            )}
-          </div>
-        )}
+        {!!header && <div className={styles.tools}>{header}</div>}
       </div>
       <div className={styles.body}>{children}</div>
     </div>

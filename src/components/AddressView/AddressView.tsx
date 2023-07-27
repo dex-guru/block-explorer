@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
+import OpenWith from '../OpenWith'
 import { IAddressViewProps } from './types'
 import AddressWallet from '@/components/AddressWallet'
 import Avatar from '@/components/Avatar'
@@ -76,6 +77,13 @@ const AddressView: FC<IAddressViewProps> = ({
             tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}
+            header={
+              <OpenWith
+                type={'address'}
+                chainConfig={chain.config}
+                address={address}
+              />
+            }
           >
             <Properties
               data={[

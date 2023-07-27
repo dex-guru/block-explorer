@@ -10,6 +10,7 @@ import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
+import OpenWith from '../OpenWith'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
@@ -247,13 +248,16 @@ const ContractView: FC<IContractViewProps> = ({
             icon={addressIcon}
             title={detailsTitle}
             address={type !== 'token' ? checkSumAddress : undefined}
-            tag={
-              type === 'contract'
-                ? `${addressInfo.symbol ? 'Token' : 'Smart'} Contract`
-                : undefined
-            }
+            tag={`${addressInfo.symbol ? 'Token' : 'Smart'} Contract`}
             type="address"
             chainConfig={chain.config}
+            header={
+              <OpenWith
+                type={type === 'token' ? 'token' : 'address'}
+                chainConfig={chain.config}
+                address={address}
+              />
+            }
           >
             <Grid>
               <Properties

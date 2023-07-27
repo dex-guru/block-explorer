@@ -8,6 +8,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconNoData, IconSearch } from '@/components/Icons'
+import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import BlockOverview from '@/components/TabContent/BlockOverview'
@@ -59,6 +60,13 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
             address={data?.number.toString()}
             type="block"
             chainConfig={chainConfig}
+            header={
+              <OpenWith
+                type={'block'}
+                chainConfig={chainConfig}
+                address={data?.number.toString()}
+              />
+            }
           >
             <BlockOverview
               data={data}
