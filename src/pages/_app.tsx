@@ -61,6 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
         positionStrategy="fixed"
         delayHide={500}
         clickable
+        disableStyleInjection="core"
       />
       <Tooltip
         openOnClick
@@ -69,6 +70,7 @@ export default function App({ Component, pageProps }: AppProps) {
         place="bottom"
         anchorSelect=".clipboard-copy"
         delayHide={1500}
+        disableStyleInjection="core"
       />
     </ApolloProvider>
   )
