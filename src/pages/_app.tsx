@@ -53,7 +53,6 @@ export default function App({ Component, pageProps }: AppProps) {
           --font-ibm: ${ibm.style.fontFamily};
         }
       `}</style>
-      <style></style>
       {isPageLoading && <Loading className={styles.pageLoading} />}
       <Component {...pageProps} />
       <Tooltip
