@@ -10,9 +10,10 @@ export const redashFetch = async (
 ) => {
   const logger = getLogger('redashClient')
 
-  const apiUrl = !!process.browser
-    ? '/api/redash'
-    : `${process.env.NEXT_PUBLIC_REDASH_URL || ''}/api`
+  const apiUrl =
+    typeof window !== 'undefined'
+      ? '/api/redash'
+      : `${process.env.NEXT_PUBLIC_REDASH_URL || ''}/api`
 
   const requestUrl = `${apiUrl}${url}`
   const requestBody = body ? JSON.stringify(body) : undefined

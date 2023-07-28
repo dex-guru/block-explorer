@@ -1,5 +1,3 @@
-import { Tooltip, removeStyle } from 'react-tooltip'
-
-removeStyle()
+import { Tooltip } from 'react-tooltip'
 
 export default Tooltip

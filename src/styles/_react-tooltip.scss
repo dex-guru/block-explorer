@@ -1,6 +1,7 @@
 .react-tooltip {
   --rt-opacity: 1;
 
+  position: fixed;
   border-radius: 8px;
   padding: 8px 12px;
   font-family: var(--font-main), sans-serif;
