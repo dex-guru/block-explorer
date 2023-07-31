@@ -59,6 +59,11 @@ body {
   }
 }
 
+html,
+body {
+  scrollbar-gutter: stable;
+}
+
 ::selection {
   background: var(--color-accent);
   color: var(--color-bg);
@@ -284,6 +289,7 @@ pre {
     stroke-width: 4;
   }
 
+  &-area,
   &-line {
     &:not(.has-color) {
       path {
