@@ -1,0 +1,123 @@
+.container {
+  width: max-content;
+  cursor: pointer;
+  height: 32px;
+  gap: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.body {
+  border-radius: var(--radii-lg);
+  background: var(--color-bg-3);
+  color: var(--color-muted);
+  padding: 4px 6px 4px 8px;
+  transition: 0.25s ease;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 32px;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: currentColor;
+  transform: none;
+  transition: 0.25s ease;
+  width: 20px;
+  height: 20px;
+
+  &Open {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  width: max-content;
+  max-width: calc(100vw - 48px);
+  z-index: 2;
+  right: 0;
+  top: 100%;
+  padding: 8px;
+  margin-top: 16px;
+  border: 1px var(--color-accent) solid;
+  background: var(--color-bg);
+  border-radius: var(--radii-lg);
+  overflow: hidden;
+
+  animation: dropdown 0.25s ease;
+
+  @media (max-width: 960px) {
+    top: auto;
+    bottom: 100%;
+    margin-bottom: 16px;
+  }
+
+  @keyframes dropdown {
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.tokenLink {
+  display: block;
+  padding: 8px 16px;
+  background: none;
+
+  &:hover {
+    background: var(--color-bg);
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  gap: 8px;
+  composes: lg from '../Button/Button.module.scss';
+  --color-button-border: transparent;
+  --color-button-hover-border: transparent;
+  --color-button-bg: transparent;
+  --color-button-hover-bg: var(--color-bg-2);
+  --color-button-text: var(--color-muted);
+  --color-button-hover-text: var(--color-accent-a);
+  padding: 8px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.open {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}

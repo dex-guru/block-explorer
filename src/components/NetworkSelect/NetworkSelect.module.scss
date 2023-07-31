@@ -44,17 +44,16 @@
 }
 
 .dropdown {
-  position: absolute;
-  min-width: 100%;
+  position: fixed;
   width: max-content;
   max-width: calc(100vw - 48px);
   z-index: 2;
   right: 0;
   top: 100%;
-  padding: 0;
+  padding: 8px;
   margin-top: 16px;
   border: 1px var(--color-accent) solid;
-  background: var(--color-bg-2);
+  background: var(--color-bg);
   border-radius: var(--radii-lg);
   overflow: hidden;
 
@@ -91,7 +90,7 @@
 
 .list {
   margin: 0;
-  padding: 8px 0;
+  padding: 0;
   list-style: none;
   display: flex;
   flex-flow: column;
@@ -110,9 +109,12 @@
   --color-button-border: transparent;
   --color-button-hover-border: transparent;
   --color-button-bg: transparent;
-  --color-button-hover-bg: transparent;
+  --color-button-hover-bg: var(--color-bg-2);
   --color-button-text: var(--color-muted);
   --color-button-hover-text: var(--color-accent-a);
+  padding: 8px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .icon {
