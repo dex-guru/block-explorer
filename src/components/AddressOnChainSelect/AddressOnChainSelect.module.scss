@@ -7,13 +7,12 @@
   display: flex;
   align-items: center;
   font-weight: 400;
-  font-size: 14px;
   line-height: 150%;
   margin: -6px 0 -6px -8px;
 }
 
 .body {
-  border-radius: var(--radii-lg);
+  border-radius: var(--radii-sm);
   border: 1px var(--color-input-border) solid;
   color: var(--color-text);
   padding: 4px 6px 4px 8px;
