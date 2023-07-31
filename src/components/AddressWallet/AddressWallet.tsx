@@ -1,14 +1,29 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useResizeDetector } from 'react-resize-detector'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
-import AddressWalletTokens from './AddressWalletTokens'
+import { AddressValues } from '../Address/helpers'
+import Loading from '../Loading'
+import OutsideClicker from '../OutsideClicker'
+import Tile from '../Tile'
 import { AddressWalletProps } from './types'
+import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
-import { IconArrowDown, IconWallet } from '@/components/Icons'
+import { IconArrowDown, IconNoIcon, IconWallet } from '@/components/Icons'
 import Label from '@/components/Label'
 import Value from '@/components/Value'
-import { financialFormat } from '@/lib/utils'
+import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
+import {
+  financialFormat,
+  financialFormatLowValueHighPrecision,
+  getRootElement,
+} from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
+
+const ADDRESS_WALLET_LIMIT = 100
 
 const AddressWallet: FC<AddressWalletProps> = ({
   address,
@@ -16,8 +31,25 @@ const AddressWallet: FC<AddressWalletProps> = ({
   tokenHoldingsStats,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [getTokens, { data, loading }] = useLazyQuery<{
+    tokenHoldings: TokenHoldingsModel[]
+  }>(GET_ADDRESS_TOKENS)
 
   const { height, ref } = useResizeDetector()
+
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+
+    getTokens({
+      variables: {
+        address: address?.toLowerCase(),
+        first: ADDRESS_WALLET_LIMIT,
+        skip: 0,
+      },
+    })
+  }, [getTokens, address, isOpen])
 
   if (!tokenHoldingsStats?.tokenCount) {
     return <span className={styles.muted}>–</span>
@@ -35,10 +67,72 @@ const AddressWallet: FC<AddressWalletProps> = ({
     setIsOpen(false)
   }
 
+  const renderTokens = () => {
+    return data?.tokenHoldings.map((token, idx) => {
+      const icon = token.logo[0] ? (
+        <Image
+          src={token.logo[0]}
+          alt={token.symbol.join('/')}
+          width="32"
+          height="32"
+          className={styles.image}
+        />
+      ) : (
+        <IconNoIcon className={styles.noimage} />
+      )
+
+      return (
+        <li className={styles.item} key={idx}>
+          <Link
+            href={AddressValues['token'].url(token.contractAddress) || ''}
+            className={styles.tokenLink}
+          >
+            <Tile
+              className={styles.token}
+              icon={icon}
+              title={
+                <Value
+                  value={
+                    <>{financialFormatLowValueHighPrecision(token.quantity)}</>
+                  }
+                  suffix={<>&nbsp;{token.symbol.join('/')}</>}
+                  delta={token.change24H ? token.change24H * 100 : undefined}
+                />
+              }
+              postfix={
+                <>
+                  {token.asset}{' '}
+                  <Value
+                    value={financialFormat(token.value || 0)}
+                    prefix="~$"
+                  />
+                </>
+              }
+            />
+          </Link>
+        </li>
+      )
+    })
+  }
+
   const rect = ref.current?.getBoundingClientRect()
   const dropdownCoord = rect
     ? { left: rect?.left, top: rect?.top + height + window.scrollY }
     : undefined
+
+  const renderDropdown = () =>
+    createPortal(
+      <OutsideClicker
+        onClick={(e) => {
+          handleClose(e)
+        }}
+        className={clsx(styles.dropdown, className)}
+        style={{ left: dropdownCoord?.left, top: dropdownCoord?.top }}
+      >
+        <ul className={styles.list}>{renderTokens()}</ul>
+      </OutsideClicker>,
+      getRootElement()
+    )
 
   return (
     <div className={clsx(styles.container, className)}>
@@ -55,13 +149,8 @@ const AddressWallet: FC<AddressWalletProps> = ({
           <Label type="tag" className={styles.label}>
             {tokenHoldingsStats?.tokenCount}
           </Label>
-          {isOpen && (
-            <AddressWalletTokens
-              address={address}
-              coord={dropdownCoord}
-              onClose={handleClose}
-            />
-          )}
+          {isOpen && loading && <Loading />}
+          {isOpen && !loading && <>{renderDropdown()}</>}
           <IconArrowDown
             className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
           />
