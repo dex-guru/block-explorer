@@ -84,18 +84,11 @@ const AddressView: FC<IAddressViewProps> = ({
             type="address"
             chainConfig={chain.config}
             header={
-              <>
-                <AddressOnChainSelect
-                  address={address}
-                  current={chain.config.name}
-                  variants={chainsArr}
-                />
-                <OpenWith
-                  type={'address'}
-                  chainConfig={chain.config}
-                  address={address}
-                />
-              </>
+              <OpenWith
+                type={'address'}
+                chainConfig={chain.config}
+                address={address}
+              />
             }
           >
             <Properties
@@ -125,6 +118,16 @@ const AddressView: FC<IAddressViewProps> = ({
                       className={styles.addressWallet}
                       address={checkSumAddress}
                       tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
+                },
+                {
+                  title: 'Multichain Addresses:',
+                  value: (
+                    <AddressOnChainSelect
+                      address={address}
+                      current={chain.config.name}
+                      variants={chainsArr}
                     />
                   ),
                 },

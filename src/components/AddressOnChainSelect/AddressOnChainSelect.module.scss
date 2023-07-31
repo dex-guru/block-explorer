@@ -9,12 +9,13 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 150%;
+  margin: -6px 0 -6px -8px;
 }
 
 .body {
   border-radius: var(--radii-lg);
-  background: var(--color-bg-3);
-  color: var(--color-muted);
+  border: 1px var(--color-input-border) solid;
+  color: var(--color-text);
   padding: 4px 6px 4px 8px;
   transition: 0.25s ease;
   display: flex;
