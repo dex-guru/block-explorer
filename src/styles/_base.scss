@@ -59,6 +59,11 @@ body {
   }
 }
 
+html,
+body {
+  scrollbar-gutter: stable;
+}
+
 ::selection {
   background: var(--color-accent);
   color: var(--color-bg);
