@@ -21,7 +21,7 @@ export const chains: ChainData[] = [
     logo_uri: 'https://assets-stage.dex.guru/icons/chain-1.svg',
     color: '#858585',
     block_explorer: {
-      url: 'https://ethereum.dex.guru/',
+      url: 'https://ethereum.dex.guru',
       logo_uri: 'https://assets-stage.dex.guru/icons/blockexplorer.svg',
       display_name: 'Block Explorer by DexGuru',
       token_path: '/token',
@@ -49,7 +49,7 @@ export const chains: ChainData[] = [
     logo_uri: 'https://assets-stage.dex.guru/icons/chain-56.png',
     color: '#ff8a1f',
     block_explorer: {
-      url: 'https://bnb.dex.guru/',
+      url: 'https://bnb.dex.guru',
       logo_uri: 'https://assets-stage.dex.guru/icons/blockexplorer.svg',
       display_name: 'Block Explorer by DexGuru',
       token_path: '/token',
@@ -77,7 +77,7 @@ export const chains: ChainData[] = [
     logo_uri: 'https://assets-stage.dex.guru/icons/chain-137.svg',
     color: '#863ff8',
     block_explorer: {
-      url: 'https://polygon.dex.guru/',
+      url: 'https://polygon.dex.guru',
       logo_uri: 'https://assets-stage.dex.guru/icons/blockexplorer.svg',
       display_name: 'Block Explorer by DexGuru',
       token_path: '/token',
