@@ -42,35 +42,35 @@ export const getDynamicDateRangePeriod = (
 }
 
 const getFormattedDate = (moment = new Date()): string => {
-  return format(startOfDay(moment), DATE_FORMAT)
+  return format(moment, DATE_FORMAT)
 }
 
 export const DYNAMIC_DATE_RANGES: Record<
   string,
   { name: string; value: () => { start: string; end: string } }
 > = {
-  today: {
-    name: 'Today',
-    value: () => {
-      const moment = new Date()
+  // today: {
+  //   name: 'Today',
+  //   value: () => {
+  //     const moment = new Date()
 
-      return {
-        start: getFormattedDate(startOfDay(moment)),
-        end: getFormattedDate(endOfDay(moment)),
-      }
-    },
-  },
-  yesterday: {
-    name: 'Yesterday',
-    value: () => {
-      const moment = subDays(new Date(), 1)
+  //     return {
+  //       start: getFormattedDate(startOfDay(moment)),
+  //       end: getFormattedDate(endOfDay(moment)),
+  //     }
+  //   },
+  // },
+  // yesterday: {
+  //   name: 'Yesterday',
+  //   value: () => {
+  //     const moment = subDays(new Date(), 1)
 
-      return {
-        start: getFormattedDate(startOfDay(moment)),
-        end: getFormattedDate(endOfDay(moment)),
-      }
-    },
-  },
+  //     return {
+  //       start: getFormattedDate(startOfDay(moment)),
+  //       end: getFormattedDate(endOfDay(moment)),
+  //     }
+  //   },
+  // },
   this_week: {
     name: 'This week',
     value: () => {
