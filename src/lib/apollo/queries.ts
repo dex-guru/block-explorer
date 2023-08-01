@@ -278,6 +278,54 @@ export const GET_BLOCKS_SHORT = gql`
   }
 `
 
+export const GET_TOP_TOKENS = gql`
+  query TopTokens($first: Long!, $skip: Long!, $onlyVerified: Boolean) {
+    topTokens(first: $first, skip: $skip, onlyVerified: $onlyVerified, chainId: ${CHAIN_ID}) {
+      address
+      liquidity
+      logoURI
+      name
+      price
+      priceChange24h
+      symbol
+      volume24h
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`
+
 export const GET_TRANSACTIONS_BY_HASH = gql`
   query TransactionByHash($hash: String!) {
     transactions(hash: $hash, first: 1, chainId: ${CHAIN_ID}) {

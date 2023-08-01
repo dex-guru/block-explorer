@@ -1,0 +1,38 @@
+.container {
+  margin: 0;
+  width: 36px;
+  height: 24px;
+  background: var(--color-accent);
+  padding: 6px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+
+  &:focus,
+  &:hover {
+    background: var(--color-accent-a);
+  }
+
+  &::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: var(--color-bg-2);
+    border-radius: 8px;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    transform: translateX(-6px);
+    transition: inherit;
+  }
+
+  &:checked {
+    &::before {
+      transform: translateX(6px);
+    }
+  }
+}

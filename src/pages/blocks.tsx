@@ -125,7 +125,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     error,
   } = await apolloClient.query({
     query: GET_BLOCKS,
-    variables: { first: 10, skip: 0 },
+    variables: { first: perPage[1], skip: 0 },
   })
 
   error

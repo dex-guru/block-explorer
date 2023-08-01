@@ -7,8 +7,8 @@ export type DataTableProps<T> = ITableProps<T> & {
   className?: string
   children?: ReactNode | ReactNode[]
   empty?: StateViewProps
-
-  onPageChange: (variables: PaginationVariables) => void
+  header?: ReactNode
   total?: number
   perPage?: number
+  onPageChange: (variables: PaginationVariables) => void
 }

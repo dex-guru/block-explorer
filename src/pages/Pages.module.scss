@@ -259,3 +259,19 @@
 .errorPage {
   min-height: 100vh;
 }
+
+.form {
+  &Label {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--color-muted);
+  }
+
+  &Control {
+    &Switch {
+      composes: container from '../components/Interactive/Switch.module.scss';
+    }
+  }
+}

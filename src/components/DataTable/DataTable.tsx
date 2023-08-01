@@ -18,7 +18,13 @@ export function DataTable<T>(props: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
   const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
 
-  const { className, total = 0, onPageChange, ...tablePropsRest } = props
+  const {
+    className,
+    total = 0,
+    onPageChange,
+    header,
+    ...tablePropsRest
+  } = props
 
   const onChangePerPageHandler = useCallback(
     (value: number) => {
@@ -65,14 +71,22 @@ export function DataTable<T>(props: DataTableProps<T>) {
     )
   }, [total])
 
-  return (
-    <div className={clsx(styles.container, className)}>
-      <div className={styles.header}>
+  const navigation = (
+    <div className={styles.navigation}>
+      <div className={styles.total}>
         {renderPerPage()}
         {renderTotal()}
-
-        {renderPagination()}
       </div>
+      <div className={styles.pager}>{renderPagination()}</div>
+      <div className={styles.tools}>
+        {!!header && <div className={styles.tools}>{header}</div>}
+      </div>
+    </div>
+  )
+
+  return (
+    <div className={clsx(styles.container, className)}>
+      <div className={styles.header}>{navigation}</div>
       <div className={styles.body}>
         {!tablePropsRest.isLoading && !total && props.empty && (
           <StateView icon={<IconEmpty />} {...props.empty} />
@@ -84,11 +98,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
 
         {!!total && <Table {...tablePropsRest} className={styles.table} />}
       </div>
-      <div className={styles.footer}>
-        {renderPerPage()}
-        {renderTotal()}
-        {renderPagination()}
-      </div>
+      <div className={styles.footer}>{navigation}</div>
     </div>
   )
 }
