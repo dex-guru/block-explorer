@@ -1,7 +1,5 @@
-import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Index, { IndexProps } from '.'
-import Loading from './loading'
 import {
   BlockModel,
   ChainConfigModel,
