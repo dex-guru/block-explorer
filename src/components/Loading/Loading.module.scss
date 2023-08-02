@@ -1,6 +1,7 @@
 .container {
   height: 8px;
   max-width: 100%;
+  margin: 0;
 
   &:indeterminate {
     animation: progress-indeterminate 1.5s linear infinite;
