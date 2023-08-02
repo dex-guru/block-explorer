@@ -131,7 +131,7 @@ const explorersData: Record<Explorers, ExplorerData> = {
     id: 'baseScan',
     address_path: '/address/:address',
     display_name: 'Base Explorer',
-    logo_uri: 'https://goerli.basescan.org/images/svg/brands/main.svg',
+    logo_uri: 'https://basescan.org/images/svg/brands/main.svg',
     token_path: '/token/:address',
     tx_path: '/tx/:tx',
     block_path: '/block/:tx',
