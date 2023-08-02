@@ -53,12 +53,6 @@
 
   animation: dropdown 0.25s ease;
 
-  @media (max-width: 960px) {
-    top: auto;
-    bottom: 100%;
-    margin-bottom: 16px;
-  }
-
   @keyframes dropdown {
     from {
       opacity: 0;
