@@ -45,17 +45,13 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
       <ul className={styles.statsList}>
         {stats?.map((stat, index) => {
           return (
-            <Tile
-              key={index}
-              prefix={
-                <>
-                  {stat.title}{' '}
-                  {!!stat.tooltip && <TooltipAnchor tooltip={stat.tooltip} />}
-                </>
-              }
-              title={stat.value}
-              className={styles.tile}
-            />
+            <div key={index} className={styles.tile}>
+              <strong className={styles.tileTitle}>
+                {stat.title}{' '}
+                {!!stat.tooltip && <TooltipAnchor tooltip={stat.tooltip} />}
+              </strong>{' '}
+              <span className={styles.tileValue}>{stat.value}</span>
+            </div>
           )
         })}
       </ul>

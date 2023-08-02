@@ -12,13 +12,22 @@
 
 .item {
   max-width: 100%;
-  margin: -8px 0;
-  padding: 8px 0;
   display: flex;
   align-items: center;
+  position: relative;
 
   &:not(:last-child) {
-    border-right: 1px var(--color-separator) solid;
-    padding-right: 16px;
+    padding-right: 17px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      border-right: 1px var(--color-separator) solid;
+      right: 0;
+      top: 50%;
+      margin-top: -12px;
+      height: 24px;
+      width: 0;
+    }
   }
 }

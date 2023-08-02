@@ -12,8 +12,12 @@
 
 .stats {
   flex: 3 0 320px;
-  margin: 0 -8px;
+  margin: 0 -8px 0 -16px;
   overflow: hidden;
+
+  @media (max-width: 1280px) {
+    margin: 0 -8px;
+  }
 
   &List {
     margin: 0 -1px -1px 0;
@@ -64,9 +68,28 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 20px;
-  padding: 16px;
+  padding: 8px 24px;
   align-items: self-start;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
 
   border-right: 1px var(--color-bg) solid;
   border-bottom: 1px var(--color-bg) solid;
+
+  @media (max-width: 1280px) {
+    padding: 8px 16px;
+  }
+
+  &Title {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
+  &Value {
+    font-size: 20px;
+    line-height: 1;
+  }
 }
