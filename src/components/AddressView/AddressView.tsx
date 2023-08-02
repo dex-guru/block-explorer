@@ -3,6 +3,8 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
+import AddressOnChainSelect from '../AddressOnChainSelect'
+import OpenWith from '../OpenWith'
 import { IAddressViewProps } from './types'
 import AddressWallet from '@/components/AddressWallet'
 import Avatar from '@/components/Avatar'
@@ -14,6 +16,7 @@ import Properties from '@/components/Properties'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
 import Value from '@/components/Value'
+import { chains } from '@/constants/chains'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
 
@@ -40,6 +43,10 @@ const AddressView: FC<IAddressViewProps> = ({
     : isAddress(address)
     ? `No address ${address}`
     : 'Not an address'
+
+  const chainsArr = chains.filter(
+    (chainData) => chainData.id !== chain.config.chainId
+  )
 
   return (
     <>
@@ -76,6 +83,13 @@ const AddressView: FC<IAddressViewProps> = ({
             tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}
+            header={
+              <OpenWith
+                type={'address'}
+                chainConfig={chain.config}
+                address={address}
+              />
+            }
           >
             <Properties
               data={[
@@ -104,6 +118,16 @@ const AddressView: FC<IAddressViewProps> = ({
                       className={styles.addressWallet}
                       address={checkSumAddress}
                       tokenHoldingsStats={tokenHoldingsStats}
+                    />
+                  ),
+                },
+                {
+                  title: 'Multichain Addresses:',
+                  value: (
+                    <AddressOnChainSelect
+                      address={address}
+                      current={chain.config.name}
+                      variants={chainsArr}
                     />
                   ),
                 },

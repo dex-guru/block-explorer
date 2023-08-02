@@ -9,8 +9,6 @@ import { DetailsViewProps } from './types'
 import Copy from '@/components/Copy'
 import Heading from '@/components/Heading'
 import Label from '@/components/Label'
-import OpenWith from '@/components/OpenWith'
-import IconVerify from '@/images/icons/verified.svg'
 import styles from './DetaisView.module.scss'
 
 const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
@@ -18,18 +16,13 @@ const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 const DetailsView: FC<DetailsViewProps> = ({
   title,
   address,
-  isVerified,
   icon,
   tag,
   tagTooltip,
   className,
   children,
-  type,
   header,
-  chainConfig,
 }) => {
-  const isOpenWith = !!type && !!address && !!chainConfig
-
   return (
     <div className={clsx(styles.container, className)}>
       <div className={styles.header}>
@@ -38,27 +31,18 @@ const DetailsView: FC<DetailsViewProps> = ({
         {!!address && (
           <>
             <Heading caption={address} size="lg" className={styles.address} />
-            {!!isVerified && <IconVerify className={styles.verified} />}
             <Copy text={address} />
           </>
         )}
-        {!address && !!isVerified && <IconVerify className={styles.verified} />}
         {!!tag && (
           <Label className={styles.tag} tooltip={tagTooltip}>
             {tag}
           </Label>
         )}
-        {(!!header || isOpenWith || true) && (
+        {!!header && (
           <div className={styles.tools}>
             <Share />
             {header}
-            {isOpenWith && (
-              <OpenWith
-                type={type}
-                chainConfig={chainConfig}
-                address={address}
-              />
-            )}
           </div>
         )}
       </div>

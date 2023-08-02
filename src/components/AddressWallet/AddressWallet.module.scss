@@ -60,10 +60,10 @@
   left: 0;
   right: 0;
   top: 100%;
-  padding: 0;
+  padding: 8px;
   margin-top: 16px;
   border: 1px var(--color-accent) solid;
-  background: var(--color-bg-2);
+  background: var(--color-bg);
   border-radius: var(--radii-lg);
   overflow: hidden;
 
@@ -84,17 +84,17 @@
 
 .tokenLink {
   display: block;
-  padding: 8px 16px;
+  padding: 8px;
   background: none;
 
   &:hover {
-    background: var(--color-bg);
+    background: var(--color-bg-2);
   }
 }
 
 .list {
   margin: 0;
-  padding: 8px 0;
+  padding: 0;
   list-style: none;
   display: flex;
   flex-flow: column;
@@ -114,6 +114,7 @@
 .image {
   width: 40px;
   height: 40px;
+  border-radius: var(--radii-sm);
 }
 
 .noimage {

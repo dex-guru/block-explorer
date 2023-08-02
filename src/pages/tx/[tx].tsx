@@ -12,6 +12,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconEmpty } from '@/components/Icons'
+import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
@@ -67,6 +68,13 @@ const TxPage: NextPage<ITxProps> = (props) => {
             address={props.data?.hash || undefined}
             type="tx"
             chainConfig={props.chainConfig}
+            header={
+              <OpenWith
+                type={'tx'}
+                chainConfig={props.chainConfig}
+                address={props.data?.hash}
+              />
+            }
           >
             <TabPanel
               tabs={[

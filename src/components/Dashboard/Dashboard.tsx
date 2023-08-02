@@ -84,10 +84,7 @@ const Dashboard: FC<{
           data-tooltip-content={`Open ${name} in Redash`}
           target="_blank"
           rel="noreferrer noopener"
-          href={`${
-            process.env.NEXT_PUBLIC_REDASH_API_URL ||
-            'https://redash-demo.dex.guru'
-          }/dashboards/${id}-${slug}`}
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
         >
           <IconRedash className={styles.redashIcon} />
         </Link>

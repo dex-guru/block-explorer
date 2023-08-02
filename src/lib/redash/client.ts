@@ -10,17 +10,14 @@ export const redashFetch = async (
 ) => {
   const logger = getLogger('redashClient')
 
-  const apiUrl = !!process.browser
-    ? '/api/redash'
-    : `${
-        process.env.NEXT_PUBLIC_REDASH_API_URL || 'https://redash-demo.dex.guru'
-      }/api`
+  const apiUrl =
+    typeof window !== 'undefined'
+      ? '/api/redash'
+      : `${process.env.NEXT_PUBLIC_REDASH_URL || ''}/api`
 
   const requestUrl = `${apiUrl}${url}`
   const requestBody = body ? JSON.stringify(body) : undefined
-  const requestAuth =
-    process.env.NEXT_PUBLIC_REDASH_API_KEY ||
-    'aUjHBunsclDvEZkekXbAEzgeDe8yPo10UsXcpHO4'
+  const requestAuth = process.env.NEXT_PUBLIC_REDASH_API_KEY || ''
 
   try {
     const response = await fetch(requestUrl, {

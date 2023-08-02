@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
+import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
 import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
 import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
@@ -10,19 +10,17 @@ import { initApm } from '@/services/apmService'
 import styles from './Pages.module.scss'
 import '@/styles/index.scss'
 
-export const sora = Sora({
+const sora = Sora({
   weight: ['500', '600'],
   subsets: ['latin-ext'],
   variable: '--font-sora',
 })
 
-export const ibm = IBM_Plex_Sans_Condensed({
+const ibm = IBM_Plex_Sans_Condensed({
   weight: ['400', '500'],
   subsets: ['latin-ext'],
   variable: '--font-ibm',
 })
-
-const Tooltip = dynamic(() => import('@/components/Tooltip'), { ssr: false })
 
 initApm()
 
@@ -54,7 +52,6 @@ export default function App({ Component, pageProps }: AppProps) {
           --font-ibm: ${ibm.style.fontFamily};
         }
       `}</style>
-      <style></style>
       {isPageLoading && <Loading className={styles.pageLoading} />}
       <Component {...pageProps} />
       <Tooltip
@@ -63,6 +60,7 @@ export default function App({ Component, pageProps }: AppProps) {
         positionStrategy="fixed"
         delayHide={500}
         clickable
+        disableStyleInjection="core"
       />
       <Tooltip
         openOnClick
@@ -71,6 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
         place="bottom"
         anchorSelect=".clipboard-copy"
         delayHide={1500}
+        disableStyleInjection="core"
       />
     </ApolloProvider>
   )

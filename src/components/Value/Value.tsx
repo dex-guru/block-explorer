@@ -9,12 +9,17 @@ const Value: FC<ValueProps> = ({
   icon,
   prefix,
   suffix,
+  tooltip,
   className,
   children,
   delta,
 }) => {
   return (
-    <span className={clsx(styles.container, className)}>
+    <span
+      className={clsx(styles.container, className)}
+      data-tooltip-id={tooltip ? 'app-tooltip' : undefined}
+      data-tooltip-content={tooltip}
+    >
       {!!icon && <span className={styles.icon}>{icon}</span>}
       <span className={styles.content}>
         {!!prefix && <span className={styles.prefix}>{prefix}</span>}

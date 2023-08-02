@@ -24,16 +24,14 @@
 }
 
 .selector {
-  border-radius: 4px;
+  border-radius: var(--radii-sm);
   border: 1px solid var(--color-page-count-border);
   background-color: var(--color-page-count-bg);
   color: var(--color-page-count-text);
-  height: 32px;
-  transition: 0.25s ease;
 
   &:hover,
   &:focus {
-    border: 1px solid var(--color-page-count-hover-border);
+    border-color: var(--color-page-count-hover-border);
     background-color: var(--color-page-count-hover-bg);
     color: var(--color-page-count-hover-ext);
   }

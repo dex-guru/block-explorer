@@ -21,7 +21,13 @@
   composes: loading from './Dashboard.module.scss';
 
   .chart {
-    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.empty {
+  .chart {
+    visibility: hidden;
   }
 }
 

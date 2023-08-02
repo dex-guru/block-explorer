@@ -31,7 +31,7 @@ const doSearch = async (q: string, router: NextRouter) => {
   }
 
   // Tx hash?
-  if (isHex(q) && q.length === 32) {
+  if (isHex(q)) {
     router.replace(`/tx/${q}`)
     return
   }

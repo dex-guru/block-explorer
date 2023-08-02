@@ -28,7 +28,13 @@ const DashboardWidgetChart: FC<{
 
   if (type === 'pie') {
     return (
-      <div className={clsx(styles.container, { [styles.loading]: isLoading })}>
+      <div
+        className={clsx(
+          styles.container,
+          { [styles.loading]: isLoading },
+          { [styles.empty]: !data?.rows?.length }
+        )}
+      >
         {isLoading && <Loading className={styles.loader} />}
 
         <div className={styles.wrapper}>
@@ -106,7 +112,13 @@ const DashboardWidgetChart: FC<{
     })
 
     return (
-      <div className={clsx(styles.wrapper, { [styles.loading]: isLoading })}>
+      <div
+        className={clsx(
+          styles.wrapper,
+          { [styles.loading]: isLoading },
+          { [styles.empty]: !data?.rows?.length }
+        )}
+      >
         {isLoading && <Loading className={styles.loader} />}
 
         <CommonChart

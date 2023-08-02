@@ -59,6 +59,11 @@ body {
   }
 }
 
+html,
+body {
+  scrollbar-gutter: stable;
+}
+
 ::selection {
   background: var(--color-accent);
   color: var(--color-bg);
@@ -71,12 +76,22 @@ select {
   font-size: inherit;
 
   border: 1px solid var(--color-separator);
+  border-radius: var(--radii-sm);
   background: transparent right 4px center no-repeat;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23465160' viewBox='0 0 20 20'%3E%3Cpath fill-rule='evenodd' d='M4.53 7.713a.625.625 0 0 1 .882-.058L10 11.669l4.588-4.014a.625.625 0 0 1 .824.94l-5 4.375a.625.625 0 0 1-.824 0l-5-4.375a.625.625 0 0 1-.058-.882Z' clip-rule='evenodd' /%3E%3C/svg%3E");
   background-size: 16px;
   color: var(--color-muted);
+  font-size: 14px;
+  line-height: 20px;
 
   padding: 0 24px 0 4px;
+  height: 32px;
+  transition: 0.25s ease;
+
+  &:hover,
+  &:focus {
+    border: 1px solid var(--color-accent-a);
+  }
 }
 
 dialog {
@@ -274,6 +289,7 @@ pre {
     stroke-width: 4;
   }
 
+  &-area,
   &-line {
     &:not(.has-color) {
       path {

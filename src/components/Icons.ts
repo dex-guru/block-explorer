@@ -19,6 +19,7 @@ import IconShare from '@/images/icons/share.svg'
 import IconShield from '@/images/icons/shield.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconSuccess from '@/images/icons/success.svg'
+import IconAgo from '@/images/icons/time-ago.svg'
 import IconTx from '@/images/icons/tx.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
@@ -29,6 +30,7 @@ export {
   IconArrowDown,
   IconArrowLeft,
   IconArrowRight,
+  IconAgo,
   IconBlock,
   IconChart,
   IconContract,
