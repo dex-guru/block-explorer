@@ -37,9 +37,12 @@
 }
 
 .tbodyrow {
-  border-bottom: 1px var(--color-table-separator) solid;
   background: none;
   transition: 0.25s ease;
+
+  &:not(:last-child) {
+    border-bottom: 1px var(--color-table-separator) solid;
+  }
 
   &:hover {
     background-color: var(--color-table-hover-bg);

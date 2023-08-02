@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { DataTableProps } from './types'
 import { IconSearch } from '@/components/Icons'
@@ -34,6 +34,10 @@ export function DataTable<T>(props: DataTableProps<T>) {
     },
     [onPageChange]
   )
+
+  useEffect(() => {
+    setCurrentPage(DEFAULT_FIRST_PAGE)
+  }, [total])
 
   const renderPerPage = useCallback(() => {
     return (

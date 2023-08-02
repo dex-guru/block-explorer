@@ -281,14 +281,17 @@ export const GET_BLOCKS_SHORT = gql`
 export const GET_TOP_TOKENS = gql`
   query TopTokens($first: Long!, $skip: Long!, $onlyVerified: Boolean) {
     topTokens(first: $first, skip: $skip, onlyVerified: $onlyVerified, chainId: ${CHAIN_ID}) {
-      address
-      liquidity
-      logoURI
-      name
-      price
-      priceChange24h
-      symbol
-      volume24h
+      data {
+        volume24h
+        symbol
+        priceChange24h
+        price
+        name
+        logoURI
+        liquidity
+        address
+      }
+      total
     }
     chainConfig(chainId: ${CHAIN_ID}) {
       chain

@@ -5,7 +5,7 @@ import { useLazyQuery } from '@apollo/client'
 import {
   ChainConfigModel,
   ChainStatsModel,
-  TopTokenModel,
+  TopTokensModel,
 } from '@/__generated__/resolvers-types'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
@@ -21,7 +21,7 @@ import styles from '@/pages/Pages.module.scss'
 const perPage = [5, 10, 25, 50, 100]
 
 interface ITopTokensProps {
-  topTokens: TopTokenModel[]
+  topTokens: TopTokensModel
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }
@@ -49,6 +49,7 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setCurrentVariables({
       ...currentVariables,
+      skip: 0,
       onlyVerified: !!e.target.checked,
     })
   }
@@ -80,7 +81,7 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
           <DataTable
             isLoading={loading}
             columns={topTokensColumns}
-            data={topTokens}
+            data={topTokens.data}
             header={
               <label className={styles.formLabel}>
                 <span className={styles.formLabelCaption}>Verified only</span>{' '}
@@ -92,7 +93,10 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
                 />
               </label>
             }
-            total={1000}
+            total={topTokens.total}
+            empty={{
+              title: 'No top tokens data',
+            }}
             perPage={perPage[1]}
             onPageChange={onPaginationChange}
           />

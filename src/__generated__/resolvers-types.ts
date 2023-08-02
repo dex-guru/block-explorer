@@ -308,7 +308,7 @@ export type Query = {
   /** Total stats for token holdings */
   tokenHoldingsStats?: Maybe<TokenHoldingsStatsModel>;
   /** Get top tokens */
-  topTokens: Array<TopTokenModel>;
+  topTokens: TopTokensModel;
   /** Traces for a transaction */
   traces: TransactionTraceModel;
   /** Transactions stats for filtered chunk of transactions */
@@ -576,6 +576,12 @@ export type TopTokenModel = {
   volume24h: Scalars['Float'];
 };
 
+export type TopTokensModel = {
+  __typename?: 'TopTokensModel';
+  data: Array<TopTokenModel>;
+  total: Scalars['Int'];
+};
+
 export type TransactionModel = {
   __typename?: 'TransactionModel';
   blockHash: Scalars['String'];
@@ -729,6 +735,7 @@ export type ResolversTypes = ResolversObject<{
   TokenHoldingsModel: ResolverTypeWrapper<TokenHoldingsModel>;
   TokenHoldingsStatsModel: ResolverTypeWrapper<TokenHoldingsStatsModel>;
   TopTokenModel: ResolverTypeWrapper<TopTokenModel>;
+  TopTokensModel: ResolverTypeWrapper<TopTokensModel>;
   TransactionModel: ResolverTypeWrapper<TransactionModel>;
   TransactionStatsModel: ResolverTypeWrapper<TransactionStatsModel>;
   TransactionTraceModel: ResolverTypeWrapper<TransactionTraceModel>;
@@ -772,6 +779,7 @@ export type ResolversParentTypes = ResolversObject<{
   TokenHoldingsModel: TokenHoldingsModel;
   TokenHoldingsStatsModel: TokenHoldingsStatsModel;
   TopTokenModel: TopTokenModel;
+  TopTokensModel: TopTokensModel;
   TransactionModel: TransactionModel;
   TransactionStatsModel: TransactionStatsModel;
   TransactionTraceModel: TransactionTraceModel;
@@ -1030,7 +1038,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'chainId' | 'first' | 'query' | 'skip'>>;
   tokenHoldings?: Resolver<Array<ResolversTypes['TokenHoldingsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsArgs, 'address' | 'chainId' | 'first' | 'skip'>>;
   tokenHoldingsStats?: Resolver<Maybe<ResolversTypes['TokenHoldingsStatsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsStatsArgs, 'address' | 'chainId'>>;
-  topTokens?: Resolver<Array<ResolversTypes['TopTokenModel']>, ParentType, ContextType, RequireFields<QueryTopTokensArgs, 'chainId' | 'first' | 'onlyVerified' | 'skip'>>;
+  topTokens?: Resolver<ResolversTypes['TopTokensModel'], ParentType, ContextType, RequireFields<QueryTopTokensArgs, 'chainId' | 'first' | 'onlyVerified' | 'skip'>>;
   traces?: Resolver<ResolversTypes['TransactionTraceModel'], ParentType, ContextType, RequireFields<QueryTracesArgs, 'chainId' | 'txHash'>>;
   transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'timestampEnd' | 'timestampStart'>>;
   transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
@@ -1110,6 +1118,12 @@ export type TopTokenModelResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type TopTokensModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopTokensModel'] = ResolversParentTypes['TopTokensModel']> = ResolversObject<{
+  data?: Resolver<Array<ResolversTypes['TopTokenModel']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type TransactionModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionModel'] = ResolversParentTypes['TransactionModel']> = ResolversObject<{
   blockHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -1185,6 +1199,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   TokenHoldingsModel?: TokenHoldingsModelResolvers<ContextType>;
   TokenHoldingsStatsModel?: TokenHoldingsStatsModelResolvers<ContextType>;
   TopTokenModel?: TopTokenModelResolvers<ContextType>;
+  TopTokensModel?: TopTokensModelResolvers<ContextType>;
   TransactionModel?: TransactionModelResolvers<ContextType>;
   TransactionStatsModel?: TransactionStatsModelResolvers<ContextType>;
   TransactionTraceModel?: TransactionTraceModelResolvers<ContextType>;
