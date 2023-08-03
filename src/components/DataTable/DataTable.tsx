@@ -62,6 +62,10 @@ export function DataTable<T>(props: DataTableProps<T>) {
   }, [currentPage, currentPerPagePage, onPageChange, total])
 
   const renderTotal = useCallback(() => {
+    if (!total) {
+      return null
+    }
+
     return (
       <span className={styles.totalRows}>
         Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
