@@ -23,6 +23,7 @@ export enum Explorers {
   etherscan = 'etherscan',
   baseGoerliScan = 'baseGoerliScan',
   baseScan = 'baseScan',
+  coinGecko = 'coinGecko',
 }
 
 const explorersData: Record<Explorers, ExplorerData> = {
@@ -121,7 +122,7 @@ const explorersData: Record<Explorers, ExplorerData> = {
     id: 'baseScan',
     address_path: '/address/:address',
     display_name: 'Base Goerli Explorer',
-    logo_uri: 'https://goerli.basescan.org/images/svg/brands/main.svg',
+    logo_uri: 'https://assets-stage.dex.guru/icons/explorer-8453.svg',
     token_path: '/token/:address',
     tx_path: '/tx/:tx',
     block_path: '/block/:tx',
@@ -131,21 +132,29 @@ const explorersData: Record<Explorers, ExplorerData> = {
     id: 'baseScan',
     address_path: '/address/:address',
     display_name: 'Base Explorer',
-    logo_uri: 'https://basescan.org/images/svg/brands/main.svg',
+    logo_uri: 'https://assets-stage.dex.guru/icons/explorer-8453.svg',
     token_path: '/token/:address',
     tx_path: '/tx/:tx',
     block_path: '/block/:tx',
     url: 'https://basescan.org',
   },
+  coinGecko: {
+    id: 'coinGecko',
+    display_name: 'CoinGecko',
+    logo_uri: 'https://assets-stage.dex.guru/icons/coingecko.svg',
+    token_path: '/coins/:address',
+    url: 'https://coingecko.com',
+  },
 }
 
 export const explorers: Record<number, ExplorerData[]> = {
-  7700: [explorersData.dexguru],
-  7701: [explorersData.dexguru],
+  7700: [explorersData.dexguru, explorersData.coinGecko],
+  7701: [explorersData.dexguru, explorersData.coinGecko],
   42161: [
     explorersData.dexguru,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
   42170: [explorersData.dexguru, explorersData.arbitrumNovaScan],
   10: [
@@ -153,36 +162,42 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.optimismExplorer,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
   100: [
     explorersData.dexguru,
     explorersData.gnosisScan,
     explorersData.tenderly,
+    explorersData.coinGecko,
   ],
   250: [
     explorersData.dexguru,
     explorersData.ftmScan,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
   137: [
     explorersData.dexguru,
     explorersData.polygonScan,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
   56: [
     explorersData.dexguru,
     explorersData.bscScan,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
   1: [
     explorersData.dexguru,
     explorersData.etherscan,
     explorersData.tenderly,
     explorersData.eigenphi,
+    explorersData.coinGecko,
   ],
-  84531: [explorersData.baseGoerliScan],
-  8453: [explorersData.baseScan],
+  84531: [explorersData.baseGoerliScan, explorersData.coinGecko],
+  8453: [explorersData.baseScan, explorersData.coinGecko],
 }
