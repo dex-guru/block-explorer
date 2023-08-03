@@ -32,7 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const response = await fetch(
-      'https://langchain-stage.dexguru.biz/endpoints.dashboard_analyze_chain.sequential_chain/run',
+      `${
+        process.env.NEXT_PUBLIC_LANGCHAIN_API_URL || ''
+      }/endpoints.dashboard_analyze_chain.sequential_chain/run`,
       {
         method: 'POST',
         headers: {
@@ -43,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           dashboard_slug,
           parameters: JSON.stringify(parameters) || '',
           prompt_suffix: '',
+          selected_prompt: '',
         }),
       }
     )
