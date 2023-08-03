@@ -10,23 +10,29 @@ export const normalizeDelta = (value: number): string => {
     : financialFormat(value, { roundBigNumbersFrom: 'K' })
 }
 
-const Delta: FC<DeltaProps> = ({ value = 0, className, showZero = false }) => {
+const Delta: FC<DeltaProps> = ({ value = 0, className, showZero = true }) => {
   if (!value && !showZero) {
     return null
   }
 
   const absValue = Math.abs(value)
-
-  const displayValue = normalizeDelta(absValue)
+  const displayValue = normalizeDelta(absValue) as string
+  const isLow = absValue && displayValue === '0'
 
   return (
     <span
       className={clsx(styles.container, className, {
         [styles.up]: value > 0,
         [styles.down]: value < 0,
-        [styles.low]: absValue && displayValue === '0',
+        [styles.low]: isLow,
+        [styles.neutral]: !absValue,
       })}
+      data-tooltip-id={isLow ? 'app-tooltip' : undefined}
+      data-tooltip-content={isLow ? `${absValue}%` : undefined}
     >
+      {!isLow && value > 0 && '+'}
+      {!isLow && value < 0 && '–'}
+      {!!isLow && '~'}
       {displayValue}%
     </span>
   )

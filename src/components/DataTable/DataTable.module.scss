@@ -9,24 +9,52 @@
 .header,
 .footer {
   composes: header from '../Card/Card.module.scss';
+}
 
+.footer {
+  border-top: 1px var(--color-card-separator) solid;
+}
+
+.navigation {
+  flex: 0 0 100%;
   color: var(--color-muted);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   flex-flow: row wrap;
+}
 
-  &::after {
-    @media (min-width: 880px) {
-      content: '';
-      flex: 0 1 240px;
-    }
+.total {
+  flex: 1 0 240px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 880px) {
+    flex-basis: auto;
   }
 }
 
-.footer {
-  padding-top: 0;
+.pager {
+  flex: 1 0 240px;
+
+  @media (max-width: 880px) {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+
+.tools {
+  flex: 1 0 240px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 880px) {
+    flex-basis: auto;
+  }
 }
 
 .table {
@@ -42,4 +70,5 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  width: max-content;
 }

@@ -2,25 +2,14 @@
   flex: 0 0 auto;
 }
 
-.low {
-}
-
 .neutral {
   composes: neutral from '../../styles/_common.scss';
 }
 
 .up {
   composes: positive from '../../styles/_common.scss';
-
-  &:before {
-    content: '+';
-  }
 }
 
 .down {
   composes: negative from '../../styles/_common.scss';
-
-  &:before {
-    content: '–';
-  }
 }

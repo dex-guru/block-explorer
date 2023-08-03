@@ -41,7 +41,7 @@ export type BlockModel = {
   hash: Scalars['String'];
   logsBloom: Scalars['String'];
   miner: Scalars['String'];
-  nonce: Scalars['String'];
+  nonce?: Maybe<Scalars['String']>;
   number: Scalars['Int'];
   parentHash: Scalars['String'];
   receiptsRoot: Scalars['String'];
@@ -175,6 +175,11 @@ export type CosmosTransactionModel = {
   hash: Scalars['String'];
 };
 
+export enum CurrencyChoices {
+  Eth = 'eth',
+  Usd = 'usd'
+}
+
 export type DecodedInputModel = {
   __typename?: 'DecodedInputModel';
   isIndexed: Scalars['Boolean'];
@@ -221,6 +226,31 @@ export type ExplorerModel = {
   name: Scalars['String'];
   standard: Scalars['String'];
   url: Scalars['String'];
+};
+
+export type HistoricalPriceModel = {
+  __typename?: 'HistoricalPriceModel';
+  c: Array<Scalars['Float']>;
+  h: Array<Scalars['Float']>;
+  l: Array<Scalars['Float']>;
+  liq: Array<Scalars['Float']>;
+  o: Array<Scalars['Float']>;
+  priceScale: Scalars['Int'];
+  s: Scalars['String'];
+  t: Array<Scalars['Int']>;
+  v: Array<Scalars['Float']>;
+};
+
+export type InternalTransactionModel = {
+  __typename?: 'InternalTransactionModel';
+  blockNumber: Scalars['Int'];
+  blockTimestamp: Scalars['Int'];
+  fromAddress: Scalars['String'];
+  gasLimit: Scalars['Int'];
+  hash: Scalars['String'];
+  toAddress: Scalars['String'];
+  type: Scalars['String'];
+  value: Scalars['Float'];
 };
 
 export type LogModel = {
@@ -277,6 +307,10 @@ export type Query = {
   csrStats: CsrStatsModel;
   /** Parsed ERC20 Transactions Transfers and DeFi Swaps/Burn/Mints */
   erc20Events: Erc20EventsModel;
+  /** Get historical price */
+  historicalPrice?: Maybe<HistoricalPriceModel>;
+  /** Get internal transactions */
+  internalTransactions: Array<InternalTransactionModel>;
   /** RAW Receipt Logs hooked up to transaction or address */
   logs: Array<LogModel>;
   /** NFT ERC721 and ERC1155 Transfers */
@@ -287,6 +321,8 @@ export type Query = {
   tokenHoldings: Array<TokenHoldingsModel>;
   /** Total stats for token holdings */
   tokenHoldingsStats?: Maybe<TokenHoldingsStatsModel>;
+  /** Get top tokens */
+  topTokens: TopTokensModel;
   /** Traces for a transaction */
   traces: TransactionTraceModel;
   /** Transactions stats for filtered chunk of transactions */
@@ -376,6 +412,25 @@ export type QueryErc20EventsArgs = {
 };
 
 
+export type QueryHistoricalPriceArgs = {
+  address: Scalars['String'];
+  chainId: Scalars['Int'];
+  currencyCode?: CurrencyChoices;
+  fromTs?: Scalars['Int'];
+  resolution?: Scalars['String'];
+  toTs?: Scalars['Int'];
+};
+
+
+export type QueryInternalTransactionsArgs = {
+  address?: InputMaybe<Scalars['String']>;
+  chainId?: Scalars['Int'];
+  first?: Scalars['Long'];
+  hash?: InputMaybe<Scalars['String']>;
+  skip?: Scalars['Long'];
+};
+
+
 export type QueryLogsArgs = {
   address?: InputMaybe<Scalars['String']>;
   chainId?: Scalars['Int'];
@@ -413,6 +468,14 @@ export type QueryTokenHoldingsArgs = {
 export type QueryTokenHoldingsStatsArgs = {
   address: Scalars['String'];
   chainId?: Scalars['Int'];
+};
+
+
+export type QueryTopTokensArgs = {
+  chainId?: Scalars['Int'];
+  first?: Scalars['Long'];
+  onlyVerified?: Scalars['Boolean'];
+  skip?: Scalars['Long'];
 };
 
 
@@ -509,6 +572,24 @@ export type TokenHoldingsStatsModel = {
   tokenCount: Scalars['Int'];
   totalNative: Scalars['Float'];
   totalStable: Scalars['Float'];
+};
+
+export type TopTokenModel = {
+  __typename?: 'TopTokenModel';
+  address: Scalars['String'];
+  liquidity: Scalars['Float'];
+  logoURI?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  priceChange24h: Scalars['Float'];
+  symbol: Scalars['String'];
+  volume24h: Scalars['Float'];
+};
+
+export type TopTokensModel = {
+  __typename?: 'TopTokensModel';
+  data: Array<TopTokenModel>;
+  total: Scalars['Int'];
 };
 
 export type TransactionModel = {
@@ -639,6 +720,7 @@ export type ResolversTypes = ResolversObject<{
   CosmosBlockModel: ResolverTypeWrapper<CosmosBlockModel>;
   CosmosModel: ResolverTypeWrapper<CosmosModel>;
   CosmosTransactionModel: ResolverTypeWrapper<CosmosTransactionModel>;
+  CurrencyChoices: CurrencyChoices;
   Decimal: ResolverTypeWrapper<Scalars['Decimal']>;
   DecodedInputModel: ResolverTypeWrapper<DecodedInputModel>;
   ERC20EventModel: ResolverTypeWrapper<Erc20EventModel>;
@@ -646,7 +728,9 @@ export type ResolversTypes = ResolversObject<{
   ERC721TransferModel: ResolverTypeWrapper<Erc721TransferModel>;
   ExplorerModel: ResolverTypeWrapper<ExplorerModel>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  HistoricalPriceModel: ResolverTypeWrapper<HistoricalPriceModel>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  InternalTransactionModel: ResolverTypeWrapper<InternalTransactionModel>;
   LogModel: ResolverTypeWrapper<LogModel>;
   Long: ResolverTypeWrapper<Scalars['Long']>;
   NFTTransfersModel: ResolverTypeWrapper<NftTransfersModel>;
@@ -660,6 +744,8 @@ export type ResolversTypes = ResolversObject<{
   TokenBalancesStatsModel: ResolverTypeWrapper<TokenBalancesStatsModel>;
   TokenHoldingsModel: ResolverTypeWrapper<TokenHoldingsModel>;
   TokenHoldingsStatsModel: ResolverTypeWrapper<TokenHoldingsStatsModel>;
+  TopTokenModel: ResolverTypeWrapper<TopTokenModel>;
+  TopTokensModel: ResolverTypeWrapper<TopTokensModel>;
   TransactionModel: ResolverTypeWrapper<TransactionModel>;
   TransactionStatsModel: ResolverTypeWrapper<TransactionStatsModel>;
   TransactionTraceModel: ResolverTypeWrapper<TransactionTraceModel>;
@@ -687,7 +773,9 @@ export type ResolversParentTypes = ResolversObject<{
   ERC721TransferModel: Erc721TransferModel;
   ExplorerModel: ExplorerModel;
   Float: Scalars['Float'];
+  HistoricalPriceModel: HistoricalPriceModel;
   Int: Scalars['Int'];
+  InternalTransactionModel: InternalTransactionModel;
   LogModel: LogModel;
   Long: Scalars['Long'];
   NFTTransfersModel: NftTransfersModel;
@@ -701,6 +789,8 @@ export type ResolversParentTypes = ResolversObject<{
   TokenBalancesStatsModel: TokenBalancesStatsModel;
   TokenHoldingsModel: TokenHoldingsModel;
   TokenHoldingsStatsModel: TokenHoldingsStatsModel;
+  TopTokenModel: TopTokenModel;
+  TopTokensModel: TopTokensModel;
   TransactionModel: TransactionModel;
   TransactionStatsModel: TransactionStatsModel;
   TransactionTraceModel: TransactionTraceModel;
@@ -730,7 +820,7 @@ export type BlockModelResolvers<ContextType = any, ParentType extends ResolversP
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   logsBloom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   miner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  nonce?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  nonce?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   parentHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   receiptsRoot?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -895,6 +985,31 @@ export type ExplorerModelResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type HistoricalPriceModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['HistoricalPriceModel'] = ResolversParentTypes['HistoricalPriceModel']> = ResolversObject<{
+  c?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  h?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  l?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  liq?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  o?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  priceScale?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  s?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  t?: Resolver<Array<ResolversTypes['Int']>, ParentType, ContextType>;
+  v?: Resolver<Array<ResolversTypes['Float']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type InternalTransactionModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['InternalTransactionModel'] = ResolversParentTypes['InternalTransactionModel']> = ResolversObject<{
+  blockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  blockTimestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  fromAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gasLimit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type LogModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['LogModel'] = ResolversParentTypes['LogModel']> = ResolversObject<{
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   blockHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -940,11 +1055,14 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType, RequireFields<QueryCosmosArgs, 'chainId' | 'first'>>;
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
   erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'eventTypes' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
+  historicalPrice?: Resolver<Maybe<ResolversTypes['HistoricalPriceModel']>, ParentType, ContextType, RequireFields<QueryHistoricalPriceArgs, 'address' | 'chainId' | 'currencyCode' | 'fromTs' | 'resolution' | 'toTs'>>;
+  internalTransactions?: Resolver<Array<ResolversTypes['InternalTransactionModel']>, ParentType, ContextType, RequireFields<QueryInternalTransactionsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>>;
   logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'>>;
   nftEvents?: Resolver<ResolversTypes['NFTTransfersModel'], ParentType, ContextType, RequireFields<QueryNftEventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>>;
   search?: Resolver<ResolversTypes['Search'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'chainId' | 'first' | 'query' | 'skip'>>;
   tokenHoldings?: Resolver<Array<ResolversTypes['TokenHoldingsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsArgs, 'address' | 'chainId' | 'first' | 'skip'>>;
   tokenHoldingsStats?: Resolver<Maybe<ResolversTypes['TokenHoldingsStatsModel']>, ParentType, ContextType, RequireFields<QueryTokenHoldingsStatsArgs, 'address' | 'chainId'>>;
+  topTokens?: Resolver<ResolversTypes['TopTokensModel'], ParentType, ContextType, RequireFields<QueryTopTokensArgs, 'chainId' | 'first' | 'onlyVerified' | 'skip'>>;
   traces?: Resolver<ResolversTypes['TransactionTraceModel'], ParentType, ContextType, RequireFields<QueryTracesArgs, 'chainId' | 'txHash'>>;
   transactionStats?: Resolver<ResolversTypes['TransactionStatsModel'], ParentType, ContextType, RequireFields<QueryTransactionStatsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'timestampEnd' | 'timestampStart'>>;
   transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType, RequireFields<QueryTransactionsArgs, 'address' | 'blockNumber' | 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'hash' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
@@ -1012,6 +1130,24 @@ export type TokenHoldingsStatsModelResolvers<ContextType = any, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type TopTokenModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopTokenModel'] = ResolversParentTypes['TopTokenModel']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  liquidity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  logoURI?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  priceChange24h?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  volume24h?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TopTokensModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopTokensModel'] = ResolversParentTypes['TopTokensModel']> = ResolversObject<{
+  data?: Resolver<Array<ResolversTypes['TopTokenModel']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type TransactionModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionModel'] = ResolversParentTypes['TransactionModel']> = ResolversObject<{
   blockHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -1073,6 +1209,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   ERC20EventsModel?: Erc20EventsModelResolvers<ContextType>;
   ERC721TransferModel?: Erc721TransferModelResolvers<ContextType>;
   ExplorerModel?: ExplorerModelResolvers<ContextType>;
+  HistoricalPriceModel?: HistoricalPriceModelResolvers<ContextType>;
+  InternalTransactionModel?: InternalTransactionModelResolvers<ContextType>;
   LogModel?: LogModelResolvers<ContextType>;
   Long?: GraphQLScalarType;
   NFTTransfersModel?: NftTransfersModelResolvers<ContextType>;
@@ -1085,6 +1223,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   TokenBalancesStatsModel?: TokenBalancesStatsModelResolvers<ContextType>;
   TokenHoldingsModel?: TokenHoldingsModelResolvers<ContextType>;
   TokenHoldingsStatsModel?: TokenHoldingsStatsModelResolvers<ContextType>;
+  TopTokenModel?: TopTokenModelResolvers<ContextType>;
+  TopTokensModel?: TopTokensModelResolvers<ContextType>;
   TransactionModel?: TransactionModelResolvers<ContextType>;
   TransactionStatsModel?: TransactionStatsModelResolvers<ContextType>;
   TransactionTraceModel?: TransactionTraceModelResolvers<ContextType>;

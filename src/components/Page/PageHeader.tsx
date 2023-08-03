@@ -33,7 +33,10 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
       {
         caption: 'Tokens',
         href: '',
-        submenu: [{ caption: 'ERC-20 Token TXns', href: '/tokentxns' }],
+        submenu: [
+          { caption: 'ERC-20 Top Tokens', href: '/tokens' },
+          { caption: 'ERC-20 Token TXns', href: '/tokentxns' },
+        ],
       },
       {
         caption: 'Developers',

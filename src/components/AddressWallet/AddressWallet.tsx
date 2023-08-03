@@ -126,7 +126,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
         onClick={(e) => {
           handleClose(e)
         }}
-        className={clsx(styles.dropdown, className)}
+        className={styles.dropdown}
         style={{ left: dropdownCoord?.left, top: dropdownCoord?.top }}
       >
         <ul className={styles.list}>{renderTokens()}</ul>
