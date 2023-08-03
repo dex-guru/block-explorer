@@ -43,7 +43,7 @@ const retryLink = new RetryLink({
     max: 2500,
   },
   attempts: {
-    max: 3,
+    max: 1,
     retryIf: (error, _operation) => !!error,
   },
 })

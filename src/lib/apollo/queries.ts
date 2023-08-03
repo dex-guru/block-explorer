@@ -15,6 +15,47 @@ export const TRANSACTIONS_LAST = gql`
   }
 `
 
+export const CHAIN_HEALTH = gql`
+  query ChainStats {
+    blocks(first: 1, skip: 0, chainId: ${CHAIN_ID}) {
+      number
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`
+
 export const CHAIN_STATS = gql`
   query ChainStats {
     chainStats(chainId: ${CHAIN_ID}) {
