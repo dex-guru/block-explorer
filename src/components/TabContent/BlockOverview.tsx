@@ -191,7 +191,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
         'Block nonce is a value used during mining to demonstrate proof of work for a block.',
       value: (
         <Code defaultFormat="hex" format={{ dec: true, hex: true }}>
-          {data.nonce}
+          {`${data.nonce}`}
         </Code>
       ),
     },

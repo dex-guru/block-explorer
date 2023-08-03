@@ -31,7 +31,7 @@ const Delta: FC<DeltaProps> = ({ value = 0, className, showZero = true }) => {
       data-tooltip-content={isLow ? `${absValue}%` : undefined}
     >
       {!isLow && value > 0 && '+'}
-      {!isLow && value < 0 && '-'}
+      {!isLow && value < 0 && '–'}
       {!!isLow && '~'}
       {displayValue}%
     </span>
