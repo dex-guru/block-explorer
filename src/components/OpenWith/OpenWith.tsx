@@ -45,10 +45,6 @@ const OpenWith: FC<OpenWithProps> = ({
   className,
   chainConfig,
 }) => {
-  const explorersData = explorers[chainConfig?.chainId].filter((el) => {
-    return !!el[`${type}_path`]
-  })
-
   const renderElement = useCallback(
     (el: ExplorerData, idx: number) => {
       const chainName = chainConfig.name
@@ -79,6 +75,14 @@ const OpenWith: FC<OpenWithProps> = ({
     },
     [type, address, chainConfig]
   )
+
+  if (!explorers[chainConfig?.chainId]) {
+    return null
+  }
+
+  const explorersData = explorers[chainConfig?.chainId].filter((el) => {
+    return !!el[`${type}_path`]
+  })
 
   if (!explorersData.length) {
     return null

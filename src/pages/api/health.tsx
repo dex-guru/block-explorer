@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { initializeApollo } from '@/lib/apollo/client'
-import { CHAIN_STATS } from '@/lib/apollo/queries'
+import { CHAIN_HEALTH } from '@/lib/apollo/queries'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -8,7 +8,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
 
     apolloClient
       .query({
-        query: CHAIN_STATS,
+        query: CHAIN_HEALTH,
       })
       .then(({ error }) => {
         if (error) {
