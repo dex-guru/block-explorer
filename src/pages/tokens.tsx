@@ -10,6 +10,7 @@ import {
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
+import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import { topTokensColumns } from '@/components/Table/columns/topTokensColumns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -18,8 +19,11 @@ import { getLogger } from '@/lib/logger'
 import { PaginationVariables } from '@/types'
 import styles from '@/pages/Pages.module.scss'
 
-const perPage = [5, 10, 25, 50, 100]
-const DEFAULT_VARIABLES = { first: perPage[1], skip: 0, onlyVerified: true }
+const DEFAULT_VARIABLES = {
+  first: DEFAULT_PER_PAGE,
+  skip: 0,
+  onlyVerified: true,
+}
 
 interface ITopTokensProps {
   topTokens: TopTokensModel
@@ -94,7 +98,7 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
             empty={{
               title: 'No top tokens data',
             }}
-            perPage={perPage[1]}
+            perPage={DEFAULT_PER_PAGE}
             onPageChange={onPaginationChange}
           />
         </DetailsView>

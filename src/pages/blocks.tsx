@@ -11,6 +11,7 @@ import {
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
+import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import Summary from '@/components/Summary'
 import { blocksColumns } from '@/components/Table/columns'
 import Value from '@/components/Value'
@@ -23,8 +24,6 @@ import {
   financialFormatLowValueHighPrecision,
 } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
-
-const perPage = [5, 10, 25, 50, 100]
 
 interface IBlocksProps {
   blocks: BlockModel[]
@@ -104,7 +103,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
             columns={blocksColumns(props.chainConfig)}
             data={blocks}
             total={props?.chainStats?.lastBlockNumber || 0}
-            perPage={perPage[1]}
+            perPage={DEFAULT_PER_PAGE}
             onPageChange={onPaginationChange}
           />
         </DetailsView>
@@ -125,7 +124,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     error,
   } = await apolloClient.query({
     query: GET_BLOCKS,
-    variables: { first: perPage[1], skip: 0 },
+    variables: { first: DEFAULT_PER_PAGE, skip: 0 },
   })
 
   error
