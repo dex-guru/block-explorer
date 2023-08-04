@@ -25,9 +25,7 @@ const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
       {logoImage}
 
       <span className={styles.content}>
-        <span className={styles.symbol}>
-          <span className={styles.symbolCaption}>{symbol}</span>
-        </span>
+        <span className={styles.symbol}>{symbol}</span>
 
         {!!name && (
           <span
@@ -35,7 +33,7 @@ const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
             data-tooltip-content={name}
             data-tooltip-id="app-tooltip"
           >
-            (<span className={styles.nameCaption}>{name}</span>)
+            {name}
           </span>
         )}
       </span>
