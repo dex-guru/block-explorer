@@ -1,6 +1,5 @@
 .react-tooltip {
-  --rt-opacity: 1;
-
+  opacity: 0;
   position: fixed;
   border-radius: 8px;
   padding: 8px 12px;
@@ -12,10 +11,22 @@
   z-index: 65535;
   background-color: var(--color-tooltip-bg);
   color: var(--color-tooltip-text);
-  margin: 0;
   width: max-content;
   max-width: clamp(320px, calc(100vw - 16px), 400px);
   word-wrap: break-word;
+  animation: tooltip-reveal 0.25s ease forwards;
+
+  @keyframes tooltip-reveal {
+    from {
+      opacity: 0;
+      transform: scale(0.75);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 
   &-arrow {
     position: absolute;
@@ -24,6 +35,10 @@
     height: 16px;
     transform: rotate(45deg);
     z-index: -1;
+  }
+
+  &__show {
+    opacity: 1;
   }
 
   [href] {

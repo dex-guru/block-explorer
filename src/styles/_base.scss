@@ -260,6 +260,12 @@ pre {
 }
 
 .recharts {
+  &-cartesian-axis {
+    text {
+      font-size: 12px !important;
+    }
+  }
+
   &-brush {
     & > rect {
       fill: none;
@@ -275,12 +281,6 @@ pre {
   &-tooltip {
     &-cursor {
       opacity: 0.1;
-    }
-  }
-
-  &-xAxis {
-    text {
-      font-size: 12px !important;
     }
   }
 
