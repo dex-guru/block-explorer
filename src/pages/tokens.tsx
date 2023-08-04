@@ -19,7 +19,7 @@ import { PaginationVariables } from '@/types'
 import styles from '@/pages/Pages.module.scss'
 
 const perPage = [5, 10, 25, 50, 100]
-const DEFAULT_VARIABLES = { first: perPage[1], skip: 0, onlyVerified: false }
+const DEFAULT_VARIABLES = { first: perPage[1], skip: 0, onlyVerified: true }
 
 interface ITopTokensProps {
   topTokens: TopTokensModel
