@@ -1,15 +1,17 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import StateView from '@/components/StateView'
+import { CHAIN_ID } from '@/constants'
 import ImageError from '@/images/error.svg'
 import styles from './Pages.module.scss'
 
-const ErrorPage: NextPage<{ chainConfig: ChainConfigModel }> = () => {
+const ErrorPage: NextPage = () => {
+  const title = `Internal Server Error on ${CHAIN_ID}`
+
   return (
     <>
       <Head>
-        <title>Internal Server Error</title>
+        <title>{title}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
