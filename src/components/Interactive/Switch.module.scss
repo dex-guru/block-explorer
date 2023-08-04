@@ -2,7 +2,7 @@
   margin: 0;
   width: 36px;
   height: 24px;
-  background: var(--color-accent);
+  background: var(--color-muted);
   padding: 6px;
   border-radius: 12px;
   display: flex;
@@ -31,6 +31,7 @@
   }
 
   &:checked {
+    background: var(--color-accent);
     &::before {
       transform: translateX(6px);
     }

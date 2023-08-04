@@ -19,6 +19,7 @@ import { PaginationVariables } from '@/types'
 import styles from '@/pages/Pages.module.scss'
 
 const perPage = [5, 10, 25, 50, 100]
+const DEFAULT_VARIABLES = { first: perPage[1], skip: 0, onlyVerified: false }
 
 interface ITopTokensProps {
   topTokens: TopTokensModel
@@ -30,11 +31,7 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
   const isMount = useIsMount()
   const [topTokens, setTopTokens] = useState(props.topTokens)
   const [getTopTokens, { data, loading }] = useLazyQuery(GET_TOP_TOKENS)
-  const [currentVariables, setCurrentVariables] = useState({
-    first: perPage[1],
-    skip: 0,
-    onlyVerified: false,
-  })
+  const [currentVariables, setCurrentVariables] = useState(DEFAULT_VARIABLES)
 
   const onPaginationChange = (variables: PaginationVariables) => {
     setCurrentVariables({ ...currentVariables, ...variables })
@@ -118,7 +115,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     error,
   } = await apolloClient.query({
     query: GET_TOP_TOKENS,
-    variables: { first: perPage[1], skip: 0, onlyVerified: false },
+    variables: DEFAULT_VARIABLES,
   })
 
   error
