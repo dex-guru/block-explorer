@@ -35,14 +35,18 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
       )
 
       return (
-        <div className="data-table__data">
-          <div className="value">
-            Validator <Address address={data.miner} type="account" isCopy />
-          </div>
-          <small className="value">
-            {txsCountDisplay} in {data.timeDiff} sec
-          </small>
-        </div>
+        <Tile
+          title={
+            <>
+              Validator <Address address={data.miner} type="account" isCopy />
+            </>
+          }
+          postfix={
+            <small className="value">
+              {txsCountDisplay} in {data.timeDiff} sec
+            </small>
+          }
+        />
       )
     },
   },
