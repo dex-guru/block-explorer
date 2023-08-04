@@ -14,10 +14,31 @@ import {
   ResponsiveContainer,
   LineChart,
 } from 'recharts'
-import { CommonChartProps } from './types'
+import { CommonChartDataset, CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
 import Heading from '@/components/Heading'
 import styles from './CommonChart.module.scss'
+
+const getYAxisLabelsWidth = (
+  data: CommonChartDataset[],
+  tickFormatter?: (value: unknown, idx: number) => string
+): number => {
+  const width = Math.max(
+    0,
+    ...data.map((axisData) =>
+      Math.max(
+        0,
+        ...axisData.data.map(
+          (item) =>
+            (!!tickFormatter ? tickFormatter(item.value, 0) : `${item.value}`)
+              .length
+        )
+      )
+    )
+  )
+
+  return width
+}
 
 const CommonChart: FC<CommonChartProps> = ({
   data,
@@ -110,8 +131,20 @@ const CommonChart: FC<CommonChartProps> = ({
     return null
   }
 
-  const hasLeftAxis = !!data.filter((el) => el.yAxis !== 'right').length
-  const hasRightAxis = !!data.filter((el) => el.yAxis === 'right').length
+  const leftAxisData = data.filter((el) => el.yAxis !== 'right')
+  const rightAxisData = data.filter((el) => el.yAxis === 'right')
+
+  const hasLeftAxis = !!leftAxisData.length
+  const hasRightAxis = !!rightAxisData.length
+
+  const leftAxisWidth = getYAxisLabelsWidth(
+    leftAxisData,
+    options?.axis?.y?.tickFormatter
+  )
+  const rightAxisWidth = getYAxisLabelsWidth(
+    rightAxisData,
+    options?.axis?.y?.tickFormatter
+  )
 
   return (
     <ResponsiveContainer
@@ -145,6 +178,7 @@ const CommonChart: FC<CommonChartProps> = ({
             )}
             yAxisId="left"
             orientation="left"
+            width={leftAxisWidth * 7}
           />
         )}
         {hasRightAxis && (
@@ -159,6 +193,7 @@ const CommonChart: FC<CommonChartProps> = ({
             )}
             yAxisId="right"
             orientation="right"
+            width={rightAxisWidth * 7}
           />
         )}
         <Tooltip content={<CommonChartTooltip />} />
