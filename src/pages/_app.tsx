@@ -1,13 +1,9 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
 import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
-import { useRouter } from 'next/router'
-import Script from 'next/script'
 import { ApolloProvider } from '@apollo/client'
 import Loading from '@/components/Loading'
-import { CHAIN_ID } from '@/constants'
-import { useIsMount } from '@/hooks'
 import { useApollo } from '@/lib/apollo/client'
 import { initApm } from '@/services/apmService'
 import styles from './Pages.module.scss'
@@ -27,10 +23,9 @@ const ibm = IBM_Plex_Sans_Condensed({
 
 initApm()
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: FC<AppProps> = ({ Component, pageProps, router }) => {
   const apolloClient = useApollo(pageProps)
   const [isPageLoading, setIsPageLoading] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     const handleStart = () => setIsPageLoading(true)
@@ -39,14 +34,6 @@ export default function App({ Component, pageProps }: AppProps) {
     router.events.on('routeChangeStart', handleStart)
     router.events.on('routeChangeComplete', handleStop)
     router.events.on('routeChangeError', handleStop)
-
-    const _window = window as Window & {
-      dataLayer?: Array<Record<string, string>>
-    }
-
-    if (_window?.dataLayer?.push) {
-      _window.dataLayer.push({ path: router.asPath, chainId: '${CHAIN_ID}' })
-    }
 
     return () => {
       router.events.off('routeChangeStart', handleStart)
@@ -85,3 +72,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   )
 }
+
+export default App
