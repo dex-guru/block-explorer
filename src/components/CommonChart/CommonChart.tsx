@@ -30,8 +30,10 @@ const getYAxisLabelsWidth = (
         0,
         ...axisData.data.map(
           (item) =>
-            (!!tickFormatter ? tickFormatter(item.value, 0) : `${item.value}`)
-              .length
+            (!!tickFormatter
+              ? tickFormatter(item[axisData.key || 'value'], 0) || ''
+              : `${item[axisData.key || 'value']}`
+            ).length
         )
       )
     )
