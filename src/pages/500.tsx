@@ -17,7 +17,11 @@ const ErrorPage: NextPage = () => {
     }
 
     if (_window?.dataLayer?.push) {
-      _window.dataLayer.push({ path: asPath, chainId: `${CHAIN_ID}` })
+      _window.dataLayer.push({
+        event: 'page_error',
+        path: asPath,
+        chainId: `${CHAIN_ID}`,
+      })
     }
   }, [asPath])
 
