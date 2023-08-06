@@ -39,6 +39,16 @@
   line-height: 20px;
 }
 
+.proceed {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.loader {
+  flex: 0 1 160px;
+}
+
 .code {
   composes: container from '../Code/Code.module.scss';
   background: var(--code-bg) !important;
