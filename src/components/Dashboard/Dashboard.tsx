@@ -7,7 +7,11 @@ import DashboardWidget from './DashboardWidget'
 import Card from '@/components/Card'
 import Message from '@/components/Message'
 import IconRedash from '@/images/redash.svg'
-import { getDynamicDateRangePeriod } from '@/lib/dates'
+import {
+  DEFAULT_DATE_RANGE,
+  DYNAMIC_DATE_PREFIX,
+  getDynamicDateRangePeriod,
+} from '@/lib/dates'
 import { generateRedashDashboardParams } from '@/lib/redash/client'
 import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
@@ -28,14 +32,16 @@ const Dashboard: FC<{
   }, [])
 
   useEffect(() => {
-    if (!isMounted) {
+    if (!isMounted || !slug) {
       return
     }
 
     const getData = async () => {
       const parameters = generateRedashDashboardParams(data, {
         chain_id: process.env.NEXT_PUBLIC_CHAIN_ID || 7700,
-        dates: getDynamicDateRangePeriod('d_last_30_days'),
+        dates: getDynamicDateRangePeriod(
+          `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
+        ),
       })
 
       const queryParams = {

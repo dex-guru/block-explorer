@@ -19,6 +19,7 @@ import {
 } from 'date-fns'
 
 export const DYNAMIC_DATE_PREFIX = 'd_'
+export const DEFAULT_DATE_RANGE = 'last_30_days'
 const DATE_FORMAT = 'yyyy-MM-dd'
 
 export const isDynamicDateRangePeriod = (value: string): boolean => {
