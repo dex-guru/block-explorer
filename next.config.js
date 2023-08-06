@@ -6,11 +6,20 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 const getCommitShaShort = () => {
-  return fs
-    .readFileSync('.git/refs/remotes/origin/main')
-    .toString()
-    .trim()
-    .slice(0, 7)
+  let sha = ''
+
+  try {
+    const rev = fs.readFileSync('.git/HEAD').toString().trim()
+    if (rev.indexOf(':') === -1) {
+      sha = rev
+    } else {
+      sha = fs.readFileSync('.git/' + rev.substring(5))
+    }
+  } catch (e) {
+    sha = fs.readFileSync('.git/refs/remotes/origin/main')
+  }
+
+  return sha.toString().trim().slice(0, 7)
 }
 
 const nextConfig = {
