@@ -232,7 +232,7 @@ const DashboardWidget: FC<{
   const tools = visualization?.query?.id ? (
     <Link
       data-tooltip-id="app-tooltip"
-      data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
+      data-tooltip-content={`Open ${visualization.query.name} query in Warehouse`}
       className={styles.redash}
       target="_blank"
       rel="noreferrer noopener"

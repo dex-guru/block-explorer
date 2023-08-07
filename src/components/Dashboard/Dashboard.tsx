@@ -87,7 +87,7 @@ const Dashboard: FC<{
         <Link
           className={styles.redash}
           data-tooltip-id="app-tooltip"
-          data-tooltip-content={`Open ${name} in Redash`}
+          data-tooltip-content={`Open ${name} in Warehouse`}
           target="_blank"
           rel="noreferrer noopener"
           href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
