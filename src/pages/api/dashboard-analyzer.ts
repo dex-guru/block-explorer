@@ -1,12 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {
-  generateRedashQueryParams,
-  getRedashDashboard,
-} from '@/lib/redash/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { slug } = req.query
-
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' })
     return
@@ -14,21 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { dashboard_slug, parameters } = JSON.parse(req.body || {})
 
-  const dashboard = await getRedashDashboard(slug as string)
-
-  const paramsResult: Array<Record<string, unknown>> = []
-
-  dashboard?.widgets?.forEach((widget) => {
-    if (!widget?.visualization?.query?.options?.parameters) {
-      return
-    }
-
-    paramsResult.push(
-      generateRedashQueryParams(widget?.visualization?.query, {
-        chain_id: process.env.NEXT_PUBLIC_CHAIN_ID || 7700,
-      })
-    )
-  })
+  if (!dashboard_slug) {
+    res.status(404).send({ message: 'No parameter provided' })
+    return
+  }
 
   try {
     const response = await fetch(
@@ -43,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         body: JSON.stringify({
           dashboard_slug,
-          parameters: JSON.stringify(parameters) || '',
+          parameters: JSON.stringify({ dashboard_slug, parameters }) || '',
           prompt_suffix: '',
           selected_prompt: '',
         }),

@@ -10,7 +10,6 @@ import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import OpenWith from '../OpenWith'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
@@ -32,6 +31,7 @@ import {
   IconShield,
   IconVerify,
 } from '@/components/Icons'
+import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import Properties from '@/components/Properties'
 import Separated from '@/components/Separated'

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import { LoadingCard } from '../Loading'
+import HistoricalValue from '../HistoricalValue/HistoricalValue'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -17,6 +17,7 @@ import DateTime from '@/components/DateTime'
 import Details from '@/components/Details'
 import { IconCross, IconVerify, IconWatch } from '@/components/Icons'
 import Label from '@/components/Label'
+import { LoadingCard } from '@/components/Loading'
 import Properties, { Property } from '@/components/Properties'
 import Separated from '@/components/Separated/Separated'
 import Table, {
@@ -215,11 +216,13 @@ const TxOverview: FC<{
             value={getNormalizedValue(data.value)}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
-          <Value
-            value={getNormalizedValue(
-              data.value * chainStats.nativeTokenPriceUsd
-            )}
-            prefix="$"
+          <HistoricalValue
+            className={styles.getValue}
+            value={data.value}
+            title="Value"
+            chainConfig={chainConfig}
+            chainStats={chainStats}
+            timestamp={data.blockTimestamp}
           />
         </Separated>
       ),
@@ -237,13 +240,13 @@ const TxOverview: FC<{
             )}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
-          <Value
-            value={getNormalizedValue(
-              bigTxFee.multipliedBy(chainStats.nativeTokenPriceUsd),
-              chainConfig.nativeCurrency.decimals,
-              { decimals: 2 }
-            )}
-            prefix="$"
+          <HistoricalValue
+            className={styles.getValue}
+            value={bigTxFee}
+            title="TXn fee"
+            chainConfig={chainConfig}
+            chainStats={chainStats}
+            timestamp={data.blockTimestamp}
           />
         </Separated>
       ),

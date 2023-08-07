@@ -1,10 +1,26 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-
-const nextBuildId = require('next-build-id')
+const fs = require('fs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+
+const getCommitShaShort = () => {
+  let sha = ''
+
+  try {
+    const rev = fs.readFileSync('.git/HEAD').toString().trim()
+    if (rev.indexOf(':') === -1) {
+      sha = rev
+    } else {
+      sha = fs.readFileSync('.git/' + rev.substring(5))
+    }
+  } catch (e) {
+    sha = fs.readFileSync('.git/refs/remotes/origin/main')
+  }
+
+  return sha.toString().trim().slice(0, 7)
+}
 
 const nextConfig = {
   output: 'standalone',
@@ -49,7 +65,7 @@ const nextConfig = {
       'www.gravatar.com',
     ],
   },
-  generateBuildId: () => nextBuildId.sync({ dir: __dirname }).slice(0, 7),
+  generateBuildId: getCommitShaShort,
   async headers() {
     return [
       {

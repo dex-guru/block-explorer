@@ -11,9 +11,6 @@
   --color-muted: #6d7986;
 
   --color-accent-shift: 1;
-
-  --color-tooltip-bg: var(--color-bg-3);
-  --color-tooltip-text: var(--color-text);
 }
 
 @mixin theme-light {
@@ -29,9 +26,6 @@
   --color-muted: #6d7986;
 
   --color-accent-shift: -1;
-
-  --color-tooltip-bg: var(--color-bg-5);
-  --color-tooltip-text: var(--color-bg);
 }
 
 html {
@@ -54,6 +48,9 @@ html {
   --color-page-muted: var(--color-muted);
 
   --color-separator: var(--color-bg-3);
+
+  --color-tooltip-bg: var(--color-bg-3);
+  --color-tooltip-text: var(--color-text);
 
   --radii-sm: 4px;
   --radii-lg: 8px;

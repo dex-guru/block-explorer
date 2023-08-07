@@ -15,6 +15,7 @@ import {
   DYNAMIC_DATE_RANGES,
   DYNAMIC_DATE_PREFIX,
   getDynamicDateRangePeriod,
+  DEFAULT_DATE_RANGE,
 } from '@/lib/dates'
 import {
   getRedashJob,
@@ -32,7 +33,9 @@ const DashboardWidget: FC<{
 }> = ({ data: { options, visualization, text }, queryResponse, params }) => {
   const [queryResult, setQueryResult] = useState(queryResponse?.query_result)
   const [queryJob, setQueryJob] = useState(queryResponse?.job)
-  const [currentDateRange, setCurrentDateRange] = useState('d_last_30_days')
+  const [currentDateRange, setCurrentDateRange] = useState(
+    `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
+  )
 
   const getQueryData = () => {
     const getData = async () => {

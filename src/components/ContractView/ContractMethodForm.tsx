@@ -8,6 +8,7 @@ import Button from '@/components/Button'
 import Details from '@/components/Details'
 import Heading from '@/components/Heading'
 import Loading from '@/components/Loading'
+import Message from '@/components/Message'
 import styles from './ContractView.module.scss'
 
 export interface IFormProps {
@@ -32,7 +33,7 @@ const ContractMethodForm: FC<IFormProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const chainId = useChainId()
 
-  const [callResult, setCallResult] = useState<unknown>(undefined)
+  const [callResult, setCallResult] = useState<string | undefined>(undefined)
 
   const onRead = useCallback(
     async (
@@ -136,8 +137,12 @@ const ContractMethodForm: FC<IFormProps> = ({
             )
           })}
           {method.stateMutability === 'payable' && (
-            <label>
-              <Heading caption="native token amount (payable)" size="xs" />
+            <label className={styles.field}>
+              <Heading
+                caption="native token amount (payable)"
+                size="xs"
+                className={styles.label}
+              />
               <input
                 {...register('payable')}
                 className={styles.input}
@@ -148,14 +153,16 @@ const ContractMethodForm: FC<IFormProps> = ({
               )}
             </label>
           )}
-          {isLoading && <Loading />}
-          {callResult}
-          <Button
-            type="submit"
-            caption={isWrite ? 'Write' : 'Query'}
-            className={styles.submit}
-            disabled={!account}
-          />
+          <div className={styles.proceed}>
+            <Button
+              type="submit"
+              caption={isWrite ? 'Write' : 'Query'}
+              className={styles.submit}
+              disabled={!account || isLoading}
+            />
+            {isLoading && <Loading className={styles.loader} />}
+            {!!callResult && <Message text={callResult} />}
+          </div>
         </>
       </form>
     </Details>
