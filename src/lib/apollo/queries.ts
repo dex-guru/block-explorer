@@ -370,6 +370,27 @@ export const GET_BLOCKS_SHORT = gql`
   }
 `
 
+export const GET_HISTORICAL_TOKEN_PRICE = gql`
+  query HistoricalNativePrice(
+    $address: String!
+    $fromTs: Int!
+    $toTs: Int!
+    $currencyCode: CurrencyChoices!
+    $resolution: String!
+  ) {
+    historicalPrice(
+      address: $address
+      chainId: ${CHAIN_ID}
+      fromTs: $fromTs
+      toTs: $toTs
+      currencyCode: $currencyCode
+      resolution: $resolution
+    ) {
+      c
+    }
+  }
+`
+
 export const GET_TOP_TOKENS = gql`
   query TopTokens($first: Long!, $skip: Long!, $onlyVerified: Boolean) {
     topTokens(first: $first, skip: $skip, onlyVerified: $onlyVerified, chainId: ${CHAIN_ID}) {

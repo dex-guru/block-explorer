@@ -9,7 +9,7 @@ export type TraceL2Event = {
 
 export type TraceL2EventsProps = { title: string; events?: TraceL2Event[] }
 
-export type Trace = {
+export type Trace = Record<string, string> & {
   from: string
   gas: string
   gasUsed: string
@@ -19,6 +19,7 @@ export type Trace = {
   type: string
   value: string
   calls?: Trace[]
+  error?: string
   beforeEVMTransfers?: TraceL2Event[]
   afterEVMTransfers?: TraceL2Event[]
 }

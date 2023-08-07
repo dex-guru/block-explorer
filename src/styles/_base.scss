@@ -151,6 +151,22 @@ code {
   }
 }
 
+pre {
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.prismjs {
+  overflow: auto;
+  max-height: 75vh;
+  background: var(--color-bg);
+}
+
 img {
   background: none;
   position: relative;

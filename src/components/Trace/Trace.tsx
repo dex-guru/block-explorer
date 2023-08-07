@@ -7,6 +7,7 @@ import Address from '@/components/Address'
 import Code from '@/components/Code'
 import { IconArrowDown } from '@/components/Icons'
 import Label from '@/components/Label'
+import Message from '@/components/Message'
 import Properties from '@/components/Properties'
 import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
@@ -53,24 +54,50 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
     return <Address type="account" address={address} isShorten={false} isCopy />
   }
 
+  const {
+    type,
+    error,
+    from,
+    to,
+    value,
+    gas,
+    gasUsed,
+    input,
+    beforeEVMTransfers,
+    afterEVMTransfers,
+    output,
+    calls,
+    ...rest
+  } = data
+
   const properties = [
     {
       title: 'Type',
-      value: data.type,
+      value: type,
     },
+    ...(error
+      ? [
+          {
+            title: 'Error',
+            value: (
+              <Message text={error} type="danger" className={styles.message} />
+            ),
+          },
+        ]
+      : []),
     {
       title: 'From',
-      value: displayAddress(data.from),
+      value: displayAddress(from),
     },
     {
       title: 'To',
-      value: displayAddress(data.to),
+      value: displayAddress(to),
     },
     {
       title: 'Value',
       value: (
         <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
-          {data.value?.toString()}
+          {value?.toString()}
         </Code>
       ),
     },
@@ -78,7 +105,7 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
       title: 'Gas',
       value: (
         <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
-          {data.gas?.toString()}
+          {gas?.toString()}
         </Code>
       ),
     },
@@ -86,14 +113,29 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
       title: 'Gas Used',
       value: (
         <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
-          {data.gasUsed?.toString()}
+          {gasUsed?.toString()}
         </Code>
       ),
     },
     {
       title: 'Input',
-      value: <Code>{data.input?.toString()}</Code>,
+      value: <Code>{input?.toString()}</Code>,
     },
+    ...(output
+      ? [
+          {
+            title: 'Output',
+            value: (
+              <Code defaultFormat="hex" format={{ hex: true, dec: true }}>
+                {output?.toString()}
+              </Code>
+            ),
+          },
+        ]
+      : []),
+    ...Object.entries(rest).map(([key, value]) => {
+      return { title: key, value: value.toString() }
+    }),
   ]
 
   return (
@@ -106,23 +148,20 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
         <Properties
           data={properties}
           className={clsx(styles.properties, {
-            [styles.inner]: !!data.calls?.length,
+            [styles.inner]: !!calls?.length,
           })}
         />
 
         <TraceL2Events
           title="Before EVM Transfers"
-          events={data.beforeEVMTransfers}
+          events={beforeEVMTransfers}
         />
 
-        <TraceL2Events
-          title="After EVM Transfers"
-          events={data.afterEVMTransfers}
-        />
+        <TraceL2Events title="After EVM Transfers" events={afterEVMTransfers} />
 
-        {!!data.calls?.length && (
+        {!!calls?.length && (
           <ul className={styles.list}>
-            {data.calls.map((item, idx) => (
+            {calls.map((item, idx) => (
               <li key={idx} className={styles.item}>
                 <Trace data={item} chainConfig={chainConfig} />
               </li>
