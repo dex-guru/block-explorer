@@ -2,9 +2,9 @@ import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { IconNoIcon } from '../Icons'
 import { TokenProps } from './types'
 import { AddressValues } from '@/components/Address/helpers'
+import { IconNoIcon } from '@/components/Icons'
 import styles from './Token.module.scss'
 
 const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
