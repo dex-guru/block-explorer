@@ -38,7 +38,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
   useEffect(() => {
     if (data && isMount) {
-      setInternalTxs(data.internalTxs)
+      setInternalTxs(data.internalTransactions)
     }
   }, [data, isMount])
 
@@ -60,7 +60,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
             isLoading={loading}
             columns={internalTxsColumns(props.chainConfig, props.chainStats)}
             data={internalTxs || []}
-            total={1000}
+            total={1001}
             perPage={DEFAULT_PER_PAGE}
             onPageChange={onPaginationChange}
           />
