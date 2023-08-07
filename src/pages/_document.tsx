@@ -5,8 +5,6 @@ export default function Document() {
   const gTagManagerId =
     process.env.NEXT_PUBLIC_GTAG_ID || process.env.gTagManagerId
 
-  console.error(gTagManagerId)
-
   return (
     <Html lang="en">
       <Head>
