@@ -194,3 +194,7 @@
 .muted {
   composes: muted from '../../styles/_common.scss';
 }
+
+.message {
+  margin: -8px 0;
+}
