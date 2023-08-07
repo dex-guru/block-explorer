@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import { title } from 'process'
 import TraceL2Events from './TraceL2Events'
 import { TraceProps } from './types'
 import Address from '@/components/Address'
