@@ -1,4 +1,11 @@
-import { ChangeEventHandler, FC, Suspense, useEffect, useState } from 'react'
+import {
+  ChangeEventHandler,
+  FC,
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
@@ -11,6 +18,7 @@ import Message from '@/components/Message'
 import Table from '@/components/Table'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
+import { useIsMount } from '@/hooks'
 import {
   DYNAMIC_DATE_RANGES,
   DYNAMIC_DATE_PREFIX,
@@ -22,22 +30,30 @@ import {
   getRedashQueryResponse,
   generateRedashQueryParams,
 } from '@/lib/redash/client'
-import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
+import {
+  TRedashJob,
+  TRedashQueryResult,
+  TRedashWidget,
+} from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
+const WIDGET_QUERY_INTERVAL = 5 * 1000
+
 const DashboardWidget: FC<{
   data: TRedashWidget
-  queryResponse: TRedashQueryResponse
   params?: Record<string, unknown>
-}> = ({ data: { options, visualization, text }, queryResponse, params }) => {
-  const [queryResult, setQueryResult] = useState(queryResponse?.query_result)
-  const [queryJob, setQueryJob] = useState(queryResponse?.job)
+}> = ({ data: { options, visualization, text }, params }) => {
+  const [queryResult, setQueryResult] = useState<
+    TRedashQueryResult | undefined
+  >(undefined)
+  const isMounted = useIsMount()
+  const [queryJob, setQueryJob] = useState<TRedashJob | undefined>(undefined)
   const [currentDateRange, setCurrentDateRange] = useState(
     `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
   )
 
-  const getQueryData = () => {
+  const getQueryData = useCallback(() => {
     const getData = async () => {
       if (!visualization?.query?.id) {
         return
@@ -58,7 +74,7 @@ const DashboardWidget: FC<{
     }
 
     getData()
-  }
+  }, [currentDateRange, params, visualization?.query])
 
   useEffect(() => {
     if (queryResult) {
@@ -66,7 +82,7 @@ const DashboardWidget: FC<{
     }
 
     getQueryData()
-  }, [currentDateRange])
+  }, [currentDateRange, getQueryData, queryResult])
 
   useIntervalWhen(
     () => {
@@ -86,9 +102,9 @@ const DashboardWidget: FC<{
 
       getJob()
     },
-    5 * 1000,
+    WIDGET_QUERY_INTERVAL,
     !!queryJob?.id,
-    true
+    isMounted && !!visualization?.query
   )
 
   const title = visualization ? (
