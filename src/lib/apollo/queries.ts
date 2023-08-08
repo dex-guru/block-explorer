@@ -237,6 +237,77 @@ export const GET_TRANSACTIONS = gql`
   }
 `
 
+export const GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN = gql`
+  query InternalTxs($first: Long!, $skip: Long!, $address: String, $hash: String) {
+    internalTransactions(first: $first, skip: $skip, address: $address, hash: $hash, chainId: ${CHAIN_ID}) {
+      data {
+        blockNumber
+        blockTimestamp
+        fromAddress
+        gasLimit
+        hash
+        toAddress
+        type
+        value
+      }
+      total
+    }
+    chainStats(chainId: ${CHAIN_ID}) {
+      nativeTokenPriceUsd
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`
+
+export const GET_INTERNAL_TXS = gql`
+  query InternalTxs($first: Long!, $skip: Long!, $address: String, $hash: String) {
+    internalTransactions(first: $first, skip: $skip, address: $address, hash: $hash, chainId: ${CHAIN_ID}) {
+      data {
+        blockNumber
+        blockTimestamp
+        fromAddress
+        gasLimit
+        hash
+        toAddress
+        type
+        value
+      }
+    }
+  }
+`
+
 export const GET_BLOCKS = gql`
   query Blocks($first: Long!, $skip: Long!) {
     blocks(first: $first, skip: $skip, chainId: ${CHAIN_ID}) {
