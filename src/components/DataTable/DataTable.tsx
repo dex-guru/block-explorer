@@ -69,7 +69,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
     return (
       <span className={styles.totalRows}>
         Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
-        {total > 1000 && (
+        {total >= 1000 && (
           <>
             &nbsp;
             <TooltipAnchor tooltip="Showing the last 1,000 records" />
