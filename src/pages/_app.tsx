@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
 import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
-import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import Loading from '@/components/Loading'
 import { useApollo } from '@/lib/apollo/client'
@@ -24,10 +23,9 @@ const ibm = IBM_Plex_Sans_Condensed({
 
 initApm()
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: FC<AppProps> = ({ Component, pageProps, router }) => {
   const apolloClient = useApollo(pageProps)
   const [isPageLoading, setIsPageLoading] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     const handleStart = () => setIsPageLoading(true)
@@ -74,3 +72,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   )
 }
+
+export default App

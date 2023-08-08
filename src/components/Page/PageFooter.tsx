@@ -30,6 +30,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
             alt="DexGuru"
             width={0}
             height={0}
+            priority={true}
           />
           <div className={styles.text}>
             <div className={styles.powered}>
