@@ -33,7 +33,9 @@ const ContractMethodForm: FC<IFormProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const chainId = useChainId()
 
-  const [callResult, setCallResult] = useState<string | undefined>(undefined)
+  const [callResult, setCallResult] = useState<
+    { isError: boolean; text: string } | undefined
+  >(undefined)
 
   const onRead = useCallback(
     async (
@@ -54,11 +56,11 @@ const ContractMethodForm: FC<IFormProps> = ({
         })
         const result = `${data}`
 
-        setCallResult(result)
+        setCallResult({ text: result, isError: false })
         setIsLoading(false)
       } catch (e) {
-        console.error(e)
         setIsLoading(false)
+        setCallResult({ isError: true, text: `${e}` })
       }
     },
     [abi, address, method.name, chainId]
@@ -92,11 +94,11 @@ const ContractMethodForm: FC<IFormProps> = ({
 
         const result = `${data}`
 
-        setCallResult(result.toString())
+        setCallResult({ text: result.toString(), isError: false })
         setIsLoading(false)
       } catch (e) {
-        console.error(e)
         setIsLoading(false)
+        setCallResult({ isError: true, text: `${e}` })
       }
     },
     [abi, account, address, method.name, method.stateMutability, chainId]
@@ -161,7 +163,12 @@ const ContractMethodForm: FC<IFormProps> = ({
               disabled={!account || isLoading}
             />
             {isLoading && <Loading className={styles.loader} />}
-            {!!callResult && <Message text={callResult} />}
+            {!!callResult && (
+              <Message
+                text={callResult.text}
+                type={callResult.isError ? 'danger' : 'info'}
+              />
+            )}
           </div>
         </>
       </form>
