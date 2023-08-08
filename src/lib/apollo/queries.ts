@@ -237,17 +237,20 @@ export const GET_TRANSACTIONS = gql`
   }
 `
 
-export const GET_INTERNAL_TXS = gql`
+export const GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN = gql`
   query InternalTxs($first: Long!, $skip: Long!, $address: String, $hash: String) {
     internalTransactions(first: $first, skip: $skip, address: $address, hash: $hash, chainId: ${CHAIN_ID}) {
-      blockNumber
-      blockTimestamp
-      fromAddress
-      gasLimit
-      hash
-      toAddress
-      type
-      value
+      data {
+        blockNumber
+        blockTimestamp
+        fromAddress
+        gasLimit
+        hash
+        toAddress
+        type
+        value
+      }
+      total
     }
     chainStats(chainId: ${CHAIN_ID}) {
       nativeTokenPriceUsd
@@ -283,6 +286,23 @@ export const GET_INTERNAL_TXS = gql`
         name
         standard
         url
+      }
+    }
+  }
+`
+
+export const GET_INTERNAL_TXS = gql`
+  query InternalTxs($first: Long!, $skip: Long!, $address: String, $hash: String) {
+    internalTransactions(first: $first, skip: $skip, address: $address, hash: $hash, chainId: ${CHAIN_ID}) {
+      data {
+        blockNumber
+        blockTimestamp
+        fromAddress
+        gasLimit
+        hash
+        toAddress
+        type
+        value
       }
     }
   }

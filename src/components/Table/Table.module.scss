@@ -158,3 +158,10 @@
     vertical-align: text-bottom;
   }
 }
+
+.label {
+  &Type {
+    composes: info from '../Label/Label.module.scss';
+    text-transform: uppercase;
+  }
+}

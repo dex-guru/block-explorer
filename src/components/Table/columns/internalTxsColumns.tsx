@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { Label } from 'recharts'
 import styles from '../Table.module.scss'
 import {
   ChainConfigModel,
@@ -7,6 +6,7 @@ import {
   InternalTransactionModel,
 } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
 import Tile from '@/components/Tile'
 import TimeAgo from '@/components/TimeAgo'
@@ -31,15 +31,14 @@ export const internalTxsColumns: (
     render: (data) => <TimeAgo timestamp={data.blockTimestamp} />,
   },
   {
-    accessor: 'Parent Txn Hash',
-    title: 'Age',
+    accessor: 'hash',
+    title: 'Parent Txn Hash',
     render: (data) => <Address address={data.hash} type="tx" isCopy />,
   },
   {
     accessor: 'type',
     title: 'Method',
-    type: 'center',
-    render: (data) => <Label>{data.type}</Label>,
+    render: (data) => <Label className={styles.labelType}>{data.type}</Label>,
   },
   {
     accessor: 'fromAddress',

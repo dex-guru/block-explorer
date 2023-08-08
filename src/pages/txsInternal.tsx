@@ -14,19 +14,22 @@ import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import { internalTxsColumns } from '@/components/Table/columns/internalTxsColumns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import { GET_INTERNAL_TXS } from '@/lib/apollo/queries'
+import {
+  GET_INTERNAL_TXS,
+  GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN,
+} from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { PaginationVariables } from '@/types'
 
 interface IBlocksProps {
-  internalTxs: InternalTransactionModel[]
+  internalTxs: { data: InternalTransactionModel[]; total: number }
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }
 
 const BlockPage: NextPage<IBlocksProps> = (props) => {
   const isMount = useIsMount()
-  const [internalTxs, setInternalTxs] = useState(props.internalTxs)
+  const [internalTxs, setInternalTxs] = useState(props.internalTxs.data)
   const [getBlocks, { data, loading }] = useLazyQuery(GET_INTERNAL_TXS)
 
   const onPaginationChange = useCallback(
@@ -38,7 +41,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
   useEffect(() => {
     if (data && isMount) {
-      setInternalTxs(data.internalTransactions)
+      setInternalTxs(data.internalTransactions.data)
     }
   }, [data, isMount])
 
@@ -60,7 +63,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
             isLoading={loading}
             columns={internalTxsColumns(props.chainConfig, props.chainStats)}
             data={internalTxs || []}
-            total={1001}
+            total={props.internalTxs.total}
             perPage={DEFAULT_PER_PAGE}
             onPageChange={onPaginationChange}
           />
@@ -81,7 +84,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     data: { internalTransactions, chainConfig, chainStats },
     error,
   } = await apolloClient.query({
-    query: GET_INTERNAL_TXS,
+    query: GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN,
     variables: { first: DEFAULT_PER_PAGE, skip: 0 },
   })
 
