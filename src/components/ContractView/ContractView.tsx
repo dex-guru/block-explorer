@@ -566,14 +566,13 @@ const ContractView: FC<IContractViewProps> = ({
                         to: { pathname, query: { tab: 'analytics' } },
                         content: (
                           <Analytics
-                            chainConfig={chain.config}
                             tag={
                               type === 'token'
                                 ? 'Token Contract'
                                 : 'Smart Contract'
                             }
                             params={{
-                              chain_id: chain.config.chainId,
+                              network: chain.config.shortName,
                               ...(type === 'token'
                                 ? {
                                     token_address_requested:

@@ -6,18 +6,17 @@ import Dashboard from '@/components/Dashboard'
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
 import {
-  getRadashDashboardWithResults,
+  getRedashDashboard,
   getRedashDashboardsByTag,
 } from '@/lib/redash/client'
-import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
+import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
 const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
   const [isMounted, setIsMounted] = useState(false)
-  const [dashboardsData, setDashboardsData] = useState<Array<{
-    dashboard: TRedashDashboard
-    queries: Record<number, TRedashQueryResponse>
-  }> | null>(null)
+  const [dashboardsData, setDashboardsData] = useState<
+    TRedashDashboard[] | null
+  >(null)
 
   useEffect(() => {
     setIsMounted(true)
@@ -27,6 +26,7 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
     if (!isMounted) {
       return
     }
+
     const getData = async () => {
       if (!tag) {
         return
@@ -38,42 +38,35 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
         return
       }
 
-      const dashboardResults: Array<{
-        dashboard: TRedashDashboard
-        queries: Record<number, TRedashQueryResponse>
-      }> = []
+      const dashboards: TRedashDashboard[] = []
 
       await Promise.all(
         dashboardsList?.results?.map(async (dashboard) => {
-          dashboardResults.push(
-            await getRadashDashboardWithResults(dashboard.id, params)
-          )
+          dashboards.push(await getRedashDashboard(dashboard.id))
         })
       )
 
-      setDashboardsData(dashboardResults)
+      setDashboardsData(dashboards)
     }
 
     getData()
-  }, [isMounted])
+  }, [isMounted, tag])
 
   if (!dashboardsData?.length) {
     return <LoadingCard />
   }
 
-  const tabs = dashboardsData?.map(({ dashboard, queries }) => {
+  const tabs = dashboardsData?.map((dashboard) => {
     return {
       title: dashboard.name,
       value: dashboard.id,
-      content: (
-        <Dashboard data={dashboard} queriesResponse={queries} params={params} />
-      ),
+      content: <Dashboard data={dashboard} params={params} />,
     }
   })
 
   return (
     <Card className={clsx(styles.container, className)}>
-      <TabPanel tabs={tabs} value={dashboardsData[0]?.dashboard.id || ''} />
+      <TabPanel tabs={tabs} value={dashboardsData[0]?.id || ''} />
     </Card>
   )
 }

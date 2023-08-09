@@ -1,11 +1,8 @@
-import { FC, useEffect, useState } from 'react'
-import { TypeAnimation } from 'react-type-animation'
+import { FC, useMemo } from 'react'
 import Link from 'next/link'
-import { sanitize } from 'isomorphic-dompurify'
+import DashboardAnalyzer from './DashboardAnalyzer'
 import DashboardWidget from './DashboardWidget'
-import Card from '@/components/Card'
 import DetailsView from '@/components/DetailsView'
-import Message from '@/components/Message'
 import IconRedash from '@/images/redash.svg'
 import {
   DEFAULT_DATE_RANGE,
@@ -13,62 +10,24 @@ import {
   getDynamicDateRangePeriod,
 } from '@/lib/dates'
 import { generateRedashDashboardParams } from '@/lib/redash/client'
-import { TRedashDashboard, TRedashQueryResponse } from '@/lib/redash/types'
+import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
 
 const Dashboard: FC<{
   data: TRedashDashboard
-  queriesResponse: Record<number, TRedashQueryResponse>
   params?: Record<string, unknown>
-}> = ({ data, queriesResponse, params }) => {
+}> = ({ data, params }) => {
   const { id, name, slug, widgets } = data
-
-  const [isMounted, setIsMounted] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [aiResponse, setAiResponse] = useState<string | null>(null)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!isMounted || !slug) {
-      return
-    }
-
-    const getData = async () => {
-      const parameters = generateRedashDashboardParams(data, {
-        chain_id: process.env.NEXT_PUBLIC_CHAIN_ID || 7700,
+  const parameters = useMemo(
+    () =>
+      generateRedashDashboardParams(data, {
+        ...(params || {}),
         dates: getDynamicDateRangePeriod(
           `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
         ),
-      })
-
-      const queryParams = {
-        dashboard_slug: slug,
-        parameters,
-      }
-
-      try {
-        const response = await fetch(`/api/dashboard-analyzer`, {
-          method: 'POST',
-          body: JSON.stringify(queryParams),
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-
-          setAiResponse(data?.output)
-        }
-      } catch (e) {
-        console.error(e)
-      }
-
-      setIsLoading(false)
-    }
-
-    getData()
-  }, [data, slug, isMounted])
+      }),
+    [data, params]
+  )
 
   const sortedWidgets =
     widgets
@@ -87,7 +46,7 @@ const Dashboard: FC<{
         <Link
           className={styles.redash}
           data-tooltip-id="app-tooltip"
-          data-tooltip-content={`Open ${name} in Redash`}
+          data-tooltip-content={`Open ${name} in Warehouse`}
           target="_blank"
           rel="noreferrer noopener"
           href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
@@ -96,43 +55,11 @@ const Dashboard: FC<{
         </Link>
       }
     >
-      {isLoading && (
-        <Message
-          text="🤔 DexGuruGPT takes ~30 sec to analyze this dashboard data"
-          type="prompt"
-        />
-      )}
-
-      {!isLoading && !aiResponse && (
-        <Message text="😢 DexGuruGPT left this chat" type="danger" />
-      )}
-
-      {!!aiResponse && (
-        <Card title="🤖 DexGuruGPT says: " className={styles.analyzer}>
-          <div className={styles.output}>
-            <div
-              className={styles.outputPlaceholder}
-              dangerouslySetInnerHTML={{
-                __html: sanitize(aiResponse),
-              }}
-            />
-            <TypeAnimation
-              sequence={aiResponse.split('\n')}
-              className={styles.outputTyping}
-              speed={75}
-            />
-          </div>
-        </Card>
-      )}
+      <DashboardAnalyzer slug={data.slug} params={parameters} />
 
       <div className={styles.dashboard}>
         {sortedWidgets.map((widget) => (
-          <DashboardWidget
-            data={widget}
-            params={params}
-            queryResponse={queriesResponse[widget?.visualization?.query?.id]}
-            key={widget.id}
-          />
+          <DashboardWidget data={widget} params={parameters} key={widget.id} />
         ))}
       </div>
     </DetailsView>

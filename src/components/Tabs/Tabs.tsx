@@ -59,9 +59,17 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
           icon={item.icon}
           hidden={item.hidden}
           disabled={disabled || item.disabled}
-          onClick={(): void => {
+          onClick={(e): void => {
             item.onClick && item.onClick()
             handleItemClick(item.value, item.title)
+            const target = e.target as HTMLElement
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'start',
+                block: 'nearest',
+              })
+            }
           }}
         />
       )

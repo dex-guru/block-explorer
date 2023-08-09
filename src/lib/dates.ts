@@ -12,10 +12,6 @@ import {
   subWeeks,
   subMonths,
   subYears,
-  subHours,
-  startOfHour,
-  endOfHour,
-  subMinutes,
 } from 'date-fns'
 
 export const DYNAMIC_DATE_PREFIX = 'd_'
@@ -138,39 +134,39 @@ export const DYNAMIC_DATE_RANGES: Record<
       }
     },
   },
-  last_hour: {
-    name: 'Last hour',
-    value: () => {
-      const moment = subHours(new Date(), 1)
+  // last_hour: {
+  //   name: 'Last hour',
+  //   value: () => {
+  //     const moment = subHours(new Date(), 1)
 
-      return {
-        start: getFormattedDate(startOfHour(moment)),
-        end: getFormattedDate(endOfHour(moment)),
-      }
-    },
-  },
-  last_8_hours: {
-    name: 'Last 8 hours',
-    value: () => {
-      const moment = new Date()
+  //     return {
+  //       start: getFormattedDate(startOfHour(moment)),
+  //       end: getFormattedDate(endOfHour(moment)),
+  //     }
+  //   },
+  // },
+  // last_8_hours: {
+  //   name: 'Last 8 hours',
+  //   value: () => {
+  //     const moment = new Date()
 
-      return {
-        start: getFormattedDate(subHours(moment, 1)),
-        end: getFormattedDate(endOfHour(moment)),
-      }
-    },
-  },
-  last_24_hours: {
-    name: 'Last 24 hours',
-    value: () => {
-      const moment = new Date()
+  //     return {
+  //       start: getFormattedDate(subHours(moment, 1)),
+  //       end: getFormattedDate(endOfHour(moment)),
+  //     }
+  //   },
+  // },
+  // last_24_hours: {
+  //   name: 'Last 24 hours',
+  //   value: () => {
+  //     const moment = new Date()
 
-      return {
-        start: getFormattedDate(subMinutes(moment, 60)),
-        end: getFormattedDate(moment),
-      }
-    },
-  },
+  //     return {
+  //       start: getFormattedDate(subMinutes(moment, 60)),
+  //       end: getFormattedDate(moment),
+  //     }
+  //   },
+  // },
   last_7_days: {
     name: 'Last 7 days',
     value: () => {
