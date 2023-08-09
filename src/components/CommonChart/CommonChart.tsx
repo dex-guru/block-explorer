@@ -14,9 +14,9 @@ import {
   ResponsiveContainer,
   LineChart,
 } from 'recharts'
+import TooltipContent from '../TooltipContent'
 import { CommonChartDataset, CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
-import Heading from '@/components/Heading'
 import styles from './CommonChart.module.scss'
 
 const getYAxisLabelsWidth = (
@@ -96,37 +96,27 @@ const CommonChart: FC<CommonChartProps> = ({
       name?: string
     }[]
   }> = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       const yFormatter = options?.axis?.y?.tickFormatter
       const xFormatter = options?.axis?.x?.tickFormatter
 
       const tooltipTitle = xFormatter ? xFormatter(label, 0) : label
 
       return (
-        <div className={styles.tooltip}>
-          <div className={styles.tooltipHeader}>
-            <Heading size="xs" caption={`${tooltipTitle}`} />
-          </div>
-          <div className={styles.tooltipBody}>
-            <ul className={styles.tooltipList}>
-              {payload.map((item, idx) => {
-                const resultValue = yFormatter
-                  ? yFormatter(item.value, 0)
-                  : item.value
+        <TooltipContent
+          title={`${tooltipTitle}`}
+          entries={payload.map((item) => {
+            const resultValue = yFormatter
+              ? yFormatter(item.value, 0)
+              : item.value
 
-                return (
-                  <li
-                    key={idx}
-                    className={styles.tooltipItem}
-                    style={{ color: item.stroke }}
-                  >
-                    {`${resultValue}`} {item.name}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </div>
+            return {
+              title: item.name,
+              value: `${resultValue}`,
+              color: item.stroke,
+            }
+          })}
+        />
       )
     }
 
