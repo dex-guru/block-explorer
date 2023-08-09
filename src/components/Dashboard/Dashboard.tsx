@@ -15,17 +15,18 @@ import styles from './Dashboard.module.scss'
 
 const Dashboard: FC<{
   data: TRedashDashboard
-}> = ({ data }) => {
+  params?: Record<string, unknown>
+}> = ({ data, params }) => {
   const { id, name, slug, widgets } = data
   const parameters = useMemo(
     () =>
       generateRedashDashboardParams(data, {
-        chain_id: process.env.NEXT_PUBLIC_CHAIN_ID || 7700,
+        ...(params || {}),
         dates: getDynamicDateRangePeriod(
           `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
         ),
       }),
-    [data]
+    [data, params]
   )
 
   const sortedWidgets =
@@ -54,7 +55,7 @@ const Dashboard: FC<{
         </Link>
       }
     >
-      <DashboardAnalyzer dashboard={data} params={parameters} />
+      <DashboardAnalyzer slug={data.slug} params={parameters} />
 
       <div className={styles.dashboard}>
         {sortedWidgets.map((widget) => (
