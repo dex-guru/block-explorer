@@ -1,8 +1,8 @@
-import { ChangeEventHandler, FC, Suspense, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC, Suspense, useState } from 'react'
 import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
-import { useIntervalWhen } from 'rooks'
+import useSWRImmutable from 'swr/immutable'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import Card from '@/components/Card'
@@ -18,90 +18,62 @@ import {
   DEFAULT_DATE_RANGE,
 } from '@/lib/dates'
 import {
-  getRedashJob,
   getRedashQueryResponse,
   generateRedashQueryParams,
 } from '@/lib/redash/client'
-import { TRedashQueryResponse, TRedashWidget } from '@/lib/redash/types'
+import { TRedashJob, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './Dashboard.module.scss'
 
+const WIDGET_QUERY_INTERVAL = 5 * 1000
+
 const DashboardWidget: FC<{
   data: TRedashWidget
-  queryResponse: TRedashQueryResponse
   params?: Record<string, unknown>
-}> = ({ data: { options, visualization, text }, queryResponse, params }) => {
-  const [queryResult, setQueryResult] = useState(queryResponse?.query_result)
-  const [queryJob, setQueryJob] = useState(queryResponse?.job)
+}> = ({ data: { options, visualization, text }, params }) => {
   const [currentDateRange, setCurrentDateRange] = useState(
     `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
   )
+  const [queryActiveJob, setQueryActiveJob] = useState<TRedashJob | null>(null)
 
-  const getQueryData = () => {
-    const getData = async () => {
-      if (!visualization?.query?.id) {
-        return
-      }
-
-      const queryParams = generateRedashQueryParams(visualization.query, {
+  const queryParams = visualization?.query
+    ? generateRedashQueryParams(visualization?.query, {
         ...(params || {}),
         dates: getDynamicDateRangePeriod(currentDateRange),
       })
+    : null
 
-      const queryData = await getRedashQueryResponse(
-        visualization?.query?.id,
-        queryParams
-      )
+  const swrKey = queryParams
+    ? { id: visualization?.query?.id, params: queryParams }
+    : null
 
-      setQueryResult(queryData.query_result)
-      setQueryJob(queryData.job)
+  const isQueryActiveJob = !!queryActiveJob && queryActiveJob.status < 3
+
+  const {
+    data: queryResponse,
+    isLoading: isLoadingResponse,
+    error: errorResponse,
+  } = useSWRImmutable(
+    swrKey,
+    ({ id, params }) =>
+      getRedashQueryResponse(id, params).then((res) => {
+        setQueryActiveJob(res?.job || null)
+        return res
+      }),
+    {
+      refreshInterval: () => (isQueryActiveJob ? WIDGET_QUERY_INTERVAL : 0),
     }
-
-    getData()
-  }
-
-  useEffect(() => {
-    if (queryResult) {
-      return
-    }
-
-    getQueryData()
-  }, [currentDateRange])
-
-  useIntervalWhen(
-    () => {
-      const getJob = async () => {
-        if (!queryJob?.id) {
-          return
-        }
-
-        const jobData = await getRedashJob(queryJob.id)
-
-        if (!jobData?.job?.query_result_id) {
-          return
-        }
-
-        getQueryData()
-      }
-
-      getJob()
-    },
-    5 * 1000,
-    !!queryJob?.id,
-    true
   )
 
-  const title = visualization ? (
-    visualization?.type?.toLowerCase() !==
-    visualization?.name?.toLowerCase() ? (
-      <>{visualization?.name}</>
-    ) : (
-      visualization.query.name
-    )
-  ) : undefined
+  const queryJob = queryResponse?.job
+  const queryResult = queryResponse?.query_result
+  const isFetching = isLoadingResponse || isQueryActiveJob
 
-  const isFetching =
-    (!!queryJob?.status && queryJob?.status < 3) || (!queryJob && !queryResult)
+  const title = visualization
+    ? visualization?.type?.toLowerCase() !== visualization?.name?.toLowerCase()
+      ? visualization?.name
+      : visualization.query.name
+    : undefined
 
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
@@ -162,7 +134,7 @@ const DashboardWidget: FC<{
   const renderWidgetFooter = () => {
     return (
       <div className={styles.footer}>
-        {!queryJob && !queryResult && (
+        {isFetching && !queryJob?.id && (
           <Value
             className={styles.footer}
             icon={<IconWatch />}
@@ -170,17 +142,15 @@ const DashboardWidget: FC<{
           />
         )}
 
-        {!!queryJob?.status && (
+        {isFetching && !!queryJob?.id && (
           <Value
             className={styles.timestamp}
             icon={<IconWatch />}
-            value={
-              queryJob?.status < 3 ? 'Calculating data' : 'Query failed...'
-            }
+            value={!errorResponse ? 'Calculating data' : 'Query failed...'}
           />
         )}
 
-        {!queryJob?.status && !!queryResult?.retrieved_at && (
+        {!isFetching && !!queryResult?.retrieved_at && (
           <Value
             className={styles.timestamp}
             icon={<IconAgo />}
@@ -202,8 +172,6 @@ const DashboardWidget: FC<{
   }
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setQueryResult(undefined)
-    setQueryJob(undefined)
     setCurrentDateRange(e.target.value)
   }
 
@@ -232,7 +200,7 @@ const DashboardWidget: FC<{
   const tools = visualization?.query?.id ? (
     <Link
       data-tooltip-id="app-tooltip"
-      data-tooltip-content={`Open ${visualization.query.name} query in Redash`}
+      data-tooltip-content={`Open ${visualization.query.name} query in Warehouse`}
       className={styles.redash}
       target="_blank"
       rel="noreferrer noopener"

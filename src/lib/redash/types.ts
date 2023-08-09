@@ -80,7 +80,7 @@ export type TRedashJob = {
   status: number
   error: string
   result: null
-  query_result_id: null
+  query_result_id: string | number | null
 }
 
 export type TRedashQueryResponse = {

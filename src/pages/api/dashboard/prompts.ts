@@ -6,37 +6,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const { dashboard_slug, parameters } = JSON.parse(req.body || {})
+  const {
+    dashboard_slug,
+    parameters,
+    chat_logs = '',
+  } = JSON.parse(req.body || {})
 
-  if (!dashboard_slug) {
-    res.status(404).send({ message: 'No parameter provided' })
+  if (!dashboard_slug || !parameters) {
+    res.status(404).send({ message: 'No enough parameters provided' })
     return
   }
 
+  const requestParameters = JSON.stringify({
+    dashboard_slug,
+    parameters: JSON.stringify(parameters),
+    chat_logs,
+  })
+
   try {
     const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_LANGCHAIN_API_URL || ''
-      }/endpoints.dashboard_analyze_chain.sequential_chain/run`,
+      `${process.env.NEXT_PUBLIC_LANGCHAIN_API_URL || ''}/prompts/`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           accept: 'application/json',
         },
-        body: JSON.stringify({
-          dashboard_slug,
-          parameters: JSON.stringify({ dashboard_slug, parameters }) || '',
-          prompt_suffix: '',
-          selected_prompt: '',
-        }),
+        body: requestParameters,
       }
     )
 
     if (response.ok) {
       const data = await response.json()
 
-      res.status(200).json(data)
+      res.status(200).json({ prompts: data })
       return
     }
 
@@ -55,11 +58,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return
   }
-
-  res.status(500).json({
-    statusCode: 500,
-    message: 'common analyzer error',
-  })
 }
 
 export default handler
