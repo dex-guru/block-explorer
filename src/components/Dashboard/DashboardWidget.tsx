@@ -43,7 +43,9 @@ const DashboardWidget: FC<{
       })
     : null
 
-  const swrKey = queryParams ? [visualization?.query?.id, queryParams] : null
+  const swrKey = queryParams
+    ? { id: visualization?.query?.id, params: queryParams }
+    : null
 
   const isQueryActiveJob = !!queryActiveJob && queryActiveJob.status < 3
 
@@ -53,7 +55,7 @@ const DashboardWidget: FC<{
     error: errorResponse,
   } = useSWRImmutable(
     swrKey,
-    ([id, params]) =>
+    ({ id, params }) =>
       getRedashQueryResponse(id, params).then((res) => {
         setQueryActiveJob(res?.job || null)
         return res
