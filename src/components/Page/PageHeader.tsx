@@ -48,6 +48,14 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
             href: 'https://developers.dex.guru',
           },
           { caption: 'Verify Contract', href: '/verifyContract' },
+          ...(checkChainFeature(chainConfig, 'charts')
+            ? [
+                {
+                  caption: 'Data Warehouse',
+                  href: 'https://warehouse.dex.guru',
+                },
+              ]
+            : []),
         ],
       },
       {
