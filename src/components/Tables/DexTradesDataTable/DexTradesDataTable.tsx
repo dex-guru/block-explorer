@@ -5,7 +5,7 @@ import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
-import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
+import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './DexTradesDataTable.module.scss'
 
@@ -20,12 +20,15 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
 }) => {
   const [getErc20, { data, loading, previousData }] =
     useLazyQuery(GET_ERC20_EVENTS)
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
+    GET_ERC20_EVENTS_TOTALS
+  )
   const isMount = useIsMount()
 
   const addressStr = address?.toLowerCase()
 
   const getVariables = useCallback(
-    (vars?: PaginationVariables) => {
+    (vars?: Record<string, string | number | boolean>) => {
       return {
         eventTypes: 'actions',
         address: addressStr,
@@ -52,7 +55,10 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
     getErc20({
       variables: getVariables(),
     })
-  }, [getErc20, getVariables])
+    getErc20Totals({
+      variables: getVariables({ fullTotals: true }),
+    })
+  }, [getErc20, getVariables, getErc20Totals])
 
   const displayData = loading ? previousData : data
 
@@ -79,7 +85,9 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
       isLoading={loading}
       columns={dexTradesColumns(address)}
       data={displayData?.erc20Events?.data}
-      total={displayData?.erc20Events?.total}
+      total={
+        fullTotalsData?.erc20Events?.total || displayData?.erc20Events?.total
+      }
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{

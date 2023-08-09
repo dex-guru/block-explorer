@@ -30,13 +30,13 @@ interface IBlocksProps {
 const BlockPage: NextPage<IBlocksProps> = (props) => {
   const isMount = useIsMount()
   const [internalTxs, setInternalTxs] = useState(props.internalTxs.data)
-  const [getBlocks, { data, loading }] = useLazyQuery(GET_INTERNAL_TXS)
+  const [getInternalTxs, { data, loading }] = useLazyQuery(GET_INTERNAL_TXS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getBlocks({ variables })
+      getInternalTxs({ variables })
     },
-    [getBlocks]
+    [getInternalTxs]
   )
 
   useEffect(() => {
