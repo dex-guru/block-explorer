@@ -165,10 +165,9 @@ const AddressView: FC<IAddressViewProps> = ({
                         to: `${pathname}?tab=analytics`,
                         content: (
                           <Analytics
-                            chainConfig={chain.config}
                             tag="EOA"
                             params={{
-                              chain_id: chain.config.chainId,
+                              network: chain.config.shortName,
                               address: address.toLowerCase(),
                             }}
                           />
