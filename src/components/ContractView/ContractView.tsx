@@ -1,10 +1,10 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery, useQuery } from '@apollo/client'
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
@@ -27,6 +27,7 @@ import DetailsView from '@/components/DetailsView'
 import Grid from '@/components/Grid'
 import {
   IconContract,
+  IconImpersonator,
   IconNoIcon,
   IconShield,
   IconVerify,
@@ -40,7 +41,7 @@ import { TransfersDataTable } from '@/components/Tables'
 import Value from '@/components/Value'
 import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
-import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
+import { GET_CONTRACT_INFO, GET_TOKEN_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
@@ -69,6 +70,22 @@ const ContractView: FC<IContractViewProps> = ({
   tokenHoldingsStats,
 }) => {
   const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
+  const [getTokenData, { data: tokenData }] = useLazyQuery<{
+    checkTokenImpersonator: boolean
+  }>(GET_TOKEN_INFO)
+
+  useEffect(() => {
+    if (type !== 'token') {
+      return
+    }
+
+    getTokenData({
+      variables: {
+        address: addressInfo.address?.toLowerCase(),
+        ticker: addressInfo.symbol,
+      },
+    })
+  }, [type, addressInfo, getTokenData])
 
   const { chains, publicClient } = useMemo(() => {
     const currentChain = {
@@ -205,11 +222,18 @@ const ContractView: FC<IContractViewProps> = ({
             <span className={styles.muted}>({addressInfo.name})</span>{' '}
             {!!addressInfo?.tokenLists?.length && (
               <IconVerify
-                className={styles.verified}
+                className={styles.verification}
                 data-tooltip-id="app-tooltip"
                 data-tooltip-content={`This token is verified by ${addressInfo?.tokenLists.join(
                   ', '
                 )}`}
+              />
+            )}
+            {!!tokenData?.checkTokenImpersonator && (
+              <IconImpersonator
+                className={styles.verification}
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content="Caution: Check the token's address before interacting as its ticker might imitate a verified token's name."
               />
             )}
           </>
