@@ -39,10 +39,6 @@ const AddressView: FC<IAddressViewProps> = ({
   const pathname = router.asPath.split('?')[0]
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const { data: ensName } = useEnsName({
-    chainId: chain.config.chainId,
-    address: checkSumAddress as WagmiAddress,
-  })
 
   const pageTitle = addressInfo?.address
     ? `Address ${checkSumAddress} on ${chain.config.name}`
@@ -85,7 +81,7 @@ const AddressView: FC<IAddressViewProps> = ({
             icon={<Avatar address={address} />}
             title="Address"
             address={address}
-            tag={`EOA ${ensName}`}
+            tag="EOA"
             tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}
