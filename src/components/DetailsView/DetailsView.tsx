@@ -15,6 +15,7 @@ const DetailsView: FC<DetailsViewProps> = ({
   className,
   children,
   header,
+  ens,
 }) => {
   return (
     <div className={clsx(styles.container, className)}>
@@ -32,6 +33,7 @@ const DetailsView: FC<DetailsViewProps> = ({
             {tag}
           </Label>
         )}
+        {!!ens && <Label className={styles.tag}>{ens}</Label>}
         {!!header && <div className={styles.tools}>{header}</div>}
       </div>
       <div className={styles.body}>{children}</div>
