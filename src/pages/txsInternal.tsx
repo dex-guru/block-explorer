@@ -45,10 +45,12 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
     }
   }, [data, isMount])
 
+  const pageTitle = `${props.chainConfig.name} Contract Internal Transactions`
+
   return (
     <>
       <Head>
-        <title>Contract Internal Transactions</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore contract internal transactions on ${props.chainConfig.name} ${props.chainConfig.chain}`}

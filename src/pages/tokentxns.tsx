@@ -16,11 +16,13 @@ interface ITxsProps {
   chainConfig: ChainConfigModel
 }
 
-const Txs: NextPage<ITxsProps> = ({ ...props }) => {
+const Txs: NextPage<ITxsProps> = (props) => {
+  const pageTitle = `ERC-20 Token TXns on ${props.chainConfig.name}`
+
   return (
     <>
       <Head>
-        <title>ERC-20 Token TXns</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore recent ERC-20 tokens transfers on ${props.chainConfig.name} ${props.chainConfig.chain}`}

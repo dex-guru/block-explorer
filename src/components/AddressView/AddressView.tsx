@@ -44,10 +44,10 @@ const AddressView: FC<IAddressViewProps> = ({
     address: checkSumAddress as WagmiAddress,
   })
   const pageTitle = addressInfo?.address
-    ? `Address ${checkSumAddress} on ${chain.config.name}`
+    ? `${chain.config.name} Address ${checkSumAddress}`
     : isAddress(address)
-    ? `No address ${address}`
-    : 'Not an address'
+    ? `No address ${address} on ${chain.config.name}`
+    : `Not a ${chain.config.name} address`
 
   const chainsArr = chains.filter(
     (chainData) => chainData.id !== chain.config.chainId
@@ -85,7 +85,7 @@ const AddressView: FC<IAddressViewProps> = ({
             title="Address"
             address={address}
             tag="EOA"
-            ens={ensName}
+            ens={ensName || undefined}
             tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}

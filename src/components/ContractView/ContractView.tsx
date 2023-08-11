@@ -191,7 +191,7 @@ const ContractView: FC<IContractViewProps> = ({
       'Contract'
     )
 
-  const pageTitle = `${
+  const pageTitle = `${chain.config.name} ${
     type === 'token'
       ? `Token ${addressInfo.symbol}${
           addressInfo.name !== addressInfo.symbol
@@ -199,7 +199,7 @@ const ContractView: FC<IContractViewProps> = ({
             : ''
         }`
       : `Contract ${checkSumAddress}`
-  } on ${chain.config.name}`
+  }`
 
   return (
     <RainbowKitProvider chains={chains}>

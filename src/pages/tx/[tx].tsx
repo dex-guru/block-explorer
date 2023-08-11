@@ -40,7 +40,9 @@ const TxPage: NextPage<ITxProps> = (props) => {
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
-  const pageTitle = `Transaction ${props.data?.hash || 'not found'}`
+  const pageTitle = `${props.chainConfig.name} Transaction ${
+    props.data?.hash || 'not found'
+  }`
 
   return (
     <>

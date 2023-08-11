@@ -10,10 +10,12 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
   chainConfig,
 }) => {
+  const pageTitle = `No TX hash provided on ${chainConfig.name}`
+
   return (
     <>
       <Head>
-        <title>No TX hash</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore transactions to see what happened with token balances and smart contracts.`}
