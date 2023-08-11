@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
+import { useEnsName, Address as WagmiAddress } from 'wagmi'
 import { IAddressViewProps } from './types'
 import AddressOnChainSelect from '@/components/AddressOnChainSelect'
 import AddressWallet from '@/components/AddressWallet'
@@ -38,6 +39,10 @@ const AddressView: FC<IAddressViewProps> = ({
   const pathname = router.asPath.split('?')[0]
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
+  const { data: ensName } = useEnsName({
+    chainId: chain.config.chainId,
+    address: checkSumAddress as WagmiAddress,
+  })
   const pageTitle = addressInfo?.address
     ? `Address ${checkSumAddress} on ${chain.config.name}`
     : isAddress(address)
@@ -80,6 +85,7 @@ const AddressView: FC<IAddressViewProps> = ({
             title="Address"
             address={address}
             tag="EOA"
+            ens={ensName}
             tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
             type="address"
             chainConfig={chain.config}
