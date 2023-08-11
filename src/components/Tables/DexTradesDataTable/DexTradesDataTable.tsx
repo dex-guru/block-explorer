@@ -55,10 +55,12 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
     getErc20({
       variables: getVariables(),
     })
+  }, [getErc20, getVariables, getErc20Totals])
+
+  const handleGetFullTotal = () =>
     getErc20Totals({
       variables: getVariables({ fullTotals: true }),
     })
-  }, [getErc20, getVariables, getErc20Totals])
 
   const displayData = loading ? previousData : data
 
@@ -85,9 +87,9 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
       isLoading={loading}
       columns={dexTradesColumns(address)}
       data={displayData?.erc20Events?.data}
-      total={
-        fullTotalsData?.erc20Events?.total || displayData?.erc20Events?.total
-      }
+      total={displayData?.erc20Events?.total}
+      fullTotal={fullTotalsData?.erc20Events?.total}
+      getFullTotal={handleGetFullTotal}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{

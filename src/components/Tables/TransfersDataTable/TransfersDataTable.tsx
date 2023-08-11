@@ -6,7 +6,7 @@ import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { transfersColumns } from '@/components/Table/columns/transfersColumns'
 import { useIsMount } from '@/hooks'
-import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
+import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './TransfersDataTable.module.scss'
 
@@ -22,10 +22,13 @@ export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
   const [getErc2Events, { data, loading, previousData }] = useLazyQuery<{
     erc20Events: { data: Erc20EventModel[]; total: number }
   }>(GET_ERC20_EVENTS)
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
+    GET_ERC20_EVENTS_TOTALS
+  )
   const isMount = useIsMount()
 
   const getVariables = useCallback(
-    (vars?: PaginationVariables) => {
+    (vars?: Record<string, string | number | boolean>) => {
       return {
         first: PER_PAGE,
         skip: 0,
@@ -52,6 +55,11 @@ export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
       variables: getVariables(),
     })
   }, [getErc2Events, getVariables])
+
+  const handleGetFullTotal = () =>
+    getErc20Totals({
+      variables: getVariables({ fullTotals: true }),
+    })
 
   const displayData = loading ? previousData : data
   const subtitle = address ? `for ${address}` : undefined
@@ -83,6 +91,8 @@ export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
       columns={transfersColumns}
       data={displayData?.erc20Events.data || []}
       total={displayData?.erc20Events?.total}
+      fullTotal={fullTotalsData?.erc20Events?.total}
+      getFullTotal={handleGetFullTotal}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{
