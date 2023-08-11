@@ -819,6 +819,12 @@ export const GET_CONTRACT_INFO = gql`
   }
 `
 
+export const GET_TOKEN_INFO = gql`
+  query GetTokenInfo($address: String!, $ticker: String!) {
+    checkTokenImpersonator(address: $address, ticker: $ticker, chainId: ${CHAIN_ID})
+  }
+`
+
 export const GET_ADDRESS_TOKENS_STATS = gql`
   query GetAddressTokens($address: String!) {
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
