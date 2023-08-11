@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { DataTableProps } from './types'
-import Button from '@/components/Button'
 import { IconSearch } from '@/components/Icons'
 import Loading from '@/components/Loading'
 import Pagination, {
