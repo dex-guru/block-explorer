@@ -312,42 +312,43 @@ const ContractView: FC<IContractViewProps> = ({
                                     : undefined
                                 }
                               />
-                              <CommonChart
-                                className={styles.holdersChart}
-                                data={holdersSeries}
-                                options={{
-                                  axis: {
-                                    x: {
-                                      type: 'number',
-                                      dataKey: 'timestamp',
-                                      hide: true,
-                                      tickFormatter: (value: number) => {
-                                        const date = new Date(value * 1000)
-                                        return date.toLocaleDateString(
-                                          'en-GB',
-                                          {
-                                            timeZone: 'UTC',
-                                            month: 'short',
-                                            year: '2-digit',
-                                            day: '2-digit',
-                                          }
-                                        )
+                              <div className={styles.holdersChart}>
+                                <CommonChart
+                                  data={holdersSeries}
+                                  options={{
+                                    axis: {
+                                      x: {
+                                        type: 'number',
+                                        dataKey: 'timestamp',
+                                        hide: true,
+                                        tickFormatter: (value: number) => {
+                                          const date = new Date(value * 1000)
+                                          return date.toLocaleDateString(
+                                            'en-GB',
+                                            {
+                                              timeZone: 'UTC',
+                                              month: 'short',
+                                              year: '2-digit',
+                                              day: '2-digit',
+                                            }
+                                          )
+                                        },
+                                        axisLine: false,
+                                        tickLine: false,
                                       },
-                                      axisLine: false,
-                                      tickLine: false,
+                                      y: {
+                                        hide: true,
+                                        tickFormatter: (value: number) =>
+                                          financialFormat(value, {
+                                            roundBigNumbersFrom: 'K',
+                                          }),
+                                        axisLine: false,
+                                        tickLine: false,
+                                      },
                                     },
-                                    y: {
-                                      hide: true,
-                                      tickFormatter: (value: number) =>
-                                        financialFormat(value, {
-                                          roundBigNumbersFrom: 'K',
-                                        }),
-                                      axisLine: false,
-                                      tickLine: false,
-                                    },
-                                  },
-                                }}
-                              />
+                                  }}
+                                />
+                              </div>
                             </Separated>
                           </div>
                         ),
