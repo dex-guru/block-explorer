@@ -91,6 +91,7 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
       }),
     [connectors, publicClient]
   )
+
   if (!address) {
     return null
   }

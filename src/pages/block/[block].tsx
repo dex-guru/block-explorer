@@ -28,9 +28,9 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
   const { block } = router.query
 
   const pageTitle = data?.number
-    ? `Block #${data?.number}`
+    ? `${chainConfig.name} Block #${data?.number}`
     : isValidBlockNumber(block)
-    ? `No block ${block}`
+    ? `No block ${block} on ${chainConfig.name}`
     : 'Not a block'
 
   return (

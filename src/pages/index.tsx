@@ -194,6 +194,7 @@ const Index: NextPage<IndexProps> = (props) => {
   const pageTitle = `${chainConfig.name}${
     chainConfig.chain ? ` ${chainConfig.chain}` : ''
   } Block Explorer`
+
   return (
     <>
       <Head>

@@ -50,10 +50,12 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
     }
   }, [data, isMount])
 
+  const pageTitle = `${props.chainConfig.name} Blocks`
+
   return (
     <>
       <Head>
-        <title>Blocks</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore recently created blocks on ${props.chainConfig.name} ${props.chainConfig.chain}`}
