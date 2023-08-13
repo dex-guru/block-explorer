@@ -23,15 +23,15 @@
   composes: button from '../Button/Button.module.scss';
   composes: lg from '../Button/Button.module.scss';
 
-  background: var(--color-pagination-bg);
-  color: currentColor;
+  --color-button-bg: var(--color-pagination-bg);
+  --color-button-text: currentColor;
+  --color-button-hover-bg: var(--color-pagination-hover);
+  --color-button-hover-text: var(--color-pagination-hover-text);
   border: 1px solid var(--color-pagination-border);
   padding: 0 8px;
   min-width: 32px;
 
   &:hover {
-    background: var(--color-pagination-hover);
-    color: var(--color-pagination-hover-text);
   }
 }
 

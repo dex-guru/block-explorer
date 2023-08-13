@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { DataTableProps } from './types'
 import { IconSearch } from '@/components/Icons'
+import Loading from '@/components/Loading'
 import Pagination, {
   DEFAULT_FIRST_PAGE,
   DEFAULT_PER_PAGE,
@@ -17,10 +18,13 @@ import styles from './DataTable.module.scss'
 export function DataTable<T>(props: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
   const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
+  const [isLoadingFullTotal, setIsLoadingFullTotal] = useState(false)
 
   const {
     className,
-    total = 0,
+    total = props?.data?.length,
+    fullTotal,
+    getFullTotal,
     onPageChange,
     header,
     ...tablePropsRest
@@ -66,18 +70,49 @@ export function DataTable<T>(props: DataTableProps<T>) {
       return null
     }
 
+    const currentTotal = fullTotal || total
+    const hasFullTotal = !fullTotal && total >= 1000
+
+    const handleClick =
+      getFullTotal && !fullTotal
+        ? () => {
+            if (!getFullTotal) {
+              return
+            }
+
+            setIsLoadingFullTotal(true)
+            getFullTotal()
+          }
+        : undefined
+
+    if (!fullTotal && isLoadingFullTotal) {
+      return <Loading className={styles.totalLoader} />
+    }
+
     return (
-      <span className={styles.totalRows}>
-        Total {financialFormat(total, { roundBigNumbersFrom: 'T' })} rows
-        {total > 1000 && (
+      <span
+        className={clsx(styles.totalRows, {
+          [styles.totalRowsGet]: !fullTotal && getFullTotal,
+        })}
+        onClick={handleClick}
+      >
+        Total {financialFormat(currentTotal, { roundBigNumbersFrom: 'T' })}
+        {hasFullTotal ? '+' : null} rows
+        {currentTotal >= 1000 && (
           <>
             &nbsp;
-            <TooltipAnchor tooltip="Showing the last 1,000 records" />
+            <TooltipAnchor
+              tooltip={`Showing the last 1,000 records${
+                !fullTotal && hasFullTotal
+                  ? ', click to get full total count.'
+                  : ''
+              }`}
+            />
           </>
         )}
       </span>
     )
-  }, [total])
+  }, [total, fullTotal, isLoadingFullTotal, getFullTotal])
 
   const navigation = (
     <div className={styles.navigation}>

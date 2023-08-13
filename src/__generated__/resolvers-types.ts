@@ -106,6 +106,10 @@ export type ChainStatsModel = {
   __typename?: 'ChainStatsModel';
   /** The number of active addresses. */
   activeAddressesCount: Scalars['Decimal'];
+  /** The number of active addresses for last 24 hours. */
+  activeAddressesCount24h: Scalars['Decimal'];
+  /** The average block time. */
+  averageBlockTime: Scalars['Decimal'];
   /** The number of the last block. */
   lastBlockNumber: Scalars['Int'];
   /** The change in liquidity in USD over the last 24 hours. */
@@ -303,6 +307,8 @@ export type Query = {
   chainConfig: ChainConfigModel;
   /** Chains stats returns chain statistics seen at the firstpage of blocks explorer */
   chainStats: ChainStatsModel;
+  /** Check token impersonator */
+  checkTokenImpersonator: Scalars['Boolean'];
   /** Get contract code */
   contractCode?: Maybe<ContractCodeModel>;
   /** Contract creator */
@@ -389,6 +395,13 @@ export type QueryChainStatsArgs = {
 };
 
 
+export type QueryCheckTokenImpersonatorArgs = {
+  address: Scalars['String'];
+  chainId?: Scalars['Int'];
+  ticker: Scalars['String'];
+};
+
+
 export type QueryContractCodeArgs = {
   address: Scalars['String'];
   chainId?: Scalars['Int'];
@@ -412,6 +425,7 @@ export type QueryErc20EventsArgs = {
   chainId?: Scalars['Int'];
   eventTypes?: Scalars['String'];
   first?: InputMaybe<Scalars['Long']>;
+  fullTotals?: Scalars['Boolean'];
   hash?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Long']>;
   walletAddress?: InputMaybe<Scalars['String']>;
@@ -887,6 +901,8 @@ export type ChainFeatureModelResolvers<ContextType = any, ParentType extends Res
 
 export type ChainStatsModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChainStatsModel'] = ResolversParentTypes['ChainStatsModel']> = ResolversObject<{
   activeAddressesCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  activeAddressesCount24h?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
+  averageBlockTime?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   lastBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   liquidity24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
   liquidityUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>;
@@ -1064,11 +1080,12 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType, RequireFields<QueryBlocksArgs, 'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'first' | 'number' | 'skip' | 'timestampEnd' | 'timestampStart'>>;
   chainConfig?: Resolver<ResolversTypes['ChainConfigModel'], ParentType, ContextType, RequireFields<QueryChainConfigArgs, 'chainId'>>;
   chainStats?: Resolver<ResolversTypes['ChainStatsModel'], ParentType, ContextType, RequireFields<QueryChainStatsArgs, 'chainId'>>;
+  checkTokenImpersonator?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryCheckTokenImpersonatorArgs, 'address' | 'chainId' | 'ticker'>>;
   contractCode?: Resolver<Maybe<ResolversTypes['ContractCodeModel']>, ParentType, ContextType, RequireFields<QueryContractCodeArgs, 'address' | 'chainId'>>;
   contractCreator?: Resolver<Maybe<ResolversTypes['ContractCreatorModel']>, ParentType, ContextType, RequireFields<QueryContractCreatorArgs, 'address' | 'chainId'>>;
   cosmos?: Resolver<ResolversTypes['CosmosModel'], ParentType, ContextType, RequireFields<QueryCosmosArgs, 'chainId' | 'first'>>;
   csrStats?: Resolver<ResolversTypes['CSRStatsModel'], ParentType, ContextType>;
-  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'eventTypes' | 'first' | 'hash' | 'skip' | 'walletAddress'>>;
+  erc20Events?: Resolver<ResolversTypes['ERC20EventsModel'], ParentType, ContextType, RequireFields<QueryErc20EventsArgs, 'address' | 'chainId' | 'eventTypes' | 'first' | 'fullTotals' | 'hash' | 'skip' | 'walletAddress'>>;
   historicalPrice?: Resolver<Maybe<ResolversTypes['HistoricalPriceModel']>, ParentType, ContextType, RequireFields<QueryHistoricalPriceArgs, 'address' | 'chainId' | 'currencyCode' | 'fromTs' | 'resolution' | 'toTs'>>;
   internalTransactions?: Resolver<ResolversTypes['InternalTransactionsModel'], ParentType, ContextType, RequireFields<QueryInternalTransactionsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>>;
   logs?: Resolver<Array<ResolversTypes['LogModel']>, ParentType, ContextType, RequireFields<QueryLogsArgs, 'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'>>;

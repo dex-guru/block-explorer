@@ -1031,6 +1031,26 @@ export const GET_ERC20_EVENTS = gql`
   }
 `
 
+export const GET_ERC20_EVENTS_TOTALS = gql`
+  query Erc20EventsTotal(
+    $address: String
+    $walletAddress: String
+    $hash: String
+    $eventTypes: String
+  ) {
+    erc20Events(
+      fullTotals: true
+      address: $address
+      hash: $hash
+      walletAddress: $walletAddress
+      eventTypes: $eventTypes
+      chainId: ${CHAIN_ID}
+    ) {
+      total
+    }
+  }
+`
+
 export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
   query MainPageData(
     $first: Long!

@@ -296,7 +296,16 @@ pre {
 
   &-tooltip {
     &-cursor {
-      opacity: 0.1;
+      stroke: va(--color-separator);
+      opacity: 0.3;
+    }
+  }
+
+  &-active {
+    &-dot {
+      circle {
+        stroke: var(--color-bg-2);
+      }
     }
   }
 
