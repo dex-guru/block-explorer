@@ -42,14 +42,14 @@ export const internalTxsColumns: (
   },
   {
     accessor: 'fromAddress',
-    title: 'Out',
+    title: 'Address Out',
     render: (data) => (
       <Address type="account" address={data.fromAddress} isCopy />
     ),
   },
   {
     accessor: 'toAddress',
-    title: 'In',
+    title: 'Address In',
     render: (data) => (
       <Address type="account" address={data.toAddress} isCopy />
     ),
