@@ -85,7 +85,7 @@ export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
   return (
     <DataTable
       isLoading={loading}
-      columns={dexTradesColumns(address)}
+      columns={dexTradesColumns(address, displayData?.chainConfig?.dexes)}
       data={displayData?.erc20Events?.data}
       total={displayData?.erc20Events?.total}
       fullTotal={fullTotalsData?.erc20Events?.total}

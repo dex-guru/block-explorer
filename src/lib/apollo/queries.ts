@@ -496,6 +496,12 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       chain
       chainColor
       chainId
+      dexes {
+        description
+        displayName
+        logoURI
+        name
+      }
       explorers {
         name
         standard
@@ -1017,6 +1023,7 @@ export const GET_ERC20_EVENTS = gql`
       data {
         amounts
         blockTimestamp
+        dex
         eventType
         fromAddress
         hash
@@ -1026,6 +1033,14 @@ export const GET_ERC20_EVENTS = gql`
         tokenSymbols
         tokenLogos
         tokenNames
+      }
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      dexes {
+        description
+        displayName
+        logoURI
+        name
       }
     }
   }
