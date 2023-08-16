@@ -1,5 +1,6 @@
+import Image from 'next/image'
 import clsx from 'clsx'
-import { Erc20EventModel } from '@/__generated__/resolvers-types'
+import { DexModel, Erc20EventModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
@@ -9,7 +10,7 @@ import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
 
-export const erc20Columns: IColumn<Erc20EventModel>[] = [
+export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
   {
     accessor: 'hash',
     title: 'TX Hash',
@@ -31,6 +32,30 @@ export const erc20Columns: IColumn<Erc20EventModel>[] = [
         {data.eventType}
       </Label>
     ),
+  },
+  {
+    accessor: 'dex',
+    title: 'DEX',
+    type: 'center',
+    render: (data) => {
+      const dex = dexes?.find((dex) => data.dex === dex.name)
+
+      if (!dex?.logoURI) {
+        return null
+      }
+
+      return (
+        <Image
+          src={dex?.logoURI || ''}
+          alt={dex?.displayName || ''}
+          width={24}
+          height={24}
+          className={styles.dex}
+          data-tooltip-content={dex?.displayName}
+          data-tooltip-id="app-tooltip"
+        />
+      )
+    },
   },
   {
     accessor: 'blockTimestamp',

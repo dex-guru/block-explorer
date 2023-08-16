@@ -71,7 +71,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
     }
 
     const currentTotal = fullTotal || total
-    const hasFullTotal = !fullTotal && total >= 1000
+    const hasFullTotal = getFullTotal && !fullTotal && total >= 1000
 
     const handleClick =
       getFullTotal && !fullTotal

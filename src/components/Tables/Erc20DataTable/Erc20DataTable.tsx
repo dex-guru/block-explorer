@@ -92,7 +92,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   return (
     <DataTable
       isLoading={loading}
-      columns={erc20Columns}
+      columns={erc20Columns(displayData?.chainConfig?.dexes)}
       data={displayData?.erc20Events?.data}
       total={displayData?.erc20Events?.total}
       fullTotal={fullTotalsData?.erc20Events?.total}

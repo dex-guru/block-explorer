@@ -181,7 +181,7 @@ const ContractView: FC<IContractViewProps> = ({
               <IconImpersonator
                 className={styles.verification}
                 data-tooltip-id="app-tooltip"
-                data-tooltip-content="Caution: Check the token's address before interacting as its ticker might imitate a verified token's name."
+                data-tooltip-content="Caution: While the token's ticker may resemble an authentic one, always cross-verify the address to detect potential impersonation."
               />
             )}
           </>
