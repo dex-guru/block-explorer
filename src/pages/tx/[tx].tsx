@@ -12,6 +12,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconEmpty } from '@/components/Icons'
+import { LoadingCard } from '@/components/Loading'
 import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
@@ -23,6 +24,9 @@ import { getLogger } from '@/lib/logger'
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
+const TxInternalTxs = dynamic(
+  () => import('@/components/TabContent/TxInternalTxs')
+)
 
 export const MAX_EVENTS_PER_PAGE = 10
 
@@ -85,8 +89,18 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: '',
                   to: pathname,
                   content: (
-                    <Suspense>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxOverview {...props} />
+                    </Suspense>
+                  ),
+                },
+                {
+                  title: 'Internal TXns',
+                  value: 'internal',
+                  to: `${pathname}?tab=internal`,
+                  content: (
+                    <Suspense fallback={<LoadingCard />}>
+                      <TxInternalTxs hash={props.data.hash} {...props} />
                     </Suspense>
                   ),
                 },
@@ -95,7 +109,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: 'logs',
                   to: `${pathname}?tab=logs`,
                   content: (
-                    <Suspense>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxLogs {...props} />
                     </Suspense>
                   ),
@@ -105,7 +119,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: 'trace',
                   to: `${pathname}?tab=trace`,
                   content: (
-                    <Suspense>
+                    <Suspense fallback={<LoadingCard />}>
                       <TxTrace {...props} />
                     </Suspense>
                   ),
