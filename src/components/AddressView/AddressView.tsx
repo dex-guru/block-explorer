@@ -118,7 +118,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   ),
                 },
                 {
-                  title: 'Tokens:',
+                  title: 'ERC-20 Tokens:',
                   value: (
                     <AddressWallet
                       className={styles.addressWallet}
