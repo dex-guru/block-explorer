@@ -459,7 +459,7 @@ const TxOverview: FC<{
                 <Table
                   className={styles.table}
                   data={erc20ActionsData}
-                  columns={erc20ActionColumns}
+                  columns={erc20ActionColumns(chainConfig?.dexes)}
                 />
               </Card>
             </Details>
