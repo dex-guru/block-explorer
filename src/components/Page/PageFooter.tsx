@@ -97,6 +97,16 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
                   Explorer-as-a-Service
                 </Link>
               </li>
+              <li className={styles.linksItem}>
+                <Link
+                  href="https://b2b.dex.guru/data-warehouse"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link}
+                >
+                  Data Warehouse
+                </Link>
+              </li>
             </ul>
           </nav>
 
