@@ -11,7 +11,7 @@ import { IColumn } from '@/components/Table/types'
 import Tile from '@/components/Tile'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
-import { getNormalizedValue } from '@/lib/utils'
+import { financialFormat, getNormalizedValue } from '@/lib/utils'
 
 export const internalTxsColumns: (
   chainConfig: ChainConfigModel,
@@ -106,6 +106,12 @@ export const internalTxsColumns: (
           />
         )
       },
+    },
+    {
+      accessor: 'gasLimit',
+      title: 'Gas Limit',
+      type: 'number',
+      render: (data) => financialFormat(data.gasLimit || 0),
     },
   ]
 }
