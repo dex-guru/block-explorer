@@ -554,19 +554,6 @@ const ContractView: FC<IContractViewProps> = ({
                     },
                   ]
                 : []),
-              {
-                title: 'Comments',
-                value: 'comments',
-                to: { pathname, query: { tab: 'comments' } },
-                content: (
-                  <Card>
-                    <Comments
-                      id={`address/${address}`}
-                      title={`Contract ${address}`}
-                    />
-                  </Card>
-                ),
-              },
             ]}
             value={tab || ''}
           >
