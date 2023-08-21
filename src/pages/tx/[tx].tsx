@@ -1,9 +1,14 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
+import { getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { publicProvider } from '@wagmi/core/providers/public'
+import { get } from 'lodash'
+import * as viemChains from 'viem/chains'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -17,6 +22,7 @@ import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
+import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -47,6 +53,62 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
   }`
+
+  const { chains, publicClient } = useMemo(() => {
+    const viemChainName = Object.keys(viemChains).find(
+      (chainName) => get(viemChains, chainName).id === props.chainConfig.chainId
+    )
+    const viemChain = viemChainName ? get(viemChains, viemChainName) : undefined
+    const currentChain = {
+      ...viemChain,
+      id: props.chainConfig.chainId,
+      name: props.chainConfig.name,
+      network: props.chainConfig.shortName,
+      nativeCurrency: props.chainConfig.nativeCurrency,
+      rpcUrls: {
+        default: {
+          http: props.chainConfig.rpc,
+        },
+        public: {
+          http: props.chainConfig.rpc,
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: props.chainConfig.explorers[0].name,
+          url: props.chainConfig.explorers[0].url,
+        },
+      },
+    }
+    return configureChains([currentChain], [publicProvider()])
+  }, [
+    props.chainConfig.chainId,
+    props.chainConfig.explorers,
+    props.chainConfig.name,
+    props.chainConfig.nativeCurrency,
+    props.chainConfig.rpc,
+    props.chainConfig.shortName,
+  ])
+
+  const { connectors } = useMemo(
+    () =>
+      getDefaultWallets({
+        appName: 'Block Explorer',
+        chains,
+        projectId: WALLET_CONNECT_PROJECT_ID,
+      }),
+    [chains]
+  )
+
+  const wagmiConfig = useMemo(
+    () =>
+      createConfig({
+        autoConnect: true,
+        connectors,
+        publicClient,
+      }),
+    [connectors, publicClient]
+  )
 
   return (
     <>
@@ -89,9 +151,11 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: '',
                   to: pathname,
                   content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxOverview {...props} />
-                    </Suspense>
+                    <WagmiConfig config={wagmiConfig}>
+                      <Suspense fallback={<LoadingCard />}>
+                        <TxOverview {...props} />
+                      </Suspense>
+                    </WagmiConfig>
                   ),
                 },
                 {
