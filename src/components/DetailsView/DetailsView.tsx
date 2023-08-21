@@ -10,8 +10,7 @@ const DetailsView: FC<DetailsViewProps> = ({
   title,
   address,
   icon,
-  tag,
-  tagTooltip,
+  tags,
   className,
   children,
   header,
@@ -28,11 +27,17 @@ const DetailsView: FC<DetailsViewProps> = ({
             <Copy text={address} />
           </>
         )}
-        {!!tag && (
-          <Label className={styles.tag} tooltip={tagTooltip}>
-            {tag}
-          </Label>
-        )}
+        {tags?.map((tag, idx) => {
+          if (!tag) {
+            return null
+          }
+
+          return (
+            <Label key={idx} className={styles.tag}>
+              {tag}
+            </Label>
+          )
+        })}
         {!!ens && <Label className={styles.tag}>{ens}</Label>}
         {!!header && <div className={styles.tools}>{header}</div>}
       </div>

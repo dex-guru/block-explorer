@@ -6,7 +6,7 @@ export type DetailsViewProps = {
   title: ReactNode
   address?: string
   icon?: ReactNode
-  tag?: string
+  tags?: ReactNode[]
   ens?: string
   tagTooltip?: string
   header?: ReactNode

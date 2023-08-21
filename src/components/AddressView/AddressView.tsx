@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
-import { useEnsName, Address as WagmiAddress } from 'wagmi'
+import EnsName from '../EnsName'
 import { IAddressViewProps } from './types'
 import AddressOnChainSelect from '@/components/AddressOnChainSelect'
 import AddressWallet from '@/components/AddressWallet'
@@ -39,10 +39,6 @@ const AddressView: FC<IAddressViewProps> = ({
   const pathname = router.asPath.split('?')[0]
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
-  const { data: ensName } = useEnsName({
-    chainId: chain.config.chainId,
-    address: checkSumAddress as WagmiAddress,
-  })
   const pageTitle = addressInfo?.address
     ? `${chain.config.name} Address ${checkSumAddress}`
     : isAddress(address)
@@ -52,6 +48,17 @@ const AddressView: FC<IAddressViewProps> = ({
   const chainsArr = chains.filter(
     (chainData) => chainData.id !== chain.config.chainId
   )
+
+  const tags = [
+    <span
+      key="type"
+      data-tooltip-content="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
+      data-tooltip-id="app-tooltip"
+    >
+      EOA
+    </span>,
+    <EnsName key="ens" chainConfig={chain.config} address={address} />,
+  ]
 
   return (
     <>
@@ -84,9 +91,7 @@ const AddressView: FC<IAddressViewProps> = ({
             icon={<Avatar address={address} />}
             title="Address"
             address={address}
-            tag="EOA"
-            ens={ensName || undefined}
-            tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
+            tags={tags}
             type="address"
             chainConfig={chain.config}
             header={

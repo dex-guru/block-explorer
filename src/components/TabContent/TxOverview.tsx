@@ -2,8 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import { useEnsName, Address as WagmiAddress } from 'wagmi'
-import HistoricalValue from '../HistoricalValue/HistoricalValue'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -16,6 +14,8 @@ import Card from '@/components/Card'
 import Code from '@/components/Code'
 import DateTime from '@/components/DateTime'
 import Details from '@/components/Details'
+import EnsName from '@/components/EnsName'
+import HistoricalValue from '@/components/HistoricalValue/HistoricalValue'
 import { IconCross, IconVerify, IconWatch } from '@/components/Icons'
 import Label from '@/components/Label'
 import { LoadingCard } from '@/components/Loading'
@@ -43,15 +43,6 @@ const TxOverview: FC<{
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }> = ({ data, chainConfig, chainStats }) => {
-  const { data: ensNameFrom } = useEnsName({
-    chainId: chainConfig.chainId,
-    address: (data.fromAddress || '') as WagmiAddress,
-  })
-  const { data: ensNameTo } = useEnsName({
-    chainId: chainConfig.chainId,
-    address: (data.toAddress || '') as WagmiAddress,
-  })
-
   const [erc20TransfersData, setErc20TransfersData] = useState<
     Erc20EventModel[]
   >([])
@@ -191,7 +182,11 @@ const TxOverview: FC<{
               isShorten={false}
               isCopy
             />
-            {!!ensNameFrom && <Label type="tag">{ensNameFrom}</Label>}
+            <EnsName
+              chainConfig={chainConfig}
+              address={data.fromAddress}
+              isTag
+            />
           </>
           <Label type="tag" className={pageStyles.success}>
             {data.nonce}
@@ -211,8 +206,7 @@ const TxOverview: FC<{
             isShorten={false}
             isCopy
           />
-
-          {!!ensNameTo && <Label type="tag">{ensNameTo}</Label>}
+          <EnsName chainConfig={chainConfig} address={data.toAddress} isTag />
         </div>
       ) : null,
     },
