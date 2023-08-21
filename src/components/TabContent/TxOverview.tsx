@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
+import { useEnsName, Address as WagmiAddress } from 'wagmi'
 import HistoricalValue from '../HistoricalValue/HistoricalValue'
 import {
   ChainConfigModel,
@@ -42,6 +43,15 @@ const TxOverview: FC<{
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }> = ({ data, chainConfig, chainStats }) => {
+  const { data: ensNameFrom } = useEnsName({
+    chainId: chainConfig.chainId,
+    address: (data.fromAddress || '') as WagmiAddress,
+  })
+  const { data: ensNameTo } = useEnsName({
+    chainId: chainConfig.chainId,
+    address: (data.toAddress || '') as WagmiAddress,
+  })
+
   const [erc20TransfersData, setErc20TransfersData] = useState<
     Erc20EventModel[]
   >([])
@@ -174,12 +184,15 @@ const TxOverview: FC<{
       tooltip: 'The sending party of the transaction.',
       value: (
         <Separated>
-          <Address
-            address={data.fromAddress}
-            type="account"
-            isShorten={false}
-            isCopy
-          />
+          <>
+            <Address
+              address={data.fromAddress}
+              type="account"
+              isShorten={false}
+              isCopy
+            />
+            {!!ensNameFrom && <Label type="tag">{ensNameFrom}</Label>}
+          </>
           <Label type="tag" className={pageStyles.success}>
             {data.nonce}
           </Label>
@@ -191,12 +204,16 @@ const TxOverview: FC<{
       tooltip:
         'The receiving party of the transaction (could be a contract address).',
       value: data.toAddress ? (
-        <Address
-          address={data.toAddress}
-          type="account"
-          isShorten={false}
-          isCopy
-        />
+        <div>
+          <Address
+            address={data.toAddress}
+            type="account"
+            isShorten={false}
+            isCopy
+          />
+
+          {!!ensNameTo && <Label type="tag">{ensNameTo}</Label>}
+        </div>
       ) : null,
     },
   ]
