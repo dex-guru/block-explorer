@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { sanitize } from 'isomorphic-dompurify'
 import useSWRImmutable from 'swr/immutable'
@@ -21,7 +21,8 @@ const DashboardAnalyzer: FC<{
   //     method: 'POST',
   //     body: JSON.stringify({
   //       dashboard_slug: slug,
-  //       parameters: params,
+  //       chat_logs: '',
+  //       parameters: JSON.stringify(params),
   //     }),
   //   }).then((res) => res.json())
   // )
@@ -35,7 +36,7 @@ const DashboardAnalyzer: FC<{
       method: 'POST',
       body: JSON.stringify({
         dashboard_slug: slug,
-        parameters: params,
+        parameters: JSON.stringify(params),
         // selected_prompt: currentPrompt,
         selected_prompt: '',
       }),
