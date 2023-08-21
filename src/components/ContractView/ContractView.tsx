@@ -217,7 +217,7 @@ const ContractView: FC<IContractViewProps> = ({
           icon={addressIcon}
           title={detailsTitle}
           address={type !== 'token' ? checkSumAddress : undefined}
-          tag={`${addressInfo.symbol ? 'Token' : 'Smart'} Contract`}
+          tags={[`${addressInfo.symbol ? 'Token' : 'Smart'} Contract`]}
           type="address"
           chainConfig={chain.config}
           header={
