@@ -142,6 +142,16 @@ const Index: NextPage<IndexProps> = (props) => {
       ),
     },
     {
+      title: 'Active Addresses, 24h',
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(
+            stats.activeAddressesCount24h
+          )}
+        />
+      ),
+    },
+    {
       title: 'Smart Contracts',
       tooltip: 'Total number of smart contracts created on-chain.',
       value: (
@@ -149,6 +159,14 @@ const Index: NextPage<IndexProps> = (props) => {
           value={financialFormatLowValueHighPrecision(
             stats.smartContractsCount
           )}
+        />
+      ),
+    },
+    {
+      title: 'Average Block Time, 24h',
+      value: (
+        <Value
+          value={financialFormatLowValueHighPrecision(stats.averageBlockTime)}
         />
       ),
     },

@@ -1091,6 +1091,8 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
     }
     chainStats(chainId: ${CHAIN_ID}) {
       activeAddressesCount
+      activeAddressesCount24h
+      averageBlockTime
       lastBlockNumber
       liquidity24hDelta
       liquidityUsd
