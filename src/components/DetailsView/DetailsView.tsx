@@ -27,17 +27,15 @@ const DetailsView: FC<DetailsViewProps> = ({
             <Copy text={address} />
           </>
         )}
-        {tags?.map((tag, idx) => {
-          if (!tag) {
-            return null
-          }
-
-          return (
-            <Label key={idx} className={styles.tag}>
-              {tag}
-            </Label>
-          )
-        })}
+        {tags
+          ?.filter((tag) => !!tag)
+          .map((tag, idx) => {
+            return (
+              <Label key={idx} className={styles.tag}>
+                {tag}
+              </Label>
+            )
+          })}
         {!!ens && <Label className={styles.tag}>{ens}</Label>}
         {!!header && <div className={styles.tools}>{header}</div>}
       </div>

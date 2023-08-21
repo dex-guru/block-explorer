@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
-import EnsName from '../EnsName'
+import { useEnsName } from 'wagmi'
 import { IAddressViewProps } from './types'
 import AddressOnChainSelect from '@/components/AddressOnChainSelect'
 import AddressWallet from '@/components/AddressWallet'
@@ -49,6 +49,11 @@ const AddressView: FC<IAddressViewProps> = ({
     (chainData) => chainData.id !== chain.config.chainId
   )
 
+  const { data: ensName } = useEnsName({
+    chainId: chain.config.chainId,
+    address: checkSumAddress as `0x${string}`,
+  })
+
   const tags = [
     <span
       key="type"
@@ -57,7 +62,7 @@ const AddressView: FC<IAddressViewProps> = ({
     >
       EOA
     </span>,
-    <EnsName key="ens" chainConfig={chain.config} address={address} />,
+    ensName,
   ]
 
   return (
