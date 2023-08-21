@@ -25,10 +25,14 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
     return null
   }
 
+  const pageTitle = `${dashboard?.name || 'No dashboard'} for ${
+    chainConfig.name
+  }`
+
   return (
     <>
       <Head>
-        <title>{dashboard?.name || 'No dashboard'}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={dashboard?.name} />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

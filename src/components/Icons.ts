@@ -8,6 +8,7 @@ import IconCopy from '@/images/icons/copy.svg'
 import IconCross from '@/images/icons/cross.svg'
 import IconDanger from '@/images/icons/danger.svg'
 import IconIdea from '@/images/icons/idea.svg'
+import IconImpersonator from '@/images/icons/impersonator.svg'
 import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
 import IconMenu from '@/images/icons/menu.svg'
 import IconNoData from '@/images/icons/no-data.svg'
@@ -50,6 +51,7 @@ export {
   IconRedash,
   IconDanger,
   IconIdea,
+  IconImpersonator,
   IconSuccess,
   IconWarning,
 }

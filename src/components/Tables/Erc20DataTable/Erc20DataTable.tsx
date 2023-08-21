@@ -5,7 +5,7 @@ import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
-import { GET_ERC20_EVENTS } from '@/lib/apollo/queries'
+import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
 import styles from './Erc20DataTable.module.scss'
 
@@ -22,6 +22,9 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
 }) => {
   const [getErc20, { data, loading, previousData }] =
     useLazyQuery(GET_ERC20_EVENTS)
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
+    GET_ERC20_EVENTS_TOTALS
+  )
   const isMount = useIsMount()
 
   const addressVar = useMemo(
@@ -33,7 +36,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   )
 
   const getVariables = useCallback(
-    (vars?: PaginationVariables) => {
+    (vars?: Record<string, string | number | boolean>) => {
       return {
         ...addressVar,
 
@@ -61,6 +64,11 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
     })
   }, [getErc20, getVariables])
 
+  const handleGetFullTotal = () =>
+    getErc20Totals({
+      variables: getVariables({ fullTotals: true }),
+    })
+
   const displayData = loading ? previousData : data
 
   if (isMount && !data && !loading) {
@@ -84,9 +92,11 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
   return (
     <DataTable
       isLoading={loading}
-      columns={erc20Columns}
+      columns={erc20Columns(displayData?.chainConfig?.dexes)}
       data={displayData?.erc20Events?.data}
       total={displayData?.erc20Events?.total}
+      fullTotal={fullTotalsData?.erc20Events?.total}
+      getFullTotal={handleGetFullTotal}
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       empty={{

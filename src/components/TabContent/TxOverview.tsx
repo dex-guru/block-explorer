@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import HistoricalValue from '../HistoricalValue/HistoricalValue'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -15,6 +14,8 @@ import Card from '@/components/Card'
 import Code from '@/components/Code'
 import DateTime from '@/components/DateTime'
 import Details from '@/components/Details'
+import EnsName from '@/components/EnsName'
+import HistoricalValue from '@/components/HistoricalValue/HistoricalValue'
 import { IconCross, IconVerify, IconWatch } from '@/components/Icons'
 import Label from '@/components/Label'
 import { LoadingCard } from '@/components/Loading'
@@ -174,12 +175,19 @@ const TxOverview: FC<{
       tooltip: 'The sending party of the transaction.',
       value: (
         <Separated>
-          <Address
-            address={data.fromAddress}
-            type="account"
-            isShorten={false}
-            isCopy
-          />
+          <>
+            <Address
+              address={data.fromAddress}
+              type="account"
+              isShorten={false}
+              isCopy
+            />
+            <EnsName
+              chainConfig={chainConfig}
+              address={data.fromAddress}
+              isTag
+            />
+          </>
           <Label type="tag" className={pageStyles.success}>
             {data.nonce}
           </Label>
@@ -191,12 +199,15 @@ const TxOverview: FC<{
       tooltip:
         'The receiving party of the transaction (could be a contract address).',
       value: data.toAddress ? (
-        <Address
-          address={data.toAddress}
-          type="account"
-          isShorten={false}
-          isCopy
-        />
+        <div>
+          <Address
+            address={data.toAddress}
+            type="account"
+            isShorten={false}
+            isCopy
+          />
+          <EnsName chainConfig={chainConfig} address={data.toAddress} isTag />
+        </div>
       ) : null,
     },
   ]
@@ -459,7 +470,7 @@ const TxOverview: FC<{
                 <Table
                   className={styles.table}
                   data={erc20ActionsData}
-                  columns={erc20ActionColumns}
+                  columns={erc20ActionColumns(chainConfig?.dexes)}
                 />
               </Card>
             </Details>

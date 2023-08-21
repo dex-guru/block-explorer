@@ -48,8 +48,8 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
   ]
 
   const pageTitle = isAddress(address)
-    ? `Token Holdings for ${checkSumAddress}`
-    : 'No correct address provided'
+    ? `${chainConfig.name} Token Holdings for ${checkSumAddress}`
+    : `No correct ${chainConfig.name} address provided`
 
   return (
     <>

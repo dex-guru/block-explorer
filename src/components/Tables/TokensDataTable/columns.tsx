@@ -1,12 +1,9 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
-import { AddressValues } from '@/components/Address/helpers'
 import Delta from '@/components/Delta'
-import { IconContract, IconNoIcon } from '@/components/Icons'
+import { IconContract } from '@/components/Icons'
 import { IColumn } from '@/components/Table/types'
-import Tile from '@/components/Tile'
+import Token from '@/components/Token'
 import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
 import styles from './TokensDataTable.module.scss'
@@ -15,33 +12,15 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
   {
     accessor: 'asset',
     title: 'Asset',
-    render: (data) => {
-      const icon = data.logo[0] ? (
-        <Image
-          src={data.logo[0]}
-          alt={data.symbol.join('/')}
-          width="32"
-          height="32"
-          className={styles.image}
-        />
-      ) : (
-        <IconNoIcon className={styles.noimage} />
-      )
-
-      return (
-        <Link href={AddressValues['token'].url(data.contractAddress) || ''}>
-          <Tile className={styles.token} icon={icon} title={data.asset} />
-        </Link>
-      )
-    },
+    render: (data) => (
+      <Token
+        logo={data.logo[0]}
+        name={data.asset}
+        symbol={data.symbol[0]}
+        address={data.contractAddress}
+      />
+    ),
   },
-
-  {
-    accessor: 'symbol',
-    title: 'Symbol',
-    render: (data) => data.symbol.join('/'),
-  },
-
   {
     accessor: 'contractAddress',
     title: 'Contract Address',

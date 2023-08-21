@@ -1,15 +1,13 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useQuery } from '@apollo/client'
-import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
@@ -19,14 +17,13 @@ import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import AddressWallet from '@/components/AddressWallet'
 import Avatar from '@/components/Avatar'
-import Card from '@/components/Card'
-import Comments from '@/components/Comments'
 import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
 import DateTime from '@/components/DateTime'
 import DetailsView from '@/components/DetailsView'
 import Grid from '@/components/Grid'
 import {
   IconContract,
+  IconImpersonator,
   IconNoIcon,
   IconShield,
   IconVerify,
@@ -38,9 +35,9 @@ import Separated from '@/components/Separated'
 import TabPanel from '@/components/TabPanel'
 import { TransfersDataTable } from '@/components/Tables'
 import Value from '@/components/Value'
-import { CHAIN_ID, WALLET_CONNECT_PROJECT_ID } from '@/constants'
+import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
-import { GET_CONTRACT_INFO } from '@/lib/apollo/queries'
+import { GET_CONTRACT_INFO, GET_TOKEN_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from './ContractView.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
@@ -66,60 +63,26 @@ const ContractView: FC<IContractViewProps> = ({
   type = 'contract',
   addressInfo,
   chain,
+  chains,
   tokenHoldingsStats,
 }) => {
   const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
+  const [getTokenData, { data: tokenData }] = useLazyQuery<{
+    checkTokenImpersonator: boolean
+  }>(GET_TOKEN_INFO)
 
-  const { chains, publicClient } = useMemo(() => {
-    const currentChain = {
-      id: chain.config.chainId,
-      name: chain.config.name,
-      network: chain.config.shortName,
-      nativeCurrency: chain.config.nativeCurrency,
-      rpcUrls: {
-        default: {
-          http: chain.config.rpc,
-        },
-        public: {
-          http: chain.config.rpc,
-        },
-      },
-      blockExplorers: {
-        default: {
-          name: chain.config.explorers[0].name,
-          url: chain.config.explorers[0].url,
-        },
-      },
+  useEffect(() => {
+    if (type !== 'token') {
+      return
     }
-    return configureChains([currentChain], [publicProvider()])
-  }, [
-    chain.config.chainId,
-    chain.config.explorers,
-    chain.config.name,
-    chain.config.nativeCurrency,
-    chain.config.rpc,
-    chain.config.shortName,
-  ])
 
-  const { connectors } = useMemo(
-    () =>
-      getDefaultWallets({
-        appName: 'Block Explorer',
-        chains,
-        projectId: WALLET_CONNECT_PROJECT_ID,
-      }),
-    [chains]
-  )
-
-  const wagmiConfig = useMemo(
-    () =>
-      createConfig({
-        autoConnect: true,
-        connectors,
-        publicClient,
-      }),
-    [connectors, publicClient]
-  )
+    getTokenData({
+      variables: {
+        address: addressInfo.address?.toLowerCase(),
+        ticker: addressInfo.symbol,
+      },
+    })
+  }, [type, addressInfo, getTokenData])
 
   const contractCreator: ContractCreatorModel = data?.contractCreator
   const balancesStats: TokenBalancesStatsModel = data?.balancesStats
@@ -205,11 +168,18 @@ const ContractView: FC<IContractViewProps> = ({
             <span className={styles.muted}>({addressInfo.name})</span>{' '}
             {!!addressInfo?.tokenLists?.length && (
               <IconVerify
-                className={styles.verified}
+                className={styles.verification}
                 data-tooltip-id="app-tooltip"
                 data-tooltip-content={`This token is verified by ${addressInfo?.tokenLists.join(
                   ', '
                 )}`}
+              />
+            )}
+            {!!tokenData?.checkTokenImpersonator && (
+              <IconImpersonator
+                className={styles.verification}
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content="Caution: While the token's ticker may resemble an authentic one, always cross-verify the address to detect potential impersonation."
               />
             )}
           </>
@@ -219,7 +189,7 @@ const ContractView: FC<IContractViewProps> = ({
       'Contract'
     )
 
-  const pageTitle = `${
+  const pageTitle = `${chain.config.name} ${
     type === 'token'
       ? `Token ${addressInfo.symbol}${
           addressInfo.name !== addressInfo.symbol
@@ -227,124 +197,121 @@ const ContractView: FC<IContractViewProps> = ({
             : ''
         }`
       : `Contract ${checkSumAddress}`
-  } on ${chain.config.name}`
+  }`
 
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        <Head>
-          <title>{pageTitle}</title>
-          <link rel="icon" href={chain.config.icon} />
-          <link rel="canonical" href={pathname} />
-          <meta
-            name="description"
-            content={`Explore smart contract ${
-              addressInfo.name || addressInfo.address
-            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
-          />
-        </Head>
-        <Page chainConfig={chain.config}>
-          <DetailsView
-            icon={addressIcon}
-            title={detailsTitle}
-            address={type !== 'token' ? checkSumAddress : undefined}
-            tag={`${addressInfo.symbol ? 'Token' : 'Smart'} Contract`}
-            type="address"
-            chainConfig={chain.config}
-            header={
-              <OpenWith
-                type={type === 'token' ? 'token' : 'address'}
-                chainConfig={chain.config}
-                address={address}
-              />
-            }
-          >
-            <Grid>
-              <Properties
-                title="Overview:"
-                data={[
-                  ...(type === 'contract'
-                    ? [
-                        {
-                          title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
-                          value: (
-                            <Value
-                              value={financialFormat(addressInfo.nativeBalance)}
-                              suffix={
-                                <>
-                                  &nbsp;{chain?.config?.nativeCurrency.symbol}
-                                </>
-                              }
-                            />
-                          ),
-                        },
-                        {
-                          title: `${chain?.config?.nativeCurrency.symbol} Value:`,
-                          value: (
+    <RainbowKitProvider chains={chains}>
+      <Head>
+        <title>{pageTitle}</title>
+        <link rel="icon" href={chain.config.icon} />
+        <link rel="canonical" href={pathname} />
+        <meta
+          name="description"
+          content={`Explore smart contract ${
+            addressInfo.name || addressInfo.address
+          } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
+        />
+      </Head>
+      <Page chainConfig={chain.config}>
+        <DetailsView
+          icon={addressIcon}
+          title={detailsTitle}
+          address={type !== 'token' ? checkSumAddress : undefined}
+          tags={[`${addressInfo.symbol ? 'Token' : 'Smart'} Contract`]}
+          type="address"
+          chainConfig={chain.config}
+          header={
+            <OpenWith
+              type={type === 'token' ? 'token' : 'address'}
+              chainConfig={chain.config}
+              address={address}
+            />
+          }
+        >
+          <Grid>
+            <Properties
+              title="Overview:"
+              data={[
+                ...(type === 'contract'
+                  ? [
+                      {
+                        title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
+                        value: (
+                          <Value
+                            value={financialFormat(addressInfo.nativeBalance)}
+                            suffix={
+                              <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
+                            }
+                          />
+                        ),
+                      },
+                      {
+                        title: `${chain?.config?.nativeCurrency.symbol} Value:`,
+                        value: (
+                          <Value
+                            value={financialFormat(
+                              addressInfo.nativeBalanceUSD
+                            )}
+                            prefix="$"
+                          />
+                        ),
+                      },
+                      {
+                        title: 'Token Holdings:',
+                        value: (
+                          <AddressWallet
+                            address={address}
+                            tokenHoldingsStats={tokenHoldingsStats}
+                            className={pageStyles.addressWallet}
+                          />
+                        ),
+                      },
+                    ]
+                  : []),
+
+                ...(type === 'token'
+                  ? [
+                      {
+                        title: 'FDV / Max Supply:',
+                        value: (
+                          <Separated>
                             <Value
                               value={financialFormat(
-                                addressInfo.nativeBalanceUSD
+                                balancesStats?.fullyDilutedValuation || 0
                               )}
                               prefix="$"
                             />
-                          ),
-                        },
-                        {
-                          title: 'Token Holdings:',
-                          value: (
-                            <AddressWallet
-                              address={address}
-                              tokenHoldingsStats={tokenHoldingsStats}
-                              className={pageStyles.addressWallet}
+                            <Value
+                              value={financialFormat(
+                                balancesStats?.maxTotalSupply || 0
+                              )}
                             />
-                          ),
-                        },
-                      ]
-                    : []),
-
-                  ...(type === 'token'
-                    ? [
-                        {
-                          title: 'FDV / Max Supply:',
-                          value: (
+                          </Separated>
+                        ),
+                      },
+                      {
+                        title: 'Total Transfers:',
+                        value: financialFormat(
+                          balancesStats?.totalTransfers || 0
+                        ),
+                      },
+                      {
+                        title: 'Holders:',
+                        value: (
+                          <div className={styles.holders}>
                             <Separated>
                               <Value
                                 value={financialFormat(
-                                  balancesStats?.fullyDilutedValuation || 0
+                                  balancesStats?.holders || 0
                                 )}
-                                prefix="$"
+                                delta={
+                                  balancesStats?.holdersChange
+                                    ? (balancesStats.holdersChange || 0) * 100
+                                    : undefined
+                                }
                               />
-                              <Value
-                                value={financialFormat(
-                                  balancesStats?.maxTotalSupply || 0
-                                )}
-                              />
-                            </Separated>
-                          ),
-                        },
-                        {
-                          title: 'Total Transfers:',
-                          value: financialFormat(
-                            balancesStats?.totalTransfers || 0
-                          ),
-                        },
-                        {
-                          title: 'Holders:',
-                          value: (
-                            <div className={styles.holders}>
-                              <Separated>
-                                <Value
-                                  value={financialFormat(
-                                    balancesStats?.holders || 0
-                                  )}
-                                  delta={
-                                    balancesStats?.holdersChange
-                                      ? (balancesStats.holdersChange || 0) * 100
-                                      : undefined
-                                  }
-                                />
+                              <div className={styles.holdersChart}>
                                 <CommonChart
-                                  className={styles.holdersChart}
                                   data={holdersSeries}
                                   options={{
                                     axis: {
@@ -379,242 +346,228 @@ const ContractView: FC<IContractViewProps> = ({
                                     },
                                   }}
                                 />
-                              </Separated>
-                            </div>
-                          ),
-                        },
-                      ]
-                    : []),
-                ]}
-              />
+                              </div>
+                            </Separated>
+                          </div>
+                        ),
+                      },
+                    ]
+                  : []),
+              ]}
+            />
 
-              <Properties
-                title="More Info:"
-                data={[
-                  ...(type === 'token'
-                    ? [
-                        {
-                          title: 'Price:',
-                          value: (
-                            <Value
-                              value={financialFormat(balancesStats?.price || 0)}
-                              prefix="$"
-                              delta={
-                                balancesStats?.priceChange
-                                  ? (balancesStats.priceChange || 0) * 100
-                                  : undefined
-                              }
-                            />
-                          ),
-                        },
-                      ]
-                    : []),
-
-                  ...(contractCreator
-                    ? [
-                        {
-                          title: 'Creator:',
-                          value: (
-                            <div>
-                              <Address
-                                address={contractCreator.creatorAddress}
-                                type="account"
-                                isCopy
-                              />{' '}
-                              at txn{' '}
-                              <Address
-                                address={contractCreator.txHash}
-                                type="tx"
-                                isCopy
-                              />
-                            </div>
-                          ),
-                        },
-                        {
-                          title: 'Timestamp:',
-                          value: (
-                            <DateTime timestamp={contractCreator.timestamp} />
-                          ),
-                        },
-                      ]
-                    : []),
-
-                  ...(type === 'contract' && addressInfo.symbol
-                    ? [
-                        {
-                          title: 'Token Tracker:',
-                          value: (
-                            <div>
-                              <Link
-                                href={
-                                  AddressValues['token'].url(address || '') ||
-                                  ''
-                                }
-                                className={styles.token}
-                              >
-                                {tokenIcon}{' '}
-                                <span className={styles.tokenName}>
-                                  {addressInfo.name} ({addressInfo.symbol})
-                                </span>{' '}
-                                <span className={styles.tokenPrice}>
-                                  (@$
-                                  {financialFormat(balancesStats?.price || 0)})
-                                </span>
-                              </Link>
-                            </div>
-                          ),
-                        },
-                      ]
-                    : []),
-
-                  ...(type === 'token'
-                    ? [
-                        {
-                          title: 'Token Contract:',
-                          value: (
-                            <Value
-                              className={styles.token}
-                              value={
-                                <Address
-                                  address={address}
-                                  type="account"
-                                  isCopy
-                                />
-                              }
-                              icon={
-                                <IconContract
-                                  data-tooltip-id="app-tooltip"
-                                  data-tooltip-content="Smart Contract"
-                                  className={styles.contractIcon}
-                                />
-                              }
-                            />
-                          ),
-                        },
-                      ]
-                    : []),
-                ]}
-              />
-            </Grid>
-
-            <TabPanel
-              tabs={[
+            <Properties
+              title="More Info:"
+              data={[
                 ...(type === 'token'
                   ? [
                       {
-                        title: 'Transfers',
-                        value: '',
-                        to: pathname,
-                        content: <TransfersDataTable address={address} />,
-                      },
-                      {
-                        title: 'Holders',
-                        value: 'balances',
-                        to: { pathname, query: { tab: 'balances' } },
-                        content: <HoldersDataTable address={address} />,
-                      },
-                      {
-                        title: 'DEX Trades',
-                        value: 'trades',
-                        to: { pathname, query: { tab: 'trades' } },
-                        content: <DexTradesDataTable address={address} />,
-                      },
-                    ]
-                  : []),
-
-                ...(type === 'contract'
-                  ? [
-                      {
-                        title: 'Transactions',
-                        tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
-                        value: '',
-                        to: pathname,
-                        content: <TxsDataTable address={address} />,
-                      },
-                      {
-                        title: 'Token TXs (ERC-20)',
-                        value: 'tokentxns',
-                        to: { pathname, query: { tab: 'tokentxns' } },
-                        content: <Erc20DataTable address={address} />,
-                      },
-                      {
-                        title: 'NFT Token TXs',
-                        value: 'nfttxns',
-                        to: { pathname, query: { tab: 'nfttxns' } },
-                        content: <NftDataTable address={address} />,
-                      },
-                    ]
-                  : []),
-
-                {
-                  title: 'Contract',
-                  indicator: hasSources && (
-                    <IconShield
-                      data-tooltip-id="app-tooltip"
-                      data-tooltip-html="This contract has been verified through <a href='https://sourcify.dev/' rel='noopener noreferrer' target='_blank'>Sourcify</a>."
-                    />
-                  ),
-                  value: 'code',
-                  isActive: isSubTab,
-                  to: `${pathname}?tab=code`,
-                },
-                ...(checkChainFeature(chain.config, 'charts')
-                  ? [
-                      {
-                        title: 'Analytics',
-                        value: 'analytics',
-                        to: { pathname, query: { tab: 'analytics' } },
-                        content: (
-                          <Analytics
-                            tag={
-                              type === 'token'
-                                ? 'Token Contract'
-                                : 'Smart Contract'
+                        title: 'Price:',
+                        value: (
+                          <Value
+                            value={financialFormat(balancesStats?.price || 0)}
+                            prefix="$"
+                            delta={
+                              balancesStats?.priceChange
+                                ? (balancesStats.priceChange || 0) * 100
+                                : undefined
                             }
-                            params={{
-                              network: chain.config.shortName,
-                              ...(type === 'token'
-                                ? {
-                                    token_address_requested:
-                                      address.toLowerCase(),
-                                  }
-                                : { address: address.toLowerCase() }),
-                            }}
                           />
                         ),
                       },
                     ]
                   : []),
-                {
-                  title: 'Comments',
-                  value: 'comments',
-                  to: { pathname, query: { tab: 'comments' } },
-                  content: (
-                    <Card>
-                      <Comments
-                        id={`address/${address}`}
-                        title={`Contract ${address}`}
-                      />
-                    </Card>
-                  ),
-                },
-              ]}
-              value={tab || ''}
-            >
-              {/* Content here should depend on Tab's query param value */}
 
-              {isSubTab && (
-                <ContractTab
-                  match={match}
-                  address={address}
-                  tab={tab as string}
-                />
-              )}
-            </TabPanel>
-          </DetailsView>
-        </Page>
-      </RainbowKitProvider>
-    </WagmiConfig>
+                ...(contractCreator
+                  ? [
+                      {
+                        title: 'Creator:',
+                        value: (
+                          <div>
+                            <Address
+                              address={contractCreator.creatorAddress}
+                              type="account"
+                              isCopy
+                            />{' '}
+                            at txn{' '}
+                            <Address
+                              address={contractCreator.txHash}
+                              type="tx"
+                              isCopy
+                            />
+                          </div>
+                        ),
+                      },
+                      {
+                        title: 'Timestamp:',
+                        value: (
+                          <DateTime timestamp={contractCreator.timestamp} />
+                        ),
+                      },
+                    ]
+                  : []),
+
+                ...(type === 'contract' && addressInfo.symbol
+                  ? [
+                      {
+                        title: 'Token Tracker:',
+                        value: (
+                          <div>
+                            <Link
+                              href={
+                                AddressValues['token'].url(address || '') || ''
+                              }
+                              className={styles.token}
+                            >
+                              {tokenIcon}{' '}
+                              <span className={styles.tokenName}>
+                                {addressInfo.name} ({addressInfo.symbol})
+                              </span>{' '}
+                              <span className={styles.tokenPrice}>
+                                (@$
+                                {financialFormat(balancesStats?.price || 0)})
+                              </span>
+                            </Link>
+                          </div>
+                        ),
+                      },
+                    ]
+                  : []),
+
+                ...(type === 'token'
+                  ? [
+                      {
+                        title: 'Token Contract:',
+                        value: (
+                          <Value
+                            className={styles.token}
+                            value={
+                              <Address
+                                address={address}
+                                type="account"
+                                isCopy
+                              />
+                            }
+                            icon={
+                              <IconContract
+                                data-tooltip-id="app-tooltip"
+                                data-tooltip-content="Smart Contract"
+                                className={styles.contractIcon}
+                              />
+                            }
+                          />
+                        ),
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+          </Grid>
+
+          <TabPanel
+            tabs={[
+              ...(type === 'token'
+                ? [
+                    {
+                      title: 'Transfers',
+                      value: '',
+                      to: pathname,
+                      content: <TransfersDataTable address={address} />,
+                    },
+                    {
+                      title: 'Holders',
+                      value: 'balances',
+                      to: { pathname, query: { tab: 'balances' } },
+                      content: <HoldersDataTable address={address} />,
+                    },
+                    {
+                      title: 'DEX Trades',
+                      value: 'trades',
+                      to: { pathname, query: { tab: 'trades' } },
+                      content: <DexTradesDataTable address={address} />,
+                    },
+                  ]
+                : []),
+
+              ...(type === 'contract'
+                ? [
+                    {
+                      title: 'Transactions',
+                      tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
+                      value: '',
+                      to: pathname,
+                      content: <TxsDataTable address={address} />,
+                    },
+                    {
+                      title: 'Token TXs (ERC-20)',
+                      value: 'tokentxns',
+                      to: { pathname, query: { tab: 'tokentxns' } },
+                      content: <Erc20DataTable address={address} />,
+                    },
+                    {
+                      title: 'NFT Token TXs',
+                      value: 'nfttxns',
+                      to: { pathname, query: { tab: 'nfttxns' } },
+                      content: <NftDataTable address={address} />,
+                    },
+                  ]
+                : []),
+
+              {
+                title: 'Contract',
+                indicator: hasSources && (
+                  <IconShield
+                    data-tooltip-id="app-tooltip"
+                    data-tooltip-html="This contract has been verified through <a href='https://sourcify.dev/' rel='noopener noreferrer' target='_blank'>Sourcify</a>."
+                  />
+                ),
+                value: 'code',
+                isActive: isSubTab,
+                to: `${pathname}?tab=code`,
+              },
+              ...(checkChainFeature(chain.config, 'charts')
+                ? [
+                    {
+                      title: 'Analytics',
+                      value: 'analytics',
+                      to: { pathname, query: { tab: 'analytics' } },
+                      content: (
+                        <Analytics
+                          tag={
+                            type === 'token'
+                              ? 'Token Contract'
+                              : 'Smart Contract'
+                          }
+                          params={{
+                            network: chain.config.shortName,
+                            ...(type === 'token'
+                              ? {
+                                  token_address_requested:
+                                    address.toLowerCase(),
+                                }
+                              : { address: address.toLowerCase() }),
+                          }}
+                        />
+                      ),
+                    },
+                  ]
+                : []),
+            ]}
+            value={tab || ''}
+          >
+            {/* Content here should depend on Tab's query param value */}
+
+            {isSubTab && (
+              <ContractTab
+                match={match}
+                address={address}
+                tab={tab as string}
+              />
+            )}
+          </TabPanel>
+        </DetailsView>
+      </Page>
+    </RainbowKitProvider>
   )
 }
 

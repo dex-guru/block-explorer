@@ -78,9 +78,11 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
     )
   }
 
-  const pageTitle = block
-    ? `Transactions in a single block ${block?.toString()}`
-    : 'Transactions'
+  const pageTitle = `${props.chainConfig.name} ${
+    block
+      ? `Transactions in a single block ${block?.toString()}`
+      : 'Transactions'
+  }`
 
   return (
     <>

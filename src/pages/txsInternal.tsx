@@ -30,13 +30,13 @@ interface IBlocksProps {
 const BlockPage: NextPage<IBlocksProps> = (props) => {
   const isMount = useIsMount()
   const [internalTxs, setInternalTxs] = useState(props.internalTxs.data)
-  const [getBlocks, { data, loading }] = useLazyQuery(GET_INTERNAL_TXS)
+  const [getInternalTxs, { data, loading }] = useLazyQuery(GET_INTERNAL_TXS)
 
   const onPaginationChange = useCallback(
     (variables: PaginationVariables) => {
-      getBlocks({ variables })
+      getInternalTxs({ variables })
     },
-    [getBlocks]
+    [getInternalTxs]
   )
 
   useEffect(() => {
@@ -45,10 +45,12 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
     }
   }, [data, isMount])
 
+  const pageTitle = `${props.chainConfig.name} Contract Internal Transactions`
+
   return (
     <>
       <Head>
-        <title>Contract Internal Transactions</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore contract internal transactions on ${props.chainConfig.name} ${props.chainConfig.chain}`}

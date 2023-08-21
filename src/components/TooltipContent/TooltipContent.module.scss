@@ -1,0 +1,56 @@
+.container {
+  background: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
+  padding: 8px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+
+.title {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: var(--color-muted);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  &:before {
+    content: '';
+    width: 1em;
+    height: 1em;
+    background: var(--color);
+    border-radius: 50%;
+  }
+
+  &:only-child {
+    --color: var(--color-accent) !important;
+  }
+}
+
+.key {
+  font-weight: 400;
+}
+
+.value {
+  margin-left: auto;
+}

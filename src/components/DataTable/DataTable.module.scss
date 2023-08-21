@@ -34,6 +34,22 @@
   @media (max-width: 880px) {
     flex-basis: auto;
   }
+
+  &Loader {
+    max-width: 120px;
+    margin: 0 !important;
+  }
+
+  &Rows {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    width: max-content;
+
+    &Get {
+      cursor: pointer;
+    }
+  }
 }
 
 .pager {
@@ -64,11 +80,4 @@
 
 .pagination {
   margin: 0 auto;
-}
-
-.totalRows {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  width: max-content;
 }

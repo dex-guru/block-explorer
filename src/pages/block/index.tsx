@@ -10,10 +10,12 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 const BlockIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
   chainConfig,
 }) => {
+  const pageTitle = `No ${chainConfig.name} block number provided`
+
   return (
     <>
       <Head>
-        <title>No block number provided</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore block to see included transactions.`}

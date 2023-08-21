@@ -17,7 +17,7 @@ export const useBodyRows = <T,>(options: {
   const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } =
     options
 
-  return data.map((dataItem, rowIdx) => {
+  return data?.map((dataItem, rowIdx) => {
     const cells = columns.map((column, cellIdx) => {
       const className = clsx(
         styles[column.type || 'text'],

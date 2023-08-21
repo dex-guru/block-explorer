@@ -496,6 +496,12 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       chain
       chainColor
       chainId
+      dexes {
+        description
+        displayName
+        logoURI
+        name
+      }
       explorers {
         name
         standard
@@ -819,6 +825,12 @@ export const GET_CONTRACT_INFO = gql`
   }
 `
 
+export const GET_TOKEN_INFO = gql`
+  query GetTokenInfo($address: String!, $ticker: String!) {
+    checkTokenImpersonator(address: $address, ticker: $ticker, chainId: ${CHAIN_ID})
+  }
+`
+
 export const GET_ADDRESS_TOKENS_STATS = gql`
   query GetAddressTokens($address: String!) {
     tokenHoldingsStats(address: $address, chainId: ${CHAIN_ID}) {
@@ -1011,6 +1023,7 @@ export const GET_ERC20_EVENTS = gql`
       data {
         amounts
         blockTimestamp
+        dex
         eventType
         fromAddress
         hash
@@ -1021,6 +1034,34 @@ export const GET_ERC20_EVENTS = gql`
         tokenLogos
         tokenNames
       }
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      dexes {
+        description
+        displayName
+        logoURI
+        name
+      }
+    }
+  }
+`
+
+export const GET_ERC20_EVENTS_TOTALS = gql`
+  query Erc20EventsTotal(
+    $address: String
+    $walletAddress: String
+    $hash: String
+    $eventTypes: String
+  ) {
+    erc20Events(
+      fullTotals: true
+      address: $address
+      hash: $hash
+      walletAddress: $walletAddress
+      eventTypes: $eventTypes
+      chainId: ${CHAIN_ID}
+    ) {
+      total
     }
   }
 `
@@ -1050,6 +1091,8 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
     }
     chainStats(chainId: ${CHAIN_ID}) {
       activeAddressesCount
+      activeAddressesCount24h
+      averageBlockTime
       lastBlockNumber
       liquidity24hDelta
       liquidityUsd

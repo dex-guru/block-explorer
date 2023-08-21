@@ -9,6 +9,8 @@ export type DataTableProps<T> = ITableProps<T> & {
   empty?: StateViewProps
   header?: ReactNode
   total?: number
+  fullTotal?: number
   perPage?: number
+  getFullTotal?: () => void
   onPageChange: (variables: PaginationVariables) => void
 }

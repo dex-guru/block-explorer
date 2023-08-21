@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
+import { useEnsName } from 'wagmi'
 import { IAddressViewProps } from './types'
 import AddressOnChainSelect from '@/components/AddressOnChainSelect'
 import AddressWallet from '@/components/AddressWallet'
@@ -39,14 +40,30 @@ const AddressView: FC<IAddressViewProps> = ({
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
   const pageTitle = addressInfo?.address
-    ? `Address ${checkSumAddress} on ${chain.config.name}`
+    ? `${chain.config.name} Address ${checkSumAddress}`
     : isAddress(address)
-    ? `No address ${address}`
-    : 'Not an address'
+    ? `No address ${address} on ${chain.config.name}`
+    : `Not a ${chain.config.name} address`
 
   const chainsArr = chains.filter(
     (chainData) => chainData.id !== chain.config.chainId
   )
+
+  const { data: ensName } = useEnsName({
+    chainId: chain.config.chainId,
+    address: checkSumAddress as `0x${string}`,
+  })
+
+  const tags = [
+    <span
+      key="type"
+      data-tooltip-content="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
+      data-tooltip-id="app-tooltip"
+    >
+      EOA
+    </span>,
+    ensName,
+  ]
 
   return (
     <>
@@ -79,8 +96,7 @@ const AddressView: FC<IAddressViewProps> = ({
             icon={<Avatar address={address} />}
             title="Address"
             address={address}
-            tag="EOA"
-            tagTooltip="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
+            tags={tags}
             type="address"
             chainConfig={chain.config}
             header={
@@ -112,7 +128,7 @@ const AddressView: FC<IAddressViewProps> = ({
                   ),
                 },
                 {
-                  title: 'Tokens:',
+                  title: 'ERC-20 Tokens:',
                   value: (
                     <AddressWallet
                       className={styles.addressWallet}

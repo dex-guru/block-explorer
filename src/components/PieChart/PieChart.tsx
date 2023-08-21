@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from 'react'
+import { FC } from 'react'
 import clsx from 'clsx'
 import {
   PieChart as Chart,
@@ -8,6 +8,7 @@ import {
   Cell,
 } from 'recharts'
 import uniqolor from 'uniqolor'
+import TooltipContent from '../TooltipContent'
 import { PieChartProps } from './types'
 import { financialFormat } from '@/lib/utils'
 import styles from './PieChart.module.scss'
@@ -25,37 +26,21 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
       }
     >
   }> = ({ active, payload }) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
       return (
-        <div className={styles.tooltip}>
-          <div className={styles.tooltipBody}>
-            <ul className={styles.tooltipList}>
-              {payload.map((item, idx) => {
-                const resultValue = options.formatter
-                  ? options.formatter(item.value, 0)
-                  : item.value
+        <TooltipContent
+          entries={payload?.map((item) => {
+            const resultValue = options.formatter
+              ? options.formatter(item.value, 0)
+              : item.value
 
-                return (
-                  <li key={idx} className={styles.tooltipItem}>
-                    <strong
-                      className={styles.tooltipEntry}
-                      style={
-                        {
-                          '--color': uniqolor(
-                            `${item.payload[options.nameKey] || ''}${idx}`
-                          ).color,
-                        } as CSSProperties
-                      }
-                    >
-                      {item.payload[options.nameKey]}:
-                    </strong>{' '}
-                    {`${resultValue}`}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </div>
+            return {
+              title: item.payload[options.nameKey],
+              value: resultValue,
+              color: item.payload[options.nameKey],
+            }
+          })}
+        />
       )
     }
 

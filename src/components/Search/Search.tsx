@@ -2,7 +2,7 @@ import { FC, FocusEventHandler, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
-import { useDebouncedCallback } from 'use-debounce'
+import { useDebounce } from 'rooks'
 import { SearchProps, SearchResults } from './types'
 import Button from '@/components/Button'
 import { IconSearch } from '@/components/Icons'
@@ -20,7 +20,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
     search: SearchResults
   }>(GET_SEARCH)
 
-  const onChange = useDebouncedCallback(async (value: string) => {
+  const onChange = useDebounce(async (value: string) => {
     setIsOpen(false)
 
     if (!value) {

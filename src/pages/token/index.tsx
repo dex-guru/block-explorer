@@ -10,10 +10,12 @@ import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 const TokenIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
   chainConfig,
 }) => {
+  const pageTitle = `No ${chainConfig.name} token address provided`
+
   return (
     <>
       <Head>
-        <title>No address provided</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore token to track recent transactions, explore its balances, and view token activity in real time.`}

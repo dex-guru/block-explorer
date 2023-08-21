@@ -1,5 +1,6 @@
+import Image from 'next/image'
 import clsx from 'clsx'
-import { Erc20EventModel } from '@/__generated__/resolvers-types'
+import { DexModel, Erc20EventModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
@@ -8,7 +9,33 @@ import { financialFormat } from '@/lib/utils'
 import stylesTabel from '@/components/Table/Table.module.scss'
 import styles from '@/pages/Pages.module.scss'
 
-export const erc20ActionColumns: IColumn<Erc20EventModel>[] = [
+export const erc20ActionColumns = (
+  dexes: DexModel[]
+): IColumn<Erc20EventModel>[] => [
+  {
+    accessor: 'dex',
+    title: 'DEX',
+    type: 'center',
+    render: (data) => {
+      const dex = dexes?.find((dex) => data.dex === dex.name)
+
+      if (!dex?.logoURI) {
+        return null
+      }
+
+      return (
+        <Image
+          src={dex?.logoURI || ''}
+          alt={dex?.displayName || ''}
+          width={24}
+          height={24}
+          className={styles.dex}
+          data-tooltip-content={dex?.displayName}
+          data-tooltip-id="app-tooltip"
+        />
+      )
+    },
+  },
   {
     accessor: 'fromAddress',
     title: 'From',

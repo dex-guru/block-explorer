@@ -1,7 +1,13 @@
+import { useMemo } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { publicProvider } from '@wagmi/core/providers/public'
+import { get } from 'lodash'
 import { isAddress } from 'viem'
+import * as viemChains from 'viem/chains'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import {
   AddressModel,
   ChainConfigModel,
@@ -12,6 +18,7 @@ import ContractView from '@/components/ContractView'
 import { IconNoData } from '@/components/Icons'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
+import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -32,6 +39,62 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
+  const { chains, publicClient } = useMemo(() => {
+    const viemChainName = Object.keys(viemChains).find(
+      (chainName) => get(viemChains, chainName).id === chainConfig.chainId
+    )
+    const viemChain = viemChainName ? get(viemChains, viemChainName) : undefined
+    const currentChain = {
+      ...viemChain,
+      id: chainConfig.chainId,
+      name: chainConfig.name,
+      network: chainConfig.shortName,
+      nativeCurrency: chainConfig.nativeCurrency,
+      rpcUrls: {
+        default: {
+          http: chainConfig.rpc,
+        },
+        public: {
+          http: chainConfig.rpc,
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: chainConfig.explorers[0].name,
+          url: chainConfig.explorers[0].url,
+        },
+      },
+    }
+    return configureChains([currentChain], [publicProvider()])
+  }, [
+    chainConfig.chainId,
+    chainConfig.explorers,
+    chainConfig.name,
+    chainConfig.nativeCurrency,
+    chainConfig.rpc,
+    chainConfig.shortName,
+  ])
+
+  const { connectors } = useMemo(
+    () =>
+      getDefaultWallets({
+        appName: 'Block Explorer',
+        chains,
+        projectId: WALLET_CONNECT_PROJECT_ID,
+      }),
+    [chains]
+  )
+
+  const wagmiConfig = useMemo(
+    () =>
+      createConfig({
+        autoConnect: true,
+        connectors,
+        publicClient,
+      }),
+    [connectors, publicClient]
+  )
+
   if (!address) {
     return null
   }
@@ -44,21 +107,26 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
 
   if (isContract) {
     return (
-      <ContractView
-        address={onlyAddress}
-        tab={tab}
-        type="token"
-        addressInfo={addressInfo}
-        chain={{ stats: chainStats, config: chainConfig }}
-        tokenHoldingsStats={tokenHoldingsStats}
-      />
+      <WagmiConfig config={wagmiConfig}>
+        <ContractView
+          address={onlyAddress}
+          tab={tab}
+          chains={chains}
+          type="token"
+          addressInfo={addressInfo}
+          chain={{ stats: chainStats, config: chainConfig }}
+          tokenHoldingsStats={tokenHoldingsStats}
+        />
+      </WagmiConfig>
     )
   }
+
+  const pageTitle = `This is not a ${chainConfig.name} token address`
 
   return (
     <>
       <Head>
-        <title>This is not a token address</title>
+        <title>{pageTitle}</title>
         <meta
           name="description"
           content={`Explore token to track recent transactions, explore its balances, and view token activity in real time.`}
