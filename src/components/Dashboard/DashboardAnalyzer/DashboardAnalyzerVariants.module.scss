@@ -25,6 +25,8 @@
 .prompt {
   composes: lg from '../../Button/Button.module.scss';
   flex: 0 0 auto;
+  --color-button-text: #fff;
+  --color-button-hover-text: #fff;
   --color-button-bg: #4530be;
   --color-button-border: #4530be;
   --color-button-hover-bg: #5845c4;

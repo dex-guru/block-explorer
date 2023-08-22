@@ -64,13 +64,31 @@ const DashboardAnalyzerChat: FC<{
       ? 'Hmmm... Let me think...'
       : error
       ? 'Ooops! Sorry, I got my circuits shorted...'
-      : ''
+      : 'What do you want to know today?'
 
   const [printed, notPrinted] = useTypewriter(response)
 
   return (
     <div className={styles.container}>
       <div className={styles.entries}>
+        {!history.length && !currentPrompt && (
+          <div className={styles.entry}>
+            <div className={styles.response}>
+              <div className={styles.wrapper}>
+                <ImageAvatar className={styles.robot} />
+                <div className={styles.text}>
+                  {!!printed && (
+                    <>
+                      <span className={styles.printed}>{printed}</span>
+                      <span className={styles.notPrinted}>{notPrinted}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {history.map((entry, idx) => {
           if (data?.output === entry.summary) {
             return null
@@ -93,6 +111,7 @@ const DashboardAnalyzerChat: FC<{
             </div>
           )
         })}
+
         {currentPrompt && (
           <div className={styles.entry}>
             <div className={styles.prompt}>
