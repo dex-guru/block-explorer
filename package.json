@@ -45,7 +45,6 @@
     "react-syntax-highlighter": "15.5.0",
     "react-tooltip": "5.21.1",
     "react-transition-group": "^4.4.5",
-    "react-type-animation": "^3.1.0",
     "recharts": "^2.7.2",
     "redis": "^4.6.7",
     "rooks": "^7.14.1",

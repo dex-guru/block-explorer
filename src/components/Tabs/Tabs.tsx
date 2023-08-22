@@ -24,7 +24,7 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
   }
 
   const renderTabs = () => {
-    return tabs.map((item, index) => {
+    return tabs?.map((item, index) => {
       const isActive =
         item.isActive ||
         item.value === currentValue ||
@@ -40,6 +40,7 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
 
       return (
         <Button
+          type="button"
           key={index}
           className={clsx(
             item.className,
@@ -48,7 +49,7 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
             },
             styles.tab
           )}
-          to={item.to}
+          to={item.to || undefined}
           caption={
             <>
               {item.title}

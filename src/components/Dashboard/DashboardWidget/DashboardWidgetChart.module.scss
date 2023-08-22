@@ -18,7 +18,7 @@
 }
 
 .loading {
-  composes: loading from './Dashboard.module.scss';
+  composes: loading from '../Dashboard.module.scss';
 
   .chart {
     visibility: hidden;
@@ -32,11 +32,11 @@
 }
 
 .loader {
-  composes: loader from './Dashboard.module.scss';
+  composes: loader from '../Dashboard.module.scss';
 }
 
 .legend {
-  composes: muted from '../../styles/_common.scss';
+  color: var(--color-page-muted);
   flex: 1 0 auto;
   font-size: 12px;
   margin: 0;

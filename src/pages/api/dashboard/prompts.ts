@@ -6,11 +6,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const {
-    dashboard_slug,
-    parameters,
-    chat_logs = '',
-  } = JSON.parse(req.body || {})
+  const { dashboard_slug, parameters, chat_logs } = JSON.parse(req.body || {})
 
   if (!dashboard_slug || !parameters) {
     res.status(404).send({ message: 'No enough parameters provided' })
@@ -20,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const requestParameters = JSON.stringify({
     dashboard_slug,
     parameters: JSON.stringify(parameters),
-    chat_logs,
+    chat_logs: JSON.stringify(chat_logs),
   })
 
   try {

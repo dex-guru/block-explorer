@@ -43,7 +43,7 @@ const PageMenu: FC<{
     return (
       <Link
         {...props}
-        href={link.href || '#'}
+        href={link.href || '?#'}
         onClick={(e) => {
           if (link.href || link.onClick) {
             handleLinkCLick()
