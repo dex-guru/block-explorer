@@ -1,7 +1,7 @@
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import Link from 'next/link'
-import DashboardAnalyzer from './DashboardAnalyzer'
-import DashboardWidget from './DashboardWidget'
+import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
+import DashboardWidget from './DashboardWidget/DashboardWidget'
 import DetailsView from '@/components/DetailsView'
 import IconRedash from '@/images/redash.svg'
 import {
@@ -18,6 +18,9 @@ const Dashboard: FC<{
   params?: Record<string, unknown>
 }> = ({ data, params }) => {
   const { id, name, slug, widgets } = data
+
+  const [isChatOpen, setIsChatOpen] = useState(false)
+
   const parameters = useMemo(
     () =>
       generateRedashDashboardParams(data, {
@@ -39,6 +42,17 @@ const Dashboard: FC<{
         return aPos - bPos
       }) || []
 
+  const dashboardAnalyzer = useMemo(
+    () => (
+      <DashboardAnalyzer
+        slug={data.slug}
+        params={parameters}
+        setChatOpen={setIsChatOpen}
+      />
+    ),
+    [data.slug, parameters]
+  )
+
   return (
     <DetailsView
       title={name}
@@ -55,13 +69,19 @@ const Dashboard: FC<{
         </Link>
       }
     >
-      <DashboardAnalyzer slug={data.slug} params={parameters} />
+      {dashboardAnalyzer}
 
-      <div className={styles.dashboard}>
-        {sortedWidgets.map((widget) => (
-          <DashboardWidget data={widget} params={parameters} key={widget.id} />
-        ))}
-      </div>
+      {!isChatOpen && (
+        <div className={styles.dashboard}>
+          {sortedWidgets.map((widget) => (
+            <DashboardWidget
+              data={widget}
+              params={parameters}
+              key={widget.id}
+            />
+          ))}
+        </div>
+      )}
     </DetailsView>
   )
 }

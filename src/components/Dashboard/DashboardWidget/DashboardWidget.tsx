@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import useSWRImmutable from 'swr/immutable'
+import styles from '../Dashboard.module.scss'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import Card from '@/components/Card'
@@ -23,7 +24,6 @@ import {
 } from '@/lib/redash/client'
 import { TRedashJob, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
-import styles from './Dashboard.module.scss'
 
 const WIDGET_QUERY_INTERVAL = 5 * 1000
 

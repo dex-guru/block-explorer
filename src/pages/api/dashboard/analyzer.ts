@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const requestParameters = JSON.stringify({
     dashboard_slug,
-    parameters: JSON.stringify(parameters),
+    parameters: parameters,
     selected_prompt,
     prompt_suffix: '',
   })

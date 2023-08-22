@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  gap: 8px;
+  flex-flow: column;
+}
+
+.prompts {
+  composes: inner from '../../Tabs/Tabs.module.scss';
+  font-size: 16px;
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
+  overflow: auto;
+  scrollbar-color: #5845c4 transparent;
+
+  &::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 8px #5845c4;
+  }
+}
+
+.loader {
+  margin: 16px 0;
+}
+
+.prompt {
+  composes: lg from '../../Button/Button.module.scss';
+  flex: 0 0 auto;
+  --color-button-text: #fff;
+  --color-button-hover-text: #fff;
+  --color-button-bg: #4530be;
+  --color-button-border: #4530be;
+  --color-button-hover-bg: #5845c4;
+  --color-button-hover-border: #5845c4;
+}
+
+.body {
+  display: flex;
+  gap: 8px;
+}
+
+.query {
+  composes: input from '../../Interactive/Input.module.scss';
+  flex: 1 0 0;
+}
+
+.submit {
+  composes: lg from '../../Button/Button.module.scss';
+  padding: 0;
+}

@@ -1,0 +1,115 @@
+.container {
+  margin: 0 -8px;
+  padding: 0 0 24px;
+  background: #4530be;
+  color: #fff;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+}
+
+.prompt,
+.response {
+  padding: 24px 8px;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.response {
+  background: #3826a4;
+}
+
+.robot,
+.user {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  overflow: hidden;
+}
+
+.user {
+  padding: 6px;
+  background: #12b886;
+}
+
+.robot {
+  background: #6046ff;
+}
+
+.variants {
+  max-width: 960px;
+  margin: 24px auto 0;
+}
+
+.input {
+  max-width: 960px;
+  margin: 24px auto 0;
+  display: flex;
+  background: #6046ff;
+  border-radius: 8px;
+}
+
+.query {
+  flex: 1 0 0;
+  background: transparent;
+  border: 0;
+  height: 48px;
+  padding: 0 16px;
+  font-size: 16px;
+  color: #fff;
+
+  &::placeholder {
+    color: #9488f0;
+  }
+}
+
+.submit {
+  width: 48px;
+  background: none;
+  border: 0;
+  opacity: 0.5;
+
+  &:disabled {
+    opacity: 0;
+  }
+
+  &:focus,
+  &:hover {
+    background: none;
+    opacity: 1;
+  }
+}
+
+.printed {
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 0.3em;
+    background: currentColor;
+    height: 1.25em;
+    vertical-align: text-bottom;
+    animation: blink 0.75s infinite;
+    user-select: none;
+    margin-left: 0.25em;
+
+    @keyframes blink {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.notPrinted {
+  visibility: hidden;
+}
