@@ -80,6 +80,9 @@ const TxPage: NextPage<ITxProps> = (props) => {
         },
       },
     }
+
+    delete currentChain.fees
+
     return configureChains([currentChain], [publicProvider()])
   }, [
     props.chainConfig.chainId,

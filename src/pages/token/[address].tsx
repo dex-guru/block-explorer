@@ -65,6 +65,9 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
         },
       },
     }
+
+    delete currentChain.fees
+
     return configureChains([currentChain], [publicProvider()])
   }, [
     chainConfig.chainId,

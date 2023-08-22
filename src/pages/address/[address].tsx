@@ -62,6 +62,9 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
         },
       },
     }
+
+    delete currentChain.fees
+
     return configureChains([currentChain], [publicProvider()])
   }, [
     chainConfig.chainId,
