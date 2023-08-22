@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC, MouseEventHandler, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
 import { useDashboardPrompts } from './hooks'
@@ -13,13 +13,22 @@ const DashboardAnalyzerVariants: FC<{
   history?: DashboardAnalyzerHistory[]
   className?: string
 }> = ({ slug, params, onSubmit, history, className }) => {
+  const [previousData, setPreviousData] = useState<string[] | null>(null)
   const { data, isLoading } = useDashboardPrompts(slug, params, history)
+
+  useEffect(() => {
+    if (!data || data === previousData) {
+      return
+    }
+
+    setPreviousData(data.prompts)
+  }, [data, previousData])
 
   return (
     <div className={clsx(styles.container, className)}>
-      {!isLoading && !!data?.prompts?.length && (
+      {!!previousData?.length && (
         <div className={styles.prompts}>
-          {data?.prompts?.map((prompt: string, idx: number) => {
+          {previousData?.map((prompt: string, idx: number) => {
             const handleClick: MouseEventHandler = (e) => {
               onSubmit(prompt)
               const target = e.target as HTMLElement
@@ -44,7 +53,7 @@ const DashboardAnalyzerVariants: FC<{
         </div>
       )}
 
-      {isLoading && <Loading className={styles.loader} />}
+      {!previousData && isLoading && <Loading className={styles.loader} />}
     </div>
   )
 }

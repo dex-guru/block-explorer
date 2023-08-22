@@ -1,7 +1,15 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import DashboardAnalyzerChat from './DashboardAnalyzerChat'
-import DashboardAnalyzerOverview from './DashboardAnalyzerOverview'
+import { FC, Suspense, useCallback, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
+
+const DashboardAnalyzerOverview = dynamic(
+  () => import('./DashboardAnalyzerOverview'),
+  { ssr: false }
+)
+const DashboardAnalyzerChat = dynamic(() => import('./DashboardAnalyzerChat'), {
+  ssr: false,
+})
 
 export type DashboardAnalyzerHistory = {
   prompt_submitted: string
@@ -38,6 +46,7 @@ const DashboardAnalyzer: FC<{
     }
 
     setHistory([...history, historyEntry])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyEntry])
 
   return (
@@ -49,23 +58,27 @@ const DashboardAnalyzer: FC<{
           title: 'Dashboard',
           value: '',
           content: (
-            <DashboardAnalyzerOverview
-              slug={slug}
-              params={params}
-              onSelect={handleHistoryChange}
-            />
+            <Suspense fallback={<LoadingCard />}>
+              <DashboardAnalyzerOverview
+                slug={slug}
+                params={params}
+                onSelect={handleHistoryChange}
+              />
+            </Suspense>
           ),
         },
         {
           title: 'Guru AI',
           value: 'ai',
           content: (
-            <DashboardAnalyzerChat
-              slug={slug}
-              params={params}
-              history={history || []}
-              onSelect={handleHistoryChange}
-            />
+            <Suspense fallback={<LoadingCard />}>
+              <DashboardAnalyzerChat
+                slug={slug}
+                params={params}
+                history={history || []}
+                onSelect={handleHistoryChange}
+              />
+            </Suspense>
           ),
         },
       ]}

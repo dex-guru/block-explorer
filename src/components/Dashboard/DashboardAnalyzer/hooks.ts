@@ -8,7 +8,7 @@ export const useDashboardPrompts = (
   params?: Params,
   history?: DashboardAnalyzerHistory[]
 ) =>
-  useSWRImmutable([slug, params], ([slug, params]) =>
+  useSWRImmutable([slug, params, history], ([slug, params, history]) =>
     fetch('/api/dashboard/prompts', {
       method: 'POST',
       body: JSON.stringify({
