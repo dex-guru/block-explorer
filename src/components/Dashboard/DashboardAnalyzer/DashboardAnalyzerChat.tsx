@@ -44,7 +44,9 @@ const DashboardAnalyzerChat: FC<{
     const value = refInput.current.value.trim()
     if (value) {
       setCurrentPrompt(value)
+      setIsSendDisabled(true)
       refInput.current.value = ''
+      refInput.current.focus()
     }
   }
 
@@ -55,6 +57,10 @@ const DashboardAnalyzerChat: FC<{
 
     onSelect(currentPrompt, data.output)
     setCurrentPrompt(null)
+
+    if (refInput?.current) {
+      refInput.current.focus()
+    }
   }, [onSelect, currentPrompt, data?.output])
 
   const response =
@@ -130,7 +136,25 @@ const DashboardAnalyzerChat: FC<{
                       <span className={styles.notPrinted}>{notPrinted}</span>
                     </>
                   )}
+
+                  {isLoading && (
+                    <div className={styles.processing}>
+                      <span />
+                      <span />
+                    </div>
+                  )}
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!!history?.length && !isLoading && (
+          <div className={styles.entry}>
+            <div className={styles.response}>
+              <div className={styles.wrapper}>
+                <ImageAvatar className={styles.robot} />
+                <div className={styles.text}>What&apos;s next?</div>
               </div>
             </div>
           </div>

@@ -3,6 +3,10 @@
   padding: 16px 8px;
   background: #6046ff;
   color: #fff;
+
+  @media (max-width: 640px) {
+    padding: 8px;
+  }
 }
 
 .wrapper {
@@ -23,6 +27,10 @@
   flex: 0 0 132px;
   height: 120px;
   margin-top: 24px;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 }
 
 .body {
@@ -36,16 +44,22 @@
   gap: 24px;
   position: relative;
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: 60px;
-    left: -16px;
-    width: 0;
-    height: 0;
-    border: 16px transparent solid;
-    border-top-color: #3826a4;
-    border-right-color: #3826a4;
+  @media (max-width: 640px) {
+    padding: 16px;
+  }
+
+  @media (min-width: 640.1px) {
+    &:before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: -16px;
+      width: 0;
+      height: 0;
+      border: 16px transparent solid;
+      border-top-color: #3826a4;
+      border-right-color: #3826a4;
+    }
   }
 }
 
@@ -81,4 +95,9 @@
 
 .notPrinted {
   composes: notPrinted from './DashboardAnalyzerChat.module.scss';
+}
+
+.processing {
+  composes: processing from './DashboardAnalyzerChat.module.scss';
+  margin: 0;
 }

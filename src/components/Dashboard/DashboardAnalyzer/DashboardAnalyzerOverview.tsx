@@ -56,6 +56,13 @@ const DashboardAnalyzerOverview: FC<{
                 </>
               )}
             </div>
+
+            {isLoading && (
+              <div className={styles.processing}>
+                <span />
+                <span />
+              </div>
+            )}
           </div>
           <DashboardAnalyzerVariants
             slug={slug}
