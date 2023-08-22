@@ -14,13 +14,16 @@ import IconMenu from '@/images/icons/menu.svg'
 import IconNoData from '@/images/icons/no-data.svg'
 import IconEmpty from '@/images/icons/no-flash.svg'
 import IconNoIcon from '@/images/icons/no-icon.svg'
+import IconOutput from '@/images/icons/output.svg'
 import IconQuestion from '@/images/icons/question.svg'
 import IconSearch from '@/images/icons/search.svg'
+import IconSend from '@/images/icons/send.svg'
 import IconShield from '@/images/icons/shield.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconSuccess from '@/images/icons/success.svg'
 import IconAgo from '@/images/icons/time-ago.svg'
 import IconTx from '@/images/icons/tx.svg'
+import IconUser from '@/images/icons/user.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 import IconWarning from '@/images/icons/warning.svg'
@@ -41,8 +44,10 @@ export {
   IconMenu,
   IconNoData,
   IconNoIcon,
+  IconOutput,
   IconQuestion,
   IconSearch,
+  IconSend,
   IconShield,
   IconTx,
   IconVerify,
@@ -53,5 +58,6 @@ export {
   IconIdea,
   IconImpersonator,
   IconSuccess,
+  IconUser,
   IconWarning,
 }

@@ -1,0 +1,84 @@
+.container {
+  margin: 0 -8px;
+  padding: 16px 8px;
+  background: #6046ff;
+  color: #fff;
+}
+
+.wrapper {
+  max-width: 1308px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+
+  @media (min-width: 960.1px) {
+    &::after {
+      content: '';
+      flex: 0 0 132px;
+    }
+  }
+}
+
+.image {
+  flex: 0 0 132px;
+  height: 120px;
+  margin-top: 24px;
+}
+
+.body {
+  flex: 1 0 240px;
+  width: 240px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #3826a4;
+  display: flex;
+  flex-flow: column;
+  gap: 24px;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 60px;
+    left: -16px;
+    width: 0;
+    height: 0;
+    border: 16px transparent solid;
+    border-top-color: #3826a4;
+    border-right-color: #3826a4;
+  }
+}
+
+.response {
+  display: flex;
+  gap: 24px;
+  flex-flow: column;
+
+  &Header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &Icon {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    color: #6046ff;
+  }
+
+  &Output {
+    font-size: 24px;
+    line-height: 36px;
+    font-weight: 500;
+    color: #9c8cff;
+  }
+}
+
+.printed {
+  composes: printed from './DashboardAnalyzerChat.module.scss';
+}
+
+.notPrinted {
+  composes: notPrinted from './DashboardAnalyzerChat.module.scss';
+}
