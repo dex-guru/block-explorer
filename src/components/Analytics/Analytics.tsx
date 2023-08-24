@@ -10,7 +10,7 @@ import {
 import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
-const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
+const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [dashboardsData, setDashboardsData] = useState<
     TRedashDashboard[] | null
