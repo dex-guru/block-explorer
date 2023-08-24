@@ -45,7 +45,7 @@ const DashboardAnalyzerOverview: FC<{
             {!!currentPrompt && (
               <div className={styles.responseHeader}>
                 <IconOutput className={styles.responseIcon} />
-                <div className={styles.responseHeader}>{currentPrompt}</div>
+                <div className={styles.responseTitle}>{currentPrompt}</div>
               </div>
             )}
             <div className={styles.responseOutput}>

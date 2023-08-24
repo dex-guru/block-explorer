@@ -65,9 +65,11 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
   })
 
   return (
-    <Card className={clsx(styles.container, className)}>
-      <TabPanel tabs={tabs} value={dashboardsData[0]?.id || ''} />
-    </Card>
+    <TabPanel
+      tabs={tabs}
+      value={dashboardsData[0]?.id || ''}
+      className={styles.container}
+    />
   )
 }
 

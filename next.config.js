@@ -58,6 +58,7 @@ const nextConfig = {
     domains: [
       'assets-stage.dex.guru',
       'assets.dex.guru',
+      'assets.coingecko.com',
       'gravatar.com',
       'www.gravatar.com',
     ],

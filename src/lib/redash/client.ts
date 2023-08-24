@@ -1,5 +1,9 @@
 import isString from 'lodash/isString'
-import { getDynamicDateRangePeriod } from '../dates'
+import {
+  DEFAULT_DATE_RANGE,
+  DYNAMIC_DATE_PREFIX,
+  getDynamicDateRangePeriod,
+} from '../dates'
 import { getLogger } from '../logger'
 import { TRedashDashboard, TRedashQuery, TRedashQueryResponse } from './types'
 
@@ -138,7 +142,12 @@ export const generateRedashQueryParams = (
       }
 
       if (param.type === 'date-range') {
-        return [param.name, getDynamicDateRangePeriod('d_last_30_days')]
+        return [
+          param.name,
+          getDynamicDateRangePeriod(
+            `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
+          ),
+        ]
       }
 
       return [param.name, param.value]

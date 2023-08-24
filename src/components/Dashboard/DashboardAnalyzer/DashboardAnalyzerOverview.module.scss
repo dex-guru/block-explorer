@@ -1,11 +1,11 @@
 .container {
-  margin: 0 -8px;
-  padding: 16px 8px;
+  margin: 0 calc(var(--color-card-padding, 8px) * -1);
+  padding: 16px var(--color-card-padding, 8px);
   background: #6046ff;
   color: #fff;
 
   @media (max-width: 640px) {
-    padding: 8px;
+    padding: 8px var(--color-card-padding, 8px);
   }
 }
 
@@ -69,9 +69,15 @@
   flex-flow: column;
 
   &Header {
+    overflow-wrap: break-word;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
+  }
+
+  &Title {
+    flex: 1 1 0;
+    width: 240px;
   }
 
   &Icon {
@@ -83,9 +89,14 @@
 
   &Output {
     font-size: 24px;
-    line-height: 36px;
+    line-height: 1.5;
     font-weight: 500;
     color: #9c8cff;
+    overflow-wrap: break-word;
+
+    @media (max-width: 640px) {
+      font-size: 16px;
+    }
   }
 }
 
