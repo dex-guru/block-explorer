@@ -1,0 +1,33 @@
+.button {
+  --color-button-border: var(--color-input-border);
+  --color-button-hover-border: var(--color-accent);
+  --color-button-bg: transparent;
+  --color-button-hover-bg: transparent;
+  --color-button-text: var(--color-text);
+  --color-button-hover-text: var(--color-text);
+  padding: 0 8px;
+}
+
+.list {
+  composes: list from '../Dropdown/Dropdown.module.scss';
+}
+
+.item {
+  composes: item from '../Dropdown/Dropdown.module.scss';
+}
+
+.link {
+  composes: link from '../Dropdown/Dropdown.module.scss';
+}
+
+.icon {
+  composes: icon from '../Dropdown/Dropdown.module.scss';
+}
+
+.caption {
+  composes: caption from '../Dropdown/Dropdown.module.scss';
+}
+
+.loader {
+  min-width: 6ch;
+}

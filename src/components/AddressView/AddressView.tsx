@@ -4,8 +4,8 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
 import { useEnsName } from 'wagmi'
+import ChainSelect from '../ChainSelect/ChainSelect'
 import { IAddressViewProps } from './types'
-import AddressOnChainSelect from '@/components/AddressOnChainSelect'
 import AddressWallet from '@/components/AddressWallet'
 import Avatar from '@/components/Avatar'
 import Card from '@/components/Card'
@@ -17,7 +17,6 @@ import Properties from '@/components/Properties'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
 import Value from '@/components/Value'
-import { chains } from '@/constants/chains'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
 
@@ -44,10 +43,6 @@ const AddressView: FC<IAddressViewProps> = ({
     : isAddress(address)
     ? `No address ${address} on ${chain.config.name}`
     : `Not a ${chain.config.name} address`
-
-  const chainsArr = chains.filter(
-    (chainData) => chainData.id !== chain.config.chainId
-  )
 
   const { data: ensName } = useEnsName({
     chainId: chain.config.chainId,
@@ -140,10 +135,12 @@ const AddressView: FC<IAddressViewProps> = ({
                 {
                   title: 'Multichain Addresses:',
                   value: (
-                    <AddressOnChainSelect
-                      address={address}
-                      current={chain.config.name}
-                      variants={chainsArr}
+                    <ChainSelect
+                      chainConfig={chain.config}
+                      className={styles.multichain}
+                      urlGenerator={(chain) =>
+                        `${chain.guruBlockExplorer?.url}${chain.guruBlockExplorer?.addressPath}/${address}`
+                      }
                     />
                   ),
                 },

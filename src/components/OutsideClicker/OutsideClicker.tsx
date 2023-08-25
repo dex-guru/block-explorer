@@ -1,17 +1,17 @@
-import React, { CSSProperties, FC, ReactNode, useEffect, useRef } from 'react'
+import React, { FC, ReactNode, useEffect, useRef } from 'react'
 
-const OutsideClicker: FC<{
-  onClick: (e: Event) => void
-  children: ReactNode
-  className?: string
-  style?: CSSProperties
-  element?: string
-}> = ({ className, onClick, children, style, element = 'div' }) => {
+const OutsideClicker: FC<
+  React.HTMLProps<HTMLDivElement> & {
+    onClose: (e: Event) => void
+    children: ReactNode
+    element?: string
+  }
+> = ({ className, onClose, children, style, element = 'div' }) => {
   const ref = useRef<HTMLDivElement | null>(null)
 
   const handleClickOutside = (event: Event): void => {
     if (!event.target || !ref?.current?.contains(event.target as Node)) {
-      onClick(event)
+      onClose(event)
     }
   }
 

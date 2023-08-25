@@ -1,36 +1,47 @@
-.container {
-  width: max-content;
-  cursor: pointer;
-  height: 32px;
-  gap: 8px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  line-height: 150%;
-  margin: -6px 0 -6px -8px;
+.button {
+  composes: button from '../Button/Button.module.scss';
+  composes: lg from '../Button/Button.module.scss';
+  --color-button-hover-border: var(--color-accent);
+  text-align: left;
 }
 
-.body {
-  border-radius: var(--radii-sm);
-  border: 1px var(--color-input-border) solid;
-  color: var(--color-text);
-  padding: 4px 6px 4px 8px;
-  transition: 0.25s ease;
+.open {
+  border-color: var(--color-button-hover-border);
+}
+
+.caption {
+  flex: 1 1 auto;
+  position: relative;
   display: flex;
   gap: 8px;
-  align-items: center;
-  height: 32px;
+}
+
+.loading {
+  visibility: hidden;
+}
+
+.loader {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: 50%;
+  margin-top: -4px;
+  visibility: visible;
+}
+
+.icon {
+  flex: 0 0 auto;
+  composes: icon from '../../styles/_common.scss';
+  width: 20px;
+  height: 20px;
 }
 
 .arrow {
-  flex: 0 0 auto;
   margin-left: auto;
-  color: currentColor;
-  transform: none;
+  width: 16px;
+  height: 16px;
+  transform: rotate(0);
   transition: 0.25s ease;
-  width: 20px;
-  height: 20px;
 
   &Open {
     transform: rotate(180deg);
@@ -38,42 +49,52 @@
 }
 
 .dropdown {
-  position: absolute;
   width: max-content;
   max-width: calc(100vw - 48px);
-  z-index: 2;
-  right: 0;
-  top: 100%;
+  z-index: 11;
   padding: 8px;
-  margin-top: 16px;
   border: 1px var(--color-accent) solid;
   background: var(--color-bg);
   border-radius: var(--radii-lg);
-  overflow: hidden;
+  animation: opacity 0.25s ease, shift 0.25s ease;
+  animation-fill-mode: forwards;
 
-  animation: dropdown 0.25s ease;
-
-  @keyframes dropdown {
+  @keyframes opacity {
     from {
       opacity: 0;
-      transform: translateY(-16px);
     }
 
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes shift {
+    from {
+      transform: translateY(-16px);
+    }
+
+    to {
       transform: translateY(0);
     }
   }
 }
 
-.tokenLink {
-  display: block;
-  padding: 8px 16px;
-  background: none;
+.absolute {
+  position: absolute;
+}
 
-  &:hover {
-    background: var(--color-bg);
-  }
+.fixed {
+  position: fixed;
+}
+
+.down {
+  margin-top: 16px;
+}
+
+.up {
+  margin-bottom: 16px;
+  animation-direction: normal, reverse;
 }
 
 .list {
@@ -93,6 +114,7 @@
 
 .link {
   gap: 8px;
+  composes: button from '../Button/Button.module.scss';
   composes: lg from '../Button/Button.module.scss';
   --color-button-border: transparent;
   --color-button-hover-border: transparent;
@@ -109,9 +131,4 @@
   width: 20px;
   height: 20px;
   object-fit: contain;
-}
-
-.open {
-  background: var(--color-accent);
-  color: var(--color-bg);
 }
