@@ -1,11 +1,11 @@
 .container {
-  margin: 0 calc(var(--color-card-padding, 8px) * -1);
-  padding: 16px var(--color-card-padding, 8px);
+  margin: 0 -8px;
+  padding: 16px 8px;
   background: #6046ff;
   color: #fff;
 
   @media (max-width: 640px) {
-    padding: 8px var(--color-card-padding, 8px);
+    padding: 8px;
   }
 }
 
