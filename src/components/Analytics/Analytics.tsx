@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import clsx from 'clsx'
 import { AnalyticsProps } from './types'
-import Card from '@/components/Card'
 import Dashboard from '@/components/Dashboard'
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
@@ -12,7 +10,7 @@ import {
 import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
-const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
+const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   const [isMounted, setIsMounted] = useState(false)
   const [dashboardsData, setDashboardsData] = useState<
     TRedashDashboard[] | null
@@ -65,9 +63,11 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params, className }) => {
   })
 
   return (
-    <Card className={clsx(styles.container, className)}>
-      <TabPanel tabs={tabs} value={dashboardsData[0]?.id || ''} />
-    </Card>
+    <TabPanel
+      tabs={tabs}
+      value={dashboardsData[0]?.id || ''}
+      className={styles.container}
+    />
   )
 }
 

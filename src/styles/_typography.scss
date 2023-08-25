@@ -3,6 +3,8 @@
 }
 
 .text {
+  overflow-wrap: break-word;
+
   &:first-child {
     margin-top: 0;
   }

@@ -69,9 +69,15 @@
   flex-flow: column;
 
   &Header {
+    overflow-wrap: break-word;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
+  }
+
+  &Title {
+    flex: 1 1 0;
+    width: 240px;
   }
 
   &Icon {
@@ -83,9 +89,14 @@
 
   &Output {
     font-size: 24px;
-    line-height: 36px;
+    line-height: 1.5;
     font-weight: 500;
     color: #9c8cff;
+    overflow-wrap: break-word;
+
+    @media (max-width: 640px) {
+      font-size: 16px;
+    }
   }
 }
 

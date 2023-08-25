@@ -14,6 +14,10 @@
   margin: 0 auto;
   display: flex;
   gap: 24px;
+
+  @media (max-width: 640px) {
+    gap: 16px;
+  }
 }
 
 .entries {
@@ -26,6 +30,12 @@
   padding: 24px 8px;
   font-size: 16px;
   line-height: 28px;
+}
+
+.text {
+  flex: 1 0 auto;
+  width: 240px;
+  overflow-wrap: break-word;
 }
 
 .response {
