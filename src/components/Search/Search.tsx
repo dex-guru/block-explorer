@@ -6,11 +6,14 @@ import { useDebounce } from 'rooks'
 import { SearchProps, SearchResults } from './types'
 import Button from '@/components/Button'
 import { IconSearch } from '@/components/Icons'
-import OutsideClicker from '@/components/OutsideClicker'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import { GET_SEARCH } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
 
+const DropdownContent = dynamic(
+  () => import('@/components/Dropdown/DropdownContent'),
+  { ssr: false }
+)
 const SearchVariants = dynamic(() => import('./SearchVariants'), { ssr: false })
 
 const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
@@ -89,9 +92,14 @@ const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
       </form>
 
       {isOpen && (
-        <OutsideClicker onClick={handleHide} className={styles.dropdown}>
+        <DropdownContent
+          onClose={handleHide}
+          className={styles.dropdown}
+          toggle={ref?.current}
+          isOpen={isOpen}
+        >
           <SearchVariants data={data?.search} className={styles.results} />
-        </OutsideClicker>
+        </DropdownContent>
       )}
     </div>
   )

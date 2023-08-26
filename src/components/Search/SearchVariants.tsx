@@ -6,7 +6,6 @@ import { SearchVariantsProps } from './types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import Avatar from '@/components/Avatar'
-import Card from '@/components/Card'
 import { IconBlock } from '@/components/Icons'
 import Label from '@/components/Label'
 import TabPanel from '@/components/TabPanel'
@@ -149,13 +148,11 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
   }
 
   return (
-    <Card className={clsx(styles.variants, className)}>
-      <TabPanel
-        className={styles.tabs}
-        tabs={tabs}
-        value={resultsTab || tabs[0]?.value || ''}
-      />
-    </Card>
+    <TabPanel
+      className={clsx(styles.tabs, className)}
+      tabs={tabs}
+      value={resultsTab || tabs[0]?.value || ''}
+    />
   )
 }
 

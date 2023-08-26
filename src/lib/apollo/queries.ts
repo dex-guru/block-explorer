@@ -1248,3 +1248,36 @@ query GetContractCode ($address: String!) {
     code
   }
 }`
+
+export const GET_ALL_CHAINS = gql`
+  query GetAllChainConfigs {
+    allChainConfigs {
+      chainColor
+      name
+      chain
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      guruBlockExplorer {
+        addressPath
+        displayName
+        logoURI
+        tokenPath
+        url
+      }
+      icon
+      infoURL
+      message
+      networkId
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`

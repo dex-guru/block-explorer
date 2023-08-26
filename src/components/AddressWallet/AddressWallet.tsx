@@ -1,25 +1,22 @@
 import { FC, useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-import { useResizeDetector } from 'react-resize-detector'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
+import Dropdown from '../Dropdown'
 import { AddressWalletProps } from './types'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
 import Button from '@/components/Button'
-import { IconArrowDown, IconNoIcon, IconWallet } from '@/components/Icons'
+import { IconNoIcon, IconWallet } from '@/components/Icons'
 import Label from '@/components/Label'
 import Loading from '@/components/Loading'
-import OutsideClicker from '@/components/OutsideClicker'
 import Tile from '@/components/Tile'
 import Value from '@/components/Value'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import {
   financialFormat,
   financialFormatLowValueHighPrecision,
-  getRootElement,
 } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
 
@@ -34,8 +31,6 @@ const AddressWallet: FC<AddressWalletProps> = ({
   const [getTokens, { data, loading }] = useLazyQuery<{
     tokenHoldings: TokenHoldingsModel[]
   }>(GET_ADDRESS_TOKENS)
-
-  const { height, ref } = useResizeDetector()
 
   useEffect(() => {
     if (!isOpen) {
@@ -55,20 +50,16 @@ const AddressWallet: FC<AddressWalletProps> = ({
     return <span className={styles.muted}>–</span>
   }
 
-  const handleClick = () => {
-    setIsOpen(!isOpen)
+  const handleOpen = () => {
+    setIsOpen(true)
   }
 
-  const handleClose = (e: Event) => {
-    if (!isOpen || ref?.current?.contains(e.target as Node)) {
-      return
-    }
-
+  const handleClose = () => {
     setIsOpen(false)
   }
 
   const renderTokens = () => {
-    return data?.tokenHoldings.map((token, idx) => {
+    const content = data?.tokenHoldings.map((token, idx) => {
       const icon = token.logo[0] ? (
         <Image
           src={token.logo[0]}
@@ -113,56 +104,40 @@ const AddressWallet: FC<AddressWalletProps> = ({
         </li>
       )
     })
+
+    return <ul className={styles.list}>{content}</ul>
   }
 
-  const rect = ref.current?.getBoundingClientRect()
-  const dropdownCoord = rect
-    ? { left: rect?.left, top: rect?.top + height + window.scrollY }
-    : undefined
-
-  const renderDropdown = () =>
-    createPortal(
-      <OutsideClicker
-        onClick={(e) => {
-          handleClose(e)
-        }}
-        className={styles.dropdown}
-        style={{ left: dropdownCoord?.left, top: dropdownCoord?.top }}
-      >
-        <ul className={styles.list}>{renderTokens()}</ul>
-      </OutsideClicker>,
-      getRootElement()
-    )
+  const displayCaption = (
+    <>
+      <Value
+        value={financialFormat(tokenHoldingsStats?.totalStable)}
+        prefix="$"
+      />{' '}
+      <Label type="tag" className={styles.label}>
+        {tokenHoldingsStats?.tokenCount}
+      </Label>
+      {isOpen && loading && <Loading />}
+    </>
+  )
 
   return (
     <div className={clsx(styles.container, className)}>
-      <div className={styles.body}>
-        <div
-          className={clsx(styles.stats, { [styles.statsOpen]: isOpen })}
-          onClick={handleClick}
-          ref={ref}
-        >
-          <Value
-            value={financialFormat(tokenHoldingsStats?.totalStable)}
-            prefix="$"
-          />{' '}
-          <Label type="tag" className={styles.label}>
-            {tokenHoldingsStats?.tokenCount}
-          </Label>
-          {isOpen && loading && <Loading />}
-          {isOpen && !loading && <>{renderDropdown()}</>}
-          <IconArrowDown
-            className={clsx(styles.arrow, { [styles.arrowOpen]: isOpen })}
-          />
-        </div>
-        <Button
-          className={styles.link}
-          data-tooltip-content="View all token holdings"
-          data-tooltip-id="app-tooltip"
-          to={`/holdings/${address}`}
-          icon={<IconWallet className={styles.wallet} />}
-        />
-      </div>
+      <Dropdown
+        className={styles.stats}
+        caption={displayCaption}
+        onOpen={handleOpen}
+        onClose={handleClose}
+      >
+        {!loading && renderTokens()}
+      </Dropdown>
+      <Button
+        className={styles.link}
+        data-tooltip-content="View all token holdings"
+        data-tooltip-id="app-tooltip"
+        to={`/holdings/${address}`}
+        icon={<IconWallet className={styles.wallet} />}
+      />
     </div>
   )
 }

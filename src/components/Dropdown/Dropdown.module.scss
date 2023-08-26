@@ -1,0 +1,145 @@
+.button {
+  composes: button from '../Button/Button.module.scss';
+  composes: lg from '../Button/Button.module.scss';
+  --color-button-hover-border: var(--color-accent);
+  text-align: left;
+}
+
+.open {
+  border-color: var(--color-button-hover-border);
+}
+
+.caption {
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+.loading {
+  visibility: hidden;
+}
+
+.loader {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: 50%;
+  margin-top: -4px;
+  visibility: visible;
+}
+
+.icon {
+  flex: 0 0 auto;
+  composes: icon from '../../styles/_common.scss';
+  width: 20px;
+  height: 20px;
+}
+
+.arrow {
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  transform: rotate(0);
+  transition: 0.25s ease;
+
+  &Open {
+    transform: rotate(180deg);
+  }
+}
+
+.dropdown {
+  --shift: 16px;
+  position: fixed;
+  left: var(--coord-left);
+  right: calc(var(--coord-right, 0) - var(--page-scrollbar, 0));
+  top: var(--coord-top);
+  bottom: var(--coord-bottom);
+  width: max-content;
+  max-width: calc(100vw - 48px);
+  max-height: min(var(--max-height, 75vh), 400px);
+  z-index: 2;
+  padding: 8px;
+  border: 1px var(--color-accent) solid;
+  background: var(--color-bg);
+  border-radius: var(--radii-lg);
+  animation: opacity 0.25s ease, shift 0.25s ease;
+  animation-fill-mode: forwards;
+  overflow: auto;
+  overflow: overlay;
+
+  @keyframes opacity {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes shift {
+    from {
+      transform: translateY(-16px);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.down {
+  --max-height: max(100px, calc(100vh - var(--coord-top) - var(--shift) * 2));
+  margin-top: var(--shift);
+}
+
+.up {
+  --max-height: max(
+    100px,
+    calc(100vh - var(--coord-bottom) - var(--page-step) - var(--shift) * 2)
+  );
+  animation-direction: normal, reverse;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  gap: 8px;
+  composes: button from '../Button/Button.module.scss';
+  composes: lg from '../Button/Button.module.scss';
+  --color-button-border: transparent;
+  --color-button-hover-border: transparent;
+  --color-button-bg: transparent;
+  --color-button-hover-bg: var(--color-bg-2);
+  --color-button-text: var(--color-muted);
+  --color-button-hover-text: var(--color-accent-a);
+  padding: 8px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}

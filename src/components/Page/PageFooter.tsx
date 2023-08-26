@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import ChainSelect from '../ChainSelect/ChainSelect'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
@@ -227,6 +228,12 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
               >
                 Terms of Use
               </Link>
+            </li>
+            <li>
+              <ChainSelect
+                chainConfig={chainConfig}
+                className={styles.chains}
+              />
             </li>
           </ul>
         </nav>

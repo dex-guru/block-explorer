@@ -26,6 +26,7 @@ initApm()
 const App: FC<AppProps> = ({ Component, pageProps, router }) => {
   const apolloClient = useApollo(pageProps)
   const [isPageLoading, setIsPageLoading] = useState(false)
+  const [scrollbarWidth, setScrollbarWidth] = useState(0)
 
   useEffect(() => {
     const handleStart = () => setIsPageLoading(true)
@@ -42,12 +43,22 @@ const App: FC<AppProps> = ({ Component, pageProps, router }) => {
     }
   }, [router])
 
+  useEffect(() => {
+    const div = document.createElement('div')
+    div.style.cssText = `width:100px;height:100px;overflow:scroll;position:absolute;top:-9999px;`
+    document.body.appendChild(div)
+    const width = div.offsetWidth - div.clientWidth
+    setScrollbarWidth(width)
+    document.body.removeChild(div)
+  }, [])
+
   return (
     <ApolloProvider client={apolloClient}>
       <style jsx global>{`
         html {
           --font-sora: ${sora.style.fontFamily};
           --font-ibm: ${ibm.style.fontFamily};
+          --page-scrollbar: ${scrollbarWidth}px;
         }
       `}</style>
       {isPageLoading && <Loading className={styles.pageLoading} />}
