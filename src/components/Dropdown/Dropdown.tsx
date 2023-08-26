@@ -62,6 +62,7 @@ const Dropdown: FC<DropdownProps> = ({
       {isCurrentOpen && (
         <DropdownContent
           {...contentProps}
+          className={contentProps.contentClassName}
           toggle={ref.current}
           isOpen={isCurrentOpen}
           onOpen={handleOpen}

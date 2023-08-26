@@ -8,7 +8,7 @@ import styles from './Dropdown.module.scss'
 
 const DropdownContent: FC<DropdownContentProps> = ({
   toggle,
-  contentClassName,
+  className,
   children,
   content,
   isOpen = false,
@@ -101,7 +101,7 @@ const DropdownContent: FC<DropdownContentProps> = ({
       ref={refDropdown}
       className={clsx(
         styles.dropdown,
-        contentClassName,
+        className,
         { [styles.up]: isDropdownUp },
         { [styles.down]: !isDropdownUp }
       )}

@@ -117,36 +117,7 @@
 }
 
 .dropdown {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  margin-top: 16px;
-
-  animation: dropdown 0.25s ease;
-
-  @keyframes dropdown {
-    from {
-      opacity: 0;
-      transform: translateY(-16px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
-
-.variants {
-  background: var(--color-bg-2);
-  border: 1px var(--color-accent) solid;
-  border-radius: var(--radii-lg);
-  overflow: hidden;
-  padding: 8px;
-
-  --color-card-padding: 0;
-  --color-card-gap: 0;
+  --max-height: none;
 }
 
 .tabs {

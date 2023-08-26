@@ -8,7 +8,7 @@ export type DropdownButtonProps = {
 
 export type DropdownContentProps = {
   toggle: HTMLElement | null
-  contentClassName?: string
+  className?: string
   isOpen?: boolean
   content?: ReactNode | ReactNode[]
   children?: ReactNode | ReactNode[]
@@ -18,4 +18,4 @@ export type DropdownContentProps = {
 }
 
 export type DropdownProps = DropdownButtonProps &
-  Omit<DropdownContentProps, 'toggle'>
+  Omit<DropdownContentProps, 'toggle'> & { contentClassName?: string }
