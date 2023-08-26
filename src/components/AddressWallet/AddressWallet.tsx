@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
+import Dropdown from '../Dropdown'
 import { AddressWalletProps } from './types'
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
@@ -19,8 +19,6 @@ import {
   financialFormatLowValueHighPrecision,
 } from '@/lib/utils'
 import styles from './AddressWallet.module.scss'
-
-const Dropdown = dynamic(() => import('@/components/Dropdown'), { ssr: false })
 
 const ADDRESS_WALLET_LIMIT = 100
 
@@ -61,7 +59,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
   }
 
   const renderTokens = () => {
-    return data?.tokenHoldings.map((token, idx) => {
+    const content = data?.tokenHoldings.map((token, idx) => {
       const icon = token.logo[0] ? (
         <Image
           src={token.logo[0]}
@@ -106,6 +104,8 @@ const AddressWallet: FC<AddressWalletProps> = ({
         </li>
       )
     })
+
+    return <ul className={styles.list}>{content}</ul>
   }
 
   const displayCaption = (
@@ -129,7 +129,7 @@ const AddressWallet: FC<AddressWalletProps> = ({
         onOpen={handleOpen}
         onClose={handleClose}
       >
-        {!loading && <ul className={styles.list}>{renderTokens()}</ul>}
+        {!loading && renderTokens()}
       </Dropdown>
       <Button
         className={styles.link}

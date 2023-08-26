@@ -49,15 +49,24 @@
 }
 
 .dropdown {
+  --shift: 16px;
+  position: fixed;
+  left: var(--coord-left);
+  right: calc(var(--coord-right, 0) - var(--page-scrollbar, 0));
+  top: var(--coord-top);
+  bottom: var(--coord-bottom);
   width: max-content;
   max-width: calc(100vw - 48px);
-  z-index: 11;
+  max-height: min(var(--max-height, 75vh), 400px);
+  z-index: 2;
   padding: 8px;
   border: 1px var(--color-accent) solid;
   background: var(--color-bg);
   border-radius: var(--radii-lg);
   animation: opacity 0.25s ease, shift 0.25s ease;
   animation-fill-mode: forwards;
+  overflow: auto;
+  overflow: overlay;
 
   @keyframes opacity {
     from {
@@ -89,11 +98,15 @@
 }
 
 .down {
-  margin-top: 16px;
+  --max-height: max(100px, calc(100vh - var(--coord-top) - var(--shift) * 2));
+  margin-top: var(--shift);
 }
 
 .up {
-  margin-bottom: 16px;
+  --max-height: max(
+    100px,
+    calc(100vh - var(--coord-bottom) - var(--page-step) - var(--shift) * 2)
+  );
   animation-direction: normal, reverse;
 }
 
@@ -103,8 +116,6 @@
   list-style: none;
   display: flex;
   flex-flow: column;
-  max-height: 90vh;
-  overflow: auto;
 }
 
 .item {

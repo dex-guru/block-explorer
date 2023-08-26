@@ -11,6 +11,10 @@
   line-height: 150%;
 }
 
+.dropdown {
+  z-index: 12;
+}
+
 .list {
   composes: list from '../Dropdown/Dropdown.module.scss';
 }

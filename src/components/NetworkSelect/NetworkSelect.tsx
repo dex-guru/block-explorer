@@ -1,12 +1,10 @@
 import { FC, Suspense, lazy } from 'react'
-import dynamic from 'next/dynamic'
 import clsx from 'clsx'
+import Dropdown from '../Dropdown'
 import { NetworkSelectProps } from './types'
 import Button from '@/components/Button'
 import { IconQuestion } from '@/components/Icons'
 import styles from './NetworkSelect.module.scss'
-
-const Dropdown = dynamic(() => import('@/components/Dropdown'), { ssr: false })
 
 const NetworkSelect: FC<NetworkSelectProps> = ({
   current,
@@ -52,10 +50,9 @@ const NetworkSelect: FC<NetworkSelectProps> = ({
       caption={current}
       className={clsx(styles.container, className)}
       contentClassName={styles.dropdown}
-      position="fixed"
-    >
-      {renderContent()}
-    </Dropdown>
+      isRight
+      content={renderContent()}
+    />
   )
 }
 

@@ -40,53 +40,17 @@
   flex: 0 0 auto;
 }
 
-.arrow {
-  flex: 0 0 auto;
-  margin-left: auto;
-  color: var(--color-muted);
-  transform: none;
-  transition: 0.25s ease;
-  width: 20px;
-  height: 20px;
-
-  &Open {
-    transform: rotate(180deg);
-    color: var(--color-accent);
-  }
+.list {
+  composes: list from '../Dropdown/Dropdown.module.scss';
 }
 
-.dropdown {
-  position: absolute;
-  min-width: 320px;
-  width: max-content;
-  max-width: min(#{calc(100vw - 48px)}, 360px);
-  z-index: 2;
-  left: 0;
-  right: 0;
-  top: 100%;
-  padding: 8px;
-  margin-top: 16px;
-  border: 1px var(--color-accent) solid;
-  background: var(--color-bg);
-  border-radius: var(--radii-lg);
-  overflow: hidden;
-
-  animation: dropdown 0.25s ease;
-
-  @keyframes dropdown {
-    from {
-      opacity: 0;
-      transform: translateY(-16px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.item {
+  composes: item from '../Dropdown/Dropdown.module.scss';
 }
 
 .tokenLink {
+  composes: link from '../Dropdown/Dropdown.module.scss';
+  height: auto;
   display: block;
   padding: 8px;
   background: none;
@@ -94,21 +58,6 @@
   &:hover {
     background: var(--color-bg-2);
   }
-}
-
-.list {
-  margin: 0 -8px 0 0;
-  padding: 0 8px 0 0;
-  list-style: none;
-  display: flex;
-  flex-flow: column;
-  max-height: max(50vh, 300px);
-  overflow: auto;
-}
-
-.item {
-  margin: 0;
-  padding: 0;
 }
 
 .token {
@@ -134,9 +83,9 @@
   --color-button-border: var(--color-input-border);
   --color-button-bg: transparent;
   --color-button-text: var(--color-muted);
-  --color-button-hover-border: var(--color-accent-a);
+  --color-button-hover-border: var(--color-accent);
   --color-button-hover-bg: transparent;
-  --color-button-hover-text: var(--color-accent-a);
+  --color-button-hover-text: var(--color-accent);
 }
 
 .wallet {

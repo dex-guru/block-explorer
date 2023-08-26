@@ -25,6 +25,14 @@
   --color-input-text: var(--color-text);
   --color-input-placeholder: var(--color-muted);
   --color-input-focus: var(--color-accent);
+
+  @media (min-width: 640.1px) {
+    --page-step: 56px;
+  }
+
+  @media (max-width: 640px) {
+    --page-step: 112px;
+  }
 }
 
 .body {
