@@ -52,7 +52,6 @@
   --shift: 16px;
   position: fixed;
   left: var(--coord-left);
-  right: calc(var(--coord-right, 0) - var(--page-scrollbar, 0));
   top: var(--coord-top);
   bottom: var(--coord-bottom);
   width: max-content;
@@ -67,6 +66,10 @@
   animation-fill-mode: forwards;
   overflow: auto;
   overflow: overlay;
+
+  &:empty {
+    display: none;
+  }
 
   @keyframes opacity {
     from {

@@ -57,8 +57,9 @@ const DropdownContent: FC<DropdownContentProps> = ({
     setIsDropdownUp(isTopLimit)
 
     setDropdownCoord({
-      right: isRight ? window.innerWidth - (rectButton?.right || 0) : undefined,
-      left: !isRight ? rectButton?.left : undefined,
+      left: isRight
+        ? (rectButton?.right || 0) - (rectDropdown?.width || 0)
+        : rectButton?.left,
       top: !isTopLimit ? rectButton?.bottom : undefined,
       bottom: isTopLimit
         ? window.innerHeight - (rectButton?.top || 0)
@@ -86,13 +87,7 @@ const DropdownContent: FC<DropdownContentProps> = ({
     }
   })
 
-  if (
-    !button ||
-    !dropdown ||
-    !(content || children) ||
-    !isCurrentOpen ||
-    !dropdownCoord
-  ) {
+  if (!button || !dropdown || !isCurrentOpen || !dropdownCoord) {
     return null
   }
 
@@ -109,9 +104,6 @@ const DropdownContent: FC<DropdownContentProps> = ({
         {
           '--coord-left': dropdownCoord?.left
             ? `${dropdownCoord?.left}px`
-            : undefined,
-          '--coord-right': dropdownCoord?.right
-            ? `${dropdownCoord?.right}px`
             : undefined,
           '--coord-top': dropdownCoord?.top
             ? `${dropdownCoord?.top}px`
