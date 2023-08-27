@@ -2,6 +2,7 @@ import { CSSProperties, FC } from 'react'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
 import CommonChart from '@/components/CommonChart'
+import HeatmapChart from '@/components/HeatmapChart'
 import Loading from '@/components/Loading'
 import Message from '@/components/Message'
 import PieChart from '@/components/PieChart'
@@ -12,19 +13,67 @@ import {
 import { financialFormat, getShortDate } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
+const SUPPORTED_CHARTS = ['line', 'area', 'column', 'bar', 'pie', 'heatmap']
+
+const tickFormatter = (value: string) => {
+  if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
+    return getShortDate(new Date(value).getTime(), false)
+  }
+
+  if (Number.isFinite(value)) {
+    return financialFormat(value)
+  }
+
+  return value
+}
+
 const DashboardWidgetChart: FC<{
   type: string
   data?: TRedashQueryResultData
   visualization: TRedashVisualization
   isLoading?: boolean
-}> = ({ type, data, visualization, isLoading }) => {
-  const columnMapping: Record<string, string[]> = { x: [], y: [] }
+}> = ({ type, data, visualization: initialVisualization, isLoading }) => {
+  if (!SUPPORTED_CHARTS.includes(type)) {
+    return (
+      <Message
+        type="danger"
+        text="This chart type is currently not supported"
+      />
+    )
+  }
+
+  const visualization = { ...initialVisualization }
+  const columnMapping: Record<string, string[]> = { x: [], y: [], zVal: [] }
 
   Object.entries(visualization.options.columnMapping || {}).forEach(
     ([key, axis]) => {
       columnMapping[axis].push(key)
     }
   )
+
+  if (type === 'heatmap') {
+    const mapping = Object.fromEntries(
+      Object.entries(visualization.options.columnMapping || {}).map(
+        ([key, value]) => [value, key]
+      )
+    )
+
+    const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]
+      ?.name
+
+    return (
+      <HeatmapChart
+        data={data?.rows}
+        keys={{ x: mapping.x, y: mapping.y, val: mapping.zVal }}
+        tickXFormatter={tickFormatter}
+        tooltipFormat={({ x, y, value }) => {
+          return `${
+            tooltipName ? `${tooltipName} on ` : ''
+          } ${x} ${y}: ${financialFormat(value)}`
+        }}
+      />
+    )
+  }
 
   if (type === 'pie') {
     return (
@@ -81,18 +130,6 @@ const DashboardWidgetChart: FC<{
         (obj, curr) => ({ ...obj, [curr.name]: curr }),
         {}
       ) || {}
-
-    const tickFormatter = (value: string) => {
-      if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
-        return getShortDate(new Date(value).getTime(), false)
-      }
-
-      if (Number.isFinite(value)) {
-        return financialFormat(value)
-      }
-
-      return value
-    }
 
     const dataset = columnMapping.y.map((col, idx) => {
       const entity = entities[col]

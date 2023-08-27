@@ -69,6 +69,11 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
           ...(checkChainFeature(chainConfig, 'charts')
             ? [
                 {
+                  caption: 'Gas Tracker',
+                  href: '/gastracker',
+                },
+
+                {
                   caption: 'Charts & Statistics',
                   href: '/charts',
                 },
