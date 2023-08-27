@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Dashboard from '@/components/Dashboard'
+import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
@@ -33,12 +34,14 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <Dashboard
-          data={dashboard}
-          params={{
-            network: chainConfig.shortName,
-          }}
-        />
+        <DetailsView title="Gas Tracker">
+          <Dashboard
+            data={dashboard}
+            params={{
+              network: chainConfig.shortName,
+            }}
+          />
+        </DetailsView>
       </Page>
     </>
   )
