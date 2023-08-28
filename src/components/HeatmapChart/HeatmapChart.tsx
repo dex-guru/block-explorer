@@ -53,9 +53,7 @@ const HeatmapChart: FC<HeatmapChartProps> = ({
   const rangeCap = rangeMax - rangeMin
 
   const renderRows = () => {
-    const tableRowsArr = Object.entries(tableRows).sort(
-      ([a], [b]) => Number(a) - Number(b)
-    )
+    const tableRowsArr = Object.entries(tableRows)
 
     const content = tableRowsArr.map(([yVal, row]) => {
       return (

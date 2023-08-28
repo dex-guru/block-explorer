@@ -34,14 +34,12 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        <DetailsView title="Gas Tracker">
-          <Dashboard
-            data={dashboard}
-            params={{
-              network: chainConfig.shortName,
-            }}
-          />
-        </DetailsView>
+        <Dashboard
+          data={dashboard}
+          params={{
+            network: chainConfig.shortName,
+          }}
+        />
       </Page>
     </>
   )
