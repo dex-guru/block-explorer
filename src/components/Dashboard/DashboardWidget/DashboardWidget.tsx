@@ -6,10 +6,10 @@ import useSWRImmutable from 'swr/immutable'
 import styles from '../Dashboard.module.scss'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
+import DashboardWidgetTable from './DashboardWidgetTable'
 import Card from '@/components/Card'
 import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
-import Table from '@/components/Table'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import {
@@ -102,22 +102,7 @@ const DashboardWidget: FC<{
     }
 
     if (visualization?.type === 'TABLE') {
-      return (
-        <Table
-          data={queryResult?.data?.rows || []}
-          columns={
-            queryResult?.data?.columns.map((col) => {
-              return {
-                accessor: col.name,
-                title: col.friendly_name,
-                type: ['integer', 'number'].includes(col.type)
-                  ? 'number'
-                  : 'text',
-              }
-            }) || []
-          }
-        />
-      )
+      return <DashboardWidgetTable data={queryResult?.data} />
     }
 
     if (visualization?.type) {
