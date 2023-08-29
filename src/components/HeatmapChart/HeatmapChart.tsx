@@ -4,6 +4,11 @@ import { HeatmapChartProps } from './types'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './HeatmapChart.module.scss'
 
+const format = (
+  value: string | number,
+  formatter?: (value: string) => string
+): string => formatter?.(value.toString()) || value.toString()
+
 const HeatmapChart: FC<HeatmapChartProps> = ({
   data,
   keys,
@@ -16,19 +21,22 @@ const HeatmapChart: FC<HeatmapChartProps> = ({
     return null
   }
 
-  const tableRows: Record<string, Record<string, number>> = {}
-  let min: number | undefined, max: number | undefined
+  const xKeys = [...new Set(data.map((row) => row[keys.x]))]
+  const xDefaultArr = Object.fromEntries(
+    xKeys.map((row) => {
+      return [format(row.toString(), tickXFormatter), null]
+    })
+  )
 
-  data.map((row) => {
-    const keyX = tickXFormatter
-      ? tickXFormatter(`${row[keys.x]}`)
-      : `${row[keys.x]}`
-    const keyY = tickYFormatter
-      ? tickYFormatter(`${row[keys.y]}`)
-      : `${row[keys.y]}`
+  let min: number | undefined, max: number | undefined
+  const tableRows: Record<string, Record<string, number | null>> = {}
+
+  data.forEach((row) => {
+    const keyX = format(row[keys.x], tickXFormatter)
+    const keyY = format(row[keys.y], tickYFormatter)
 
     if (!tableRows[keyY]) {
-      tableRows[keyY] = {}
+      tableRows[keyY] = { ...xDefaultArr }
     }
 
     const numberValue = Number(row[keys.val])
@@ -60,6 +68,10 @@ const HeatmapChart: FC<HeatmapChartProps> = ({
         <tr key={yVal} className={styles.row}>
           <th className={styles.header}>{yVal}</th>
           {Object.entries(row).map(([xVal, value]) => {
+            if (value === null) {
+              return <td className={styles.empty} key={`${yVal}-${xVal}`} />
+            }
+
             const percent = !rangeCap ? 0 : (value - rangeMin) / rangeCap
             const displayValue = tooltipFormat
               ? tooltipFormat({ x: xVal, y: yVal, value })

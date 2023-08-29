@@ -354,3 +354,23 @@ export const getSlug = (value: string) => {
     .replace(/ /g, '-')
     .replace(/[^\w-]+/g, '')
 }
+
+export const formatAutoDetect = (
+  value: string | number,
+  options?: { number: FinancialFormatOptions }
+): string => {
+  const valueStr = value?.toString() || ''
+
+  if (Number.isFinite(value)) {
+    return financialFormat(value, {
+      highPrecession: true,
+      ...(options?.number || {}),
+    })
+  }
+
+  if (!isNaN(new Date(value).getDate())) {
+    return getShortDate(new Date(value).getTime(), false)
+  }
+
+  return valueStr
+}

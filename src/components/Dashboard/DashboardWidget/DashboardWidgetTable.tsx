@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react'
 import DataTable from '@/components/DataTable'
 import { DEFAULT_PER_PAGE } from '@/components/Pagination'
+import { IColumn } from '@/components/Table'
 import { TRedashQueryResultData } from '@/lib/redash/types'
+import { formatAutoDetect } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
 const DashboardWidgetTable: FC<{
@@ -32,11 +34,14 @@ const DashboardWidgetTable: FC<{
       data={currentRows}
       total={data?.rows.length}
       columns={
-        data?.columns.map((col) => {
+        data?.columns.map((col): IColumn<Record<string, string | number>> => {
           return {
             accessor: col.name,
             title: col.friendly_name,
-            type: ['integer', 'number'].includes(col.type) ? 'number' : 'text',
+            type: ['float', 'integer', 'number'].includes(col.type)
+              ? 'number'
+              : 'text',
+            render: (row) => formatAutoDetect(row[col.name]),
           }
         }) || []
       }

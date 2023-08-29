@@ -10,22 +10,13 @@ import {
   TRedashQueryResultData,
   TRedashVisualization,
 } from '@/lib/redash/types'
-import { financialFormat, getShortDate } from '@/lib/utils'
+import { financialFormat, formatAutoDetect } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
 const SUPPORTED_CHARTS = ['line', 'area', 'column', 'bar', 'pie', 'heatmap']
 
-const tickFormatter = (value: string) => {
-  if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
-    return getShortDate(new Date(value).getTime(), false)
-  }
-
-  if (Number.isFinite(value)) {
-    return financialFormat(value)
-  }
-
-  return value
-}
+const tickFormatter = (value: string) =>
+  formatAutoDetect(value, { number: { highPrecession: false } })
 
 const DashboardWidgetChart: FC<{
   type: string
@@ -61,6 +52,10 @@ const DashboardWidgetChart: FC<{
     const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]
       ?.name
 
+    if (isLoading) {
+      return <Loading className={styles.loader} />
+    }
+
     return (
       <HeatmapChart
         data={data?.rows}
@@ -93,7 +88,8 @@ const DashboardWidgetChart: FC<{
             options={{
               dataKey: columnMapping.y[0],
               nameKey: columnMapping.x[0],
-              formatter: (val) => financialFormat(`${val}`),
+              formatter: (val) =>
+                financialFormat(`${val}`, { highPrecession: true }),
             }}
           />
         </div>
@@ -170,12 +166,12 @@ const DashboardWidgetChart: FC<{
                 dataKey: columnMapping.x[0],
                 axisLine: false,
                 tickLine: false,
-                tickFormatter: tickFormatter,
+                tickFormatter,
               },
               y: {
                 axisLine: false,
                 tickLine: false,
-                tickFormatter: tickFormatter,
+                tickFormatter,
               },
             },
           }}
