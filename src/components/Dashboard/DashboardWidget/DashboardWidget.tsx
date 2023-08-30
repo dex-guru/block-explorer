@@ -17,6 +17,7 @@ import {
   DYNAMIC_DATE_PREFIX,
   getDynamicDateRangePeriod,
   DEFAULT_DATE_RANGE,
+  DATETIME_FORMATS,
 } from '@/lib/dates'
 import {
   getRedashQueryResponse,
@@ -39,7 +40,10 @@ const DashboardWidget: FC<{
   const queryParams = visualization?.query
     ? generateRedashQueryParams(visualization?.query, {
         ...(params || {}),
-        dates: getDynamicDateRangePeriod(currentDateRange),
+        dates: getDynamicDateRangePeriod(
+          currentDateRange,
+          'datetime-range-with-seconds'
+        ),
       })
     : null
 
@@ -162,8 +166,8 @@ const DashboardWidget: FC<{
 
   const renderDateRangeSwitch = () => {
     if (
-      !visualization?.query?.options?.parameters?.find(
-        (param) => param.type === 'date-range'
+      !visualization?.query?.options?.parameters?.find((param) =>
+        Object.keys(DATETIME_FORMATS).includes(param.type)
       )
     ) {
       return undefined

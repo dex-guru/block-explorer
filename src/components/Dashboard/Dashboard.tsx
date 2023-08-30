@@ -26,7 +26,8 @@ const Dashboard: FC<{
       generateRedashDashboardParams(data, {
         ...(params || {}),
         dates: getDynamicDateRangePeriod(
-          `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
+          `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`,
+          'datetime-range-with-seconds'
         ),
       }),
     [data, params]
