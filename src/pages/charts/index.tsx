@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
@@ -151,7 +150,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
           </Heading>
 
           <div className={styles.dashboardAuthor}>
-            <Image
+            <img
               data-tooltip-id="app-tooltip"
               data-tooltip-content={`${dashboard.user.name} on ${getDate(
                 dashboard.created_at

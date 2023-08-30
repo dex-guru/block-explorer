@@ -278,3 +278,8 @@
 .multichain {
   margin: -8px 0 -8px -8px;
 }
+
+.warehouse {
+  composes: lg from '../components/Button/Button.module.scss';
+  composes: warehouse from '../components/Button/Button.module.scss';
+}

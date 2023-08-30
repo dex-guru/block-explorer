@@ -1,14 +1,14 @@
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-flow: row wrap;
   gap: 16px;
   position: relative;
 }
 
 .wrapper {
-  flex: 1 1 50%;
-  min-width: 240px;
+  flex: 1 0 50%;
+  min-width: 320px;
   position: relative;
 }
 
@@ -38,28 +38,32 @@
 .legend {
   color: var(--color-page-muted);
   flex: 1 0 auto;
+  display: grid;
+  grid-gap: 4px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   font-size: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-flow: column;
-  gap: 4px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .entry {
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:before {
     content: '';
-    width: 1em;
+    flex: 0 0 1em;
     height: 1em;
     background: var(--color);
     border-radius: 50%;
   }
+}
+
+.caption {
+  flex: 1 1 auto;
 }

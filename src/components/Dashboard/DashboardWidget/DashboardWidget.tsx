@@ -1,15 +1,15 @@
 import { ChangeEventHandler, FC, Suspense, useState } from 'react'
-import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import useSWRImmutable from 'swr/immutable'
 import styles from '../Dashboard.module.scss'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
+import DashboardWidgetTable from './DashboardWidgetTable'
+import Button from '@/components/Button'
 import Card from '@/components/Card'
-import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
+import { IconAgo, IconWarehouse, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
-import Table from '@/components/Table'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import {
@@ -17,6 +17,7 @@ import {
   DYNAMIC_DATE_PREFIX,
   getDynamicDateRangePeriod,
   DEFAULT_DATE_RANGE,
+  DATETIME_FORMATS,
 } from '@/lib/dates'
 import {
   getRedashQueryResponse,
@@ -39,7 +40,10 @@ const DashboardWidget: FC<{
   const queryParams = visualization?.query
     ? generateRedashQueryParams(visualization?.query, {
         ...(params || {}),
-        dates: getDynamicDateRangePeriod(currentDateRange),
+        dates: getDynamicDateRangePeriod(
+          currentDateRange,
+          'datetime-range-with-seconds'
+        ),
       })
     : null
 
@@ -102,22 +106,7 @@ const DashboardWidget: FC<{
     }
 
     if (visualization?.type === 'TABLE') {
-      return (
-        <Table
-          data={queryResult?.data?.rows || []}
-          columns={
-            queryResult?.data?.columns.map((col) => {
-              return {
-                accessor: col.name,
-                title: col.friendly_name,
-                type: ['integer', 'number'].includes(col.type)
-                  ? 'number'
-                  : 'text',
-              }
-            }) || []
-          }
-        />
-      )
+      return <DashboardWidgetTable data={queryResult?.data} />
     }
 
     if (visualization?.type) {
@@ -177,8 +166,8 @@ const DashboardWidget: FC<{
 
   const renderDateRangeSwitch = () => {
     if (
-      !visualization?.query?.options?.parameters?.find(
-        (param) => param.type === 'date-range'
+      !visualization?.query?.options?.parameters?.find((param) =>
+        Object.keys(DATETIME_FORMATS).includes(param.type)
       )
     ) {
       return undefined
@@ -198,16 +187,16 @@ const DashboardWidget: FC<{
   }
 
   const tools = visualization?.query?.id ? (
-    <Link
+    <Button
+      icon={<IconWarehouse />}
+      caption="SQL query"
       data-tooltip-id="app-tooltip"
       data-tooltip-content={`Open ${visualization.query.name} query in Warehouse`}
-      className={styles.redash}
+      className={styles.warehouse}
       target="_blank"
       rel="noreferrer noopener"
       href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${visualization.query.id}`}
-    >
-      <IconRedash className={styles.redashIcon} />
-    </Link>
+    />
   ) : undefined
 
   return (

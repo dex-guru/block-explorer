@@ -51,6 +51,9 @@ export type TRedashVisualization = {
     counterColName?: string
     rowNumber?: 1
     seriesOptions?: Record<string, { name?: string }>
+    legend?: {
+      enabled?: boolean
+    }
   }
 }
 

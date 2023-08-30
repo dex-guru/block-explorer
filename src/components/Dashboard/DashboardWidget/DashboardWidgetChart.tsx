@@ -2,6 +2,7 @@ import { CSSProperties, FC } from 'react'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
 import CommonChart from '@/components/CommonChart'
+import HeatmapChart from '@/components/HeatmapChart'
 import Loading from '@/components/Loading'
 import Message from '@/components/Message'
 import PieChart from '@/components/PieChart'
@@ -9,22 +10,65 @@ import {
   TRedashQueryResultData,
   TRedashVisualization,
 } from '@/lib/redash/types'
-import { financialFormat, getShortDate } from '@/lib/utils'
+import { financialFormat, formatAutoDetect } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
+
+const SUPPORTED_CHARTS = ['line', 'area', 'column', 'bar', 'pie', 'heatmap']
+
+const tickFormatter = (value: string) =>
+  formatAutoDetect(value, { number: { highPrecession: false } })
 
 const DashboardWidgetChart: FC<{
   type: string
   data?: TRedashQueryResultData
   visualization: TRedashVisualization
   isLoading?: boolean
-}> = ({ type, data, visualization, isLoading }) => {
-  const columnMapping: Record<string, string[]> = { x: [], y: [] }
+}> = ({ type, data, visualization: initialVisualization, isLoading }) => {
+  if (!SUPPORTED_CHARTS.includes(type)) {
+    return (
+      <Message
+        type="danger"
+        text="This chart type is currently not supported"
+      />
+    )
+  }
+
+  const visualization = { ...initialVisualization }
+  const columnMapping: Record<string, string[]> = { x: [], y: [], zVal: [] }
 
   Object.entries(visualization.options.columnMapping || {}).forEach(
     ([key, axis]) => {
       columnMapping[axis].push(key)
     }
   )
+
+  if (type === 'heatmap') {
+    const mapping = Object.fromEntries(
+      Object.entries(visualization.options.columnMapping || {}).map(
+        ([key, value]) => [value, key]
+      )
+    )
+
+    const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]
+      ?.name
+
+    if (isLoading) {
+      return <Loading className={styles.loader} />
+    }
+
+    return (
+      <HeatmapChart
+        data={data?.rows}
+        keys={{ x: mapping.x, y: mapping.y, val: mapping.zVal }}
+        tickXFormatter={tickFormatter}
+        tooltipFormat={({ x, y, value }) => {
+          return `${
+            tooltipName ? `${tooltipName} on ` : ''
+          } ${x} ${y}: ${financialFormat(value)}`
+        }}
+      />
+    )
+  }
 
   if (type === 'pie') {
     return (
@@ -44,30 +88,35 @@ const DashboardWidgetChart: FC<{
             options={{
               dataKey: columnMapping.y[0],
               nameKey: columnMapping.x[0],
-              formatter: (val) => financialFormat(`${val}`),
+              formatter: (val) =>
+                financialFormat(`${val}`, { highPrecession: true }),
             }}
           />
         </div>
 
-        <ul className={styles.legend}>
-          {data?.rows.map((item, idx) => {
-            return (
-              <li
-                key={idx}
-                className={styles.entry}
-                style={
-                  {
-                    '--color': uniqolor(
-                      `${item[columnMapping.x[0]] || ''}${idx}`
-                    ).color,
-                  } as CSSProperties
-                }
-              >
-                {item[columnMapping.x[0]]}
-              </li>
-            )
-          })}
-        </ul>
+        {visualization.options?.legend?.enabled && (
+          <ul className={styles.legend}>
+            {data?.rows.map((item, idx) => {
+              return (
+                <li
+                  key={idx}
+                  className={styles.entry}
+                  style={
+                    {
+                      '--color': uniqolor(
+                        `${item[columnMapping.x[0]] || ''}${idx}`
+                      ).color,
+                    } as CSSProperties
+                  }
+                >
+                  <span className={styles.caption}>
+                    {item[columnMapping.x[0]]}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     )
   }
@@ -81,18 +130,6 @@ const DashboardWidgetChart: FC<{
         (obj, curr) => ({ ...obj, [curr.name]: curr }),
         {}
       ) || {}
-
-    const tickFormatter = (value: string) => {
-      if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value)) {
-        return getShortDate(new Date(value).getTime(), false)
-      }
-
-      if (Number.isFinite(value)) {
-        return financialFormat(value)
-      }
-
-      return value
-    }
 
     const dataset = columnMapping.y.map((col, idx) => {
       const entity = entities[col]
@@ -133,12 +170,12 @@ const DashboardWidgetChart: FC<{
                 dataKey: columnMapping.x[0],
                 axisLine: false,
                 tickLine: false,
-                tickFormatter: tickFormatter,
+                tickFormatter,
               },
               y: {
                 axisLine: false,
                 tickLine: false,
-                tickFormatter: tickFormatter,
+                tickFormatter,
               },
             },
           }}

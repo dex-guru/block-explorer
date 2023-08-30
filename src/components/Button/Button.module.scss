@@ -81,9 +81,9 @@
 
 .lg {
   height: 32px;
-  padding: 0 12px;
+  padding: 0 8px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
   min-width: 32px;
 }
@@ -115,6 +115,20 @@
   --color-button-text: var(--color-bg-2);
   --color-button-hover-text: var(--color-bg-2);
   --color-button-icon: var(--color-text);
+}
+
+.warehouse {
+  --color-button-border: var(--color-warehouse-bg);
+  --color-button-hover-border: var(--color-warehouse-a);
+  --color-button-bg: var(--color-warehouse);
+  --color-button-hover-bg: var(--color-warehouse-a);
+  --color-button-text: #fff;
+  --color-button-hover-text: #fff;
+  --color-button-icon: currentColor;
+
+  .icon {
+    order: 1;
+  }
 }
 
 .caption {

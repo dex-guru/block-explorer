@@ -145,7 +145,8 @@ export const generateRedashQueryParams = (
         return [
           param.name,
           getDynamicDateRangePeriod(
-            `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
+            `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`,
+            'datetime-range-with-seconds'
           ),
         ]
       }

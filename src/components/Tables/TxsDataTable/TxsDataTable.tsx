@@ -6,8 +6,9 @@ import {
   TransactionModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
+import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
-import { IconNoData } from '@/components/Icons'
+import { IconNoData, IconWarehouse } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { txsColumns } from '@/components/Table'
 import { useIsMount } from '@/hooks'
@@ -90,6 +91,20 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
 
   return (
     <DataTable
+      header={
+        <Button
+          icon={<IconWarehouse />}
+          caption="SQL query"
+          data-tooltip-id="app-tooltip"
+          data-tooltip-content={`Open query in Warehouse`}
+          className={styles.warehouse}
+          target="_blank"
+          rel="noreferrer noopener"
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${
+            address ? 72 : 75
+          }`}
+        />
+      }
       isLoading={loading}
       columns={txsColumns(displayData?.chainConfig, displayData?.chainStats)}
       data={displayData?.transactions || []}

@@ -17,7 +17,7 @@ import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(DEFAULT_FIRST_PAGE)
-  const [currentPerPagePage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
+  const [currentPerPage, setCurrentPerPage] = useState(DEFAULT_PER_PAGE)
   const [isLoadingFullTotal, setIsLoadingFullTotal] = useState(false)
 
   const {
@@ -47,23 +47,23 @@ export function DataTable<T>(props: DataTableProps<T>) {
     return (
       <PerPageSelector
         onChange={onChangePerPageHandler}
-        defaultPerPage={currentPerPagePage}
+        defaultPerPage={currentPerPage}
       />
     )
-  }, [currentPerPagePage, onChangePerPageHandler])
+  }, [currentPerPage, onChangePerPageHandler])
 
   const renderPagination = useCallback(() => {
     return (
       <Pagination
         total={Math.min(total, 1000)}
-        perPage={currentPerPagePage}
+        perPage={currentPerPage}
         onChange={onPageChange}
         className={styles.pagination}
         defaultCurrentPage={currentPage}
         setDefaultCurrentPage={setCurrentPage}
       />
     )
-  }, [currentPage, currentPerPagePage, onPageChange, total])
+  }, [currentPage, currentPerPage, onPageChange, total])
 
   const renderTotal = useCallback(() => {
     if (!total) {

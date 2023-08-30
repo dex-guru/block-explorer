@@ -61,6 +61,7 @@ const nextConfig = {
       'assets.coingecko.com',
       'gravatar.com',
       'www.gravatar.com',
+      'lh3.googleusercontent.com',
     ],
   },
   generateBuildId: getCommitShaShort,

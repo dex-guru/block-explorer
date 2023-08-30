@@ -67,13 +67,21 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
         title: 'Token TXs (ERC-20)',
         value: 'tokentxns',
         to: { pathname, query: { tab: 'tokentxns' } },
-        content: <Erc20DataTable />,
+        content: (
+          <Suspense fallback={<LoadingCard />}>
+            <Erc20DataTable />
+          </Suspense>
+        ),
       },
       {
         title: 'NFT Token TXs',
         value: 'nfttxns',
         to: { pathname, query: { tab: 'nfttxns' } },
-        content: <NftDataTable />,
+        content: (
+          <Suspense fallback={<LoadingCard />}>
+            <NftDataTable />
+          </Suspense>
+        ),
       }
     )
   }

@@ -4,14 +4,14 @@
   --color-chart-fill: transparent;
   --color-chart-value: var(--color-muted);
 
-  aspect-ratio: 16/9;
+  aspect-ratio: 1;
   max-height: 75vh !important;
   user-select: none;
 
   text {
     fill: var(--color-chart-tick);
     font-weight: 400;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 20px;
   }
 }

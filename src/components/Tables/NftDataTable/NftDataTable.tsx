@@ -1,8 +1,9 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { nftColumns } from './columns'
+import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
-import { IconNoData } from '@/components/Icons'
+import { IconNoData, IconWarehouse } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ERC721_EVENTS } from '@/lib/apollo/queries'
@@ -75,6 +76,20 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
 
   return (
     <DataTable
+      header={
+        <Button
+          icon={<IconWarehouse />}
+          caption="SQL query"
+          data-tooltip-id="app-tooltip"
+          data-tooltip-content={`Open query in Warehouse`}
+          className={styles.warehouse}
+          target="_blank"
+          rel="noreferrer noopener"
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${
+            address ? 84 : 76
+          } `}
+        />
+      }
       isLoading={loading}
       columns={nftColumns}
       data={displayData?.nftEvents?.data}

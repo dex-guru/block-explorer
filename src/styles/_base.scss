@@ -84,7 +84,7 @@ select {
   font-size: 14px;
   line-height: 20px;
 
-  padding: 0 24px 0 4px;
+  padding: 0 24px 0 8px;
   height: 32px;
   transition: 0.25s ease;
 
@@ -276,6 +276,10 @@ pre {
 }
 
 .recharts {
+  &-surface {
+    overflow: visible;
+  }
+
   &-cartesian-axis {
     text {
       font-size: 12px !important;

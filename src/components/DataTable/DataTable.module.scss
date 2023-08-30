@@ -55,6 +55,10 @@
 .pager {
   flex: 1 0 240px;
 
+  &:last-child {
+    flex: 0 0 auto;
+  }
+
   @media (max-width: 880px) {
     order: 3;
     flex-basis: 100%;

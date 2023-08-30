@@ -1,5 +1,5 @@
 export type PieChartProps = {
-  data: { [key: string]: number | string }[]
+  data: Record<string, number | string>[]
   className?: string
   options: {
     nameKey: string

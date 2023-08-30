@@ -14,9 +14,18 @@ import {
   subYears,
 } from 'date-fns'
 
+type DateTimeFormat =
+  | 'date-range'
+  | 'datetime-range'
+  | 'datetime-range-with-seconds'
+
 export const DYNAMIC_DATE_PREFIX = 'd_'
 export const DEFAULT_DATE_RANGE = 'last_30_days'
-const DATE_FORMAT = 'yyyy-MM-dd'
+export const DATETIME_FORMATS: Record<DateTimeFormat, string> = {
+  'date-range': 'yyyy-MM-dd',
+  'datetime-range': 'yyyy-MM-dd HH:mm',
+  'datetime-range-with-seconds': 'yyyy-MM-dd HH:mm:ss',
+}
 
 export const isDynamicDateRangePeriod = (value: string): boolean => {
   const re = new RegExp(`${DYNAMIC_DATE_PREFIX}[0-9a-z_]+`, 'i')
@@ -30,21 +39,28 @@ export const isDynamicDateRangePeriod = (value: string): boolean => {
 }
 
 export const getDynamicDateRangePeriod = (
-  value: string
+  value: string,
+  type: DateTimeFormat = 'date-range'
 ): { start: string | null; end: string | null } => {
   const range =
     DYNAMIC_DATE_RANGES[value.substring(DYNAMIC_DATE_PREFIX.length)].value()
 
-  return { start: range.start || null, end: range.end || null }
+  return {
+    start: getFormattedDate(range.start, type) || null,
+    end: getFormattedDate(range.end, type) || null,
+  }
 }
 
-const getFormattedDate = (moment = new Date()): string => {
-  return format(moment, DATE_FORMAT)
+const getFormattedDate = (
+  moment = new Date(),
+  dateTimeType: DateTimeFormat = 'date-range'
+): string => {
+  return format(moment, DATETIME_FORMATS[dateTimeType])
 }
 
 export const DYNAMIC_DATE_RANGES: Record<
   string,
-  { name: string; value: () => { start: string; end: string } }
+  { name: string; value: () => { start: Date; end: Date } }
 > = {
   // today: {
   //   name: 'Today',
@@ -52,8 +68,8 @@ export const DYNAMIC_DATE_RANGES: Record<
   //     const moment = new Date()
 
   //     return {
-  //       start: getFormattedDate(startOfDay(moment)),
-  //       end: getFormattedDate(endOfDay(moment)),
+  //       start: startOfDay(moment),
+  //       end: endOfDay(moment),
   //     }
   //   },
   // },
@@ -63,8 +79,8 @@ export const DYNAMIC_DATE_RANGES: Record<
   //     const moment = subDays(new Date(), 1)
 
   //     return {
-  //       start: getFormattedDate(startOfDay(moment)),
-  //       end: getFormattedDate(endOfDay(moment)),
+  //       start: startOfDay(moment)),
+  //       end: endOfDay(moment)),
   //     }
   //   },
   // },
@@ -74,8 +90,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfWeek(moment)),
-        end: getFormattedDate(endOfWeek(moment)),
+        start: startOfWeek(moment),
+        end: endOfWeek(moment),
       }
     },
   },
@@ -85,8 +101,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfMonth(moment)),
-        end: getFormattedDate(endOfMonth(moment)),
+        start: startOfMonth(moment),
+        end: endOfMonth(moment),
       }
     },
   },
@@ -96,8 +112,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfYear(moment)),
-        end: getFormattedDate(endOfYear(moment)),
+        start: startOfYear(moment),
+        end: endOfYear(moment),
       }
     },
   },
@@ -107,8 +123,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = subWeeks(new Date(), 1)
 
       return {
-        start: getFormattedDate(startOfWeek(moment)),
-        end: getFormattedDate(endOfWeek(moment)),
+        start: startOfWeek(moment),
+        end: endOfWeek(moment),
       }
     },
   },
@@ -118,8 +134,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = subMonths(new Date(), 1)
 
       return {
-        start: getFormattedDate(startOfMonth(moment)),
-        end: getFormattedDate(endOfMonth(moment)),
+        start: startOfMonth(moment),
+        end: endOfMonth(moment),
       }
     },
   },
@@ -129,8 +145,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = subYears(new Date(), 1)
 
       return {
-        start: getFormattedDate(startOfYear(moment)),
-        end: getFormattedDate(endOfYear(moment)),
+        start: startOfYear(moment),
+        end: endOfYear(moment),
       }
     },
   },
@@ -140,8 +156,8 @@ export const DYNAMIC_DATE_RANGES: Record<
   //     const moment = subHours(new Date(), 1)
 
   //     return {
-  //       start: getFormattedDate(startOfHour(moment)),
-  //       end: getFormattedDate(endOfHour(moment)),
+  //       start: startOfHour(moment)),
+  //       end: endOfHour(moment)),
   //     }
   //   },
   // },
@@ -151,8 +167,8 @@ export const DYNAMIC_DATE_RANGES: Record<
   //     const moment = new Date()
 
   //     return {
-  //       start: getFormattedDate(subHours(moment, 1)),
-  //       end: getFormattedDate(endOfHour(moment)),
+  //       start: subHours(moment, 1)),
+  //       end: endOfHour(moment)),
   //     }
   //   },
   // },
@@ -162,8 +178,8 @@ export const DYNAMIC_DATE_RANGES: Record<
   //     const moment = new Date()
 
   //     return {
-  //       start: getFormattedDate(subMinutes(moment, 60)),
-  //       end: getFormattedDate(moment),
+  //       start: subMinutes(moment, 60)),
+  //       end: moment),
   //     }
   //   },
   // },
@@ -173,8 +189,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subDays(moment, 7))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subDays(moment, 7)),
+        end: endOfDay(moment),
       }
     },
   },
@@ -184,8 +200,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subDays(moment, 14))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subDays(moment, 14)),
+        end: endOfDay(moment),
       }
     },
   },
@@ -195,8 +211,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subDays(moment, 30))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subDays(moment, 30)),
+        end: endOfDay(moment),
       }
     },
   },
@@ -206,8 +222,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subDays(moment, 60))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subDays(moment, 60)),
+        end: endOfDay(moment),
       }
     },
   },
@@ -217,8 +233,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subDays(moment, 90))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subDays(moment, 90)),
+        end: endOfDay(moment),
       }
     },
   },
@@ -228,8 +244,8 @@ export const DYNAMIC_DATE_RANGES: Record<
       const moment = new Date()
 
       return {
-        start: getFormattedDate(startOfDay(subMonths(moment, 12))),
-        end: getFormattedDate(endOfDay(moment)),
+        start: startOfDay(subMonths(moment, 12)),
+        end: endOfDay(moment),
       }
     },
   },
