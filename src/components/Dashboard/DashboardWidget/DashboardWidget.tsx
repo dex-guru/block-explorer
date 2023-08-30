@@ -1,5 +1,4 @@
 import { ChangeEventHandler, FC, Suspense, useState } from 'react'
-import Link from 'next/link'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import useSWRImmutable from 'swr/immutable'
