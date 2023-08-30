@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect } from 'react'
-import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import { tokensColumns } from './columns'
 import {
   TokenHoldingsModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
+import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
-import { IconNoData, IconRedash } from '@/components/Icons'
+import { IconNoData, IconWarehouse } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
@@ -90,16 +90,16 @@ export const TokensDataTable: FC<ITokensDataTableProps> = ({ address }) => {
       perPage={PER_PAGE}
       onPageChange={onPaginationChange}
       header={
-        <Link
-          className={styles.redash}
+        <Button
+          icon={<IconWarehouse />}
+          caption="SQL Query"
+          className={styles.warehouse}
           data-tooltip-id="app-tooltip"
           data-tooltip-content={`Open query in Warehouse`}
           target="_blank"
           rel="noreferrer noopener"
           href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/58`}
-        >
-          <IconRedash className={styles.redashIcon} />
-        </Link>
+        />
       }
       empty={{
         title: 'No transactions',
