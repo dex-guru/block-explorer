@@ -105,22 +105,14 @@
   line-height: 20px;
 }
 
-.redash {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-
-  &Icon {
-    width: 20px;
-    height: 20px;
-  }
+.warehouse {
+  composes: lg from '../Button/Button.module.scss';
+  composes: warehouse from '../Button/Button.module.scss';
+  margin: -8px 0;
 }
 
 .widget {
-  .redash {
+  .warehouse {
     @media (pointer: fine) {
       opacity: 0;
       visibility: hidden;
@@ -128,7 +120,7 @@
   }
 
   &:hover {
-    .redash {
+    .warehouse {
       opacity: 1;
       visibility: visible;
     }

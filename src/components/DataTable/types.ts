@@ -11,7 +11,6 @@ export type DataTableProps<T> = ITableProps<T> & {
   total?: number
   fullTotal?: number
   perPage?: number
-  showTools?: boolean
   getFullTotal?: () => void
   onPageChange: (variables: PaginationVariables) => void
 }

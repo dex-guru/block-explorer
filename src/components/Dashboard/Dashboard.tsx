@@ -1,9 +1,9 @@
 import { FC, useMemo, useState } from 'react'
-import Link from 'next/link'
+import { IconWarehouse } from '../Icons'
 import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
 import DashboardWidget from './DashboardWidget/DashboardWidget'
+import Button from '@/components/Button'
 import DetailsView from '@/components/DetailsView'
-import IconRedash from '@/images/redash.svg'
 import {
   DEFAULT_DATE_RANGE,
   DYNAMIC_DATE_PREFIX,
@@ -57,16 +57,15 @@ const Dashboard: FC<{
     <DetailsView
       title={name}
       header={
-        <Link
-          className={styles.redash}
+        <Button
+          className={styles.warehouse}
+          icon={<IconWarehouse />}
           data-tooltip-id="app-tooltip"
           data-tooltip-content={`Open ${name} in Warehouse`}
           target="_blank"
           rel="noreferrer noopener"
           href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
-        >
-          <IconRedash className={styles.redashIcon} />
-        </Link>
+        />
       }
     >
       {dashboardAnalyzer}

@@ -45,7 +45,6 @@ const DashboardWidgetTable: FC<{
           }
         }) || []
       }
-      showTools={false}
     />
   )
 }

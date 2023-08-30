@@ -8,8 +8,10 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
+import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
+import { IconWarehouse } from '@/components/Icons'
 import Page from '@/components/Page'
 import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import Summary from '@/components/Summary'
@@ -24,6 +26,7 @@ import {
   financialFormatLowValueHighPrecision,
 } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
+import styles from './Pages.module.scss'
 
 interface IBlocksProps {
   blocks: BlockModel[]
@@ -101,6 +104,18 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
           />
 
           <DataTable
+            header={
+              <Button
+                icon={<IconWarehouse />}
+                caption="SQL query"
+                data-tooltip-id="app-tooltip"
+                data-tooltip-content={`Open query in Warehouse`}
+                className={styles.warehouse}
+                target="_blank"
+                rel="noreferrer noopener"
+                href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/73`}
+              />
+            }
             isLoading={loading}
             columns={blocksColumns(props.chainConfig)}
             data={blocks}

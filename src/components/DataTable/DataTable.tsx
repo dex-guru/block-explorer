@@ -27,7 +27,6 @@ export function DataTable<T>(props: DataTableProps<T>) {
     getFullTotal,
     onPageChange,
     header,
-    showTools = true,
     ...tablePropsRest
   } = props
 
@@ -122,11 +121,9 @@ export function DataTable<T>(props: DataTableProps<T>) {
         {renderTotal()}
       </div>
       <div className={styles.pager}>{renderPagination()}</div>
-      {showTools && (
-        <div className={styles.tools}>
-          {!!header && <div className={styles.tools}>{header}</div>}
-        </div>
-      )}
+      <div className={styles.tools}>
+        {!!header && <div className={styles.tools}>{header}</div>}
+      </div>
     </div>
   )
 

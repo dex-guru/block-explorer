@@ -27,7 +27,7 @@ import IconUser from '@/images/icons/user.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 import IconWarning from '@/images/icons/warning.svg'
-import IconRedash from '@/images/redash.svg'
+import IconWarehouse from '@/images/warehouse.svg'
 
 export {
   IconArrowDown,
@@ -53,7 +53,7 @@ export {
   IconVerify,
   IconWallet,
   IconWatch,
-  IconRedash,
+  IconWarehouse,
   IconDanger,
   IconIdea,
   IconImpersonator,

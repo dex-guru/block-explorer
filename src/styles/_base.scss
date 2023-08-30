@@ -276,6 +276,10 @@ pre {
 }
 
 .recharts {
+  &-surface {
+    overflow: visible;
+  }
+
   &-cartesian-axis {
     text {
       font-size: 12px !important;

@@ -7,8 +7,9 @@ import styles from '../Dashboard.module.scss'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import DashboardWidgetTable from './DashboardWidgetTable'
+import Button from '@/components/Button'
 import Card from '@/components/Card'
-import { IconAgo, IconRedash, IconWatch } from '@/components/Icons'
+import { IconAgo, IconWarehouse, IconWatch } from '@/components/Icons'
 import Message from '@/components/Message'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
@@ -183,16 +184,16 @@ const DashboardWidget: FC<{
   }
 
   const tools = visualization?.query?.id ? (
-    <Link
+    <Button
+      icon={<IconWarehouse />}
+      caption="SQL query"
       data-tooltip-id="app-tooltip"
       data-tooltip-content={`Open ${visualization.query.name} query in Warehouse`}
-      className={styles.redash}
+      className={styles.warehouse}
       target="_blank"
       rel="noreferrer noopener"
       href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${visualization.query.id}`}
-    >
-      <IconRedash className={styles.redashIcon} />
-    </Link>
+    />
   ) : undefined
 
   return (

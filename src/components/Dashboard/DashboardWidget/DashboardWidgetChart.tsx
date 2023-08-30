@@ -94,25 +94,29 @@ const DashboardWidgetChart: FC<{
           />
         </div>
 
-        <ul className={styles.legend}>
-          {data?.rows.map((item, idx) => {
-            return (
-              <li
-                key={idx}
-                className={styles.entry}
-                style={
-                  {
-                    '--color': uniqolor(
-                      `${item[columnMapping.x[0]] || ''}${idx}`
-                    ).color,
-                  } as CSSProperties
-                }
-              >
-                {item[columnMapping.x[0]]}
-              </li>
-            )
-          })}
-        </ul>
+        {visualization.options?.legend?.enabled && (
+          <ul className={styles.legend}>
+            {data?.rows.map((item, idx) => {
+              return (
+                <li
+                  key={idx}
+                  className={styles.entry}
+                  style={
+                    {
+                      '--color': uniqolor(
+                        `${item[columnMapping.x[0]] || ''}${idx}`
+                      ).color,
+                    } as CSSProperties
+                  }
+                >
+                  <span className={styles.caption}>
+                    {item[columnMapping.x[0]]}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
     )
   }
