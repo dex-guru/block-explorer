@@ -11,6 +11,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   className,
   chainConfig,
   urlGenerator,
+  titleFormatter,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { loading, data } = useChainsWhen(isOpen)
@@ -52,7 +53,9 @@ const ChainSelect: FC<ChainSelectProps> = ({
                     width={32}
                     height={32}
                   />
-                  <span className={styles.caption}>{chain.name}</span>
+                  <span className={styles.caption}>
+                    {titleFormatter?.(chain) || chain.name}
+                  </span>
                 </Link>
               </li>
             )
@@ -72,7 +75,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
           height={32}
         />
       }
-      caption={chainConfig.name}
+      caption={titleFormatter?.(chainConfig) || chainConfig.name}
       onOpen={handleOpen}
       onClose={handleClose}
       isOpen={isOpen}

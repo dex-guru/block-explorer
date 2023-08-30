@@ -233,6 +233,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
               <ChainSelect
                 chainConfig={chainConfig}
                 className={styles.chains}
+                titleFormatter={(chain) => `${chain.name} Explorer`}
               />
             </li>
           </ul>
