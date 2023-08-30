@@ -4,4 +4,5 @@ export type ChainSelectProps = {
   className?: string
   chainConfig: ChainConfigModel
   urlGenerator?: (chain: ChainConfigModel) => string
+  titleFormatter?: (chain: ChainConfigModel) => string
 }
