@@ -11,18 +11,20 @@ import { internalTxsColumns } from '@/components/Table/columns/internalTxsColumn
 import { useIsMount } from '@/hooks'
 import { GET_INTERNAL_TXS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
-import styles from './TxInternalTxs.module.scss'
+import styles from './InternalTxs.module.scss'
 
 const PER_PAGE = 10
 
-interface ITxInternalTxsProps {
-  hash: string
+interface IInternalTxsProps {
+  hash?: string
+  address?: string
   chainConfig: ChainConfigModel
   chainStats: ChainStatsModel
 }
 
-export const TxInternalTxs: FC<ITxInternalTxsProps> = ({
+export const InternalTxs: FC<IInternalTxsProps> = ({
   hash,
+  address,
   chainConfig,
   chainStats,
 }) => {
@@ -34,6 +36,7 @@ export const TxInternalTxs: FC<ITxInternalTxsProps> = ({
     (vars?: Record<string, string | number | boolean>) => {
       return {
         hash: hash,
+        address: address,
 
         first: PER_PAGE,
         skip: 0,
@@ -41,7 +44,7 @@ export const TxInternalTxs: FC<ITxInternalTxsProps> = ({
         ...vars,
       }
     },
-    [hash]
+    [hash, address]
   )
 
   const onPaginationChange = useCallback(
@@ -82,7 +85,7 @@ export const TxInternalTxs: FC<ITxInternalTxsProps> = ({
   return (
     <DataTable
       isLoading={loading}
-      columns={internalTxsColumns(chainConfig, chainStats, true)}
+      columns={internalTxsColumns(chainConfig, chainStats, !!hash)}
       data={displayData?.internalTransactions?.data}
       total={displayData?.internalTransactions?.total}
       perPage={PER_PAGE}
@@ -95,4 +98,4 @@ export const TxInternalTxs: FC<ITxInternalTxsProps> = ({
   )
 }
 
-export default TxInternalTxs
+export default InternalTxs
