@@ -1,4 +1,5 @@
 import { CSSProperties, FC } from 'react'
+import clsx from 'clsx'
 import Heading from '../Heading'
 import { TooltipContentProps } from './types'
 import styles from './TooltipContent.module.scss'
@@ -23,7 +24,9 @@ const TooltipContent: FC<TooltipContentProps> = ({
             return (
               <li
                 key={idx}
-                className={styles.item}
+                className={clsx(styles.item, {
+                  [styles.hasColor]: !!item.color,
+                })}
                 style={{ '--color': item.color } as CSSProperties}
               >
                 <strong className={styles.key}>{item.title}</strong>{' '}

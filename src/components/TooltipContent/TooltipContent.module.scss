@@ -42,7 +42,7 @@
     border-radius: 50%;
   }
 
-  &:only-child {
+  &:only-child:not(.hasColor) {
     --color: var(--color-accent) !important;
   }
 }

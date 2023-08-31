@@ -37,7 +37,7 @@ const PieChart: FC<PieChartProps> = ({ data, className, options }) => {
             return {
               title: item.payload[options.nameKey],
               value: resultValue,
-              color: item.payload[options.nameKey],
+              color: uniqolor(item.payload[options.nameKey]).color,
             }
           })}
         />
