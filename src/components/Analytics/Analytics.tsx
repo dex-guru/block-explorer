@@ -15,6 +15,7 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   const [dashboardsData, setDashboardsData] = useState<
     TRedashDashboard[] | null
   >(null)
+  const [tab, setTab] = useState<number>(0)
 
   useEffect(() => {
     setIsMounted(true)
@@ -50,6 +51,10 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
     getData()
   }, [isMounted, tag])
 
+  useEffect(() => {
+    setTab(dashboardsData?.[0]?.id || 0)
+  }, [dashboardsData])
+
   if (!dashboardsData?.length) {
     return <LoadingCard />
   }
@@ -62,11 +67,17 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
     }
   })
 
+  const handleChange = (value: number) => {
+    setTab(value)
+  }
+
   return (
     <TabPanel
+      onChange={handleChange}
       tabs={tabs}
-      value={dashboardsData[0]?.id || ''}
+      value={tab}
       className={styles.container}
+      tabsClassName={styles.tabs}
     />
   )
 }

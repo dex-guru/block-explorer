@@ -1,8 +1,8 @@
 import { CSSProperties, FC, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import clsx from 'clsx'
+import { useDimensionsRef } from 'rooks'
 import { DropdownContentProps } from './types'
-import useDimensions from '@/hooks/useDimensions'
 import { getRootElement } from '@/lib/utils'
 import styles from './Dropdown.module.scss'
 
@@ -17,17 +17,8 @@ const DropdownContent: FC<DropdownContentProps> = ({
   isRight,
 }) => {
   const [isCurrentOpen, setIsCurrentOpen] = useState<boolean>(isOpen)
-  const { dimensions: rectButton, node: button } = useDimensions({
-    target: toggle,
-  })
-  const {
-    dimensions: rectDropdown,
-    node: dropdown,
-    ref: refDropdown,
-  } = useDimensions({
-    target: toggle,
-    liveMeasure: true,
-  })
+  const [refDropdown, rectDropdown, dropdown] = useDimensionsRef()
+
   const [isDropdownUp, setIsDropdownUp] = useState(false)
   const [dropdownCoord, setDropdownCoord] = useState<{
     top?: number
@@ -46,12 +37,14 @@ const DropdownContent: FC<DropdownContentProps> = ({
   }, [isCurrentOpen, onOpen, onClose])
 
   useEffect(() => {
-    if (!rectButton) {
+    if (!toggle || !rectDropdown) {
       setDropdownCoord(null)
     }
 
+    const rectButton = toggle?.getBoundingClientRect()
+
     const isTopLimit =
-      (rectButton.bottom || 0) + (rectDropdown?.height || 0) >
+      (rectButton?.bottom || 0) + (rectDropdown?.height || 0) >
       window.innerHeight
 
     setIsDropdownUp(isTopLimit)
@@ -65,13 +58,13 @@ const DropdownContent: FC<DropdownContentProps> = ({
         ? window.innerHeight - (rectButton?.top || 0)
         : undefined,
     })
-  }, [rectButton, rectDropdown, isRight])
+  }, [rectDropdown, toggle, isRight])
 
   const handleClickOutside = (event: Event): void => {
     if (
       !event.target ||
       !(
-        button?.contains(event.target as Node) ||
+        toggle?.contains(event.target as Node) ||
         dropdown?.contains(event.target as Node)
       )
     ) {
@@ -87,7 +80,7 @@ const DropdownContent: FC<DropdownContentProps> = ({
     }
   })
 
-  if (!button || !dropdown || !isCurrentOpen || !dropdownCoord) {
+  if (!isCurrentOpen || !dropdownCoord || !(content || children)) {
     return null
   }
 
@@ -111,7 +104,7 @@ const DropdownContent: FC<DropdownContentProps> = ({
           '--coord-bottom': dropdownCoord?.bottom
             ? `${dropdownCoord?.bottom}px`
             : undefined,
-          minWidth: rectButton?.width,
+          minWidth: toggle?.getBoundingClientRect()?.width || undefined,
         } as CSSProperties
       }
     >

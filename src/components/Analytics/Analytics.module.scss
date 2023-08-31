@@ -1,3 +1,7 @@
 .container {
   margin-top: 16px;
 }
+
+.tabs {
+  composes: inner from '../Tabs/Tabs.module.scss';
+}

@@ -493,13 +493,16 @@ const ContractView: FC<IContractViewProps> = ({
                 ? [
                     {
                       title: 'Transactions',
-                      tooltip: `Transactions where an EOA (Externally Owned Address aka a wallet address) sends ${chain.config.nativeCurrency.symbol} directly to another EOA.`,
+                      tooltip:
+                        'Transactions where the address is a sending party.',
                       value: '',
                       to: pathname,
                       content: <TxsDataTable address={address} />,
                     },
                     {
                       title: 'Token TXs (ERC-20)',
+                      tooltip:
+                        'On-chain events where the address either received or sent ERC-20 tokens.',
                       value: 'tokentxns',
                       to: { pathname, query: { tab: 'tokentxns' } },
                       content: <Erc20DataTable address={address} />,
