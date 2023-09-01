@@ -21,6 +21,7 @@ import { LoadingCard } from '@/components/Loading'
 import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
+import TxBalanceChanges from '@/components/TabContent/TxBalanceChanges'
 import TabPanel from '@/components/TabPanel'
 import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -168,6 +169,16 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   content: (
                     <Suspense fallback={<LoadingCard />}>
                       <TxInternalTxs hash={props.data.hash} {...props} />
+                    </Suspense>
+                  ),
+                },
+                {
+                  title: 'Balance Changes',
+                  value: 'balanceChanges',
+                  to: `${pathname}?tab=balanceChanges`,
+                  content: (
+                    <Suspense fallback={<LoadingCard />}>
+                      <TxBalanceChanges {...props} />
                     </Suspense>
                   ),
                 },
