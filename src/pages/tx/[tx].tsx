@@ -23,6 +23,7 @@ import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
 import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
+import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -54,64 +55,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
     props.data?.hash || 'not found'
   }`
 
-  const { chains, publicClient } = useMemo(() => {
-    const viemChainName = Object.keys(viemChains).find(
-      (chainName) => get(viemChains, chainName).id === props.chainConfig.chainId
-    )
-    const viemChain = viemChainName ? get(viemChains, viemChainName) : undefined
-    const currentChain = {
-      ...viemChain,
-      id: props.chainConfig.chainId,
-      name: props.chainConfig.name,
-      network: props.chainConfig.shortName,
-      nativeCurrency: props.chainConfig.nativeCurrency,
-      rpcUrls: {
-        default: {
-          http: props.chainConfig.rpc,
-        },
-        public: {
-          http: props.chainConfig.rpc,
-        },
-      },
-      blockExplorers: {
-        default: {
-          name: props.chainConfig.explorers[0].name,
-          url: props.chainConfig.explorers[0].url,
-        },
-      },
-    }
-
-    delete currentChain.fees
-
-    return configureChains([currentChain], [publicProvider()])
-  }, [
-    props.chainConfig.chainId,
-    props.chainConfig.explorers,
-    props.chainConfig.name,
-    props.chainConfig.nativeCurrency,
-    props.chainConfig.rpc,
-    props.chainConfig.shortName,
-  ])
-
-  const { connectors } = useMemo(
-    () =>
-      getDefaultWallets({
-        appName: 'Block Explorer',
-        chains,
-        projectId: WALLET_CONNECT_PROJECT_ID,
-      }),
-    [chains]
-  )
-
-  const wagmiConfig = useMemo(
-    () =>
-      createConfig({
-        autoConnect: true,
-        connectors,
-        publicClient,
-      }),
-    [connectors, publicClient]
-  )
+  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
 
   return (
     <>

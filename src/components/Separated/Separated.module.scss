@@ -16,14 +16,18 @@
   align-items: center;
   position: relative;
 
-  &:not(:last-child) {
-    padding-right: 17px;
+  &:empty {
+    display: none;
+  }
+
+  &:not(:first-child) {
+    padding-left: 17px;
 
     &::after {
       content: '';
       position: absolute;
       border-right: 1px var(--color-separator) solid;
-      right: 0;
+      left: 0;
       top: 50%;
       margin-top: -12px;
       height: 24px;

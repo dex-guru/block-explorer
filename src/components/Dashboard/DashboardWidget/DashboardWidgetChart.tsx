@@ -141,7 +141,9 @@ const DashboardWidgetChart: FC<{
       return {
         id: col,
         data: data?.rows || [],
-        color: uniqolor(`${idx}-${col}`).color,
+        color:
+          visualization.options?.seriesOptions?.[entity?.name]?.color ||
+          uniqolor(`${idx}-${col}`).color,
         name: entityTitle,
         key: entity?.name,
         className: `has-color ${entity?.name}`,

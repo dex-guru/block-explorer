@@ -21,6 +21,7 @@ export const CHAIN_HEALTH = gql`
       number
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -77,6 +78,7 @@ export const CHAIN_STATS = gql`
       volume24hUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -128,6 +130,7 @@ export const GET_TRANSACTIONS_STATS = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -202,6 +205,7 @@ export const GET_TRANSACTIONS = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -256,6 +260,7 @@ export const GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -341,6 +346,7 @@ export const GET_BLOCKS = gql`
       lastBlockNumber
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -427,6 +433,7 @@ export const GET_TOP_TOKENS = gql`
       total
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -493,6 +500,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -554,6 +562,7 @@ export const GET_TRANSACTION_LOGS = gql`
       }
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -595,6 +604,7 @@ export const GET_TRANSACTION_TRACES = gql`
       tracesJSON
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -658,6 +668,7 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -709,6 +720,7 @@ export const GET_CSR_STATS = gql`
       sumContracts
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -766,6 +778,7 @@ export const GET_ADDRESS_INFO = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -840,6 +853,7 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
       totalStable
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -1121,6 +1135,7 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         : ''
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
       chain
       chainColor
       chainId
@@ -1208,6 +1223,7 @@ export const GET_COSMOS_TRANSACTIONS = gql`
 export const GET_CHAIN_CONFIG = gql`
 query ChainConfig {
   chainConfig(chainId: ${CHAIN_ID}){
+    blockTime
     chain
     chainColor
     chainId
