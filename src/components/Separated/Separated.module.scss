@@ -4,8 +4,9 @@
 .list {
   display: flex;
   flex-flow: row wrap;
-  gap: 16px;
-  margin: 0 -16px 0 0;
+  gap: 16px 17px;
+  margin: 0 0 0 -16px;
+  overflow: hidden;
   padding: 0;
   list-style: none;
 }
@@ -15,23 +16,20 @@
   display: flex;
   align-items: center;
   position: relative;
+  padding-left: 16px;
 
   &:empty {
     display: none;
   }
 
-  &:not(:first-child) {
-    padding-left: 17px;
-
-    &::after {
-      content: '';
-      position: absolute;
-      border-right: 1px var(--color-separator) solid;
-      left: 0;
-      top: 50%;
-      margin-top: -12px;
-      height: 24px;
-      width: 0;
-    }
+  &:not(:first-child)::after {
+    content: '';
+    position: absolute;
+    border-right: 1px var(--color-separator) solid;
+    left: -1px;
+    top: 50%;
+    margin-top: -12px;
+    height: 24px;
+    width: 0;
   }
 }

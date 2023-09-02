@@ -1,14 +1,9 @@
-import { Suspense, useMemo } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
-import { getDefaultWallets } from '@rainbow-me/rainbowkit'
-import { publicProvider } from '@wagmi/core/providers/public'
-import { get } from 'lodash'
-import * as viemChains from 'viem/chains'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -22,8 +17,6 @@ import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
-import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -54,8 +47,6 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
   }`
-
-  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
 
   return (
     <>
@@ -98,11 +89,9 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: '',
                   to: pathname,
                   content: (
-                    <WagmiConfig config={wagmiConfig}>
-                      <Suspense fallback={<LoadingCard />}>
-                        <TxOverview {...props} />
-                      </Suspense>
-                    </WagmiConfig>
+                    <Suspense fallback={<LoadingCard />}>
+                      <TxOverview {...props} />
+                    </Suspense>
                   ),
                 },
                 {

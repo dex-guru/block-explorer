@@ -67,5 +67,5 @@ export const useWagmiConfig = (chainConfig: ChainConfigModel) => {
     [connectors, publicClient]
   )
 
-  return { wagmiConfig, chains }
+  return { wagmiConfig, chains, publicClient, publicProvider }
 }
