@@ -37,13 +37,14 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
     high: number
   } | null>(null)
 
+  const low = Math.ceil(((gasData?.base || 0) + (gasData?.low || 0)) / 10 ** 9)
+  const high = Math.ceil(
+    ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
+  )
+
   const pageTitle = `${chainConfig.name} Gas Tracker${
     gasData
-      ? `: ${Math.ceil(
-          ((gasData?.base || 0) + (gasData?.low || 0)) / 10 ** 9
-        )} – ${Math.ceil(
-          ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
-        )} ${chainConfig.gasUnit}`
+      ? `: ${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit}`
       : ''
   }`
 

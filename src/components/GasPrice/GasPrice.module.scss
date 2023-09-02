@@ -13,6 +13,10 @@
   display: flex;
   flex-flow: column;
   gap: 16px;
+
+  @media (max-width: 720px) {
+    flex-basis: 100%;
+  }
 }
 
 .header {

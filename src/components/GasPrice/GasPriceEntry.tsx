@@ -29,7 +29,7 @@ const GasPriceEntry: FC<{
   base?: number
   className?: string
 }> = ({ chainConfig, type, value, base, className }) => {
-  const calcValue = new BigNumber(base && value ? base + value : 0)
+  const bigValue = new BigNumber(base && value ? base + value : 0)
 
   return (
     <div className={clsx(styles.entry, className)}>
@@ -42,7 +42,7 @@ const GasPriceEntry: FC<{
         />
         <Value
           className={clsx(styles.value, styles[type])}
-          value={Math.ceil(calcValue.shiftedBy(-9).toNumber()) || '–'}
+          value={Math.ceil(bigValue.shiftedBy(-9).toNumber()) || '–'}
           suffix={<>&nbsp;{chainConfig.gasUnit}</>}
         />
       </div>
