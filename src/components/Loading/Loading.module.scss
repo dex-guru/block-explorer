@@ -4,7 +4,7 @@
   margin: 0;
 
   &:indeterminate {
-    animation: progress-indeterminate 1.5s linear infinite;
+    animation: progress-indeterminate var(--speed-loader, 1.5s) linear infinite;
     background: var(--color-bg)
       linear-gradient(to right, var(--color-accent) 30%, var(--color-bg) 30%)
       top left / 150% 150% no-repeat;

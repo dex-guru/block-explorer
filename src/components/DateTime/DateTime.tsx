@@ -1,5 +1,6 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import clsx from 'clsx'
+import { useIntervalWhen } from 'rooks'
 import { DateTimeProps } from './types'
 import styles from './DateTime.module.scss'
 
@@ -9,11 +10,28 @@ const DateTime: FC<DateTimeProps> = ({
   showTime = true,
   className,
 }) => {
-  if (!timestamp || (!showDate && !showTime)) {
+  const [date, setDate] = useState<Date>()
+
+  useEffect(() => {
+    if (!timestamp) {
+      return
+    }
+
+    setDate(new Date(timestamp * 1000))
+  }, [timestamp])
+
+  useIntervalWhen(
+    () => {
+      setDate(new Date())
+    },
+    1000,
+    typeof timestamp === 'undefined',
+    true
+  )
+
+  if (!date || (!showDate && !showTime)) {
     return null
   }
-
-  const date = new Date(timestamp * 1000)
 
   let method: 'toLocaleString' | 'toLocaleTimeString' | 'toLocaleDateString' =
     'toLocaleString'
