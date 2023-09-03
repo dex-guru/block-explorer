@@ -1,82 +1,212 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import { balanceChangesColumns } from '../Table/columns/balanceChangesColumns'
+import BigNumber from 'bignumber.js'
+import clsx from 'clsx'
+import Address from '../Address'
+import { IconEmpty } from '../Icons'
+import { LoadingCard } from '../Loading'
+import StateView from '../StateView'
+import Table from '../Table'
 import {
   ChainConfigModel,
-  ChainStatsModel,
+  DecodedInputModel,
+  LogModel,
   TransactionModel,
-  TransactionTraceModel,
 } from '@/__generated__/resolvers-types'
 import Card from '@/components/Card'
-import { IconNoData } from '@/components/Icons'
-import { LoadingCard } from '@/components/Loading'
-import StateView from '@/components/StateView'
-import Table from '@/components/Table'
-import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
-import styles from './TxTrace.module.scss'
+import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
+import { arrayUniqueValues, getNormalizedValue } from '@/lib/utils'
+import styles from './TxBalanceChanges.module.scss'
+
+type BalanceRow = {
+  address: string
+  token: string
+  tokenId?: string
+  change: BigNumber
+  row: DecodedInputModel
+}
+
+type BalancesPerAddress = {
+  address: string
+  tokens: Array<string>
+  tokenIds?: Array<string>
+  balances: Array<BigNumber>
+  rows: DecodedInputModel[]
+}
+
+const parseLogs = (logs: LogModel[]): BalanceRow[] => {
+  const result: BalanceRow[] = []
+
+  logs.forEach((log) => {
+    if (!log.decodedInput) {
+      return
+    }
+
+    const from = log.decodedInput.find(
+      (row) => row.type === 'address' && ['from', 'sender'].includes(row.name)
+    )?.value
+    const to = log.decodedInput.find(
+      (row) => row.type === 'address' && row.name === 'to'
+    )?.value
+    const token = log.address
+
+    log.decodedInput
+      .filter((row) => row.name === 'value' || row.name.startsWith('amount'))
+      .forEach((row) => {
+        const value = row.value
+        const bigValue = new BigNumber(value || 0)
+
+        result.push({
+          address:
+            (row.name === 'value' || row.name.endsWith('In') ? from : to) || '',
+          change: bigValue.multipliedBy(-1),
+          token,
+          row,
+        })
+        result.push({
+          address:
+            (row.name === 'value' || row.name.endsWith('Out') ? to : from) ||
+            '',
+          change: bigValue,
+          token,
+          row,
+        })
+      })
+  })
+
+  return result.filter((row) => !!row.address)
+}
 
 const TxBalanceChanges: FC<{
   data: TransactionModel
   chainConfig: ChainConfigModel
-  chainStats: ChainStatsModel
-}> = ({ data, chainConfig, chainStats }) => {
+}> = ({ data }) => {
   const hash = data?.hash
 
-  const [getTraces, { data: traceData, loading, called }] = useLazyQuery<{
-    traces: TransactionTraceModel
-  }>(GET_TRANSACTION_TRACES)
+  const [getLogs, { data: logsData, loading }] = useLazyQuery<{
+    logs: LogModel[]
+  }>(GET_TRANSACTION_LOGS)
 
   useEffect(() => {
-    getTraces({ variables: { hash } })
-  }, [getTraces, hash])
+    getLogs({ variables: { hash } })
+  }, [getLogs, hash])
 
-  if (!called || loading) {
+  if (!hash || (!loading && !logsData?.logs?.length)) {
+    return <StateView icon={<IconEmpty />} title="No TX logs was found" />
+  }
+
+  if (hash && loading) {
     return <LoadingCard />
   }
 
-  const renderEmpty = () => <StateView title="This transaction left no trace" />
-  const renderError = () => (
-    <StateView
-      icon={<IconNoData className={styles.icon} />}
-      className={styles.error}
-      title="Error while receiving trace info"
-      subtitle={`for ${hash}`}
-      actions={[
-        {
-          className: styles.retry,
-          caption: 'Retry?',
-          onClick: () => getTraces({ variables: { hash } }),
-        },
-      ]}
-    />
-  )
+  const parsedArr = parseLogs(logsData?.logs || [])
+  const addresses = arrayUniqueValues(parsedArr.map((row) => row.address))
+  const tableData = addresses
+    .map((address) => {
+      const result: BalancesPerAddress = {
+        address: address as string,
+        tokens: [],
+        tokenIds: [],
+        balances: [],
+        rows: [],
+      }
 
-  if (called && !traceData) {
-    return renderError()
-  }
+      parsedArr
+        .filter((row) => row.address === address)
+        .forEach((row) => {
+          const tokenIdx = result.tokens.findIndex(
+            (token) => token === row.token
+          )
+          if (tokenIdx >= 0 && result.balances[tokenIdx]) {
+            result.balances[tokenIdx] = result.balances[tokenIdx].plus(
+              row.change
+            )
+          } else {
+            result.tokens.push(row.token)
+            result.balances.push(row.change)
+            result.tokenIds?.push(row.tokenId || '')
+          }
+        })
 
-  if (!traceData?.traces?.tracesJSON) {
-    return renderEmpty()
-  }
+      const zeroIdxs = result.balances
+        .map((balance, idx) => (balance.isZero() ? idx : null))
+        .filter((el) => el !== null)
 
-  let tracesObj = null
+      zeroIdxs.reverse().forEach((idx) => {
+        result.balances = result.balances.filter((_, idx2) => idx2 !== idx)
+        result.tokens = result.tokens.filter((_, idx2) => idx2 !== idx)
+        result.tokenIds = result.tokenIds?.filter((_, idx2) => idx2 !== idx)
+      })
 
-  try {
-    tracesObj = JSON.parse(traceData?.traces?.tracesJSON)
-  } catch (e) {
-    console.error(e)
-    renderError()
-  }
+      return result
+    })
+    .filter((row) => row.balances.length)
 
-  if (!tracesObj) {
-    return renderEmpty()
-  }
+  // console.log(tableData)
 
   return (
     <Card>
       <Table
-        columns={balanceChangesColumns(chainConfig, chainStats)}
-        data={[]}
+        data={tableData}
+        columns={[
+          {
+            accessor: 'address',
+            title: 'Address',
+            render: (row) => (
+              <Address address={row.address} type="account" isCopy />
+            ),
+          },
+          {
+            accessor: 'tokens',
+            title: 'Token',
+            tooltip: '?',
+            render: (row) => (
+              <ul className={styles.data}>
+                {row.tokens?.map((token, idx) => (
+                  <li className={styles.dataRow} key={idx}>
+                    <Address address={token} type="token" isCopy />
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+          {
+            accessor: 'tokenIds',
+            title: 'Token ID',
+            render: (row) => (
+              <ul className={styles.data}>
+                {row.tokenIds?.map((id, idx) => (
+                  <li className={styles.dataRow} key={idx}>
+                    {id || ''}
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+          {
+            accessor: 'balances',
+            title: 'Balance',
+            render: (row) => (
+              <ul className={styles.data}>
+                {row.balances?.map((balance, idx) => (
+                  <li
+                    className={clsx(
+                      styles.dataRow,
+                      { [styles.negative]: balance.isNegative() },
+                      { [styles.positive]: balance.isPositive() }
+                    )}
+                    key={idx}
+                  >
+                    {getNormalizedValue(balance, 18, {
+                      highPrecession: true,
+                    }) || ''}
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+        ]}
+        className={styles.table}
       />
     </Card>
   )

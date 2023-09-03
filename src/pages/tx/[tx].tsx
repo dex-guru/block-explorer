@@ -18,6 +18,7 @@ import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
+import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -25,12 +26,10 @@ import { getLogger } from '@/lib/logger'
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
-const TxInternalTxs = dynamic(
-  () => import('@/components/TabContent/TxInternalTxs')
-)
 const TxBalanceChanges = dynamic(
   () => import('@/components/TabContent/TxBalanceChanges')
 )
+const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 
 export const MAX_EVENTS_PER_PAGE = 10
 
@@ -108,7 +107,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   to: `${pathname}?tab=internal`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <TxInternalTxs hash={props.data.hash} {...props} />
+                      <InternalTxs hash={props.data.hash} {...props} />
                     </Suspense>
                   ),
                 },

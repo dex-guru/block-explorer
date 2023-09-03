@@ -199,7 +199,7 @@ const TxOverview: FC<{
       tooltip:
         'The receiving party of the transaction (could be a contract address).',
       value: data.toAddress ? (
-        <div>
+        <Separated>
           <Address
             address={data.toAddress}
             type="account"
@@ -207,7 +207,7 @@ const TxOverview: FC<{
             isCopy
           />
           <EnsName chainConfig={chainConfig} address={data.toAddress} isTag />
-        </div>
+        </Separated>
       ) : null,
     },
   ]
