@@ -24,9 +24,7 @@ import { getLogger } from '@/lib/logger'
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
-const TxInternalTxs = dynamic(
-  () => import('@/components/TabContent/TxInternalTxs')
-)
+const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 
 export const MAX_EVENTS_PER_PAGE = 10
 
@@ -100,7 +98,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   to: `${pathname}?tab=internal`,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <TxInternalTxs hash={props.data.hash} {...props} />
+                      <InternalTxs hash={props.data.hash} {...props} />
                     </Suspense>
                   ),
                 },

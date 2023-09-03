@@ -53,6 +53,7 @@ const Erc20DataTable = dynamic(
   () => import('@/components/Tables/Erc20DataTable')
 )
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
+const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
 
 const ContractTab = dynamic(() => import('./ContractTab'))
@@ -498,6 +499,18 @@ const ContractView: FC<IContractViewProps> = ({
                       value: '',
                       to: pathname,
                       content: <TxsDataTable address={address} />,
+                    },
+                    {
+                      title: 'Internal Transactions',
+                      value: 'txsinternal',
+                      to: { pathname, query: { tab: 'txsinternal' } },
+                      content: (
+                        <InternalTxs
+                          chainConfig={chain.config}
+                          chainStats={chain.stats}
+                          address={address.toLowerCase()}
+                        />
+                      ),
                     },
                     {
                       title: 'Token TXs (ERC-20)',
