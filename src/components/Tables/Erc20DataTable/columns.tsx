@@ -6,7 +6,6 @@ import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
 import TimeAgo from '@/components/TimeAgo'
 import Token from '@/components/Token'
-import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './Erc20DataTable.module.scss'
 
@@ -16,11 +15,11 @@ export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
     title: 'TX Hash',
     modifier: 'address',
     render: (data) => (
-      <div className={styles.data}>
-        <div className={styles.dataRow}>
+      <ul className={styles.data}>
+        <li className={styles.dataRow}>
           <Address address={data.hash} type="tx" isCopy />
-        </div>
-      </div>
+        </li>
+      </ul>
     ),
   },
   {
@@ -61,47 +60,39 @@ export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
     accessor: 'blockTimestamp',
     title: 'Age',
     render: (data) => (
-      <div className={styles.data}>
-        <div className={styles.dataRow}>
+      <ul className={styles.data}>
+        <li className={styles.dataRow}>
           <TimeAgo timestamp={data.blockTimestamp} />
-        </div>
-      </div>
+        </li>
+      </ul>
     ),
   },
   {
     accessor: 'fromAddress',
-    title: (
-      <>
-        Address Out{' '}
-        <TooltipAnchor tooltip="The address where the token(s) were sent from." />
-      </>
-    ),
+    title: 'Address Out',
+    tooltip: 'The address where the token(s) were sent from.',
     modifier: 'address',
     render: (data) =>
       data.fromAddress ? (
-        <div className={styles.data}>
-          <div className={styles.dataRow}>
+        <ul className={styles.data}>
+          <li className={styles.dataRow}>
             <Address address={data.fromAddress} type="account" isCopy />
-          </div>
-        </div>
+          </li>
+        </ul>
       ) : null,
   },
   {
     accessor: 'toAddress',
-    title: (
-      <>
-        Address In{' '}
-        <TooltipAnchor tooltip="The address that received the token(s)." />
-      </>
-    ),
+    title: 'Address In',
+    tooltip: 'The address that received the token(s).',
     modifier: 'address',
     render: (data) =>
       data.toAddress ? (
-        <div className={styles.data}>
-          <div className={styles.dataRow}>
+        <ul className={styles.data}>
+          <li className={styles.dataRow}>
             <Address address={data.toAddress} type="account" isCopy />
-          </div>
-        </div>
+          </li>
+        </ul>
       ) : null,
   },
   {
@@ -115,19 +106,19 @@ export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <div className={styles.dataNumber}>
                   {financialFormatLowValueHighPrecision(data.amounts[idx], {
                     highPrecession: true,
                   })}
                 </div>
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },
@@ -141,20 +132,20 @@ export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <Token
                   address={addr}
                   name={data.tokenNames[idx]}
                   logo={data.tokenLogos[idx]}
                   symbol={data.tokenSymbols[idx]}
                 />
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },

@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { GetFeeHistoryReturnType } from 'viem'
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
@@ -373,4 +374,44 @@ export const formatAutoDetect = (
   }
 
   return valueStr
+}
+
+export const formatFeeHistory = (
+  result: GetFeeHistoryReturnType,
+  includePending: boolean
+) => {
+  let blockNum = result.oldestBlock
+  let index = 0
+  const historicalBlocks = result?.gasUsedRatio?.length || 0
+  const blocks = []
+
+  while (blockNum < result.oldestBlock + BigInt(historicalBlocks)) {
+    blocks.push({
+      number: blockNum,
+      baseFeePerGas: Number(result.baseFeePerGas[index]),
+      gasUsedRatio: Number(result.gasUsedRatio[index]),
+      priorityFeePerGas: result.reward?.[index].map((x) => Number(x)),
+    })
+    blockNum += 1n
+    index += 1
+  }
+
+  if (includePending) {
+    blocks.push({
+      number: 'pending',
+      baseFeePerGas: Number(result.baseFeePerGas[historicalBlocks]),
+      gasUsedRatio: NaN,
+      priorityFeePerGas: [],
+    })
+  }
+  return blocks
+}
+
+export const avg = (arr: number[]) => {
+  const sum = arr.reduce((a, v) => a + v)
+  return Math.round(sum / arr.length)
+}
+
+export const arrayUniqueValues = (arr: unknown[]) => {
+  return [...new Set(arr)]
 }

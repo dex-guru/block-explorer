@@ -1,0 +1,15 @@
+.data {
+  composes: data from '../Table/Table.module.scss';
+}
+
+.dataRow {
+  composes: dataRow from '../Table/Table.module.scss';
+}
+
+.negative {
+  color: var(--color-danger);
+}
+
+.positive {
+  color: var(--color-success);
+}

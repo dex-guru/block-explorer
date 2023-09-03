@@ -91,19 +91,19 @@ export const dexTradesColumns = (
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <div className={styles.dataNumber}>
                   {financialFormatLowValueHighPrecision(data.amounts[idx], {
                     highPrecession: true,
                   })}
                 </div>
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },
@@ -132,20 +132,20 @@ export const dexTradesColumns = (
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <Token
                   address={data.tokenAddresses[idx]}
                   name={data.tokenNames[idx]}
                   symbol={data.tokenSymbols[idx]}
                   logo={data.tokenLogos[idx]}
                 />
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },
@@ -175,19 +175,19 @@ export const dexTradesColumns = (
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <div className={styles.dataNumber}>
                   {financialFormatLowValueHighPrecision(data.amounts[idx], {
                     highPrecession: true,
                   })}
                 </div>
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },
@@ -216,20 +216,20 @@ export const dexTradesColumns = (
       }
 
       return (
-        <div className={styles.data}>
+        <ul className={styles.data}>
           {data.tokenAddresses?.map((addr, idx) => {
             return (
-              <div className={styles.dataRow} key={idx}>
+              <li className={styles.dataRow} key={idx}>
                 <Token
                   address={data.tokenAddresses[idx]}
                   name={data.tokenNames[idx]}
                   symbol={data.tokenSymbols[idx]}
                   logo={data.tokenLogos[idx]}
                 />
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )
     },
   },

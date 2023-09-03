@@ -1,14 +1,10 @@
-import { Suspense, useMemo } from 'react'
+import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
-import { getDefaultWallets } from '@rainbow-me/rainbowkit'
-import { publicProvider } from '@wagmi/core/providers/public'
-import { get } from 'lodash'
-import * as viemChains from 'viem/chains'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { WagmiConfig } from 'wagmi'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -21,9 +17,7 @@ import { LoadingCard } from '@/components/Loading'
 import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
-import TxBalanceChanges from '@/components/TabContent/TxBalanceChanges'
 import TabPanel from '@/components/TabPanel'
-import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -33,6 +27,9 @@ const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
 const TxInternalTxs = dynamic(
   () => import('@/components/TabContent/TxInternalTxs')
+)
+const TxBalanceChanges = dynamic(
+  () => import('@/components/TabContent/TxBalanceChanges')
 )
 
 export const MAX_EVENTS_PER_PAGE = 10
@@ -46,6 +43,8 @@ interface ITxProps {
 
 const TxPage: NextPage<ITxProps> = (props) => {
   const router = useRouter()
+  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
+
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
@@ -54,65 +53,6 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
   }`
-
-  const { chains, publicClient } = useMemo(() => {
-    const viemChainName = Object.keys(viemChains).find(
-      (chainName) => get(viemChains, chainName).id === props.chainConfig.chainId
-    )
-    const viemChain = viemChainName ? get(viemChains, viemChainName) : undefined
-    const currentChain = {
-      ...viemChain,
-      id: props.chainConfig.chainId,
-      name: props.chainConfig.name,
-      network: props.chainConfig.shortName,
-      nativeCurrency: props.chainConfig.nativeCurrency,
-      rpcUrls: {
-        default: {
-          http: props.chainConfig.rpc,
-        },
-        public: {
-          http: props.chainConfig.rpc,
-        },
-      },
-      blockExplorers: {
-        default: {
-          name: props.chainConfig.explorers[0].name,
-          url: props.chainConfig.explorers[0].url,
-        },
-      },
-    }
-
-    delete currentChain.fees
-
-    return configureChains([currentChain], [publicProvider()])
-  }, [
-    props.chainConfig.chainId,
-    props.chainConfig.explorers,
-    props.chainConfig.name,
-    props.chainConfig.nativeCurrency,
-    props.chainConfig.rpc,
-    props.chainConfig.shortName,
-  ])
-
-  const { connectors } = useMemo(
-    () =>
-      getDefaultWallets({
-        appName: 'Block Explorer',
-        chains,
-        projectId: WALLET_CONNECT_PROJECT_ID,
-      }),
-    [chains]
-  )
-
-  const wagmiConfig = useMemo(
-    () =>
-      createConfig({
-        autoConnect: true,
-        connectors,
-        publicClient,
-      }),
-    [connectors, publicClient]
-  )
 
   return (
     <>
@@ -155,11 +95,11 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   value: '',
                   to: pathname,
                   content: (
-                    <WagmiConfig config={wagmiConfig}>
-                      <Suspense fallback={<LoadingCard />}>
+                    <Suspense fallback={<LoadingCard />}>
+                      <WagmiConfig config={wagmiConfig}>
                         <TxOverview {...props} />
-                      </Suspense>
-                    </WagmiConfig>
+                      </WagmiConfig>
+                    </Suspense>
                   ),
                 },
                 {

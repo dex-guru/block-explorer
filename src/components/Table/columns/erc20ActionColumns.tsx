@@ -6,7 +6,7 @@ import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import { financialFormat } from '@/lib/utils'
-import stylesTabel from '@/components/Table/Table.module.scss'
+import stylesTable from '@/components/Table/Table.module.scss'
 import styles from '@/pages/Pages.module.scss'
 
 export const erc20ActionColumns = (
@@ -67,17 +67,17 @@ export const erc20ActionColumns = (
     type: 'number',
     modifier: 'tokenAmount',
     render: (data) => (
-      <div className={stylesTabel.data}>
+      <ul className={stylesTable.data}>
         {data.amounts.map((amount, idx) => {
           return (
-            <div className={stylesTabel.dataRow} key={idx}>
-              <div className={stylesTabel.dataNumber}>
+            <li className={stylesTable.dataRow} key={idx}>
+              <div className={stylesTable.dataNumber}>
                 {financialFormat(amount)}
               </div>
-            </div>
+            </li>
           )
         })}
-      </div>
+      </ul>
     ),
   },
   {
@@ -85,20 +85,20 @@ export const erc20ActionColumns = (
     type: 'text',
     modifier: 'tokenSymbol',
     render: (data) => (
-      <div className={stylesTabel.data}>
+      <ul className={stylesTable.data}>
         {data.amounts.map((amount, idx) => {
           return (
-            <div className={stylesTabel.dataRow} key={idx}>
+            <li className={stylesTable.dataRow} key={idx}>
               <Token
                 address={data.tokenAddresses[idx]}
                 logo={data.tokenLogos[idx]}
                 symbol={data.tokenSymbols[idx]}
                 name={data.tokenNames[idx]}
               />
-            </div>
+            </li>
           )
         })}
-      </div>
+      </ul>
     ),
   },
 ]
