@@ -1,70 +1,68 @@
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import BigNumber from 'bignumber.js'
+import { clsx } from 'clsx'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
-import { TokenProps } from '@/components/Token'
-import Token from '@/components/Token/Token'
+import { getNormalizedValue } from '@/lib/utils'
+import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 
-export const balanceChangesColumns = (
-  chainConfig?: ChainConfigModel,
-  chainStats?: ChainStatsModel
-): IColumn<{
+export const balanceChangesColumns: IColumn<{
   address: string
-  tokens: TokenProps[]
-  tokenIds: string[]
-  balances: number[]
-}>[] => [
+  tokens: string[]
+  tokenIds?: string[]
+  balances: BigNumber[]
+}>[] = [
   {
     accessor: 'address',
     title: 'Address',
-    modifier: 'address',
-    render: (data) => <Address address={data.address} type="tx" isCopy />,
+    render: (row) => <Address address={row.address} type="account" isCopy />,
   },
   {
     accessor: 'tokens',
     title: 'Token',
-    modifier: 'token',
-    render: (data) => (
-      <>
-        {data.tokens?.map((token, idx) => (
-          <Token {...token} key={idx} />
+    tooltip: '?',
+    render: (row) => (
+      <ul className={styles.data}>
+        {row.tokens?.map((token, idx) => (
+          <li className={styles.dataRow} key={idx}>
+            <Address address={token} type="token" isCopy />
+          </li>
         ))}
-      </>
+      </ul>
     ),
   },
   {
     accessor: 'tokenIds',
     title: 'Token ID',
-    render: (data) => (
-      <>
-        {data.tokenIds?.map((tokenID, idx) => (
-          <span key={idx}>{tokenID}</span>
+    render: (row) => (
+      <ul className={styles.data}>
+        {row.tokenIds?.map((id, idx) => (
+          <li className={styles.dataRow} key={idx}>
+            {id || ''}
+          </li>
         ))}
-      </>
+      </ul>
     ),
   },
   {
     accessor: 'balances',
     title: 'Balance',
-    render: (data) => (
-      <>
-        {data.balances?.map((balance, idx) => (
-          <span key={idx}>{balance}</span>
+    render: (row) => (
+      <ul className={styles.data}>
+        {row.balances?.map((balance, idx) => (
+          <li
+            className={clsx(
+              styles.dataRow,
+              { [styles.negative]: balance.isNegative() },
+              { [styles.positive]: balance.isPositive() }
+            )}
+            key={idx}
+          >
+            {getNormalizedValue(balance, 18, {
+              highPrecession: true,
+            }) || ''}
+          </li>
         ))}
-      </>
-    ),
-  },
-  {
-    accessor: 'balances',
-    title: 'Value',
-    render: (data) => (
-      <>
-        {data.balances?.map((balance, idx) => (
-          <span key={idx}>{balance}</span>
-        ))}
-      </>
+      </ul>
     ),
   },
 ]

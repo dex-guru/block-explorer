@@ -1,12 +1,6 @@
 import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
-import clsx from 'clsx'
-import Address from '../Address'
-import { IconEmpty } from '../Icons'
-import { LoadingCard } from '../Loading'
-import StateView from '../StateView'
-import Table from '../Table'
 import {
   ChainConfigModel,
   DecodedInputModel,
@@ -14,8 +8,13 @@ import {
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import Card from '@/components/Card'
+import { IconEmpty } from '@/components/Icons'
+import { LoadingCard } from '@/components/Loading'
+import StateView from '@/components/StateView'
+import Table from '@/components/Table'
+import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
 import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
-import { arrayUniqueValues, getNormalizedValue } from '@/lib/utils'
+import { arrayUniqueValues } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
 
 type BalanceRow = {
@@ -142,70 +141,11 @@ const TxBalanceChanges: FC<{
     })
     .filter((row) => row.balances.length)
 
-  // console.log(tableData)
-
   return (
     <Card>
       <Table
         data={tableData}
-        columns={[
-          {
-            accessor: 'address',
-            title: 'Address',
-            render: (row) => (
-              <Address address={row.address} type="account" isCopy />
-            ),
-          },
-          {
-            accessor: 'tokens',
-            title: 'Token',
-            tooltip: '?',
-            render: (row) => (
-              <ul className={styles.data}>
-                {row.tokens?.map((token, idx) => (
-                  <li className={styles.dataRow} key={idx}>
-                    <Address address={token} type="token" isCopy />
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-          {
-            accessor: 'tokenIds',
-            title: 'Token ID',
-            render: (row) => (
-              <ul className={styles.data}>
-                {row.tokenIds?.map((id, idx) => (
-                  <li className={styles.dataRow} key={idx}>
-                    {id || ''}
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-          {
-            accessor: 'balances',
-            title: 'Balance',
-            render: (row) => (
-              <ul className={styles.data}>
-                {row.balances?.map((balance, idx) => (
-                  <li
-                    className={clsx(
-                      styles.dataRow,
-                      { [styles.negative]: balance.isNegative() },
-                      { [styles.positive]: balance.isPositive() }
-                    )}
-                    key={idx}
-                  >
-                    {getNormalizedValue(balance, 18, {
-                      highPrecession: true,
-                    }) || ''}
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-        ]}
+        columns={balanceChangesColumns}
         className={styles.table}
       />
     </Card>
