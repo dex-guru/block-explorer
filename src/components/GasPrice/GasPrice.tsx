@@ -3,9 +3,9 @@ import dynamic from 'next/dynamic'
 import { useIntervalWhen } from 'rooks'
 import Loading from '../Loading'
 import GasPriceEntry from './GasPriceEntry'
-import { GasPriceProps } from './types'
+import { GasPriceProps, GasPriceValue } from './types'
 import Card from '@/components/Card'
-import { avg, formatFeeHistory } from '@/lib/utils'
+import { avg, checkChainFeature, formatFeeHistory } from '@/lib/utils'
 import styles from './GasPrice.module.scss'
 
 const DateTime = dynamic(() => import('@/components/DateTime'), { ssr: false })
@@ -36,14 +36,10 @@ const GasPrice: FC<GasPriceProps> = ({
   publicClient,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [gasData, setGasData] = useState<{
-    base: number
-    low: number
-    avg: number
-    high: number
-  } | null>(null)
+  const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
   const pollInterval = Math.max(chainConfig.blockTime || 0, 15000)
+  const isEip1559 = checkChainFeature(chainConfig, 'EIP1559')
 
   const getData = useCallback(() => {
     setIsLoading(true)
@@ -53,32 +49,44 @@ const GasPrice: FC<GasPriceProps> = ({
 
     const client = publicClient({ chainId: chainConfig.chainId })
 
-    client
-      .getFeeHistory({
-        blockCount: 10,
-        blockTag: 'latest',
-        rewardPercentiles: [20, 50, 90],
-      })
-      .then((feeHistory) => {
-        const blocks = formatFeeHistory(feeHistory, false)
-
-        const slow = avg(blocks.map((b) => b.priorityFeePerGas?.[0] || 0))
-        const average = avg(blocks.map((b) => b.priorityFeePerGas?.[1] || 0))
-        const fast = avg(blocks.map((b) => b.priorityFeePerGas?.[2] || 0))
-
-        client.getBlock({ blockTag: 'pending' }).then((block) => {
-          const result = {
-            base: Number(block.baseFeePerGas),
-            low: slow,
-            avg: average,
-            high: fast,
-          }
-          setGasData(result)
-          setIsLoading(false)
-          onChange?.(result)
+    if (isEip1559) {
+      client
+        .getFeeHistory({
+          blockCount: 10,
+          blockTag: 'latest',
+          rewardPercentiles: [20, 50, 90],
         })
+        .then((feeHistory) => {
+          const blocks = formatFeeHistory(feeHistory, false)
+
+          const slow = avg(blocks.map((b) => b.priorityFeePerGas?.[0] || 0))
+          const average = avg(blocks.map((b) => b.priorityFeePerGas?.[1] || 0))
+          const fast = avg(blocks.map((b) => b.priorityFeePerGas?.[2] || 0))
+
+          client.getBlock({ blockTag: 'pending' }).then((block) => {
+            const result = {
+              base: Number(block.baseFeePerGas),
+              low: slow,
+              avg: average,
+              high: fast,
+            }
+            setGasData(result)
+            setIsLoading(false)
+            onChange?.(result)
+          })
+        })
+    } else {
+      client.getGasPrice().then((res) => {
+        const value = Number(res)
+        const result = {
+          base: value,
+        }
+        setGasData(result)
+        setIsLoading(false)
+        onChange?.(result)
       })
-  }, [publicClient, chainConfig.chainId, onChange])
+    }
+  }, [publicClient, onChange, chainConfig, isEip1559])
 
   useEffect(getData, [getData])
   useIntervalWhen(getData, pollInterval, !isLoading, false)
@@ -98,27 +106,40 @@ const GasPrice: FC<GasPriceProps> = ({
       }
     >
       <div className={styles.container}>
-        <GasPriceEntry
-          chainConfig={chainConfig}
-          chainStats={chainStats}
-          type="low"
-          value={gasData?.low}
-          base={gasData?.base}
-        />
-        <GasPriceEntry
-          chainConfig={chainConfig}
-          chainStats={chainStats}
-          type="avg"
-          value={gasData?.avg}
-          base={gasData?.base}
-        />
-        <GasPriceEntry
-          chainConfig={chainConfig}
-          chainStats={chainStats}
-          type="high"
-          value={gasData?.high}
-          base={gasData?.base}
-        />
+        {!isEip1559 && (
+          <GasPriceEntry
+            chainConfig={chainConfig}
+            chainStats={chainStats}
+            type="standart"
+            base={gasData?.base}
+          />
+        )}
+
+        {isEip1559 && (
+          <>
+            <GasPriceEntry
+              chainConfig={chainConfig}
+              chainStats={chainStats}
+              type="low"
+              value={gasData?.low}
+              base={gasData?.base}
+            />
+            <GasPriceEntry
+              chainConfig={chainConfig}
+              chainStats={chainStats}
+              type="avg"
+              value={gasData?.avg}
+              base={gasData?.base}
+            />
+            <GasPriceEntry
+              chainConfig={chainConfig}
+              chainStats={chainStats}
+              type="high"
+              value={gasData?.high}
+              base={gasData?.base}
+            />
+          </>
+        )}
       </div>
     </Card>
   )
