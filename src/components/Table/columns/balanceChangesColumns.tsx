@@ -57,6 +57,7 @@ export const balanceChangesColumns: IColumn<{
             )}
             key={idx}
           >
+            {balance.isPositive() ? '+' : ''}
             {getNormalizedValue(balance, 18, {
               highPrecession: true,
             }) || ''}
