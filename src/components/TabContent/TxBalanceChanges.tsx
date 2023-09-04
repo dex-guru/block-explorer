@@ -1,9 +1,11 @@
 import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
+import { useBalanceChange } from './hooks'
 import {
   ChainConfigModel,
   DecodedInputModel,
+  InternalTransactionModel,
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
@@ -13,93 +15,65 @@ import { LoadingCard } from '@/components/Loading'
 import StateView from '@/components/StateView'
 import Table from '@/components/Table'
 import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
-import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
+import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 import { arrayUniqueValues } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
 
-type BalanceRow = {
-  address: string
-  token: string
-  tokenId?: string
-  change: BigNumber
-  row: DecodedInputModel
-}
-
 type BalancesPerAddress = {
   address: string
-  tokens: Array<string>
-  tokenIds?: Array<string>
+  tokens: Array<string | null>
+  tokenIds?: Array<string | null>
   balances: Array<BigNumber>
   rows: DecodedInputModel[]
-}
-
-const parseLogs = (logs: LogModel[]): BalanceRow[] => {
-  const result: BalanceRow[] = []
-
-  logs.forEach((log) => {
-    if (!log.decodedInput) {
-      return
-    }
-
-    const from = log.decodedInput.find(
-      (row) => row.type === 'address' && ['from', 'sender'].includes(row.name)
-    )?.value
-    const to = log.decodedInput.find(
-      (row) => row.type === 'address' && row.name === 'to'
-    )?.value
-    const token = log.address
-
-    log.decodedInput
-      .filter((row) => row.name === 'value' || row.name.startsWith('amount'))
-      .forEach((row) => {
-        const value = row.value
-        const bigValue = new BigNumber(value || 0)
-
-        result.push({
-          address:
-            (row.name === 'value' || row.name.endsWith('In') ? from : to) || '',
-          change: bigValue.multipliedBy(-1),
-          token,
-          row,
-        })
-        result.push({
-          address:
-            (row.name === 'value' || row.name.endsWith('Out') ? to : from) ||
-            '',
-          change: bigValue,
-          token,
-          row,
-        })
-      })
-  })
-
-  return result.filter((row) => !!row.address)
 }
 
 const TxBalanceChanges: FC<{
   data: TransactionModel
   chainConfig: ChainConfigModel
-}> = ({ data }) => {
+}> = ({ data, chainConfig }) => {
   const hash = data?.hash
 
-  const [getLogs, { data: logsData, loading }] = useLazyQuery<{
+  const [
+    getLogs,
+    { data: logsData, loading: loadingLogs, called: calledLogs },
+  ] = useLazyQuery<{
     logs: LogModel[]
   }>(GET_TRANSACTION_LOGS)
 
+  const [
+    getInternalTxs,
+    { data: txsData, loading: loadingTxs, called: calledTxs },
+  ] = useLazyQuery<{
+    internalTransactions: { data: InternalTransactionModel[] }
+  }>(GET_INTERNAL_TXS)
+
   useEffect(() => {
     getLogs({ variables: { hash } })
-  }, [getLogs, hash])
+    getInternalTxs({ variables: { hash, first: 1000, skip: 0 } })
+  }, [getLogs, getInternalTxs, hash])
 
-  if (!hash || (!loading && !logsData?.logs?.length)) {
+  const parsedArr = useBalanceChange(
+    logsData?.logs,
+    txsData?.internalTransactions.data
+  )
+
+  console.log(parsedArr)
+
+  const isLoading = loadingLogs || loadingTxs
+  const hasData =
+    logsData?.logs?.length || !txsData?.internalTransactions.data?.length
+
+  if (!hash || (calledLogs && calledTxs && !isLoading && !hasData)) {
     return <StateView icon={<IconEmpty />} title="No TX logs was found" />
   }
 
-  if (hash && loading) {
+  if (hash && (isLoading || !calledLogs || !calledTxs)) {
     return <LoadingCard />
   }
 
-  const parsedArr = parseLogs(logsData?.logs || [])
-  const addresses = arrayUniqueValues(parsedArr.map((row) => row.address))
+  const addresses = arrayUniqueValues(
+    parsedArr?.map((row) => row.address) || []
+  )
   const tableData = addresses
     .map((address) => {
       const result: BalancesPerAddress = {
@@ -111,7 +85,7 @@ const TxBalanceChanges: FC<{
       }
 
       parsedArr
-        .filter((row) => row.address === address)
+        ?.filter((row) => row.address === address)
         .forEach((row) => {
           const tokenIdx = result.tokens.findIndex(
             (token) => token === row.token
@@ -145,7 +119,7 @@ const TxBalanceChanges: FC<{
     <Card>
       <Table
         data={tableData}
-        columns={balanceChangesColumns}
+        columns={balanceChangesColumns(chainConfig)}
         className={styles.table}
       />
     </Card>

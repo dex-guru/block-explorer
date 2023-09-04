@@ -1,16 +1,17 @@
 import BigNumber from 'bignumber.js'
 import { clsx } from 'clsx'
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
 import { getNormalizedValue } from '@/lib/utils'
 import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 
-export const balanceChangesColumns: IColumn<{
+export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
   address: string
-  tokens: string[]
-  tokenIds?: string[]
+  tokens: Array<string | null>
+  tokenIds?: Array<string | null>
   balances: BigNumber[]
-}>[] = [
+}>[] = (chainConfig) => [
   {
     accessor: 'address',
     title: 'Address',
@@ -24,7 +25,11 @@ export const balanceChangesColumns: IColumn<{
       <ul className={styles.data}>
         {row.tokens?.map((token, idx) => (
           <li className={styles.dataRow} key={idx}>
-            <Address address={token} type="token" isCopy />
+            {token === null ? (
+              chainConfig.nativeCurrency.name
+            ) : (
+              <Address address={token || ''} type="token" isCopy />
+            )}
           </li>
         ))}
       </ul>
