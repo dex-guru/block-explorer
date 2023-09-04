@@ -5,17 +5,19 @@ import {
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
 
-export type GasPriceType = 'low' | 'avg' | 'high'
+export type GasPriceType = 'low' | 'avg' | 'high' | 'standart'
+
+export type GasPriceValue = {
+  base: number
+  low?: number
+  avg?: number
+  high?: number
+}
 
 export type GasPriceProps = {
   chainConfig: ChainConfigModel
   chainStats: ChainStatsModel
   publicClient: (value: { chainId?: number }) => PublicClient<FallbackTransport>
   className?: string
-  onChange?: (values: {
-    base: number
-    low: number
-    avg: number
-    high: number
-  }) => void
+  onChange?: (value: GasPriceValue) => void
 }

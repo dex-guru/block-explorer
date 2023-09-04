@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import Separated from '../Separated'
 import { GasPriceType } from './types'
@@ -12,10 +11,15 @@ import Value from '@/components/Value'
 import ImageStress from '@/images/emoji/stress.svg'
 import ImageSwear from '@/images/emoji/swear.svg'
 import ImageSweet from '@/images/emoji/sweet.svg'
+import { getNormalizedValue } from '@/lib/utils'
 import styles from './GasPrice.module.scss'
 
 const gasPriceValues: Record<GasPriceType, { title: string; icon: ReactNode }> =
   {
+    standart: {
+      title: 'Standart',
+      icon: null,
+    },
     low: { title: 'Low', icon: <ImageSweet className={styles.icon} /> },
     avg: { title: 'Average', icon: <ImageStress className={styles.icon} /> },
     high: { title: 'High', icon: <ImageSwear className={styles.icon} /> },
@@ -29,8 +33,6 @@ const GasPriceEntry: FC<{
   base?: number
   className?: string
 }> = ({ chainConfig, type, value, base, className }) => {
-  const bigValue = new BigNumber(base && value ? base + value : 0)
-
   return (
     <div className={clsx(styles.entry, className)}>
       <div className={styles.header}>
@@ -42,20 +44,22 @@ const GasPriceEntry: FC<{
         />
         <Value
           className={clsx(styles.value, styles[type])}
-          value={Math.ceil(bigValue.shiftedBy(-9).toNumber()) || '–'}
+          value={base ? getNormalizedValue(base + (value || 0), 9) : '–'}
           suffix={<>&nbsp;{chainConfig.gasUnit}</>}
         />
       </div>
-      <div className={styles.body}>
-        <Separated>
-          <div className={styles.prop}>
-            Base: {base ? Math.ceil(base / 10 ** 9) : '–'}
-          </div>
-          <div className={styles.prop}>
-            Priority: {value ? Math.ceil(value / 10 ** 9) : '–'}
-          </div>
-        </Separated>
-      </div>
+      {!!value && (
+        <div className={styles.body}>
+          <Separated>
+            <div className={styles.prop}>
+              Base: {base ? getNormalizedValue(base, 9) : '–'}
+            </div>
+            <div className={styles.prop}>
+              Priority: {value ? getNormalizedValue(value, 9) : '–'}
+            </div>
+          </Separated>
+        </div>
+      )}
     </div>
   )
 }
