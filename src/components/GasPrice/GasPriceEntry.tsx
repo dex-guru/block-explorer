@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
 import Separated from '../Separated'
 import { GasPriceType } from './types'
@@ -12,7 +11,7 @@ import Value from '@/components/Value'
 import ImageStress from '@/images/emoji/stress.svg'
 import ImageSwear from '@/images/emoji/swear.svg'
 import ImageSweet from '@/images/emoji/sweet.svg'
-import { financialFormat, getNormalizedValue } from '@/lib/utils'
+import { getNormalizedValue } from '@/lib/utils'
 import styles from './GasPrice.module.scss'
 
 const gasPriceValues: Record<GasPriceType, { title: string; icon: ReactNode }> =
