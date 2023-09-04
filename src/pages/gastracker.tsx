@@ -7,7 +7,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import Dashboard from '@/components/Dashboard'
 import DetailsView from '@/components/DetailsView'
-import GasPrice from '@/components/GasPrice'
+import GasPrice, { GasPriceValue } from '@/components/GasPrice'
 import Page from '@/components/Page'
 import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
@@ -30,23 +30,18 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
 }) => {
   const { publicClient } = useWagmiConfig(chainConfig)
 
-  const [gasData, setGasData] = useState<{
-    base: number
-    low: number
-    avg: number
-    high: number
-  } | null>(null)
+  const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
   const low = Math.ceil(((gasData?.base || 0) + (gasData?.low || 0)) / 10 ** 9)
   const high = Math.ceil(
     ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
   )
 
-  const pageTitle = `${chainConfig.name} Gas Tracker${
+  const pageTitle = `${
     gasData
-      ? `: ${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit}`
+      ? `${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit} – `
       : ''
-  }`
+  }${chainConfig.name} Gas Tracker`
 
   return (
     <>
