@@ -4,22 +4,31 @@ import {
   LogModel,
 } from '@/__generated__/resolvers-types'
 
-type BalanceRow = {
-  address: string
+type BalanceEntry = {
   token: string | null
   tokenId?: string
+}
+
+type BalanceFlow = BalanceEntry & {
+  from: string
+  to: string
+  amount: BigNumber
+}
+
+type BalanceRow = BalanceEntry & {
+  address: string
   change: BigNumber
 }
 
-export const useBalanceChange = (
+export const useBalanceFlows = (
   logs?: LogModel[],
   internalTxs?: InternalTransactionModel[] | null
-): BalanceRow[] | null => {
+): BalanceFlow[] | null => {
   if (!(logs && internalTxs)) {
     return null
   }
 
-  const result: BalanceRow[] = []
+  const result: BalanceFlow[] = []
 
   logs
     .sort((a, b) => a.logIndex - b.logIndex)
@@ -49,14 +58,10 @@ export const useBalanceChange = (
           }
 
           result.push({
-            address: from || '',
-            change: bigValue.multipliedBy(-1),
+            from: from || '',
+            to: to || '',
             token,
-          })
-          result.push({
-            address: to || '',
-            change: bigValue,
-            token,
+            amount: bigValue,
           })
         })
     })
@@ -69,14 +74,36 @@ export const useBalanceChange = (
     const bigValue = new BigNumber(tx.value || 0)
 
     result.push({
-      address: tx.fromAddress,
-      change: bigValue.multipliedBy(-1),
+      from: tx.fromAddress,
+      to: tx.toAddress,
+      amount: bigValue,
       token: null,
     })
+  })
+
+  return result.filter((row) => !row.amount.isZero())
+}
+
+export const useBalanceChanges = (
+  balanceFlows: BalanceFlow[] | null
+): BalanceRow[] => {
+  const result: BalanceRow[] = []
+
+  balanceFlows?.forEach((flow) => {
+    if (flow.amount.isZero()) {
+      return
+    }
+
     result.push({
-      address: tx.toAddress,
-      change: bigValue,
-      token: null,
+      ...flow,
+      address: flow.from,
+      change: flow.amount.multipliedBy(-1),
+    })
+
+    result.push({
+      ...flow,
+      address: flow.to,
+      change: flow.amount,
     })
   })
 

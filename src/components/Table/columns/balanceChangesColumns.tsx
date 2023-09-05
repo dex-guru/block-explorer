@@ -20,7 +20,6 @@ export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
   {
     accessor: 'tokens',
     title: 'Token',
-    tooltip: '?',
     render: (row) => (
       <ul className={styles.data}>
         {row.tokens?.map((token, idx) => (

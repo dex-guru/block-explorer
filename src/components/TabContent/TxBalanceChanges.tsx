@@ -1,7 +1,8 @@
 import { FC, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
-import { useBalanceChange } from './hooks'
+import { useBalanceChanges, useBalanceFlows } from './hooks'
 import {
   ChainConfigModel,
   DecodedInputModel,
@@ -16,8 +17,10 @@ import StateView from '@/components/StateView'
 import Table from '@/components/Table'
 import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
 import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
-import { arrayUniqueValues } from '@/lib/utils'
+import { arrayUniqueValues, getNormalizedValue } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
+
+const Graph = dynamic(() => import('@/components/Graph'), { ssr: false })
 
 type BalancesPerAddress = {
   address: string
@@ -52,12 +55,12 @@ const TxBalanceChanges: FC<{
     getInternalTxs({ variables: { hash, first: 1000, skip: 0 } })
   }, [getLogs, getInternalTxs, hash])
 
-  const parsedArr = useBalanceChange(
+  const balanceFlows = useBalanceFlows(
     logsData?.logs,
     txsData?.internalTransactions.data
   )
 
-  console.log(parsedArr)
+  const balanceChanges = useBalanceChanges(balanceFlows)
 
   const isLoading = loadingLogs || loadingTxs
   const hasData =
@@ -72,8 +75,9 @@ const TxBalanceChanges: FC<{
   }
 
   const addresses = arrayUniqueValues(
-    parsedArr?.map((row) => row.address) || []
+    balanceChanges?.map((row) => row.address) || []
   )
+
   const tableData = addresses
     .map((address) => {
       const result: BalancesPerAddress = {
@@ -84,7 +88,7 @@ const TxBalanceChanges: FC<{
         rows: [],
       }
 
-      parsedArr
+      balanceChanges
         ?.filter((row) => row.address === address)
         .forEach((row) => {
           const tokenIdx = result.tokens.findIndex(
@@ -115,8 +119,29 @@ const TxBalanceChanges: FC<{
     })
     .filter((row) => row.balances.length)
 
+  const graphTextLines = ['flowchart LR']
+
+  addresses.forEach((address) => {
+    const from = `address_${address}`
+    graphTextLines.push(`${from}(${address})`)
+    balanceFlows
+      ?.filter((row) => row.from === address)
+      .forEach((row) => {
+        const to = `address_${row.to}`
+        graphTextLines.push(`${to}(${row.to})`)
+        graphTextLines.push(
+          `${from}-- "${getNormalizedValue(row.amount, 18, {
+            highPrecession: true,
+          })} ${
+            row.token ? row.token : chainConfig.nativeCurrency.name
+          }" -->${to}`
+        )
+      })
+  })
+
   return (
     <Card>
+      <Graph data={graphTextLines.join('\r\n\t')} />
       <Table
         data={tableData}
         columns={balanceChangesColumns(chainConfig)}

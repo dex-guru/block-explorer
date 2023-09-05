@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  background: var(--color-bg);
+  border-radius: var(--radii-lg);
+}
+
+.graph {
+  margin: 0;
+
+  & > svg {
+    padding: 16px;
+  }
+}
+
+.tools {
+  display: grid;
+  grid-template-areas: 'zoomIn reset zoomOut';
+  gap: 4px;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+
+.zoom {
+  &In,
+  &Out,
+  &Reset {
+    composes: md from '../Button/Button.module.scss';
+  }
+
+  &In {
+    grid-area: zoomIn;
+  }
+
+  &Out {
+    grid-area: zoomOut;
+  }
+
+  &Reset {
+    grid-area: reset;
+  }
+}
