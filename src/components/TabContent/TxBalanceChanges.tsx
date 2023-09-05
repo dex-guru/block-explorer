@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { FC, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
@@ -15,7 +15,6 @@ import {
 } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
 import { JazzIcon, jsNumberForAddress } from '@/components/Avatar'
-import Avatar from '@/components/Avatar/Avatar'
 import Card from '@/components/Card'
 import { IconEmpty } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'
@@ -151,6 +150,8 @@ const TxBalanceChanges: FC<{
           src={`data:image/svg+xml;base64,${avatarURI}`}
           className={styles.graphAvatar}
           alt={address}
+          width={16}
+          height={16}
         />
         {AddressValues.account.format(address).replace('…', '...')}
       </Link>
@@ -186,6 +187,8 @@ const TxBalanceChanges: FC<{
               src={`data:image/svg+xml;base64,${avatarURI}`}
               className={styles.graphAvatar}
               alt={token}
+              width={16}
+              height={16}
             />
             {AddressValues.token.format(token).replace('…', '...')}
           </Link>
@@ -195,6 +198,8 @@ const TxBalanceChanges: FC<{
               src={chainConfig.icon}
               className={styles.graphAvatar}
               alt={chainConfig.nativeCurrency.name}
+              width={16}
+              height={16}
             />
             {chainConfig.nativeCurrency.name}
           </span>

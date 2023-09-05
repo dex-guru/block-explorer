@@ -1,7 +1,6 @@
 import { FC, useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
-import { useOnWindowResize } from 'rooks'
 import svgPanZoom from 'svg-pan-zoom'
 import { GraphProps } from './types'
 import Button from '@/components/Button'
@@ -12,10 +11,19 @@ const DEFAULT_CONFIG = {
   themeVariables: {
     fontSize: '12px',
     edgeLabelBackground: 'transparent',
+    // primaryColor: 'var(--color-bg-2)',
+    primaryTextColor: 'var(--color-accent)',
+    primaryBorderColor: 'var(--color-accent)',
     secondaryColor: 'transparent',
-    lineColor: 'var(--color-muted)',
-    tertiaryColor: '#fff',
+    secondaryBorderColor: 'var(--color-danger)',
+    secondaryTextColor: 'var(--color-text)',
+    tertiaryColor: 'transparent',
+    tertiaryBorderColor: 'var(--color-warn)',
+    tertiaryTextColor: 'var(--color-text)',
     textColor: 'var(--color-text)',
+
+    lineColor: 'var(--color-muted)',
+    mainBkg: 'var(--color-bg-3)',
   },
   securityLevel: 'antiscript',
   flowchart: {
