@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
+import { AddressValues } from '../Address/helpers'
 import { useBalanceChanges, useBalanceFlows } from './hooks'
 import {
   ChainConfigModel,
@@ -13,7 +14,6 @@ import {
 import Card from '@/components/Card'
 import { IconEmpty } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'
-import StateView from '@/components/StateView'
 import Table from '@/components/Table'
 import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
 import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
@@ -21,6 +21,9 @@ import { arrayUniqueValues, getNormalizedValue } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
 
 const Graph = dynamic(() => import('@/components/Graph'), { ssr: false })
+const StateView = dynamic(() => import('@/components/StateView'), {
+  ssr: false,
+})
 
 type BalancesPerAddress = {
   address: string
@@ -119,21 +122,36 @@ const TxBalanceChanges: FC<{
     })
     .filter((row) => row.balances.length)
 
-  const graphTextLines = ['flowchart LR']
+  const graphTextLines = ['graph LR']
 
   addresses.forEach((address) => {
     const from = `address_${address}`
-    graphTextLines.push(`${from}(${address})`)
+    graphTextLines.push(
+      `${from}("<a href='${AddressValues.account.url(
+        `${address}`
+      )}'>${AddressValues.account
+        .format(`${address}`)
+        .replace('…', '...')}</a>")`
+    )
+  })
+
+  addresses.forEach((address) => {
+    const from = `address_${address}`
     balanceFlows
       ?.filter((row) => row.from === address)
       .forEach((row) => {
         const to = `address_${row.to}`
-        graphTextLines.push(`${to}(${row.to})`)
         graphTextLines.push(
           `${from}-- "${getNormalizedValue(row.amount, 18, {
             highPrecession: true,
           })} ${
-            row.token ? row.token : chainConfig.nativeCurrency.name
+            row.token
+              ? `<a href='${AddressValues.token.url(
+                  row.token
+                )}'>${AddressValues.token
+                  .format(row.token)
+                  .replace('…', '...')}</a>`
+              : chainConfig.nativeCurrency.name
           }" -->${to}`
         )
       })

@@ -12,6 +12,8 @@ const DEFAULT_CONFIG = {
   securityLevel: 'antiscript',
   flowchart: {
     curve: 'monotoneX',
+    useMaxWidth: true,
+    htmlLabels: true,
   },
 }
 

@@ -8,7 +8,11 @@
   margin: 0;
 
   & > svg {
+    aspect-ratio: 16/5;
     padding: 16px;
+    max-width: none !important;
+
+    min-height: 240px;
   }
 }
 
