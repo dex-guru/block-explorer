@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
+import { WagmiConfig } from 'wagmi'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -17,6 +18,7 @@ import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
+import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -41,6 +43,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
   const pathname = router.asPath.split('?')[0]
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
+
+  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
 
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
@@ -88,7 +92,9 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   to: pathname,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <TxOverview {...props} />
+                      <WagmiConfig config={wagmiConfig}>
+                        <TxOverview {...props} />
+                      </WagmiConfig>
                     </Suspense>
                   ),
                 },
