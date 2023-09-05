@@ -18,7 +18,7 @@ const DEFAULT_CONFIG = {
 const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
   const refContainer = useRef<HTMLPreElement>(null)
   const refSvg = useRef<unknown>()
-  const panZoom = useRef<unknown>()
+  const panZoom = useRef<typeof svgPanZoom>()
 
   mermaid.initialize({ ...DEFAULT_CONFIG, ...config })
 
