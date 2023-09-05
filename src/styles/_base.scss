@@ -350,5 +350,18 @@ pre {
 }
 
 .mermaid {
-  overflow: auto;
+  g.root {
+    padding: 16px;
+  }
+
+  .edgeLabel {
+    foreignObject {
+      overflow: visible;
+
+      & > div {
+        position: relative;
+        top: -12px;
+      }
+    }
+  }
 }

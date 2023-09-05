@@ -13,3 +13,21 @@
 .positive {
   color: var(--color-success);
 }
+
+.graph {
+  &Avatar {
+    flex: 0 0 auto;
+    width: 16px !important;
+    height: 16px !important;
+    display: block !important;
+    border-radius: 50%;
+  }
+
+  &Node,
+  &Label,
+  &Link {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+}

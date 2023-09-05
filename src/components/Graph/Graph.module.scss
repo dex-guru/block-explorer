@@ -6,12 +6,12 @@
 
 .graph {
   margin: 0;
+  overflow: auto;
 
   & > svg {
-    aspect-ratio: 16/5;
-    padding: 16px;
     max-width: none !important;
-
+    aspect-ratio: var(--graph-aspect-ratio);
+    min-width: 320px;
     min-height: 240px;
   }
 }
@@ -28,7 +28,7 @@
 .zoom {
   &In,
   &Out,
-  &Reset {
+  &Fit {
     composes: md from '../Button/Button.module.scss';
   }
 
@@ -40,7 +40,7 @@
     grid-area: zoomOut;
   }
 
-  &Reset {
+  &Fit {
     grid-area: reset;
   }
 }

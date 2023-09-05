@@ -49,8 +49,6 @@ const TxPage: NextPage<ITxProps> = (props) => {
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
-  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
-
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
   }`

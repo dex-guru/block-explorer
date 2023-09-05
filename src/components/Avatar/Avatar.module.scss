@@ -25,12 +25,7 @@
 .icon {
   width: 100%;
   height: 100%;
-
-  svg,
-  & > * {
-    width: 100% !important;
-    height: 100% !important;
-  }
+  border-radius: 50%;
 }
 
 .smooth {

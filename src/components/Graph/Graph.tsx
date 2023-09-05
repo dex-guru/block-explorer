@@ -1,14 +1,22 @@
 import { FC, useEffect, useRef } from 'react'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
+import { useOnWindowResize } from 'rooks'
 import svgPanZoom from 'svg-pan-zoom'
 import { GraphProps } from './types'
 import Button from '@/components/Button'
 import styles from './Graph.module.scss'
 
 const DEFAULT_CONFIG = {
-  theme: '',
-  themeCSS: '',
+  theme: 'default',
+  themeVariables: {
+    fontSize: '12px',
+    edgeLabelBackground: 'transparent',
+    secondaryColor: 'transparent',
+    lineColor: 'var(--color-muted)',
+    tertiaryColor: '#fff',
+    textColor: 'var(--color-text)',
+  },
   securityLevel: 'antiscript',
   flowchart: {
     curve: 'monotoneX',
@@ -19,34 +27,10 @@ const DEFAULT_CONFIG = {
 
 const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
   const refContainer = useRef<HTMLPreElement>(null)
-  const refSvg = useRef<unknown>()
+  const refSvg = useRef<SVGElement>()
   const panZoom = useRef<typeof svgPanZoom>()
 
   mermaid.initialize({ ...DEFAULT_CONFIG, ...config })
-
-  useEffect(() => {
-    if (!refContainer.current) {
-      return
-    }
-
-    if (refSvg.current) {
-      svgPanZoom(refSvg.current as HTMLElement).destroy()
-    }
-
-    mermaid.run({ nodes: [refContainer.current] }).then(() => {
-      refSvg.current = refContainer.current?.querySelector('svg') || null
-
-      panZoom.current = svgPanZoom(refSvg.current as HTMLElement, {
-        zoomEnabled: true,
-        center: true,
-        controlIconsEnabled: false,
-      })
-    })
-  }, [data, children, config])
-
-  if (!data && !children) {
-    return null
-  }
 
   const handleZoomIn = () => {
     panZoom.current?.zoomIn()
@@ -56,12 +40,53 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
     panZoom.current?.zoomOut()
   }
 
-  const handleZoomReset = () => {
+  const handleZoomFit = () => {
     panZoom.current?.reset()
+    panZoom.current?.resize()
+    panZoom.current?.center()
+    panZoom.current?.fit()
+  }
+
+  useEffect(() => {
+    if (!refContainer.current || !(data || children)) {
+      return
+    }
+
+    if (refSvg.current) {
+      panZoom?.current?.destroy()
+      refSvg.current = undefined
+    }
+
+    mermaid
+      .run({ nodes: [refContainer.current], suppressErrors: true })
+      .then(() => {
+        const svgNode = refContainer.current?.querySelector('svg')
+
+        if (!refContainer.current || !svgNode) {
+          return
+        }
+
+        const dims = svgNode?.querySelector('g>.root')?.getBoundingClientRect()
+        const ratio = dims ? dims.width / dims.height : 'auto'
+
+        refContainer.current.style.cssText = `--graph-aspect-ratio: ${ratio}`
+
+        panZoom.current = svgPanZoom(svgNode, {
+          zoomEnabled: true,
+          center: true,
+          controlIconsEnabled: false,
+        })
+
+        refSvg.current = svgNode
+      })
+  }, [data, children, config])
+
+  if (!data && !children) {
+    return null
   }
 
   return (
-    <div className={clsx(styles.container, className)}>
+    <div className={clsx('mermaid', styles.container, className)}>
       <pre className={styles.graph} ref={refContainer}>
         {data || children}
       </pre>
@@ -77,9 +102,9 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
           onClick={handleZoomOut}
         />
         <Button
-          className={styles.zoomReset}
-          caption="Reset"
-          onClick={handleZoomReset}
+          className={styles.zoomFit}
+          caption="Fit"
+          onClick={handleZoomFit}
         />
       </div>
     </div>

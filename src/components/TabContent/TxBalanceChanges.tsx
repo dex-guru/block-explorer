@@ -1,8 +1,10 @@
 import { FC, useEffect } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
-import { AddressValues } from '../Address/helpers'
 import { useBalanceChanges, useBalanceFlows } from './hooks'
 import {
   ChainConfigModel,
@@ -11,6 +13,9 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
+import { AddressValues } from '@/components/Address/helpers'
+import { JazzIcon, jsNumberForAddress } from '@/components/Avatar'
+import Avatar from '@/components/Avatar/Avatar'
 import Card from '@/components/Card'
 import { IconEmpty } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'
@@ -124,15 +129,83 @@ const TxBalanceChanges: FC<{
 
   const graphTextLines = ['graph LR']
 
+  const nodeRenderHtml = (address: string) => {
+    const avatarURI = btoa(
+      renderToStaticMarkup(
+        <JazzIcon
+          size={32}
+          seed={jsNumberForAddress(address)}
+          className={styles.icon}
+        />
+      )
+    )
+
+    return renderToStaticMarkup(
+      <Link
+        href={AddressValues.account.url(address) || ''}
+        data-tooltip-id="app-tooltip"
+        data-tooltip-content={address}
+        className={styles.graphLink}
+      >
+        <img
+          src={`data:image/svg+xml;base64,${avatarURI}`}
+          className={styles.graphAvatar}
+          alt={address}
+        />
+        {AddressValues.account.format(address).replace('…', '...')}
+      </Link>
+    )
+  }
+
+  const labelRenderHtml = (amount: BigNumber, token: string | null) => {
+    const avatarURI = token
+      ? btoa(
+          renderToStaticMarkup(
+            <JazzIcon
+              size={32}
+              seed={jsNumberForAddress(token)}
+              className={styles.icon}
+            />
+          )
+        )
+      : null
+
+    return renderToStaticMarkup(
+      <span className={styles.graphLabel}>
+        {getNormalizedValue(amount || 0, 18, {
+          highPrecession: true,
+        })}{' '}
+        {token ? (
+          <Link
+            href={AddressValues.token.url(token) || ''}
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content={token}
+            className={styles.graphLink}
+          >
+            <img
+              src={`data:image/svg+xml;base64,${avatarURI}`}
+              className={styles.graphAvatar}
+              alt={token}
+            />
+            {AddressValues.token.format(token).replace('…', '...')}
+          </Link>
+        ) : (
+          <span className={styles.graphLink}>
+            <img
+              src={chainConfig.icon}
+              className={styles.graphAvatar}
+              alt={chainConfig.nativeCurrency.name}
+            />
+            {chainConfig.nativeCurrency.name}
+          </span>
+        )}
+      </span>
+    )
+  }
+
   addresses.forEach((address) => {
     const from = `address_${address}`
-    graphTextLines.push(
-      `${from}("<a href='${AddressValues.account.url(
-        `${address}`
-      )}'>${AddressValues.account
-        .format(`${address}`)
-        .replace('…', '...')}</a>")`
-    )
+    graphTextLines.push(`${from}("${nodeRenderHtml(`${address}`)}")`)
   })
 
   addresses.forEach((address) => {
@@ -142,17 +215,7 @@ const TxBalanceChanges: FC<{
       .forEach((row) => {
         const to = `address_${row.to}`
         graphTextLines.push(
-          `${from}-- "${getNormalizedValue(row.amount, 18, {
-            highPrecession: true,
-          })} ${
-            row.token
-              ? `<a href='${AddressValues.token.url(
-                  row.token
-                )}'>${AddressValues.token
-                  .format(row.token)
-                  .replace('…', '...')}</a>`
-              : chainConfig.nativeCurrency.name
-          }" -->${to}`
+          `${from}-- "${labelRenderHtml(row.amount, row.token)}" -->${to}`
         )
       })
   })
