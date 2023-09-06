@@ -543,7 +543,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
 `
 
 export const GET_TRANSACTION_LOGS = gql`
-  query TransactionByHash($hash: String!) {
+  query TransactionLogs($hash: String!) {
     logs(transactionHash: $hash, chainId: ${CHAIN_ID}) {
       address
       blockHash

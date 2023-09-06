@@ -4,16 +4,33 @@
   border-radius: var(--radii-lg);
 }
 
+.body {
+  overflow: hidden;
+  resize: vertical;
+  display: flex;
+  align-items: stretch;
+}
+
+.canvas {
+  width: 100% !important;
+  min-height: fit-content !important;
+  height: auto !important;
+}
+
+.layer {
+}
+
 .graph {
   margin: 0;
-  overflow: auto;
+  padding: 8px 16px;
 
   & > svg {
-    max-width: none !important;
     aspect-ratio: var(--graph-aspect-ratio);
     min-width: 320px;
     min-height: 240px;
     max-height: 75vh;
+    overflow: visible;
+    display: block;
   }
 }
 
@@ -22,6 +39,7 @@
   grid-template-areas: 'zoomIn reset zoomOut';
   gap: 4px;
   position: absolute;
+  z-index: 2;
   right: 8px;
   bottom: 8px;
 }
