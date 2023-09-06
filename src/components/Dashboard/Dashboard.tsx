@@ -61,6 +61,7 @@ const Dashboard: FC<{
         <Button
           className={styles.warehouse}
           icon={<IconWarehouse />}
+          caption="SQL Query"
           data-tooltip-id="app-tooltip"
           data-tooltip-content={`Open ${name} in Warehouse`}
           target="_blank"
