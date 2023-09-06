@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import { FC, useEffect } from 'react'
+import { CSSProperties, FC, useEffect } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -14,7 +13,6 @@ import {
   TransactionModel,
 } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
-import { JazzIcon, jsNumberForAddress } from '@/components/Avatar'
 import Card from '@/components/Card'
 import { IconEmpty } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'
@@ -129,48 +127,20 @@ const TxBalanceChanges: FC<{
   const graphTextLines = ['graph LR']
 
   const nodeRenderHtml = (address: string) => {
-    const avatarURI = btoa(
-      renderToStaticMarkup(
-        <JazzIcon
-          size={32}
-          seed={jsNumberForAddress(address)}
-          className={styles.icon}
-        />
-      )
-    )
-
     return renderToStaticMarkup(
       <Link
         href={AddressValues.account.url(address) || ''}
         data-tooltip-id="app-tooltip"
         data-tooltip-content={address}
         className={styles.graphLink}
+        style={{ '--img': `url(/api/avatar/${address})` } as CSSProperties}
       >
-        <img
-          src={`data:image/svg+xml;base64,${avatarURI}`}
-          className={styles.graphAvatar}
-          alt={address}
-          width={16}
-          height={16}
-        />
-        {AddressValues.account.format(address).replace('…', '...')}
+        {AddressValues.account.format(address)}
       </Link>
     )
   }
 
   const labelRenderHtml = (amount: BigNumber, token: string | null) => {
-    const avatarURI = token
-      ? btoa(
-          renderToStaticMarkup(
-            <JazzIcon
-              size={32}
-              seed={jsNumberForAddress(token)}
-              className={styles.icon}
-            />
-          )
-        )
-      : null
-
     return renderToStaticMarkup(
       <span className={styles.graphLabel}>
         {getNormalizedValue(amount || 0, 18, {
@@ -182,25 +152,15 @@ const TxBalanceChanges: FC<{
             data-tooltip-id="app-tooltip"
             data-tooltip-content={token}
             className={styles.graphLink}
+            style={{ '--img': `url(/api/avatar/${token})` } as CSSProperties}
           >
-            <img
-              src={`data:image/svg+xml;base64,${avatarURI}`}
-              className={styles.graphAvatar}
-              alt={token}
-              width={16}
-              height={16}
-            />
-            {AddressValues.token.format(token).replace('…', '...')}
+            {AddressValues.token.format(token)}
           </Link>
         ) : (
-          <span className={styles.graphLink}>
-            <img
-              src={chainConfig.icon}
-              className={styles.graphAvatar}
-              alt={chainConfig.nativeCurrency.name}
-              width={16}
-              height={16}
-            />
+          <span
+            className={styles.graphLink}
+            style={{ '--img': `url(${chainConfig.icon})` } as CSSProperties}
+          >
             {chainConfig.nativeCurrency.name}
           </span>
         )}
