@@ -4,7 +4,7 @@
   --color-button-bg: var(--color-bg-3);
   --color-button-hover-bg: var(--color-bg-4);
   --color-button-text: var(--color-text);
-  --color-button-hover-text: var(--color-text);
+  --color-button-hover-text: #fff;
   --color-button-icon: var(--color-bg-6);
 
   display: inline-flex;
@@ -41,8 +41,11 @@
 }
 
 .icon {
-  & > svg {
-    height: 20px;
+  height: 20px;
+
+  & > svg,
+  & > img {
+    height: 100%;
     object-fit: contain;
     object-position: center;
   }
@@ -63,12 +66,6 @@
   height: 24px;
   padding: 0 8px;
   min-width: 24px;
-
-  .icon {
-    & > svg {
-      height: 20px;
-    }
-  }
 }
 
 .md {
