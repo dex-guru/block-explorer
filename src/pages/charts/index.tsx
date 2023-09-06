@@ -14,6 +14,7 @@ import { Tab } from '@/components/Tabs'
 import ImageArea from '@/images/redash/area.svg'
 import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
+import ImageHeatmap from '@/images/redash/heatmap.svg'
 import ImageLine from '@/images/redash/line.svg'
 import ImagePie from '@/images/redash/pie.svg'
 import ImageTable from '@/images/redash/table.svg'
@@ -117,6 +118,9 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             case 'column':
             case 'bar':
               TypeImage = ImageBar
+              break
+            case 'heatmap':
+              TypeImage = ImageHeatmap
               break
             case 'pie':
               TypeImage = ImagePie
