@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
@@ -63,8 +64,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
       }
     })
 
-  const [currentTab, setCurrentTab] = useState(
-    tab || (tabs ? tabs[0]?.value : '')
+  const [currentTab, setCurrentTab] = useState<string>(
+    (tab as string) || tabs?.[0]?.value || ''
   )
 
   if (!checkChainFeature(chainConfig, 'charts')) {
