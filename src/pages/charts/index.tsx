@@ -64,7 +64,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
     })
 
   const [currentTab, setCurrentTab] = useState(
-    tab || tabs[0] ? tabs[0].value : ''
+    tab || (tabs ? tabs[0]?.value : '')
   )
 
   if (!checkChainFeature(chainConfig, 'charts')) {
