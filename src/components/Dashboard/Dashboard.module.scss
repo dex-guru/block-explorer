@@ -48,9 +48,6 @@
   }
 }
 
-.widget {
-}
-
 .query {
   composes: muted from '../../styles/_common.scss';
   font-weight: 400;
@@ -109,20 +106,4 @@
   composes: lg from '../Button/Button.module.scss';
   composes: warehouse from '../Button/Button.module.scss';
   margin: -8px 0;
-}
-
-.widget {
-  .warehouse {
-    @media (pointer: fine) {
-      opacity: 0;
-      visibility: hidden;
-    }
-  }
-
-  &:hover {
-    .warehouse {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
 }

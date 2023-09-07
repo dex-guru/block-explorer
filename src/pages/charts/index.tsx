@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
@@ -14,6 +15,7 @@ import { Tab } from '@/components/Tabs'
 import ImageArea from '@/images/redash/area.svg'
 import ImageBar from '@/images/redash/bar.svg'
 import ImageCounter from '@/images/redash/counter.svg'
+import ImageHeatmap from '@/images/redash/heatmap.svg'
 import ImageLine from '@/images/redash/line.svg'
 import ImagePie from '@/images/redash/pie.svg'
 import ImageTable from '@/images/redash/table.svg'
@@ -62,8 +64,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
       }
     })
 
-  const [currentTab, setCurrentTab] = useState(
-    tab || tabs[0] ? tabs[0].value : ''
+  const [currentTab, setCurrentTab] = useState<string>(
+    (tab as string) || tabs?.[0]?.value || ''
   )
 
   if (!checkChainFeature(chainConfig, 'charts')) {
@@ -117,6 +119,9 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             case 'column':
             case 'bar':
               TypeImage = ImageBar
+              break
+            case 'heatmap':
+              TypeImage = ImageHeatmap
               break
             case 'pie':
               TypeImage = ImagePie
