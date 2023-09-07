@@ -1,19 +1,19 @@
-import { FC } from 'react'
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import { FC, useRef } from 'react'
+import { TransformWrapper } from 'react-zoom-pan-pinch'
 import clsx from 'clsx'
 import GraphContent from './GraphContent'
 import { GraphProps } from './types'
-import Button from '@/components/Button'
 import styles from './Graph.module.scss'
 
 const DEFAULT_CONFIG = {
+  maxTextSize: 99999999,
   theme: 'default',
   themeVariables: {
     fontSize: '12px',
     edgeLabelBackground: 'transparent',
     // primaryColor: 'var(--color-bg-2)',
-    primaryTextColor: 'var(--color-accent)',
-    primaryBorderColor: 'var(--color-accent)',
+    primaryTextColor: 'var(--color-accent, #000)',
+    primaryBorderColor: 'var(--color-accent, #000)',
     secondaryColor: 'transparent',
     secondaryBorderColor: 'var(--color-danger)',
     secondaryTextColor: 'var(--color-text)',
@@ -22,8 +22,8 @@ const DEFAULT_CONFIG = {
     tertiaryTextColor: 'var(--color-text)',
     textColor: 'var(--color-text)',
 
-    lineColor: 'var(--color-muted)',
-    mainBkg: 'var(--color-bg-3)',
+    lineColor: 'var(--color-muted, #888)',
+    mainBkg: 'var(--color-bg-3, #eee)',
   },
   securityLevel: 'antiscript',
   flowchart: {
@@ -34,12 +34,22 @@ const DEFAULT_CONFIG = {
 }
 
 const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
+  const ref = useRef<HTMLDivElement>(null)
+
   if (!data && !children) {
     return null
   }
 
+  const handleFullScreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen()
+    } else {
+      ref?.current?.requestFullscreen()
+    }
+  }
+
   return (
-    <div className={clsx(styles.container, className)}>
+    <div className={clsx(styles.container, className)} ref={ref}>
       <TransformWrapper
         initialScale={1}
         initialPositionX={200}
@@ -48,48 +58,14 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
         centerZoomedOut={true}
         smooth={true}
         limitToBounds={false}
+        maxScale={40}
       >
-        {({ zoomIn, zoomOut, resetTransform, centerView }) => {
-          const handleReset = () => {
-            resetTransform()
-            centerView(1)
-          }
-
-          return (
-            <>
-              <div className={styles.tools}>
-                <Button
-                  className={styles.zoomIn}
-                  caption="Zoom In"
-                  onClick={() => zoomIn()}
-                />
-                <Button
-                  className={styles.zoomOut}
-                  caption="Zoom Out"
-                  onClick={() => zoomOut()}
-                />
-                <Button
-                  className={styles.zoomFit}
-                  caption="Fit"
-                  onClick={handleReset}
-                />
-              </div>
-              <div className={styles.body}>
-                <TransformComponent
-                  wrapperClass={styles.canvas}
-                  contentClass={styles.layer}
-                >
-                  <GraphContent
-                    config={{ ...DEFAULT_CONFIG, ...config }}
-                    onReady={handleReset}
-                  >
-                    {data || children}
-                  </GraphContent>
-                </TransformComponent>
-              </div>
-            </>
-          )
-        }}
+        <GraphContent
+          config={{ ...DEFAULT_CONFIG, ...config }}
+          onFullscreen={handleFullScreen}
+        >
+          {data || children}
+        </GraphContent>
       </TransformWrapper>
     </div>
   )

@@ -9,6 +9,10 @@
   resize: vertical;
   display: flex;
   align-items: stretch;
+
+  .container:fullscreen > & {
+    height: 100% !important;
+  }
 }
 
 .canvas {
@@ -35,8 +39,8 @@
 }
 
 .tools {
-  display: grid;
-  grid-template-areas: 'zoomIn reset zoomOut';
+  display: flex;
+  grid-template-areas: 'zoomIn reset zoomOut' / 'fullscreen download';
   gap: 4px;
   position: absolute;
   z-index: 2;
@@ -62,4 +66,8 @@
   &Fit {
     grid-area: reset;
   }
+}
+
+.fullscreen {
+  grid-area: fullscreen;
 }

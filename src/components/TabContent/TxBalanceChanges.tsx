@@ -83,6 +83,10 @@ const TxBalanceChanges: FC<{
     balanceChanges?.map((row) => row.address) || []
   )
 
+  if (!addresses.length) {
+    return <StateView icon={<IconEmpty />} title="No transfers was found" />
+  }
+
   const tableData = addresses
     .map((address) => {
       const result: BalancesPerAddress = {
@@ -141,6 +145,12 @@ const TxBalanceChanges: FC<{
   }
 
   const labelRenderHtml = (amount: BigNumber, token: string | null) => {
+    const isNativeOrWrappedNative =
+      !token || token === chainConfig.nativeCurrency.wrappedAddress
+    const tokenLogo = isNativeOrWrappedNative
+      ? `url(${chainConfig.icon})`
+      : `url(/api/avatar/${token})`
+
     return renderToStaticMarkup(
       <span className={styles.graphLabel}>
         {getNormalizedValue(amount || 0, 18, {
@@ -152,14 +162,14 @@ const TxBalanceChanges: FC<{
             data-tooltip-id="app-tooltip"
             data-tooltip-content={token}
             className={styles.graphLink}
-            style={{ '--img': `url(/api/avatar/${token})` } as CSSProperties}
+            style={{ '--img': tokenLogo } as CSSProperties}
           >
             {AddressValues.token.format(token)}
           </Link>
         ) : (
           <span
             className={styles.graphLink}
-            style={{ '--img': `url(${chainConfig.icon})` } as CSSProperties}
+            style={{ '--img': tokenLogo } as CSSProperties}
           >
             {chainConfig.nativeCurrency.name}
           </span>
