@@ -106,40 +106,27 @@ const GasPrice: FC<GasPriceProps> = ({
       }
     >
       <div className={styles.container}>
-        {!isEip1559 && (
-          <GasPriceEntry
-            chainConfig={chainConfig}
-            chainStats={chainStats}
-            type="standart"
-            base={gasData?.base}
-          />
-        )}
-
-        {isEip1559 && (
-          <>
-            <GasPriceEntry
-              chainConfig={chainConfig}
-              chainStats={chainStats}
-              type="low"
-              value={gasData?.low}
-              base={gasData?.base}
-            />
-            <GasPriceEntry
-              chainConfig={chainConfig}
-              chainStats={chainStats}
-              type="avg"
-              value={gasData?.avg}
-              base={gasData?.base}
-            />
-            <GasPriceEntry
-              chainConfig={chainConfig}
-              chainStats={chainStats}
-              type="high"
-              value={gasData?.high}
-              base={gasData?.base}
-            />
-          </>
-        )}
+        <GasPriceEntry
+          chainConfig={chainConfig}
+          chainStats={chainStats}
+          type="low"
+          value={isEip1559 ? gasData?.low : undefined}
+          base={gasData?.base}
+        />
+        <GasPriceEntry
+          chainConfig={chainConfig}
+          chainStats={chainStats}
+          type="avg"
+          value={isEip1559 ? gasData?.avg : undefined}
+          base={(gasData?.base || 0) * (isEip1559 ? 1 : 1.1)}
+        />
+        <GasPriceEntry
+          chainConfig={chainConfig}
+          chainStats={chainStats}
+          type="high"
+          value={isEip1559 ? gasData?.high : undefined}
+          base={(gasData?.base || 0) * (isEip1559 ? 1 : 1.3)}
+        />
       </div>
     </Card>
   )
