@@ -34,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         headers: {
           'Content-Type': 'application/json',
           accept: 'application/json',
+          session: '19359a61ae2446b51b549167b014da2fcf265768',
         },
         body: requestParameters,
       }
