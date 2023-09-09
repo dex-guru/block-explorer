@@ -19,8 +19,8 @@ export type DashboardAnalyzerHistory = {
 const DashboardAnalyzer: FC<{
   slug: string
   params?: Record<string, unknown>
-  setChatOpen?: (value: boolean) => void
-}> = ({ slug, params, setChatOpen }) => {
+  onChatToggle?: (value: boolean) => void
+}> = ({ slug, params, onChatToggle }) => {
   const [currentTab, setCurrentTab] = useState<string>('')
   const [history, setHistory] = useState<DashboardAnalyzerHistory[]>([])
   const [historyEntry, setHistoryEntry] =
@@ -28,9 +28,7 @@ const DashboardAnalyzer: FC<{
 
   const handleChangeTab = (value: string) => {
     setCurrentTab(value)
-    if (setChatOpen) {
-      setChatOpen(value === 'ai')
-    }
+    onChatToggle?.(value === 'ai')
   }
 
   const handleHistoryChange = useCallback(

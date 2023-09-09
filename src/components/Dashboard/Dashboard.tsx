@@ -1,5 +1,6 @@
 import { FC, useMemo, useState } from 'react'
 import { IconWarehouse } from '../Icons'
+import StateView from '../StateView'
 import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
 import DashboardWidget from './DashboardWidget/DashboardWidget'
 import Button from '@/components/Button'
@@ -33,6 +34,21 @@ const Dashboard: FC<{
     [data, params]
   )
 
+  const dashboardAnalyzer = useMemo(
+    () => (
+      <DashboardAnalyzer
+        slug={data.slug}
+        params={parameters}
+        onChatToggle={setIsChatOpen}
+      />
+    ),
+    [data.slug, parameters]
+  )
+
+  if (!data?.id) {
+    return <StateView title="No dashboard data" />
+  }
+
   const sortedWidgets =
     widgets
       ?.filter((widget) => !widget.options.isHidden)
@@ -42,17 +58,6 @@ const Dashboard: FC<{
 
         return aPos - bPos
       }) || []
-
-  const dashboardAnalyzer = useMemo(
-    () => (
-      <DashboardAnalyzer
-        slug={data.slug}
-        params={parameters}
-        setChatOpen={setIsChatOpen}
-      />
-    ),
-    [data.slug, parameters]
-  )
 
   return (
     <DetailsView

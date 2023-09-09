@@ -2,6 +2,10 @@
   display: flex;
   gap: 8px;
   flex-flow: column;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .prompts {

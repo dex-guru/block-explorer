@@ -16,7 +16,22 @@ export const useDashboardPrompts = (
         parameters: params,
         chat_logs: history,
       }),
-    }).then((res) => res.json())
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `An error occurred while fetching analyzer data: [${res.status}] ${res.statusText}`
+          )
+        }
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(
+          `An error occurred while fetching analyzer data: ${
+            (err as Error).message
+          }`
+        )
+      })
   )
 
 export const useDashboardAnalyze = ({
@@ -30,8 +45,8 @@ export const useDashboardAnalyze = ({
 }) =>
   useSWRImmutable<{ output: string }>(
     prompt ? [slug, params, prompt] : null,
-    async () => {
-      const res = await fetch('/api/dashboard/analyzer', {
+    () =>
+      fetch('/api/dashboard/analyzer', {
         method: 'POST',
         body: JSON.stringify({
           dashboard_slug: slug,
@@ -39,13 +54,20 @@ export const useDashboardAnalyze = ({
           selected_prompt: prompt,
         }),
       })
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json()
+          }
 
-      if (!res.ok) {
-        throw new Error(
-          `An error occurred while fetching analyzer data: [${res.status}] ${res.statusText}`
-        )
-      }
-
-      return res.json()
-    }
+          throw new Error(
+            `An error occurred while fetching analyzer data: [${res.status}] ${res.statusText}`
+          )
+        })
+        .catch((err) => {
+          throw new Error(
+            `An error occurred while fetching analyzer data: ${
+              (err as Error).message
+            }`
+          )
+        })
   )
