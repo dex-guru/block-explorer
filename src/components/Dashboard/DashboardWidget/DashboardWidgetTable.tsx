@@ -9,7 +9,8 @@ import { PaginationVariables } from '@/types'
 const DashboardWidgetTable: FC<{
   data?: TRedashQueryResultData
   className?: string
-}> = ({ data, className }) => {
+  isLoading?: boolean
+}> = ({ data, className, isLoading }) => {
   const [currentSkip, setCurrentSkip] = useState(0)
   const [currentFirst, setCurrentFirst] = useState(DEFAULT_PER_PAGE)
   const [currentRows, setCurrentRows] = useState<
@@ -33,6 +34,10 @@ const DashboardWidgetTable: FC<{
       onPageChange={handlePageChange}
       data={currentRows}
       total={data?.rows.length}
+      isLoading={isLoading}
+      empty={{
+        title: 'No data',
+      }}
       columns={
         data?.columns.map((col): IColumn<Record<string, string | number>> => {
           return {

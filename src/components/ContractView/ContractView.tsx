@@ -556,12 +556,7 @@ const ContractView: FC<IContractViewProps> = ({
                           }
                           params={{
                             network: chain.config.shortName,
-                            ...(type === 'token'
-                              ? {
-                                  token_address_requested:
-                                    address.toLowerCase(),
-                                }
-                              : { address: address.toLowerCase() }),
+                            address: address.toLowerCase(),
                           }}
                         />
                       ),

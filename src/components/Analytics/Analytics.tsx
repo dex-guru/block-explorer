@@ -40,9 +40,11 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
       const dashboards: TRedashDashboard[] = []
 
       await Promise.all(
-        dashboardsList?.results?.map(async (dashboard) => {
-          dashboards.push(await getRedashDashboard(dashboard.id))
-        })
+        dashboardsList?.results
+          ?.filter((dashboard) => !dashboard.is_draft)
+          .map(async (dashboard) => {
+            dashboards.push(await getRedashDashboard(dashboard.id))
+          })
       )
 
       setDashboardsData(dashboards)

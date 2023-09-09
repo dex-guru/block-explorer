@@ -106,7 +106,9 @@ const DashboardWidget: FC<{
     }
 
     if (visualization?.type === 'TABLE') {
-      return <DashboardWidgetTable data={queryResult?.data} />
+      return (
+        <DashboardWidgetTable data={queryResult?.data} isLoading={isFetching} />
+      )
     }
 
     if (visualization?.type) {
