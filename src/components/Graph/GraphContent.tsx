@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useControls, TransformComponent } from 'react-zoom-pan-pinch'
-import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
 import uniqid from 'uniqid'

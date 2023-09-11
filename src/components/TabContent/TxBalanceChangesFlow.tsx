@@ -19,10 +19,7 @@ const TxBalanceChangesFlow: FC<{
 
   const nodeRenderHtml = (address: string) => {
     return renderToStaticMarkup(
-      <Link
-        href={AddressValues.account.url(address) || ''}
-        style={{ '--img': `url(/api/avatar/${address})` } as CSSProperties}
-      >
+      <Link href={AddressValues.account.url(address) || ''}>
         {AddressValues.account.format(address)}
       </Link>
     )
