@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useControls, TransformComponent } from 'react-zoom-pan-pinch'
+import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
 import uniqid from 'uniqid'
@@ -10,7 +11,8 @@ const GraphContent: FC<{
   config: Record<string, unknown | Record<string, unknown>>
   data: string
   onFullscreen?: () => void
-}> = ({ config, data, onFullscreen }) => {
+  svgManipulationCallback?: (svg: string) => string
+}> = ({ config, data, onFullscreen, svgManipulationCallback }) => {
   const refContainer = useRef<HTMLDivElement>(null)
   const { zoomIn, zoomOut, resetTransform, centerView } = useControls()
   const [isLoading, setIsLoading] = useState(true)
@@ -25,13 +27,15 @@ const GraphContent: FC<{
   const generate = useCallback(async () => {
     if (refContainer.current) {
       const id = uniqid()
-      const { svg } = await mermaid.render(id, data)
-      refContainer.current.innerHTML = svg
+      mermaid.render(id, data).then(({ svg }) => {
+        if (refContainer.current) {
+          refContainer.current.innerHTML = svgManipulationCallback?.(svg) ?? svg
+          setIsLoading(false)
+          handleReset()
+        }
+      })
     }
-
-    setIsLoading(false)
-    handleReset()
-  }, [data, handleReset])
+  }, [data, handleReset, svgManipulationCallback])
 
   useEffect(() => {
     if (!refContainer.current) {
@@ -39,7 +43,6 @@ const GraphContent: FC<{
     }
 
     setIsLoading(true)
-
     mermaid.initialize(config)
 
     generate()
@@ -57,8 +60,16 @@ const GraphContent: FC<{
       return
     }
 
+    const hostname =
+      typeof window !== 'undefined' && window.location.hostname
+        ? window.location.hostname
+        : ''
+
     const svgBlob = new Blob(
-      ['<?xml version="1.0" standalone="no"?>\r\n', svgEl.outerHTML],
+      [
+        '<?xml version="1.0" standalone="no"?>\r\n',
+        svgEl.outerHTML.replace(/href\=\"\//gm, `href="//${hostname}/`),
+      ],
       {
         type: 'image/svg+xml;charset=utf-8',
       }

@@ -17,26 +17,3 @@
 .positive {
   color: var(--color-success);
 }
-
-.graph {
-  &Node,
-  &Label,
-  &Link {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-
-  &Node,
-  &Link {
-    &:before {
-      content: '';
-      background: var(--color-bg-2) var(--img) center center no-repeat;
-      background-size: 100%;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      flex: 0 0 auto;
-    }
-  }
-}

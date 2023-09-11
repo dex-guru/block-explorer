@@ -35,7 +35,14 @@ const DEFAULT_CONFIG = {
   },
 }
 
-const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
+const Graph: FC<GraphProps> = ({
+  data,
+  children,
+  className,
+  config,
+  svgManipulationCallback,
+  style,
+}) => {
   const ref = useRef<HTMLDivElement>(null)
   const [isAllowedHuge, setIsAllowedHuge] = useState(false)
 
@@ -72,7 +79,7 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
   }
 
   return (
-    <div className={clsx(styles.container, className)} ref={ref}>
+    <div className={clsx(styles.container, className)} ref={ref} style={style}>
       <TransformWrapper
         initialScale={1}
         initialPositionX={200}
@@ -88,6 +95,7 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
           config={{ ...DEFAULT_CONFIG, ...config }}
           onFullscreen={handleFullScreen}
           data={graphData}
+          svgManipulationCallback={svgManipulationCallback}
         />
       </TransformWrapper>
     </div>
