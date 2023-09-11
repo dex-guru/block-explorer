@@ -6,6 +6,10 @@
   composes: dataRow from '../Table/Table.module.scss';
 }
 
+.dataNumber {
+  composes: dataNumber from '../Table/Table.module.scss';
+}
+
 .negative {
   color: var(--color-danger);
 }

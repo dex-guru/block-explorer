@@ -18,6 +18,32 @@ export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
     render: (row) => <Address address={row.address} type="account" isCopy />,
   },
   {
+    accessor: 'balances',
+    type: 'number',
+    title: 'Balance',
+    render: (row) => (
+      <ul className={styles.data}>
+        {row.balances?.map((balance, idx) => (
+          <li
+            className={clsx(
+              styles.dataRow,
+              { [styles.negative]: balance.isNegative() },
+              { [styles.positive]: balance.isPositive() }
+            )}
+            key={idx}
+          >
+            <div className={styles.dataNumber}>
+              {balance.isPositive() ? '+' : ''}
+              {getNormalizedValue(balance, 18, {
+                highPrecession: true,
+              }) || ''}
+            </div>
+          </li>
+        ))}
+      </ul>
+    ),
+  },
+  {
     accessor: 'tokens',
     title: 'Token',
     render: (row) => (
@@ -42,29 +68,6 @@ export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
         {row.tokenIds?.map((id, idx) => (
           <li className={styles.dataRow} key={idx}>
             {id || ''}
-          </li>
-        ))}
-      </ul>
-    ),
-  },
-  {
-    accessor: 'balances',
-    title: 'Balance',
-    render: (row) => (
-      <ul className={styles.data}>
-        {row.balances?.map((balance, idx) => (
-          <li
-            className={clsx(
-              styles.dataRow,
-              { [styles.negative]: balance.isNegative() },
-              { [styles.positive]: balance.isPositive() }
-            )}
-            key={idx}
-          >
-            {balance.isPositive() ? '+' : ''}
-            {getNormalizedValue(balance, 18, {
-              highPrecession: true,
-            }) || ''}
           </li>
         ))}
       </ul>
