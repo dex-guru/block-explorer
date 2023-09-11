@@ -5,4 +5,5 @@ export type DetailsProps = {
   isOpen?: boolean
   className?: string
   children?: ReactNode | ReactNode[]
+  onToggle?: () => void
 }

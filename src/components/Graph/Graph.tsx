@@ -1,14 +1,16 @@
-import { FC, useRef } from 'react'
+import { FC, useRef, useState } from 'react'
 import { TransformWrapper } from 'react-zoom-pan-pinch'
 import clsx from 'clsx'
 import GraphContent from './GraphContent'
 import { GraphProps } from './types'
+import Message from '@/components/Message'
 import styles from './Graph.module.scss'
 
 const DEFAULT_CONFIG = {
   maxTextSize: 99999999,
   theme: 'default',
   themeVariables: {
+    fontFamily: 'var(--font-ibm)',
     fontSize: '12px',
     edgeLabelBackground: 'transparent',
     // primaryColor: 'var(--color-bg-2)',
@@ -23,7 +25,7 @@ const DEFAULT_CONFIG = {
     textColor: 'var(--color-text)',
 
     lineColor: 'var(--color-muted, #888)',
-    mainBkg: 'var(--color-bg-3, #eee)',
+    mainBkg: 'var(--color-bg-2, #eee)',
   },
   securityLevel: 'antiscript',
   flowchart: {
@@ -35,9 +37,30 @@ const DEFAULT_CONFIG = {
 
 const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
   const ref = useRef<HTMLDivElement>(null)
+  const [isAllowedHuge, setIsAllowedHuge] = useState(false)
 
-  if (!data && !children) {
+  const graphData = data || children?.toString() || ''
+
+  if (!graphData) {
     return null
+  }
+
+  if (graphData.length > 10000 && !isAllowedHuge) {
+    return (
+      <Message
+        type="danger"
+        text="Displaying this diagram might cause performance issues on this page!"
+        actions={[
+          {
+            caption: 'Display chart',
+            className: styles.submit,
+            onClick: () => {
+              setIsAllowedHuge(true)
+            },
+          },
+        ]}
+      />
+    )
   }
 
   const handleFullScreen = () => {
@@ -58,14 +81,14 @@ const Graph: FC<GraphProps> = ({ data, children, className, config }) => {
         centerZoomedOut={true}
         smooth={true}
         limitToBounds={false}
+        minScale={0.75}
         maxScale={40}
       >
         <GraphContent
           config={{ ...DEFAULT_CONFIG, ...config }}
           onFullscreen={handleFullScreen}
-        >
-          {data || children}
-        </GraphContent>
+          data={graphData}
+        />
       </TransformWrapper>
     </div>
   )

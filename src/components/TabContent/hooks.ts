@@ -9,7 +9,7 @@ type BalanceEntry = {
   tokenId?: string
 }
 
-type BalanceFlow = BalanceEntry & {
+export type BalanceFlow = BalanceEntry & {
   from: string
   to: string
   amount: BigNumber

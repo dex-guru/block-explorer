@@ -1,9 +1,11 @@
-import { CSSProperties, FC, useEffect } from 'react'
+import { CSSProperties, FC, useEffect, useState } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
+import Details from '../Details'
+import TxBalanceChangesFlow from './TxBalanceChangesFlow'
 import { useBalanceChanges, useBalanceFlows } from './hooks'
 import {
   ChainConfigModel,
@@ -22,7 +24,6 @@ import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 import { arrayUniqueValues, getNormalizedValue } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
 
-const Graph = dynamic(() => import('@/components/Graph'), { ssr: false })
 const StateView = dynamic(() => import('@/components/StateView'), {
   ssr: false,
 })
@@ -40,6 +41,8 @@ const TxBalanceChanges: FC<{
   chainConfig: ChainConfigModel
 }> = ({ data, chainConfig }) => {
   const hash = data?.hash
+
+  const [isFlowWasOpen, setIsFlowWasOpen] = useState(false)
 
   const [
     getLogs,
@@ -80,8 +83,8 @@ const TxBalanceChanges: FC<{
   }
 
   const addresses = arrayUniqueValues(
-    balanceChanges?.map((row) => row.address) || []
-  )
+    balanceChanges?.map((row) => row.address)
+  ) as string[]
 
   if (!addresses.length) {
     return <StateView icon={<IconEmpty />} title="No transfers was found" />
@@ -179,25 +182,37 @@ const TxBalanceChanges: FC<{
   }
 
   addresses.forEach((address) => {
-    const from = `address_${address}`
+    const from = `a${address}`
     graphTextLines.push(`${from}("${nodeRenderHtml(`${address}`)}")`)
   })
 
   addresses.forEach((address) => {
-    const from = `address_${address}`
+    const from = `a${address}`
     balanceFlows
-      ?.filter((row) => row.from === address)
+      ?.filter((row) => row.from === `${address}`)
       .forEach((row) => {
-        const to = `address_${row.to}`
+        const to = `a${row.to}`
         graphTextLines.push(
           `${from}-- "${labelRenderHtml(row.amount, row.token)}" -->${to}`
         )
       })
   })
 
+  const handleToggle = () => {
+    setIsFlowWasOpen(true)
+  }
+
   return (
     <Card>
-      <Graph data={graphTextLines.join('\r\n\t')} />
+      <Details title="Fund Flow" onToggle={handleToggle}>
+        {isFlowWasOpen && (
+          <TxBalanceChangesFlow
+            addresses={addresses}
+            balanceFlows={balanceFlows}
+            chainConfig={chainConfig}
+          />
+        )}
+      </Details>
       <Table
         data={tableData}
         columns={balanceChangesColumns(chainConfig)}

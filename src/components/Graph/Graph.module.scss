@@ -21,9 +21,6 @@
   height: auto !important;
 }
 
-.layer {
-}
-
 .graph {
   margin: 0;
   padding: 8px 16px;
@@ -39,8 +36,10 @@
 }
 
 .tools {
-  display: flex;
-  grid-template-areas: 'zoomIn reset zoomOut' / 'fullscreen download';
+  display: grid;
+  grid-template-areas:
+    'in fit fit out'
+    'fs fs dl dl';
   gap: 4px;
   position: absolute;
   z-index: 2;
@@ -56,18 +55,22 @@
   }
 
   &In {
-    grid-area: zoomIn;
+    grid-area: in;
   }
 
   &Out {
-    grid-area: zoomOut;
+    grid-area: out;
   }
 
   &Fit {
-    grid-area: reset;
+    grid-area: fit;
   }
 }
 
 .fullscreen {
-  grid-area: fullscreen;
+  grid-area: fs;
+}
+
+.download {
+  grid-area: dl;
 }

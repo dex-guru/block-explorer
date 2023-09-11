@@ -1,17 +1,19 @@
-import { FC, ReactNode, useCallback, useEffect, useRef } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { useControls, TransformComponent } from 'react-zoom-pan-pinch'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
-import Button from '../Button'
+import uniqid from 'uniqid'
+import Button from '@/components/Button'
 import styles from './Graph.module.scss'
 
 const GraphContent: FC<{
   config: Record<string, unknown | Record<string, unknown>>
-  children: ReactNode
+  data: string
   onFullscreen?: () => void
-}> = ({ config, children, onFullscreen }) => {
+}> = ({ config, data, onFullscreen }) => {
   const refContainer = useRef<HTMLDivElement>(null)
   const { zoomIn, zoomOut, resetTransform, centerView } = useControls()
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleReset = useCallback(() => {
     setTimeout(() => {
@@ -20,24 +22,31 @@ const GraphContent: FC<{
     }, 50)
   }, [centerView, resetTransform])
 
+  const generate = useCallback(async () => {
+    if (refContainer.current) {
+      const id = uniqid()
+      const { svg } = await mermaid.render(id, data)
+      refContainer.current.innerHTML = svg
+    }
+
+    setIsLoading(false)
+    handleReset()
+  }, [data, handleReset])
+
   useEffect(() => {
     if (!refContainer.current) {
       return
     }
 
-    mermaid.initialize(config)
-    mermaid
-      .run({ nodes: [refContainer.current], suppressErrors: true })
-      .then(handleReset)
-  }, [children, config, handleReset])
+    setIsLoading(true)
 
-  if (!children) {
-    return null
-  }
+    mermaid.initialize(config)
+
+    generate()
+  }, [data, config, handleReset, generate])
 
   const handleFullScreen = () => {
     onFullscreen?.()
-
     handleReset()
   }
 
@@ -65,43 +74,43 @@ const GraphContent: FC<{
 
   return (
     <>
-      <div className={styles.tools}>
-        <Button
-          className={styles.zoomIn}
-          caption="Zoom In"
-          onClick={() => zoomIn()}
-        />
-        <Button
-          className={styles.zoomOut}
-          caption="Zoom Out"
-          onClick={() => zoomOut()}
-        />
-        <Button
-          className={styles.zoomFit}
-          caption="Fit"
-          onClick={handleReset}
-        />
-        <Button
-          className={clsx(styles.fullscreen, {
-            [styles.fullscreenActive]: document.fullscreenElement,
-          })}
-          caption="Full Screen"
-          onClick={handleFullScreen}
-        />
-        <Button
-          className={styles.download}
-          caption="Download"
-          onClick={handleDownload}
-        />
-      </div>
+      {!isLoading && (
+        <div className={styles.tools}>
+          <Button
+            className={styles.zoomIn}
+            caption="Zoom In"
+            onClick={() => zoomIn()}
+          />
+          <Button
+            className={styles.zoomOut}
+            caption="Zoom Out"
+            onClick={() => zoomOut()}
+          />
+          <Button
+            className={styles.zoomFit}
+            caption="Fit"
+            onClick={handleReset}
+          />
+          <Button
+            className={clsx(styles.fullscreen, {
+              [styles.fullscreenActive]: document.fullscreenElement,
+            })}
+            caption="Full Screen"
+            onClick={handleFullScreen}
+          />
+          <Button
+            className={styles.download}
+            caption="Download"
+            onClick={handleDownload}
+          />
+        </div>
+      )}
       <div className={styles.body}>
         <TransformComponent
           wrapperClass={styles.canvas}
           contentClass={styles.layer}
         >
-          <div className={clsx('mermaid', styles.graph)} ref={refContainer}>
-            {children}
-          </div>
+          <div className={clsx('mermaid', styles.graph)} ref={refContainer} />
         </TransformComponent>
       </div>
     </>
