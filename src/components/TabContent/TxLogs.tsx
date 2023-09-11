@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
-import { IconEmpty } from '@/components/Icons'
+import { IconNoData } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'
 import LogsView from '@/components/LogsView'
 import StateView from '@/components/StateView'
@@ -19,7 +19,7 @@ const TxLogs: FC<{ data: TransactionModel }> = (props) => {
   }, [getLogs, hash])
 
   if (!hash || (!loading && !data?.logs?.length)) {
-    return <StateView icon={<IconEmpty />} title="No TX logs was found" />
+    return <StateView icon={<IconNoData />} title="No TX logs was found" />
   }
 
   if (hash && loading) {

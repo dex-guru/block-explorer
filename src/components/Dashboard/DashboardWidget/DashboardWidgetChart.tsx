@@ -52,21 +52,30 @@ const DashboardWidgetChart: FC<{
     const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]
       ?.name
 
-    if (isLoading) {
-      return <Loading className={styles.loader} />
-    }
-
     return (
-      <HeatmapChart
-        data={data?.rows}
-        keys={{ x: mapping.x, y: mapping.y, val: mapping.zVal }}
-        tickXFormatter={tickFormatter}
-        tooltipFormat={({ x, y, value }) => {
-          return `${
-            tooltipName ? `${tooltipName} on ` : ''
-          } ${x} ${y}: ${financialFormat(value)}`
-        }}
-      />
+      <div
+        className={clsx(
+          styles.container,
+          { [styles.loading]: isLoading },
+          { [styles.empty]: !data?.rows?.length }
+        )}
+      >
+        {isLoading && <Loading className={styles.loader} />}
+
+        <div className={styles.wrapper}>
+          <HeatmapChart
+            className={styles.heatmap}
+            data={data?.rows}
+            keys={{ x: mapping.x, y: mapping.y, val: mapping.zVal }}
+            tickXFormatter={tickFormatter}
+            tooltipFormat={({ x, y, value }) => {
+              return `${
+                tooltipName ? `${tooltipName} on ` : ''
+              } ${x} ${y}: ${financialFormat(value)}`
+            }}
+          />
+        </div>
+      </div>
     )
   }
 
