@@ -1,9 +1,10 @@
 import { FC, useMemo, useState } from 'react'
-import { IconWarehouse } from '../Icons'
+import { IconNoData, IconWarehouse } from '../Icons'
 import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
 import DashboardWidget from './DashboardWidget/DashboardWidget'
 import Button from '@/components/Button'
 import DetailsView from '@/components/DetailsView'
+import StateView from '@/components/StateView'
 import {
   DEFAULT_DATE_RANGE,
   DYNAMIC_DATE_PREFIX,
@@ -33,6 +34,26 @@ const Dashboard: FC<{
     [data, params]
   )
 
+  const dashboardAnalyzer = useMemo(
+    () => (
+      <DashboardAnalyzer
+        slug={data.slug}
+        params={parameters}
+        onChatToggle={setIsChatOpen}
+      />
+    ),
+    [data.slug, parameters]
+  )
+
+  if (!data?.id) {
+    return (
+      <StateView
+        icon={<IconNoData className={styles.icon} />}
+        title="No dashboard data"
+      />
+    )
+  }
+
   const sortedWidgets =
     widgets
       ?.filter((widget) => !widget.options.isHidden)
@@ -42,17 +63,6 @@ const Dashboard: FC<{
 
         return aPos - bPos
       }) || []
-
-  const dashboardAnalyzer = useMemo(
-    () => (
-      <DashboardAnalyzer
-        slug={data.slug}
-        params={parameters}
-        setChatOpen={setIsChatOpen}
-      />
-    ),
-    [data.slug, parameters]
-  )
 
   return (
     <DetailsView

@@ -122,40 +122,58 @@ const DashboardWidget: FC<{
     return null
   }
 
+  const renderFooterStatus = () => {
+    if (isFetching && !queryJob?.id) {
+      return (
+        <Value
+          className={styles.footer}
+          icon={<IconWatch />}
+          value={'Querying data'}
+        />
+      )
+    }
+
+    if (isFetching && !!queryJob?.id) {
+      return (
+        <Value
+          className={styles.timestamp}
+          icon={<IconWatch />}
+          value={!errorResponse ? 'Calculating data' : 'Query failed...'}
+        />
+      )
+    }
+
+    if (!isFetching && !queryResult?.retrieved_at) {
+      return (
+        <Value
+          className={styles.timestamp}
+          icon={<IconAgo />}
+          value="Request failed"
+        />
+      )
+    }
+
+    if (!isFetching && !!queryResult?.retrieved_at) {
+      return (
+        <Value
+          className={styles.timestamp}
+          icon={<IconAgo />}
+          value={
+            <Suspense fallback={<>&nbsp;</>}>
+              <TimeAgo
+                timestamp={new Date(queryResult?.retrieved_at).getTime() / 1000}
+              />
+            </Suspense>
+          }
+        />
+      )
+    }
+  }
+
   const renderWidgetFooter = () => {
     return (
       <div className={styles.footer}>
-        {isFetching && !queryJob?.id && (
-          <Value
-            className={styles.footer}
-            icon={<IconWatch />}
-            value={'Querying data'}
-          />
-        )}
-
-        {isFetching && !!queryJob?.id && (
-          <Value
-            className={styles.timestamp}
-            icon={<IconWatch />}
-            value={!errorResponse ? 'Calculating data' : 'Query failed...'}
-          />
-        )}
-
-        {!isFetching && !!queryResult?.retrieved_at && (
-          <Value
-            className={styles.timestamp}
-            icon={<IconAgo />}
-            value={
-              <Suspense fallback={<>&nbsp;</>}>
-                <TimeAgo
-                  timestamp={
-                    new Date(queryResult?.retrieved_at).getTime() / 1000
-                  }
-                />
-              </Suspense>
-            }
-          />
-        )}
+        {renderFooterStatus()}
 
         {renderDateRangeSwitch()}
       </div>

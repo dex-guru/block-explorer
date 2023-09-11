@@ -76,115 +76,118 @@ const DashboardAnalyzerChat: FC<{
 
   return (
     <div className={styles.container}>
-      <div className={styles.entries}>
-        {!history.length && !currentPrompt && (
-          <div className={styles.entry}>
-            <div className={styles.response}>
-              <div className={styles.wrapper}>
-                <ImageAvatar className={styles.robot} />
-                <div className={styles.text}>
-                  {!!printed && (
-                    <>
-                      <span className={styles.printed}>{printed}</span>
-                      <span className={styles.notPrinted}>{notPrinted}</span>
-                    </>
-                  )}
+      <div className={styles.body}>
+        <div className={styles.entries}>
+          {!history.length && !currentPrompt && (
+            <div className={styles.entry}>
+              <div className={styles.response}>
+                <div className={styles.wrapper}>
+                  <ImageAvatar className={styles.robot} />
+                  <div className={styles.text}>
+                    {!!printed && (
+                      <>
+                        <span className={styles.printed}>{printed}</span>
+                        <span className={styles.notPrinted}>{notPrinted}</span>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {history.map((entry, idx) => {
-          if (data?.output === entry.summary) {
-            return null
-          }
+          {history.map((entry, idx) => {
+            if (data?.output === entry.summary) {
+              return null
+            }
 
-          return (
-            <div className={styles.entry} key={idx}>
+            return (
+              <div className={styles.entry} key={idx}>
+                <div className={styles.prompt}>
+                  <div className={styles.wrapper}>
+                    <IconUser className={styles.user} />
+                    <div className={styles.text}>{entry.prompt_submitted}</div>
+                  </div>
+                </div>
+                <div className={styles.response}>
+                  <div className={styles.wrapper}>
+                    <ImageAvatar className={styles.robot} />
+                    <div className={styles.text}>{entry.summary}</div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+
+          {currentPrompt && (
+            <div className={styles.entry}>
               <div className={styles.prompt}>
                 <div className={styles.wrapper}>
                   <IconUser className={styles.user} />
-                  <div className={styles.text}>{entry.prompt_submitted}</div>
+                  <div className={styles.text}>{currentPrompt}</div>
                 </div>
               </div>
               <div className={styles.response}>
                 <div className={styles.wrapper}>
                   <ImageAvatar className={styles.robot} />
-                  <div className={styles.text}>{entry.summary}</div>
+                  <div className={styles.text}>
+                    {!!printed && (
+                      <>
+                        <span className={styles.printed}>{printed}</span>
+                        <span className={styles.notPrinted}>{notPrinted}</span>
+                      </>
+                    )}
+
+                    {isLoading && (
+                      <div className={styles.processing}>
+                        <span />
+                        <span />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          )
-        })}
+          )}
 
-        {currentPrompt && (
-          <div className={styles.entry}>
-            <div className={styles.prompt}>
-              <div className={styles.wrapper}>
-                <IconUser className={styles.user} />
-                <div className={styles.text}>{currentPrompt}</div>
-              </div>
-            </div>
-            <div className={styles.response}>
-              <div className={styles.wrapper}>
-                <ImageAvatar className={styles.robot} />
-                <div className={styles.text}>
-                  {!!printed && (
-                    <>
-                      <span className={styles.printed}>{printed}</span>
-                      <span className={styles.notPrinted}>{notPrinted}</span>
-                    </>
-                  )}
-
-                  {isLoading && (
-                    <div className={styles.processing}>
-                      <span />
-                      <span />
-                    </div>
-                  )}
+          {!!history?.length && !isLoading && (
+            <div className={styles.entry}>
+              <div className={styles.response}>
+                <div className={styles.wrapper}>
+                  <ImageAvatar className={styles.robot} />
+                  <div className={styles.text}>What&apos;s next?</div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {!!history?.length && !isLoading && (
-          <div className={styles.entry}>
-            <div className={styles.response}>
-              <div className={styles.wrapper}>
-                <ImageAvatar className={styles.robot} />
-                <div className={styles.text}>What&apos;s next?</div>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-
-      <DashboardAnalyzerVariants
-        className={styles.variants}
-        slug={slug}
-        params={params}
-        history={history}
-        onSubmit={(value) => {
-          setCurrentPrompt(value)
-        }}
-      />
-
-      <form className={styles.input} onSubmit={handleSubmit}>
-        <input
-          className={styles.query}
-          placeholder="Type your query"
-          ref={refInput}
-          onChange={handleChange}
-          autoFocus
+      <div className={styles.footer}>
+        <DashboardAnalyzerVariants
+          className={styles.variants}
+          slug={slug}
+          params={params}
+          history={history}
+          onSubmit={(value) => {
+            setCurrentPrompt(value)
+          }}
         />
-        <Button
-          className={styles.submit}
-          icon={<IconSend className={styles.submitIcon} />}
-          disabled={isSendDisabled}
-        />
-      </form>
+
+        <form className={styles.input} onSubmit={handleSubmit}>
+          <input
+            className={styles.query}
+            placeholder="Type your query"
+            ref={refInput}
+            onChange={handleChange}
+            autoFocus
+          />
+          <Button
+            className={styles.submit}
+            icon={<IconSend className={styles.submitIcon} />}
+            disabled={isSendDisabled}
+          />
+        </form>
+      </div>
     </div>
   )
 }

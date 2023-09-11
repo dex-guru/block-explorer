@@ -49,42 +49,48 @@ const GasPrice: FC<GasPriceProps> = ({
 
     const client = publicClient({ chainId: chainConfig.chainId })
 
-    if (isEip1559) {
-      client
-        .getFeeHistory({
-          blockCount: 10,
-          blockTag: 'latest',
-          rewardPercentiles: [20, 50, 90],
-        })
-        .then((feeHistory) => {
-          const blocks = formatFeeHistory(feeHistory, false)
-
-          const slow = avg(blocks.map((b) => b.priorityFeePerGas?.[0] || 0))
-          const average = avg(blocks.map((b) => b.priorityFeePerGas?.[1] || 0))
-          const fast = avg(blocks.map((b) => b.priorityFeePerGas?.[2] || 0))
-
-          client.getBlock({ blockTag: 'pending' }).then((block) => {
-            const result = {
-              base: Number(block.baseFeePerGas),
-              low: slow,
-              avg: average,
-              high: fast,
-            }
-            setGasData(result)
-            setIsLoading(false)
-            onChange?.(result)
+    try {
+      if (isEip1559) {
+        client
+          .getFeeHistory({
+            blockCount: 10,
+            blockTag: 'latest',
+            rewardPercentiles: [20, 50, 90],
           })
+          .then((feeHistory) => {
+            const blocks = formatFeeHistory(feeHistory, false)
+
+            const slow = avg(blocks.map((b) => b.priorityFeePerGas?.[0] || 0))
+            const average = avg(
+              blocks.map((b) => b.priorityFeePerGas?.[1] || 0)
+            )
+            const fast = avg(blocks.map((b) => b.priorityFeePerGas?.[2] || 0))
+
+            client.getBlock({ blockTag: 'pending' }).then((block) => {
+              const result = {
+                base: Number(block.baseFeePerGas),
+                low: slow,
+                avg: average,
+                high: fast,
+              }
+              setGasData(result)
+              setIsLoading(false)
+              onChange?.(result)
+            })
+          })
+      } else {
+        client.getGasPrice().then((res) => {
+          const value = Number(res)
+          const result = {
+            base: value,
+          }
+          setGasData(result)
+          setIsLoading(false)
+          onChange?.(result)
         })
-    } else {
-      client.getGasPrice().then((res) => {
-        const value = Number(res)
-        const result = {
-          base: value,
-        }
-        setGasData(result)
-        setIsLoading(false)
-        onChange?.(result)
-      })
+      }
+    } catch {
+      //
     }
   }, [publicClient, onChange, chainConfig, isEip1559])
 

@@ -4,7 +4,6 @@ import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
 import { useDashboardAnalyze } from './hooks'
 import { IconOutput } from '@/components/Icons'
 import { useTypewriter } from '@/hooks/useTypewriter'
-import ImageGuruImage from '@/images/guruai.svg'
 import styles from './DashboardAnalyzerOverview.module.scss'
 
 const DashboardAnalyzerOverview: FC<{
@@ -34,12 +33,13 @@ const DashboardAnalyzerOverview: FC<{
     ? 'Ooops! Sorry, I got my circuits shorted...'
     : 'What do you want to know today?'
 
-  const [printed, notPrinted] = useTypewriter(response)
+  const [printed, notPrinted] = useTypewriter(
+    response.replace(' - ', ' – ').replace(' "', ' “').replace('"', '”')
+  )
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <ImageGuruImage className={styles.image} />
         <div className={styles.body}>
           <div className={styles.response}>
             {!!currentPrompt && (
