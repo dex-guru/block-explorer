@@ -33,7 +33,9 @@ const DashboardAnalyzerOverview: FC<{
     ? 'Ooops! Sorry, I got my circuits shorted...'
     : 'What do you want to know today?'
 
-  const [printed, notPrinted] = useTypewriter(response)
+  const [printed, notPrinted] = useTypewriter(
+    response.replace(' - ', ' – ').replace(' "', ' “').replace('"', '”')
+  )
 
   return (
     <div className={styles.container}>

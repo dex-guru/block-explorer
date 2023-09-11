@@ -113,9 +113,12 @@
   }
 }
 
-.printed {
-  &:after {
+.notPrinted {
+  visibility: hidden;
+
+  &:before {
     content: '';
+    visibility: visible;
     display: inline-block;
     width: 0.3em;
     background: currentColor;
@@ -124,21 +127,18 @@
     animation: blink 0.75s infinite;
     user-select: none;
     margin-left: 0.25em;
-
-    @keyframes blink {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
+    visibility: visible;
   }
 }
 
-.notPrinted {
-  visibility: hidden;
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .processing {

@@ -105,6 +105,10 @@
   composes: printed from './DashboardAnalyzerChat.module.scss';
 }
 
+.printing {
+  composes: printing from './DashboardAnalyzerChat.module.scss';
+}
+
 .notPrinted {
   composes: notPrinted from './DashboardAnalyzerChat.module.scss';
 }
