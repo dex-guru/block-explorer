@@ -19,6 +19,7 @@ import {
   GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN,
 } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
+import { checkChainFeature } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 
 interface IBlocksProps {
@@ -44,6 +45,10 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
       setInternalTxs(data.internalTransactions.data)
     }
   }, [data, isMount])
+
+  if (!checkChainFeature(props.chainConfig, 'traces')) {
+    return null
+  }
 
   const pageTitle = `${props.chainConfig.name} Contract Internal Transactions`
 

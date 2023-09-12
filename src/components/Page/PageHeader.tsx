@@ -27,7 +27,14 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
         href: '',
         submenu: [
           { caption: 'Transactions', href: '/txs' },
-          { caption: 'Contract Internal Transactions', href: '/txsInternal' },
+          ...(checkChainFeature(chainConfig, 'traces')
+            ? [
+                {
+                  caption: 'Contract Internal Transactions',
+                  href: '/txsInternal',
+                },
+              ]
+            : []),
           { caption: 'View Blocks', href: '/blocks' },
         ],
       },
