@@ -67,7 +67,9 @@ const GraphContent: FC<{
     const svgBlob = new Blob(
       [
         '<?xml version="1.0" standalone="no"?>\r\n',
-        svgEl.outerHTML.replace(/href\=\"\//gm, `href="//${hostname}/`),
+        svgEl.outerHTML
+          .replace(/href\=\"\//gm, `href="//${hostname}/`)
+          .replace(/url\(\//gm, `url(//${hostname}/`),
       ],
       {
         type: 'image/svg+xml;charset=utf-8',
@@ -120,7 +122,7 @@ const GraphContent: FC<{
           wrapperClass={styles.canvas}
           contentClass={styles.layer}
         >
-          <div className={clsx('mermaid', styles.graph)} ref={refContainer} />
+          <div className={styles.graph} ref={refContainer} />
         </TransformComponent>
       </div>
     </>

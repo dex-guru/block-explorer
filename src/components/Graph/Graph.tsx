@@ -10,10 +10,9 @@ const DEFAULT_CONFIG = {
   maxTextSize: 99999999,
   theme: 'default',
   themeVariables: {
-    fontFamily: 'var(--font-ibm)',
+    fontFamily: 'var(--font-ibm, Tahoma, Helvetica, sans-serif)',
     fontSize: '12px',
     edgeLabelBackground: 'transparent',
-    // primaryColor: 'var(--color-bg-2)',
     primaryTextColor: 'var(--color-accent, #000)',
     primaryBorderColor: 'var(--color-accent, #000)',
     secondaryColor: 'transparent',
@@ -27,6 +26,51 @@ const DEFAULT_CONFIG = {
     lineColor: 'var(--color-muted, #888)',
     mainBkg: 'var(--color-bg-2, #eee)',
   },
+  themeCSS: `
+    g.root {
+      padding: 16px;
+      font-size: 12px;
+    }
+
+    g.edgeLabel foreignObject {
+      overflow: visible;
+    }
+
+    g.edgeLabel foreignObject > div {
+      position: relative;
+      top: -12px;
+    }
+    
+    span.nodeLabel,
+    span.edgeLabel {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    span.nodeLabel > i,
+    span.edgeLabel > i,
+    span.nodeLabel > a,
+    span.edgeLabel > a {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      font-style: normal;
+    }
+
+    span.nodeLabel > i::before,
+    span.edgeLabel > i::before,
+    span.nodeLabel > a::before,
+    span.edgeLabel > a::before {
+      content: '';
+      background: var(--color-bg-2) var(--img) center center no-repeat;
+      background-size: 100%;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+  `,
   securityLevel: 'antiscript',
   flowchart: {
     curve: 'monotoneX',
