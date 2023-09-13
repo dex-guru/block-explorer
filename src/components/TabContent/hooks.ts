@@ -33,17 +33,34 @@ export const useBalanceFlows = (
   logs
     .sort((a, b) => a.logIndex - b.logIndex)
     .forEach((log) => {
-      if (!log.eventName?.startsWith('Transfer') || !log.decodedInput) {
+      const logName = log.eventName?.toLowerCase()
+      const isImportantLog =
+        logName?.startsWith('transfer') ||
+        ['withdrawal', 'deposit'].includes(logName || '')
+
+      if (!isImportantLog || !log.decodedInput) {
         return
       }
 
-      const from = log.decodedInput.find(
-        (row) =>
-          row.type === 'address' && ['from', 'sender', 'src'].includes(row.name)
-      )?.value
-      const to = log.decodedInput.find(
-        (row) => row.type === 'address' && ['to', 'dst'].includes(row.name)
-      )?.value
+      const isWithdrawal = logName === 'withdrawal'
+      const isDeposit = logName === 'deposit'
+
+      const from = isDeposit
+        ? log.address
+        : log.decodedInput.find(
+            (row) =>
+              row.type === 'address' &&
+              (isWithdrawal
+                ? log.address
+                : ['from', 'sender'].includes(row.name))
+          )?.value
+      const to = isWithdrawal
+        ? log.address
+        : log.decodedInput.find(
+            (row) =>
+              row.type === 'address' &&
+              (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
+          )?.value
       const token = log.address
 
       log.decodedInput

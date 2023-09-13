@@ -16,7 +16,9 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     const svg = renderToStaticMarkup(
       <JazzIcon size={32} seed={jsNumberForAddress(lowerAddress)} />
     )
-    res.setHeader('Content-Type', 'image/svg+xml').send(svg)
+    res.setHeader('Cache-Control', 's-maxage=31536000')
+    res.setHeader('Content-Type', 'image/svg+xml')
+    res.send(svg)
   } catch (err) {
     res.send({ statusCode: 500, message: (err as Error).message })
   }

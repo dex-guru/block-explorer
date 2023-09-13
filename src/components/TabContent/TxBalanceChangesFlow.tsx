@@ -52,9 +52,12 @@ const TxBalanceChangesFlow: FC<{
     balanceFlows
       ?.filter((row) => row.from === `${address}`)
       .forEach((row) => {
-        const to = `a${addresses.indexOf(row.to)}`
+        const addrIdx = addresses.indexOf(row.to)
+        const to = `a${addrIdx}`
         graphTextLines.push(
-          `${from}-->|"${labelRenderHtml(row.amount, row.token)}"|${to}`
+          `${from}-->|"${
+            addrIdx > 0 ? labelRenderHtml(row.amount, row.token) : 'ERROR'
+          }"|${to}`
         )
       })
   })
