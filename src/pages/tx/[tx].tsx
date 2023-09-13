@@ -22,6 +22,7 @@ import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
+import { checkChainFeature } from '@/lib/utils'
 
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
@@ -101,16 +102,20 @@ const TxPage: NextPage<ITxProps> = (props) => {
                     </Suspense>
                   ),
                 },
-                {
-                  title: 'Internal TXns',
-                  value: 'internal',
-                  to: `${pathname}?tab=internal`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <InternalTxs hash={props.data.hash} {...props} />
-                    </Suspense>
-                  ),
-                },
+                ...(checkChainFeature(props.chainConfig, 'traces')
+                  ? [
+                      {
+                        title: 'Internal TXns',
+                        value: 'internal',
+                        to: `${pathname}?tab=internal`,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <InternalTxs hash={props.data.hash} {...props} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
                 {
                   title: 'Balance Changes',
                   value: 'balanceChanges',
@@ -131,16 +136,20 @@ const TxPage: NextPage<ITxProps> = (props) => {
                     </Suspense>
                   ),
                 },
-                {
-                  title: 'Trace',
-                  value: 'trace',
-                  to: `${pathname}?tab=trace`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxTrace {...props} />
-                    </Suspense>
-                  ),
-                },
+                ...(checkChainFeature(props.chainConfig, 'traces')
+                  ? [
+                      {
+                        title: 'Trace',
+                        value: 'trace',
+                        to: `${pathname}?tab=trace`,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TxTrace {...props} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
               ]}
               value={currentTab}
             />
