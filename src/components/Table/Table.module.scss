@@ -13,6 +13,7 @@
   line-height: 24px;
   opacity: 1;
   transition: opacity 0.25s ease;
+  word-break: normal;
 
   &Loading {
     opacity: 0.5;

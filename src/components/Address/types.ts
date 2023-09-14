@@ -13,4 +13,8 @@ export type AddressProps = {
   isShorten?: boolean
   isCopy?: boolean
   isLink?: boolean
+  showIcon?: boolean
+
+  logo?: string | null
+  title?: string
 }

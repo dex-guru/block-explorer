@@ -1,8 +1,13 @@
+import { useQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import {
   InternalTransactionModel,
   LogModel,
+  Maybe,
+  TokenModel,
 } from '@/__generated__/resolvers-types'
+import { GET_TOKENS_INFO } from '@/lib/apollo/queries'
+import { arrayUniqueValues } from '@/lib/utils'
 
 type BalanceEntry = {
   token: string | null
@@ -20,15 +25,16 @@ type BalanceRow = BalanceEntry & {
   change: BigNumber
 }
 
-export const useBalanceFlows = (
+const getBalanceFlows = (
   logs?: LogModel[],
   internalTxs?: InternalTransactionModel[] | null
-): BalanceFlow[] | null => {
+): [BalanceFlow[] | null, string[] | null] => {
   if (!(logs && internalTxs)) {
-    return null
+    return [null, null]
   }
 
   const result: BalanceFlow[] = []
+  const addresses: string[] = []
 
   logs
     .sort((a, b) => a.logIndex - b.logIndex)
@@ -62,6 +68,16 @@ export const useBalanceFlows = (
               (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
           )?.value
       const token = log.address
+
+      if (from) {
+        addresses.push(from)
+      }
+      if (to) {
+        addresses.push(to)
+      }
+      if (token) {
+        addresses.push(token)
+      }
 
       log.decodedInput
         .filter(
@@ -98,12 +114,17 @@ export const useBalanceFlows = (
     })
   })
 
-  return result.filter((row) => !row.amount.isZero())
+  const addressesUsed = arrayUniqueValues<string>(
+    addresses.filter((address) => !!address)
+  )
+
+  return [
+    result.filter((row) => !row.amount.isZero()),
+    addressesUsed as string[],
+  ]
 }
 
-export const useBalanceChanges = (
-  balanceFlows: BalanceFlow[] | null
-): BalanceRow[] => {
+const getBalanceChangeRows = (balanceFlows: BalanceFlow[]): BalanceRow[] => {
   const result: BalanceRow[] = []
 
   balanceFlows?.forEach((flow) => {
@@ -125,4 +146,33 @@ export const useBalanceChanges = (
   })
 
   return result.filter((row) => !!row.address)
+}
+
+export const useBalanceChanges = (
+  logs?: LogModel[],
+  internalTxs?: InternalTransactionModel[] | null,
+  fromAddress?: Maybe<string>,
+  toAddress?: Maybe<string>
+) => {
+  const [balanceFlows, addressesUsed] =
+    logs && internalTxs ? getBalanceFlows(logs, internalTxs) : [null, null]
+  const balanceChanges = balanceFlows
+    ? getBalanceChangeRows(balanceFlows)
+    : null
+  const addresses = balanceChanges
+    ? arrayUniqueValues<string>(balanceChanges?.map((row) => row.address)).sort(
+        (a) => (a === fromAddress ? -1 : a === toAddress ? 1 : 0)
+      )
+    : null
+
+  const { data: tokensData } = useQuery<{
+    tokens: TokenModel[]
+  }>(GET_TOKENS_INFO, { variables: { addresses: addressesUsed || [] } })
+
+  return {
+    flows: balanceFlows,
+    changes: balanceChanges,
+    addresses,
+    tokens: tokensData?.tokens,
+  }
 }

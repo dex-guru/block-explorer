@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
 const fs = require('fs')
+const uniqid = require('uniqid')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -16,7 +17,19 @@ const getCommitShaShort = () => {
       sha = fs.readFileSync('.git/' + rev.substring(5))
     }
   } catch (e) {
-    sha = fs.readFileSync('.git/refs/remotes/origin/main')
+    try {
+      const rev = fs
+        .readFileSync('git/refs/remotes/origin/HEAD')
+        .toString()
+        .trim()
+      if (rev.indexOf(':') === -1) {
+        sha = rev
+      } else {
+        sha = fs.readFileSync('.git/' + rev.substring(5))
+      }
+    } catch (e) {
+      sha = uniqid()
+    }
   }
 
   return sha.toString().trim().slice(0, 7)

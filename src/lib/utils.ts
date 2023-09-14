@@ -416,6 +416,6 @@ export const avg = (arr: number[]) => {
   return Math.round(sum / arr.length)
 }
 
-export const arrayUniqueValues = (arr: unknown[]) => {
+export const arrayUniqueValues = <T>(arr: T[]) => {
   return [...new Set(arr)]
 }

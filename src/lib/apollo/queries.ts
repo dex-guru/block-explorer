@@ -1297,3 +1297,14 @@ export const GET_ALL_CHAINS = gql`
     }
   }
 `
+
+export const GET_TOKENS_INFO = gql`
+  query GetTokensInfo ($addresses: [String!]! ) {
+    tokens(addresses: $addresses, chainId: ${CHAIN_ID}) {
+    address
+    decimals
+    logoURI
+    name
+    symbol
+  } 
+}`

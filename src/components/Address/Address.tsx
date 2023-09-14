@@ -1,6 +1,8 @@
 import { FC } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import Avatar from '../Avatar'
 import { AddressValues } from './helpers'
 import { AddressProps } from './types'
 import Copy from '@/components/Copy'
@@ -13,6 +15,9 @@ const Address: FC<AddressProps> = ({
   isShorten = true,
   isCopy,
   isLink = true,
+  showIcon = false,
+  logo,
+  title,
 }) => {
   const values = AddressValues[type]
 
@@ -29,7 +34,24 @@ const Address: FC<AddressProps> = ({
       : {}
 
   const linkUrl = !!isLink ? values.url(address) : null
-  const addressDisplay = values.format(address, isShorten)
+  const addressDisplay = (
+    <>
+      {showIcon &&
+        (logo ? (
+          <Image
+            src={logo}
+            alt={address}
+            className={styles.icon}
+            width={24}
+            height={24}
+          />
+        ) : (
+          <Avatar address={address} className={styles.icon} />
+        ))}
+
+      {title || values.format(address, isShorten)}
+    </>
+  )
 
   return (
     <span className={clsx(styles.container, className)}>

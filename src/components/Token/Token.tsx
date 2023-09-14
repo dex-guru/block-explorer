@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import Avatar from '../Avatar/Avatar'
 import { TokenProps } from './types'
 import { AddressValues } from '@/components/Address/helpers'
 import { IconNoIcon } from '@/components/Icons'
@@ -16,6 +17,8 @@ const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
       alt={symbol}
       className={styles.icon}
     />
+  ) : address ? (
+    <Avatar address={address} className={styles.icon} />
   ) : (
     <IconNoIcon className={styles.icon} />
   )

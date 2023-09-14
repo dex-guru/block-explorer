@@ -1,21 +1,51 @@
 import BigNumber from 'bignumber.js'
 import { clsx } from 'clsx'
-import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import {
+  ChainConfigModel,
+  Maybe,
+  TokenModel,
+} from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
+import { AddressValues } from '@/components/Address/helpers'
+import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
+import Token from '@/components/Token'
 import { getNormalizedValue } from '@/lib/utils'
 import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 
-export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
+export const balanceChangesColumns: (
+  chainConfig: ChainConfigModel,
+  tokens?: TokenModel[],
+  fromAddress?: Maybe<string>,
+  toAddress?: Maybe<string>
+) => IColumn<{
   address: string
-  tokens: Array<string | null>
+  tokens?: Array<string | null>
   tokenIds?: Array<string | null>
   balances: BigNumber[]
-}>[] = (chainConfig) => [
+}>[] = (chainConfig, tokens, fromAddress, toAddress) => [
   {
     accessor: 'address',
     title: 'Address',
-    render: (row) => <Address address={row.address} type="account" isCopy />,
+    render: (row) => {
+      const tokenData = tokens?.find((tkn) => tkn.address === row.address)
+
+      return (
+        <>
+          <Address
+            address={row.address}
+            type="account"
+            isCopy
+            showIcon
+            logo={tokenData?.logoURI}
+            title={tokenData?.name}
+            className={styles.address}
+          />
+          {row.address === fromAddress && <Label title="Sender" />}
+          {row.address === toAddress && <Label title="Receiver" />}
+        </>
+      )
+    },
   },
   {
     accessor: 'balances',
@@ -23,23 +53,27 @@ export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
     title: 'Balance',
     render: (row) => (
       <ul className={styles.data}>
-        {row.balances?.map((balance, idx) => (
-          <li
-            className={clsx(
-              styles.dataRow,
-              { [styles.negative]: balance.isNegative() },
-              { [styles.positive]: balance.isPositive() }
-            )}
-            key={idx}
-          >
-            <div className={styles.dataNumber}>
-              {balance.isPositive() ? '+' : ''}
-              {getNormalizedValue(balance, 18, {
-                highPrecession: true,
-              }) || ''}
-            </div>
-          </li>
-        ))}
+        {row.balances?.map((balance, idx) => {
+          const tokenData = tokens?.find((tkn) => tkn.address === row.address)
+
+          return (
+            <li
+              className={clsx(
+                styles.dataRow,
+                { [styles.negative]: balance.isNegative() },
+                { [styles.positive]: balance.isPositive() }
+              )}
+              key={idx}
+            >
+              <div className={styles.dataNumber}>
+                {balance.isPositive() ? '+' : ''}
+                {getNormalizedValue(balance, tokenData?.decimals, {
+                  highPrecession: true,
+                }) || ''}
+              </div>
+            </li>
+          )
+        })}
       </ul>
     ),
   },
@@ -48,15 +82,24 @@ export const balanceChangesColumns: (chainConfig: ChainConfigModel) => IColumn<{
     title: 'Token',
     render: (row) => (
       <ul className={styles.data}>
-        {row.tokens?.map((token, idx) => (
-          <li className={styles.dataRow} key={idx}>
-            {token === null ? (
-              chainConfig.nativeCurrency.name
-            ) : (
-              <Address address={token || ''} type="token" isCopy />
-            )}
-          </li>
-        ))}
+        {row.tokens?.map((token, idx) => {
+          const tokenData = tokens?.find((tkn) => tkn.address === token)
+
+          return (
+            <li className={styles.dataRow} key={idx}>
+              <Token
+                address={token}
+                name={tokenData?.name}
+                symbol={
+                  token === null
+                    ? chainConfig.nativeCurrency.name
+                    : tokenData?.symbol || AddressValues.token.format(token)
+                }
+                logo={token === null ? chainConfig.icon : tokenData?.logoURI}
+              />
+            </li>
+          )
+        })}
       </ul>
     ),
   },

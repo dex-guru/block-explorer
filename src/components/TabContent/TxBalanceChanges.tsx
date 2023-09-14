@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import Details from '../Details'
 import TxBalanceChangesFlow from './TxBalanceChangesFlow'
-import { useBalanceChanges, useBalanceFlows } from './hooks'
+import { useBalanceChanges } from './hooks'
 import {
   ChainConfigModel,
   DecodedInputModel,
@@ -18,7 +18,6 @@ import { LoadingCard } from '@/components/Loading'
 import Table from '@/components/Table'
 import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
 import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
-import { arrayUniqueValues } from '@/lib/utils'
 import styles from './TxBalanceChanges.module.scss'
 
 const StateView = dynamic(() => import('@/components/StateView'), {
@@ -41,31 +40,28 @@ const TxBalanceChanges: FC<{
 
   const [isFlowWasOpen, setIsFlowWasOpen] = useState(false)
 
-  const [
-    getLogs,
-    { data: logsData, loading: loadingLogs, called: calledLogs },
-  ] = useLazyQuery<{
+  const {
+    data: logsData,
+    loading: loadingLogs,
+    called: calledLogs,
+  } = useQuery<{
     logs: LogModel[]
-  }>(GET_TRANSACTION_LOGS)
+  }>(GET_TRANSACTION_LOGS, { variables: { hash } })
 
-  const [
-    getInternalTxs,
-    { data: txsData, loading: loadingTxs, called: calledTxs },
-  ] = useLazyQuery<{
+  const {
+    data: txsData,
+    loading: loadingTxs,
+    called: calledTxs,
+  } = useQuery<{
     internalTransactions: { data: InternalTransactionModel[] }
-  }>(GET_INTERNAL_TXS)
+  }>(GET_INTERNAL_TXS, { variables: { hash, first: 100000, skip: 0 } })
 
-  useEffect(() => {
-    getLogs({ variables: { hash } })
-    getInternalTxs({ variables: { hash, first: 1000, skip: 0 } })
-  }, [getLogs, getInternalTxs, hash])
-
-  const balanceFlows = useBalanceFlows(
+  const { flows, changes, addresses, tokens } = useBalanceChanges(
     logsData?.logs,
-    txsData?.internalTransactions.data
+    txsData?.internalTransactions.data,
+    data.fromAddress,
+    data.toAddress
   )
-
-  const balanceChanges = useBalanceChanges(balanceFlows)
 
   const isLoading = loadingLogs || loadingTxs
   const hasData =
@@ -79,25 +75,21 @@ const TxBalanceChanges: FC<{
     return <LoadingCard />
   }
 
-  const addresses = arrayUniqueValues(
-    balanceChanges?.map((row) => row.address)
-  ) as string[]
-
-  if (!addresses.length) {
+  if (!addresses?.length) {
     return <StateView icon={<IconEmpty />} title="No transfers was found" />
   }
 
   const tableData = addresses
     .map((address) => {
       const result: BalancesPerAddress = {
-        address: address as string,
+        address: address,
         tokens: [],
         tokenIds: [],
         balances: [],
         rows: [],
       }
 
-      balanceChanges
+      changes
         ?.filter((row) => row.address === address)
         .forEach((row) => {
           const tokenIdx = result.tokens.findIndex(
@@ -138,14 +130,20 @@ const TxBalanceChanges: FC<{
         {isFlowWasOpen && (
           <TxBalanceChangesFlow
             addresses={addresses}
-            balanceFlows={balanceFlows}
+            balanceFlows={flows}
             chainConfig={chainConfig}
+            tokens={tokens}
           />
         )}
       </Details>
       <Table
         data={tableData}
-        columns={balanceChangesColumns(chainConfig)}
+        columns={balanceChangesColumns(
+          chainConfig,
+          tokens,
+          data.fromAddress,
+          data.toAddress
+        )}
         className={styles.table}
       />
     </Card>
