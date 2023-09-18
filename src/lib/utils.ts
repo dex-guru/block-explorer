@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { GetFeeHistoryReturnType, isAddress } from 'viem'
+import { GetFeeHistoryReturnType } from 'viem'
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
