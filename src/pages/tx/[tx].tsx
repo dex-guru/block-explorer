@@ -118,7 +118,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                       },
                     ]
                   : []),
-                ...(!checkChainFeature(props.chainConfig, 'balances')
+                ...(checkChainFeature(props.chainConfig, 'balances')
                   ? [
                       {
                         title: (
