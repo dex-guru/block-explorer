@@ -13,6 +13,7 @@
   line-height: 24px;
   opacity: 1;
   transition: opacity 0.25s ease;
+  word-break: normal;
 
   &Loading {
     opacity: 0.5;
@@ -136,8 +137,13 @@
   display: flex;
   flex-flow: column;
   gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
   &Row {
+    margin: 0;
+    padding: 0;
     height: 24px;
     display: flex;
     align-items: center;

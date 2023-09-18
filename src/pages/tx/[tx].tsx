@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
 import { WagmiConfig } from 'wagmi'
+import styles from '../Pages.module.scss'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -13,6 +14,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconEmpty } from '@/components/Icons'
+import Label from '@/components/Label'
 import { LoadingCard } from '@/components/Loading'
 import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
@@ -27,6 +29,9 @@ import { checkChainFeature } from '@/lib/utils'
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
+const TxBalanceChanges = dynamic(
+  () => import('@/components/TabContent/TxBalanceChanges')
+)
 const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 
 export const MAX_EVENTS_PER_PAGE = 10
@@ -40,12 +45,12 @@ interface ITxProps {
 
 const TxPage: NextPage<ITxProps> = (props) => {
   const router = useRouter()
+  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
+
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
-
-  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
 
   const pageTitle = `${props.chainConfig.name} Transaction ${
     props.data?.hash || 'not found'
@@ -108,6 +113,29 @@ const TxPage: NextPage<ITxProps> = (props) => {
                         content: (
                           <Suspense fallback={<LoadingCard />}>
                             <InternalTxs hash={props.data.hash} {...props} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
+                ...(checkChainFeature(props.chainConfig, 'balances')
+                  ? [
+                      {
+                        title: (
+                          <>
+                            Balance Changes{' '}
+                            <Label
+                              title="alpha"
+                              tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
+                              className={styles['label-info']}
+                            />
+                          </>
+                        ),
+                        value: 'balanceChanges',
+                        to: `${pathname}?tab=balanceChanges`,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TxBalanceChanges {...props} />
                           </Suspense>
                         ),
                       },

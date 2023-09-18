@@ -3,6 +3,7 @@
   --color-message-text: #fff;
 
   display: flex;
+  flex-flow: row wrap;
   gap: 8px;
   width: max-content;
   max-width: 100%;
@@ -37,6 +38,18 @@
 .body {
   flex: 1 0 0;
   position: relative;
+}
+
+.footer {
+  margin: -4px -8px -4px 0;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 4px;
+}
+
+.action {
+  composes: md from '../Button/Button.module.scss';
+  composes: action from '../Button/Button.module.scss';
 }
 
 .success {

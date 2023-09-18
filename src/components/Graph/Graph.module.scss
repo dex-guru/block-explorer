@@ -1,0 +1,81 @@
+.container {
+  position: relative;
+  background: var(--color-bg);
+  border-radius: var(--radii-lg);
+}
+
+.body {
+  overflow: hidden;
+  resize: vertical;
+  display: flex;
+  align-items: stretch;
+
+  .container:fullscreen > & {
+    height: 100% !important;
+  }
+}
+
+.canvas {
+  width: 100% !important;
+  min-height: fit-content !important;
+  height: auto !important;
+}
+
+.graph {
+  margin: 0;
+  padding: 8px 16px;
+
+  & > svg {
+    aspect-ratio: var(--graph-aspect-ratio);
+    min-width: 320px;
+    min-height: 240px;
+    max-height: 75vh;
+    overflow: visible;
+    display: block;
+  }
+}
+
+.tools {
+}
+
+.action {
+  composes: lg from '../Button/Button.module.scss';
+  composes: tool from '../Button/Button.module.scss';
+  position: absolute;
+  z-index: 1;
+  padding: 4px;
+  width: 32px;
+}
+
+.zoom {
+  &In,
+  &Out,
+  &Fit {
+    composes: md from '../Button/Button.module.scss';
+  }
+
+  &In {
+    right: 16px;
+    bottom: 96px;
+  }
+
+  &Out {
+    right: 16px;
+    bottom: 56px;
+  }
+
+  &Fit {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+.fullscreen {
+  top: 16px;
+  right: 56px;
+}
+
+.download {
+  top: 16px;
+  right: 16px;
+}

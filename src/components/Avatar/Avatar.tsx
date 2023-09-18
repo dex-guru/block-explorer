@@ -1,7 +1,8 @@
 import { FC } from 'react'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import clsx from 'clsx'
+import JazzIcon from './JazzIcon'
 import { AvatarProps } from './types'
+import { jsNumberForAddress } from './utils'
 import styles from './Avatar.module.scss'
 
 const Avatar: FC<AvatarProps> = ({
@@ -16,9 +17,11 @@ const Avatar: FC<AvatarProps> = ({
       data-letters={letters}
     >
       {!!address && (
-        <div className={styles.icon}>
-          <Jazzicon diameter={32} seed={jsNumberForAddress(address)} />
-        </div>
+        <JazzIcon
+          size={32}
+          seed={jsNumberForAddress(address)}
+          className={styles.icon}
+        />
       )}
     </div>
   )

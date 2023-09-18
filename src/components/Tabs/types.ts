@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { UrlObject } from 'url'
 
 export interface Tab<T> {
-  title: string
+  title: ReactNode
   value: T
   isActive?: boolean
   icon?: ReactNode
@@ -19,7 +19,7 @@ export interface Tab<T> {
 export interface TabsProps<T> {
   tabs: Tab<T>[]
   value: T
-  onChange?: (value: T, title?: string) => void
+  onChange?: (value: T, title?: ReactNode) => void
   disabled?: boolean
   className?: string
 }

@@ -415,3 +415,7 @@ export const avg = (arr: number[]) => {
   const sum = arr.reduce((a, v) => a + v)
   return Math.round(sum / arr.length)
 }
+
+export const arrayUniqueValues = <T>(arr: T[]) => {
+  return [...new Set(arr)]
+}

@@ -4,7 +4,6 @@ import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
 import TimeAgo from '@/components/TimeAgo'
-import TooltipAnchor from '@/components/TooltipAnchor'
 import Value from '@/components/Value'
 import {
   financialFormat,
@@ -32,12 +31,8 @@ export const blocksColumns: (
   },
   {
     accessor: 'transactionCount',
-    title: (
-      <>
-        TXs{' '}
-        <TooltipAnchor tooltip="A total number of transactions found in the block." />
-      </>
-    ),
+    title: 'TXs',
+    tooltip: 'A total number of transactions found in the block.',
     type: 'center',
     modifier: 'block-txs',
     render: (data) => {

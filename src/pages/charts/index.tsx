@@ -199,7 +199,9 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             <div className={styles.dashboards}>
               <ul className={styles.list}>
                 {activeDashboards
-                  .filter((dashboard) => dashboard.tags.includes(currentTabTag))
+                  .filter((dashboard) =>
+                    dashboard.tags.includes(currentTabTag.toString())
+                  )
                   .map((dashboard) => (
                     <li className={styles.item} key={dashboard.id}>
                       {renderDashboardCard(dashboard)}

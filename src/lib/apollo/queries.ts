@@ -543,7 +543,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
 `
 
 export const GET_TRANSACTION_LOGS = gql`
-  query TransactionByHash($hash: String!) {
+  query TransactionLogs($hash: String!) {
     logs(transactionHash: $hash, chainId: ${CHAIN_ID}) {
       address
       blockHash
@@ -1297,3 +1297,14 @@ export const GET_ALL_CHAINS = gql`
     }
   }
 `
+
+export const GET_TOKENS_INFO = gql`
+  query GetTokensInfo ($addresses: [String!]! ) {
+    tokens(addresses: $addresses, chainId: ${CHAIN_ID}) {
+    address
+    decimals
+    logoURI
+    name
+    symbol
+  } 
+}`

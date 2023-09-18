@@ -1,6 +1,7 @@
 import { createRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import clsx from 'clsx'
+import TooltipAnchor from '../TooltipAnchor'
 import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
@@ -66,7 +67,7 @@ export const useHeader = <T,>(
   columns: IColumn<T>[],
   // isFiltered?:boolean,
   // onSort?: () => void,
-  // onFilter?:()=>void,,
+  // onFilter?:()=>void,
   rowClassName?: string
 ) => {
   const cells = columns.map((column, idx) => {
@@ -77,7 +78,8 @@ export const useHeader = <T,>(
 
     return (
       <Cell th={true} key={`${column.accessor}-${idx}`} className={className}>
-        {column.title}
+        {column.title}{' '}
+        {!!column.tooltip && <TooltipAnchor tooltip={column.tooltip} />}
       </Cell>
     )
   })

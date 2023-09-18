@@ -4,6 +4,7 @@ export interface IColumn<T> {
   render?: (data: T, placeholder?: ReactNode, idx?: number) => ReactNode
   accessor: string
   title?: ReactNode
+  tooltip?: string
   type?: 'number' | 'text' | 'center'
   modifier?: string
   placeholder?: ReactNode
