@@ -227,18 +227,22 @@
 .label {
   text-transform: capitalize;
 
+  &-success,
   &-mint {
     composes: success from '../components/Label/Label.module.scss';
   }
 
+  &-danger,
   &-burn {
     composes: danger from '../components/Label/Label.module.scss';
   }
 
+  &-info,
   &-swap {
     composes: info from '../components/Label/Label.module.scss';
   }
 
+  &-warning,
   &-transfer {
     composes: warn from '../components/Label/Label.module.scss';
   }

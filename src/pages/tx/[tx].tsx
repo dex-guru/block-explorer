@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
 import { WagmiConfig } from 'wagmi'
+import styles from '../Pages.module.scss'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -13,6 +14,7 @@ import {
 } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconEmpty } from '@/components/Icons'
+import Label from '@/components/Label'
 import { LoadingCard } from '@/components/Loading'
 import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
@@ -116,16 +118,29 @@ const TxPage: NextPage<ITxProps> = (props) => {
                       },
                     ]
                   : []),
-                {
-                  title: 'Balance Changes',
-                  value: 'balanceChanges',
-                  to: `${pathname}?tab=balanceChanges`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxBalanceChanges {...props} />
-                    </Suspense>
-                  ),
-                },
+                ...(checkChainFeature(props.chainConfig, 'balances')
+                  ? [
+                      {
+                        title: (
+                          <>
+                            Balance Changes{' '}
+                            <Label
+                              title="ALPHA"
+                              tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
+                              className={styles['label-info']}
+                            />
+                          </>
+                        ),
+                        value: 'balanceChanges',
+                        to: `${pathname}?tab=balanceChanges`,
+                        content: (
+                          <Suspense fallback={<LoadingCard />}>
+                            <TxBalanceChanges {...props} />
+                          </Suspense>
+                        ),
+                      },
+                    ]
+                  : []),
                 {
                   title: `Logs (${props.data.receiptLogsCount || 0})`,
                   value: 'logs',

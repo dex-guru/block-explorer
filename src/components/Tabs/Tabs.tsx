@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import { TabsProps } from './types'
 import Button from '@/components/Button'
@@ -14,7 +14,7 @@ const Tabs = <T,>(props: TabsProps<T>): React.ReactElement => {
     setCurrentValue(value as T)
   }, [value])
 
-  const handleItemClick = (value: T, title: string): void => {
+  const handleItemClick = (value: T, title: ReactNode): void => {
     if (value === currentValue) {
       return
     }
