@@ -362,7 +362,7 @@ export const formatAutoDetect = (
 ): string => {
   const valueStr = value?.toString() || ''
 
-  if (isAddress(`${value}`)) {
+  if (valueStr.startsWith('0x')) {
     return valueStr
   }
 
