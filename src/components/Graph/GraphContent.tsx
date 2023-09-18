@@ -3,6 +3,14 @@ import { useControls, TransformComponent } from 'react-zoom-pan-pinch'
 import clsx from 'clsx'
 import mermaid from 'mermaid'
 import uniqid from 'uniqid'
+import {
+  IconDownload,
+  IconExpand,
+  IconShrink,
+  IconZoomFit,
+  IconZoomIn,
+  IconZoomOut,
+} from '../Icons'
 import Button from '@/components/Button'
 import styles from './Graph.module.scss'
 
@@ -84,36 +92,55 @@ const GraphContent: FC<{
     document.body.removeChild(downloadLink)
   }
 
+  const FullscreenIcon = !!document.fullscreenElement ? IconShrink : IconExpand
+
   return (
     <>
       {!isLoading && (
         <div className={styles.tools}>
           <Button
-            className={styles.zoomIn}
-            caption="Zoom In"
+            className={clsx(styles.action, styles.zoomIn)}
+            // caption="Zoom In"
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content="Zoom In"
             onClick={() => zoomIn()}
+            icon={<IconZoomIn className={styles.icon} />}
           />
           <Button
-            className={styles.zoomOut}
-            caption="Zoom Out"
+            className={clsx(styles.action, styles.zoomOut)}
+            // caption="Zoom Out"
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content="Zoom Out"
             onClick={() => zoomOut()}
+            icon={<IconZoomOut className={styles.icon} />}
           />
           <Button
-            className={styles.zoomFit}
-            caption="Fit"
+            className={clsx(styles.action, styles.zoomFit)}
+            // caption="Fit"
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content="Zoom Fit"
             onClick={handleReset}
+            icon={<IconZoomFit className={styles.icon} />}
           />
           <Button
-            className={clsx(styles.fullscreen, {
+            className={clsx(styles.action, styles.fullscreen, {
               [styles.fullscreenActive]: document.fullscreenElement,
             })}
-            caption="Full Screen"
+            // caption="Full Screen"
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content={`${
+              document.fullscreenElement ? 'Exit' : 'Enter'
+            } Fullscreen`}
             onClick={handleFullScreen}
+            icon={<FullscreenIcon className={styles.icon} />}
           />
           <Button
-            className={styles.download}
-            caption="Download"
+            className={clsx(styles.action, styles.download)}
+            // caption="Download"
+            data-tooltip-id="app-tooltip"
+            data-tooltip-content="Download"
             onClick={handleDownload}
+            icon={<IconDownload className={styles.icon} />}
           />
         </div>
       )}

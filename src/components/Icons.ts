@@ -7,6 +7,9 @@ import IconContract from '@/images/icons/contract.svg'
 import IconCopy from '@/images/icons/copy.svg'
 import IconCross from '@/images/icons/cross.svg'
 import IconDanger from '@/images/icons/danger.svg'
+import IconDownload from '@/images/icons/download.svg'
+import IconExpand from '@/images/icons/expand.svg'
+import IconZoomFit from '@/images/icons/fit.svg'
 import IconIdea from '@/images/icons/idea.svg'
 import IconImpersonator from '@/images/icons/impersonator.svg'
 import IconLiquidityPool from '@/images/icons/liquidity-pool.svg'
@@ -19,6 +22,7 @@ import IconQuestion from '@/images/icons/question.svg'
 import IconSearch from '@/images/icons/search.svg'
 import IconSend from '@/images/icons/send.svg'
 import IconShield from '@/images/icons/shield.svg'
+import IconShrink from '@/images/icons/shrink.svg'
 import IconWatch from '@/images/icons/stop-watch.svg'
 import IconSuccess from '@/images/icons/success.svg'
 import IconAgo from '@/images/icons/time-ago.svg'
@@ -27,6 +31,8 @@ import IconUser from '@/images/icons/user.svg'
 import IconVerify from '@/images/icons/verified.svg'
 import IconWallet from '@/images/icons/wallet.svg'
 import IconWarning from '@/images/icons/warning.svg'
+import IconZoomIn from '@/images/icons/zoomin.svg'
+import IconZoomOut from '@/images/icons/zoomout.svg'
 import IconWarehouse from '@/images/warehouse.svg'
 
 export {
@@ -60,4 +66,10 @@ export {
   IconSuccess,
   IconUser,
   IconWarning,
+  IconZoomIn,
+  IconZoomOut,
+  IconZoomFit,
+  IconExpand,
+  IconShrink,
+  IconDownload,
 }

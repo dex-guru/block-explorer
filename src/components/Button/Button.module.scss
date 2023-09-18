@@ -104,6 +104,21 @@
   --color-button-hover-text: var(--color-bg-2);
 }
 
+.tool {
+  --color-button-border: var(--color-muted);
+  --color-button-hover-border: var(--color-accent);
+  --color-button-bg: none;
+  --color-button-hover-bg: none;
+  --color-button-icon: #47a7ff;
+  --color-button-text: #47a7ff;
+  --color-button-hover-text: var(--color-accent);
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 .submit {
   --color-button-border: var(--color-positive);
   --color-button-hover-border: var(--color-accent);

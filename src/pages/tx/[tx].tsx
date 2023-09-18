@@ -118,14 +118,14 @@ const TxPage: NextPage<ITxProps> = (props) => {
                       },
                     ]
                   : []),
-                ...(checkChainFeature(props.chainConfig, 'balances')
+                ...(!checkChainFeature(props.chainConfig, 'balances')
                   ? [
                       {
                         title: (
                           <>
                             Balance Changes{' '}
                             <Label
-                              title="ALPHA"
+                              title="alpha"
                               tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
                               className={styles['label-info']}
                             />

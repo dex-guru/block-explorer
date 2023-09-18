@@ -36,15 +36,15 @@
 }
 
 .tools {
-  display: grid;
-  grid-template-areas:
-    'in fit fit out'
-    'fs fs dl dl';
-  gap: 4px;
+}
+
+.action {
+  composes: lg from '../Button/Button.module.scss';
+  composes: tool from '../Button/Button.module.scss';
   position: absolute;
-  z-index: 2;
-  right: 8px;
-  bottom: 8px;
+  z-index: 1;
+  padding: 4px;
+  width: 32px;
 }
 
 .zoom {
@@ -55,22 +55,27 @@
   }
 
   &In {
-    grid-area: in;
+    right: 16px;
+    bottom: 96px;
   }
 
   &Out {
-    grid-area: out;
+    right: 16px;
+    bottom: 56px;
   }
 
   &Fit {
-    grid-area: fit;
+    right: 16px;
+    bottom: 16px;
   }
 }
 
 .fullscreen {
-  grid-area: fs;
+  top: 16px;
+  right: 56px;
 }
 
 .download {
-  grid-area: dl;
+  top: 16px;
+  right: 16px;
 }
