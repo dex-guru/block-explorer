@@ -3,3 +3,10 @@
     flex: 1 0 auto;
   }
 }
+
+.tcellData {
+  max-width: max(50vw, 280px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

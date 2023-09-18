@@ -4,7 +4,7 @@ import DataTable from '@/components/DataTable'
 import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import { IColumn } from '@/components/Table'
 import { TRedashQueryResultData } from '@/lib/redash/types'
-import { formatAutoDetect } from '@/lib/utils'
+import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 import styles from './DashboardWidget.module.scss'
 
@@ -42,13 +42,22 @@ const DashboardWidgetTable: FC<{
       }}
       columns={
         data?.columns.map((col): IColumn<Record<string, string | number>> => {
+          const isNumber = ['float', 'integer', 'number'].includes(col.type)
           return {
             accessor: col.name,
             title: col.friendly_name,
             type: ['float', 'integer', 'number'].includes(col.type)
               ? 'number'
               : 'text',
-            render: (row) => formatAutoDetect(row[col.name]),
+            render: (row) => (
+              <div className={styles.tcellData}>
+                {isNumber &&
+                  financialFormatLowValueHighPrecision(row[col.name], {
+                    disableRounding: true,
+                  })}
+                {!isNumber && `${row[col.name]}`}
+              </div>
+            ),
           }
         }) || []
       }
