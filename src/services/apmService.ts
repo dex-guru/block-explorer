@@ -4,6 +4,10 @@ import { CHAIN_ID } from '@/constants'
 let apm: ApmBase | undefined
 
 export const initApm = (): ApmBase | undefined => {
+  if (!process.env.NEXT_PUBLIC_APM_RUM_URL) {
+    return
+  }
+
   if (apm) {
     return apm
   }
@@ -24,6 +28,10 @@ export const initApm = (): ApmBase | undefined => {
 }
 
 export const sendApmError = (errorMessage: string): void => {
+  if (!process.env.NEXT_PUBLIC_APM_RUM_URL) {
+    return
+  }
+
   const apm = initApm()
   if (apm) {
     apm.captureError(errorMessage)
