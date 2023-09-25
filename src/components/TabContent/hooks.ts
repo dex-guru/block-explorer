@@ -36,70 +36,68 @@ const getBalanceFlows = (
   const result: BalanceFlow[] = []
   const addresses: string[] = []
 
-  logs
-    .sort((a, b) => a.logIndex - b.logIndex)
-    .forEach((log) => {
-      const logName = log.eventName?.toLowerCase()
-      const isImportantLog =
-        logName?.startsWith('transfer') ||
-        ['withdrawal', 'deposit'].includes(logName || '')
+  const sortedLogs = [...logs]?.sort((a, b) => a?.logIndex - b?.logIndex)
 
-      if (!isImportantLog || !log.decodedInput) {
-        return
-      }
+  sortedLogs?.forEach((log) => {
+    const logName = log.eventName?.toLowerCase()
+    const isImportantLog =
+      logName?.startsWith('transfer') ||
+      ['withdrawal', 'deposit'].includes(logName || '')
 
-      const isWithdrawal = logName === 'withdrawal'
-      const isDeposit = logName === 'deposit'
+    if (!isImportantLog || !log.decodedInput) {
+      return
+    }
 
-      const from = isDeposit
-        ? log.address
-        : log.decodedInput.find(
-            (row) =>
-              row.type === 'address' &&
-              (isWithdrawal
-                ? log.address
-                : ['from', 'sender'].includes(row.name))
-          )?.value
-      const to = isWithdrawal
-        ? log.address
-        : log.decodedInput.find(
-            (row) =>
-              row.type === 'address' &&
-              (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
-          )?.value
-      const token = log.address
+    const isWithdrawal = logName === 'withdrawal'
+    const isDeposit = logName === 'deposit'
 
-      if (from) {
-        addresses.push(from)
-      }
-      if (to) {
-        addresses.push(to)
-      }
-      if (token) {
-        addresses.push(token)
-      }
-
-      log.decodedInput
-        .filter(
+    const from = isDeposit
+      ? log.address
+      : log.decodedInput.find(
           (row) =>
-            ['value', 'wad'].includes(row.name) || row.name.startsWith('amount')
-        )
-        .forEach((row) => {
-          const bigValue = new BigNumber(row.value || 0)
-          if (bigValue.isZero()) {
-            return
-          }
+            row.type === 'address' &&
+            (isWithdrawal ? log.address : ['from', 'sender'].includes(row.name))
+        )?.value
+    const to = isWithdrawal
+      ? log.address
+      : log.decodedInput.find(
+          (row) =>
+            row.type === 'address' &&
+            (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
+        )?.value
+    const token = log.address
 
-          result.push({
-            from: from || '',
-            to: to || '',
-            token,
-            amount: bigValue,
-          })
+    if (from) {
+      addresses.push(from)
+    }
+    if (to) {
+      addresses.push(to)
+    }
+    if (token) {
+      addresses.push(token)
+    }
+
+    log.decodedInput
+      .filter(
+        (row) =>
+          ['value', 'wad'].includes(row.name) || row.name.startsWith('amount')
+      )
+      .forEach((row) => {
+        const bigValue = new BigNumber(row.value || 0)
+        if (bigValue.isZero()) {
+          return
+        }
+
+        result.push({
+          from: from || '',
+          to: to || '',
+          token,
+          amount: bigValue,
         })
-    })
+      })
+  })
 
-  internalTxs.forEach((tx) => {
+  internalTxs?.forEach((tx) => {
     if (!tx.value) {
       return
     }
