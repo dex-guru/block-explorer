@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from 'react'
+import clsx from 'clsx'
 import { sanitize } from 'isomorphic-dompurify'
 import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
 import { useDashboardAnalyze } from './hooks'
-import { IconOutput } from '@/components/Icons'
+import Button from '@/components/Button'
+import { IconArrowDown, IconOutput } from '@/components/Icons'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import styles from './DashboardAnalyzerOverview.module.scss'
 
@@ -12,6 +14,7 @@ const DashboardAnalyzerOverview: FC<{
   onSelect?: (prompt_submitted: string, summary: string) => void
 }> = ({ slug, params, onSelect }) => {
   const [currentPrompt, setCurrentPrompt] = useState<string | null>(null)
+  const [isShow, setIsShow] = useState(true)
 
   const { data, error, isLoading } = useDashboardAnalyze({
     slug,
@@ -37,40 +40,70 @@ const DashboardAnalyzerOverview: FC<{
     response.replace(' - ', ' – ').replace(' "', ' “').replace('"', '”')
   )
 
+  const handleToggle = () => {
+    setIsShow(!isShow)
+  }
+
   return (
     <div className={styles.container}>
-      <div className={styles.wrapper}>
+      <div
+        className={clsx(styles.wrapper, {
+          [styles.collapse]: !isShow,
+        })}
+      >
         <div className={styles.body}>
-          <div className={styles.response}>
-            {!!currentPrompt && (
-              <div className={styles.responseHeader}>
-                <IconOutput className={styles.responseIcon} />
-                <div className={styles.responseTitle}>{currentPrompt}</div>
-              </div>
-            )}
-            <div className={styles.responseOutput}>
-              {!!printed && (
-                <>
-                  <span className={styles.printed}>{printed}</span>
-                  <span className={styles.notPrinted}>{notPrinted}</span>
-                </>
-              )}
-            </div>
-
-            {isLoading && (
-              <div className={styles.processing}>
-                <span />
-                <span />
-              </div>
-            )}
-          </div>
-          <DashboardAnalyzerVariants
-            slug={slug}
-            params={params}
-            onSubmit={(value) => {
-              setCurrentPrompt(value)
-            }}
+          <Button
+            icon={
+              <IconArrowDown
+                className={clsx(styles.toggleIcon, {
+                  [styles.toggleIconActive]: isShow,
+                })}
+              />
+            }
+            className={styles.toggle}
+            onClick={handleToggle}
           />
+          {!isShow && (
+            <div className={styles.response}>
+              <div className={styles.responseOutput}>
+                Let&apos;s talk! I have many thoughts on this data.
+              </div>
+            </div>
+          )}
+          {isShow && (
+            <>
+              <div className={styles.response}>
+                {!!currentPrompt && (
+                  <div className={styles.responseHeader}>
+                    <IconOutput className={styles.responseIcon} />
+                    <div className={styles.responseTitle}>{currentPrompt}</div>
+                  </div>
+                )}
+                <div className={styles.responseOutput}>
+                  {!!printed && (
+                    <>
+                      <span className={styles.printed}>{printed}</span>
+                      <span className={styles.notPrinted}>{notPrinted}</span>
+                    </>
+                  )}
+                </div>
+
+                {isLoading && (
+                  <div className={styles.processing}>
+                    <span />
+                    <span />
+                  </div>
+                )}
+              </div>
+              <DashboardAnalyzerVariants
+                slug={slug}
+                params={params}
+                onSubmit={(value) => {
+                  setCurrentPrompt(value)
+                }}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
