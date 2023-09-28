@@ -101,8 +101,12 @@ const _prepareValue = (
   return data
 }
 
-const _appendPrefixSuffix = (data: string, prefix = '', suffix = ''): string =>
-  `${prefix}${data}${suffix}`
+const _appendPrefixSuffix = (
+  data: string,
+  prefix = '',
+  suffix = '',
+  isNegative?: boolean
+): string => `${isNegative ? '−' : ''}${prefix}${data}${suffix}`
 
 export interface FinancialFormatOptions {
   decimals?: number
@@ -158,7 +162,7 @@ export const financialFormat = (
     return ''
   }
 
-  const isNegative = data.lt(0)
+  const isNegative = data.isNegative()
   data = data.abs()
 
   if (decimals === undefined) {
@@ -230,17 +234,23 @@ export const financialFormat = (
     }
   }
 
-  if (isNegative) {
-    data = data.multipliedBy(-1)
-  }
   const result = data.toFormat(decimals || 0, roundingDirections, formatConfig)
-
   const clean = result.match(/^0*([0-9,]+(?:\.?(?:(?!0+$)[0-9MBKT])+)?)/) // remove trailing zeroes
 
   if (clean) {
-    return _appendPrefixSuffix(clean[1], options?.prefix, options?.suffix)
+    return _appendPrefixSuffix(
+      clean[1],
+      options?.prefix,
+      options?.suffix,
+      isNegative
+    )
   } else {
-    return _appendPrefixSuffix(result, options?.prefix, options?.suffix)
+    return _appendPrefixSuffix(
+      result,
+      options?.prefix,
+      options?.suffix,
+      isNegative
+    )
   }
 }
 
@@ -249,21 +259,14 @@ export const financialFormatLowValueHighPrecision = (
   value: string | number | BigNumber,
   options?: FinancialFormatOptions
 ): string => {
-  let data = _prepareValue(value)
+  const data = _prepareValue(value)
 
   if (data === false) {
     return ''
   }
 
-  const isNegative = data.lt(0)
-  data = data.abs()
-
-  const optionsDiff = data.lt(1) ? { highPrecession: true } : {}
-
-  if (isNegative) {
-    data = data.multipliedBy(-1)
-  }
-
+  const absData = data.abs()
+  const optionsDiff = absData.lt(1) ? { highPrecession: true } : {}
   const newOptions = { ...options, ...optionsDiff }
 
   return financialFormat(data, newOptions)

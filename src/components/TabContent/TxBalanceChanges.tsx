@@ -65,7 +65,7 @@ const TxBalanceChanges: FC<{
 
   const isLoading = loadingLogs || loadingTxs
   const hasData =
-    logsData?.logs?.length || !txsData?.internalTransactions.data?.length
+    !!logsData?.logs?.length || !!txsData?.internalTransactions.data?.length
 
   if (!hash || (calledLogs && calledTxs && !isLoading && !hasData)) {
     return <StateView icon={<IconEmpty />} title="No TX logs was found" />
