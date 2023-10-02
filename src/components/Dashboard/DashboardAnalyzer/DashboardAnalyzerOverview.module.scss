@@ -1,25 +1,33 @@
 .container {
-  position: relative;
-  left: 50%;
-  width: calc(100vw - var(--page-scrollbar) / 2);
-  margin-left: -50vw;
-  padding: 16px 8px;
+  padding: 16px;
   background: #6046ff;
   color: #fff;
-  overflow: hidden;
+  position: relative;
 
   @media (max-width: 640px) {
     padding: 8px;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: calc(100vw - var(--page-scrollbar) / 2);
+    margin-left: -50vw;
+    background: inherit;
   }
 }
 
 .wrapper {
   max-width: 1308px;
-  margin: 0 auto;
+  margin: 0 auto -8px;
+  padding-bottom: 8px;
   display: flex;
   gap: 40px;
-  padding-left: 172px;
   position: relative;
+  overflow: hidden;
 
   @media (min-width: 960.1px) {
     &::after {
@@ -29,6 +37,10 @@
   }
 
   @media (min-width: 640.1px) {
+    padding-left: 172px;
+    margin-bottom: -16px;
+    padding-bottom: 16px;
+
     &::before {
       content: '';
       position: absolute;
