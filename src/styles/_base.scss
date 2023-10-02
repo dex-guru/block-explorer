@@ -296,7 +296,8 @@ pre {
   &-tooltip {
     &-cursor {
       stroke: va(--color-separator);
-      opacity: 0.3;
+      opacity: 0.25;
+      transition: 0.25s ease;
     }
   }
 
