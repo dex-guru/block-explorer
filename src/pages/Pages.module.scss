@@ -287,3 +287,11 @@
   composes: lg from '../components/Button/Button.module.scss';
   composes: warehouse from '../components/Button/Button.module.scss';
 }
+
+.ad {
+  height: 90px;
+
+  iframe {
+    margin: 0 auto;
+  }
+}

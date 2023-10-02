@@ -1,3 +1,4 @@
+import { SliseAd } from '@slise/embed-react'
 import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
@@ -225,6 +226,23 @@ const Index: NextPage<IndexProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={props.chainConfig}>
+        <div className={styles.ad}>
+          <SliseAd
+            slotId="leaderboard"
+            pub="pub-23"
+            format="728x90"
+            style={{ width: '728px', height: '90px' }}
+          />
+        </div>
+        <div className={styles.ad}>
+          <SliseAd
+            slotId="mobile"
+            pub="pub-23"
+            format="270x90"
+            style={{ width: '270px', height: '90px' }}
+          />
+        </div>
+
         {!!stats && (
           <Summary
             stats={statsDisplay}
