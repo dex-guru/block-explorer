@@ -17,7 +17,8 @@ import styles from './Dashboard.module.scss'
 const Dashboard: FC<{
   data: TRedashDashboard
   params?: Record<string, unknown>
-}> = ({ data, params }) => {
+  className?: string
+}> = ({ data, params, className }) => {
   const { id, name, slug, widgets } = data
 
   const [isChatOpen, setIsChatOpen] = useState(false)
@@ -66,6 +67,7 @@ const Dashboard: FC<{
 
   return (
     <DetailsView
+      className={className}
       title={name}
       header={
         <Button

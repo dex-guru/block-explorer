@@ -1,8 +1,8 @@
 import { ChangeEventHandler, FC, Suspense, useState } from 'react'
+import clsx from 'clsx'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import useSWRImmutable from 'swr/immutable'
-import styles from '../Dashboard.module.scss'
 import DashboardWidgetChart from './DashboardWidgetChart'
 import DashboardWidgetCounter from './DashboardWidgetCounter'
 import DashboardWidgetTable from './DashboardWidgetTable'
@@ -25,13 +25,15 @@ import {
 } from '@/lib/redash/client'
 import { TRedashJob, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
+import styles from './DashboardWidget.module.scss'
 
 const WIDGET_QUERY_INTERVAL = 5 * 1000
 
 const DashboardWidget: FC<{
   data: TRedashWidget
   params?: Record<string, unknown>
-}> = ({ data: { options, visualization, text }, params }) => {
+  className?: string
+}> = ({ data: { options, visualization, text }, params, className }) => {
   const [currentDateRange, setCurrentDateRange] = useState(
     `${DYNAMIC_DATE_PREFIX}${DEFAULT_DATE_RANGE}`
   )
@@ -222,7 +224,7 @@ const DashboardWidget: FC<{
   return (
     <Card
       title={title}
-      className={styles.widget}
+      className={clsx(styles.widget, className)}
       header={tools}
       style={{
         gridColumn: `${options?.position.col + 1} / span ${

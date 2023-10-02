@@ -65,7 +65,11 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   if (dashboardsData?.length === 1) {
     return (
       <Card className={styles.container}>
-        <Dashboard data={dashboardsData[0]} params={params} />
+        <Dashboard
+          data={dashboardsData[0]}
+          params={params}
+          className={styles.dashboard}
+        />
       </Card>
     )
   }
@@ -74,7 +78,13 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
     return {
       title: dashboard.name,
       value: dashboard.id,
-      content: <Dashboard data={dashboard} params={params} />,
+      content: (
+        <Dashboard
+          data={dashboard}
+          params={params}
+          className={styles.dashboard}
+        />
+      ),
     }
   })
 

@@ -1,4 +1,6 @@
 .widget {
+  border: 1px var(--color-bg) solid;
+
   &Table {
     flex: 1 0 auto;
   }
@@ -9,4 +11,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.warehouse {
+  composes: warehouse from '../Dashboard.module.scss';
 }
