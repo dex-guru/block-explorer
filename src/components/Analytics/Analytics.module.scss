@@ -1,5 +1,9 @@
 .container {
-  margin-top: 16px;
+  overflow: hidden;
+}
+
+.panel {
+  gap: 16px;
 }
 
 .tabs {

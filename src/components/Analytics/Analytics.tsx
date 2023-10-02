@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react'
+import Card from '../Card'
 import { AnalyticsProps } from './types'
 import Dashboard from '@/components/Dashboard'
 import { LoadingCard } from '@/components/Loading'
@@ -61,6 +62,14 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
     return <LoadingCard />
   }
 
+  if (dashboardsData?.length === 1) {
+    return (
+      <Card className={styles.container}>
+        <Dashboard data={dashboardsData[0]} params={params} />
+      </Card>
+    )
+  }
+
   const tabs = dashboardsData?.map((dashboard) => {
     return {
       title: dashboard.name,
@@ -74,13 +83,15 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   }
 
   return (
-    <TabPanel
-      onChange={handleChange}
-      tabs={tabs}
-      value={tab}
-      className={styles.container}
-      tabsClassName={styles.tabs}
-    />
+    <Card className={styles.container}>
+      <TabPanel
+        onChange={handleChange}
+        tabs={tabs}
+        value={tab}
+        className={styles.panel}
+        tabsClassName={styles.tabs}
+      />
+    </Card>
   )
 }
 
