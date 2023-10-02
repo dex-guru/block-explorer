@@ -13,12 +13,19 @@
   white-space: nowrap;
 }
 
-.warehouse {
-  composes: warehouse from '../Dashboard.module.scss';
+.query {
+  composes: muted from '../../..//styles/_common.scss';
+  font-weight: 400;
 }
 
 .description {
-  composes: description from '../Dashboard.module.scss';
+  composes: muted from '../../../styles/_common.scss';
+}
+
+.warehouse {
+  composes: lg from '../../Button/Button.module.scss';
+  composes: warehouse from '../../Button/Button.module.scss';
+  margin: -8px 0;
 }
 
 .value {
@@ -39,4 +46,22 @@
   justify-content: space-between;
   font-size: 12px;
   line-height: 20px;
+}
+
+.counter {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1 0 auto;
+  position: relative;
+}
+
+.loader {
+  composes: loader from '../Dashboard.module.scss';
+}
+
+.loading {
+  composes: loading from '../Dashboard.module.scss';
 }

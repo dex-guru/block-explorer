@@ -48,15 +48,6 @@
   }
 }
 
-.query {
-  composes: muted from '../../styles/_common.scss';
-  font-weight: 400;
-}
-
-.description {
-  composes: muted from '../../pages/Pages.module.scss';
-}
-
 .loader {
   position: absolute;
   left: 32px;
@@ -68,22 +59,7 @@
   visibility: visible;
 }
 
-.counter {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex: 1 0 auto;
-}
-
 .loading {
   pointer-events: none;
   visibility: hidden;
-}
-
-.warehouse {
-  composes: lg from '../Button/Button.module.scss';
-  composes: warehouse from '../Button/Button.module.scss';
-  margin: -8px 0;
 }
