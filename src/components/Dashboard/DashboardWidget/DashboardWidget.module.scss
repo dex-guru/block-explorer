@@ -16,3 +16,27 @@
 .warehouse {
   composes: warehouse from '../Dashboard.module.scss';
 }
+
+.description {
+  composes: description from '../Dashboard.module.scss';
+}
+
+.value {
+  font-weight: 500;
+  line-height: 1;
+  font-size: clamp(32px, 4vw + 1px, 64px);
+}
+
+.muted,
+.unit {
+  composes: muted from '../../../styles/_common.scss';
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 16p;
+  justify-content: space-between;
+  font-size: 12px;
+  line-height: 20px;
+}
