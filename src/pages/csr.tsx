@@ -4,6 +4,7 @@ import {
   ChainConfigModel,
   CsrStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Card from '@/components/Card'
 import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
 import Grid from '@/components/Grid'
@@ -86,6 +87,9 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
             />
           </Card>
         </Grid>
+
+        <Ad />
+
         <Card title={`${chainConfig.name} Emissions`}>
           <CommonChart
             className={styles.csrChart}

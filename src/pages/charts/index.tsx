@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
 import Heading from '@/components/Heading'
 import { IconQuestion } from '@/components/Icons'
@@ -190,6 +191,8 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
       </Head>
       <Page chainConfig={chainConfig}>
         <DetailsView title={pageTitle}>
+          <Ad />
+
           <TabPanel
             tabs={tabs}
             value={currentTab}

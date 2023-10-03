@@ -8,6 +8,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
@@ -102,6 +103,8 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
               },
             ]}
           />
+
+          <Ad />
 
           <DataTable
             header={

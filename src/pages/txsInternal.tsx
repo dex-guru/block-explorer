@@ -7,6 +7,7 @@ import {
   ChainStatsModel,
   InternalTransactionModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
@@ -66,6 +67,8 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="Contract Internal Transactions">
+          <Ad />
+
           <DataTable
             isLoading={loading}
             columns={internalTxsColumns(props.chainConfig, props.chainStats)}

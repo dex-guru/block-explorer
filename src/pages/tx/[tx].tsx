@@ -12,6 +12,7 @@ import {
   LogModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconEmpty } from '@/components/Icons'
 import Label from '@/components/Label'
@@ -90,6 +91,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
               />
             }
           >
+            <Ad />
+
             <TabPanel
               tabs={[
                 {
