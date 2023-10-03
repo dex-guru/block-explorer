@@ -8,6 +8,7 @@ import { useLazyQuery, useQuery } from '@apollo/client'
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
+import Ad from '../Ad'
 import { IContractViewProps } from './types'
 import {
   ContractCreatorModel,
@@ -464,6 +465,8 @@ const ContractView: FC<IContractViewProps> = ({
               ]}
             />
           </Grid>
+
+          <Ad />
 
           <TabPanel
             tabs={[

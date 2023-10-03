@@ -5,6 +5,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Dashboard from '@/components/Dashboard'
 import DetailsView from '@/components/DetailsView'
 import GasPrice, { GasPriceValue } from '@/components/GasPrice'
@@ -60,6 +61,9 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
             onChange={setGasData}
           />
         </DetailsView>
+
+        <Ad />
+
         {!!dashboard && checkChainFeature(chainConfig, 'charts') && (
           <Dashboard
             data={dashboard}

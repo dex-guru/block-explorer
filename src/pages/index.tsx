@@ -11,6 +11,7 @@ import {
   CsrStatsModel,
   TransactionModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Card from '@/components/Card'
 import Grid from '@/components/Grid'
 import Page from '@/components/Page'
@@ -236,6 +237,8 @@ const Index: NextPage<IndexProps> = (props) => {
             ]}
           />
         )}
+
+        <Ad />
 
         <Grid>
           <Card

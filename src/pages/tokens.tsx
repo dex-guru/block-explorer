@@ -7,6 +7,7 @@ import {
   ChainStatsModel,
   TopTokensModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
@@ -79,6 +80,8 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="ERC-20 Top Tokens">
+          <Ad />
+
           <DataTable
             isLoading={loading}
             columns={topTokensColumns}

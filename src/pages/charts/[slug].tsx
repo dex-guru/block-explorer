@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import { IconSearch } from '@/components/Icons'
 import Page from '@/components/Page'
@@ -48,6 +49,8 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
             params={{ network: chainConfig.shortName }}
           />
         )}
+
+        <Ad />
       </Page>
     </>
   )

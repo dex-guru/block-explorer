@@ -6,6 +6,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconNoData, IconSearch } from '@/components/Icons'
 import OpenWith from '@/components/OpenWith'
@@ -68,6 +69,8 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
               />
             }
           >
+            <Ad />
+
             <BlockOverview
               data={data}
               chainConfig={chainConfig}

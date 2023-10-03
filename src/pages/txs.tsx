@@ -8,6 +8,7 @@ import {
   ChainStatsModel,
   TransactionStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import Delta from '@/components/Delta'
 import DetailsView from '@/components/DetailsView'
 import { LoadingCard } from '@/components/Loading'
@@ -194,6 +195,8 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
               ]}
             />
           )}
+
+          <Ad />
 
           <TabPanel value={currentTab} tabs={tabs} />
         </DetailsView>

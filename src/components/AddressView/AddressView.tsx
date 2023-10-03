@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress, getAddress } from 'viem'
 import { useEnsName } from 'wagmi'
+import Ad from '../Ad'
 import ChainSelect from '../ChainSelect/ChainSelect'
 import { IAddressViewProps } from './types'
 import AddressWallet from '@/components/AddressWallet'
@@ -146,6 +147,8 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
               ]}
             />
+
+            <Ad />
 
             <TabPanel
               tabs={[

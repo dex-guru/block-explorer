@@ -4,6 +4,7 @@ import {
   ChainConfigModel,
   ChainStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'
 import { Erc20DataTable } from '@/components/Tables'
@@ -33,6 +34,8 @@ const Txs: NextPage<ITxsProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="ERC-20 Token TXns">
+          <Ad />
+
           <Erc20DataTable />
         </DetailsView>
       </Page>

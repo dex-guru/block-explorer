@@ -2444,6 +2444,13 @@
     "@noble/hashes" "~1.3.0"
     "@scure/base" "~1.1.0"
 
+"@slise/embed-react@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@slise/embed-react/-/embed-react-2.2.0.tgz#346bf34d375144a7f5173354c1672d3687fa8b47"
+  integrity sha512-btboJc24ABEg5ncbVnab+asKarp3kTSTdMHHcndrnkCDlXNQNSw3vL0Lv8tanqgE3Ogt51AF8QGEhWDNOZAcxQ==
+  dependencies:
+    react-script-hook "^1.7.2"
+
 "@solana/buffer-layout@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@solana/buffer-layout/-/buffer-layout-4.0.1.tgz#b996235eaec15b1e0b5092a8ed6028df77fa6c15"
@@ -8862,6 +8869,11 @@ react-resize-detector@^8.0.4:
   integrity sha512-S7szxlaIuiy5UqLhLL1KY3aoyGHbZzsTpYal9eYMwCyKqoqoVLCmIgAgNyIM1FhnP2KyBygASJxdhejrzjMb+w==
   dependencies:
     lodash "^4.17.21"
+
+react-script-hook@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-script-hook/-/react-script-hook-1.7.2.tgz#ec130d67f9a25fcde57fbfd1faa87e5b97521948"
+  integrity sha512-fhyCEfXb94fag34UPRF0zry1XGwmVY+79iibWwTqAoOiCzYJQOYTiWJ7CnqglA9tMSV8g45cQpHCMcBwr7dwhA==
 
 react-smooth@^2.0.2:
   version "2.0.3"

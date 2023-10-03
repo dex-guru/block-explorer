@@ -5,6 +5,7 @@ import {
   ChainConfigModel,
   TokenHoldingsStatsModel,
 } from '@/__generated__/resolvers-types'
+import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
 import { IconNoData, IconSearch } from '@/components/Icons'
 import Page from '@/components/Page'
@@ -87,6 +88,9 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
             chainConfig={chainConfig}
           >
             <Summary stats={renderStats()} />
+
+            <Ad />
+
             <TokensDataTable address={address} />
           </DetailsView>
         )}

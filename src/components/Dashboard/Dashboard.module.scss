@@ -63,3 +63,9 @@
   pointer-events: none;
   visibility: hidden;
 }
+
+.warehouse {
+  composes: lg from '../Button/Button.module.scss';
+  composes: warehouse from '../Button/Button.module.scss';
+  margin: -8px 0;
+}
