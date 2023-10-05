@@ -661,6 +661,7 @@ export type TransactionModel = {
   receiptLogsCount?: Maybe<Scalars['Int']>
   receiptRoot?: Maybe<Scalars['String']>
   receiptStatus: Scalars['Int']
+  status?: Maybe<Scalars['String']>
   toAddress?: Maybe<Scalars['String']>
   transactionIndex: Scalars['Int']
   transactionType?: Maybe<Scalars['Int']>
@@ -1838,6 +1839,7 @@ export type TransactionModelResolvers<
     ContextType
   >
   receiptStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   toAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   transactionIndex?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   transactionType?: Resolver<

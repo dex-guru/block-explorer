@@ -490,6 +490,7 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       receiptRoot
       receiptStatus
       receiptLogsCount
+      status
       toAddress
       transactionIndex
       transactionType

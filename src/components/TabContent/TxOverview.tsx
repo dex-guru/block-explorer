@@ -38,6 +38,26 @@ import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
 
+const statusValues: Record<
+  string,
+  { title: string; icon: FC<{ className: string }>; className?: string }
+> = {
+  pending: {
+    title: 'Pending',
+    icon: IconWatch,
+  },
+  success: {
+    title: 'Success',
+    icon: IconVerify,
+    className: pageStyles.positive,
+  },
+  failed: {
+    title: 'Failed',
+    icon: IconCross,
+    className: pageStyles.negative,
+  },
+}
+
 const TxOverview: FC<{
   data: TransactionModel
   chainStats: ChainStatsModel
@@ -120,6 +140,10 @@ const TxOverview: FC<{
   }
 
   useEffect(() => {
+    if (data.status === 'pending') {
+      return
+    }
+
     handleClickMoreTransfers()
     handleClickMoreActions()
     handleClickMoreNft()
@@ -128,7 +152,10 @@ const TxOverview: FC<{
 
   const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
 
-  const IconStatus = data.receiptStatus ? IconVerify : IconCross
+  const txStatus =
+    statusValues[data.status || (data.receiptStatus ? 'success' : 'failed')]
+
+  const IconStatus = txStatus.icon
 
   const properties: Property[] = [
     {
@@ -137,23 +164,27 @@ const TxOverview: FC<{
       value: (
         <Value
           icon={<IconStatus className={pageStyles.icon} />}
-          value={data.receiptStatus ? 'Success' : 'Failed'}
-          className={clsx({
-            [pageStyles.positive]: !!data.receiptStatus,
-            [pageStyles.negative]: !data.receiptStatus,
-          })}
+          value={txStatus.title}
+          className={clsx(txStatus.className)}
         />
       ),
     },
+    ...(data.status === 'pending'
+      ? []
+      : [
+          {
+            title: 'Block:',
+            tooltip:
+              'Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.',
+            value: <Address type="block" address={`${data.blockNumber}`} />,
+          },
+        ]),
     {
-      title: 'Block:',
+      title: data.status === 'pending' ? 'Time last seen:' : 'Timestamp:',
       tooltip:
-        'Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.',
-      value: <Address type="block" address={`${data.blockNumber}`} />,
-    },
-    {
-      title: 'Timestamp:',
-      tooltip: 'The date and time at which a transaction is produced.',
+        data.status === 'pending'
+          ? ''
+          : 'The date and time at which a transaction is produced.',
       value: (
         <Value
           icon={<IconWatch className={pageStyles.muted} />}
