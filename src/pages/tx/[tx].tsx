@@ -107,65 +107,72 @@ const TxPage: NextPage<ITxProps> = (props) => {
                     </Suspense>
                   ),
                 },
-                ...(checkChainFeature(props.chainConfig, 'traces')
+                ...(props.data.status !== 'pending'
                   ? [
+                      ...(checkChainFeature(props.chainConfig, 'traces')
+                        ? [
+                            {
+                              title: 'Internal TXns',
+                              value: 'internal',
+                              to: `${pathname}?tab=internal`,
+                              content: (
+                                <Suspense fallback={<LoadingCard />}>
+                                  <InternalTxs
+                                    hash={props.data.hash}
+                                    {...props}
+                                  />
+                                </Suspense>
+                              ),
+                            },
+                          ]
+                        : []),
+                      ...(checkChainFeature(props.chainConfig, 'balances')
+                        ? [
+                            {
+                              title: (
+                                <>
+                                  Balance Changes{' '}
+                                  <Label
+                                    title="alpha"
+                                    tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
+                                    className={styles['label-info']}
+                                  />
+                                </>
+                              ),
+                              value: 'balanceChanges',
+                              to: `${pathname}?tab=balanceChanges`,
+                              content: (
+                                <Suspense fallback={<LoadingCard />}>
+                                  <TxBalanceChanges {...props} />
+                                </Suspense>
+                              ),
+                            },
+                          ]
+                        : []),
                       {
-                        title: 'Internal TXns',
-                        value: 'internal',
-                        to: `${pathname}?tab=internal`,
+                        title: `Logs (${props.data.receiptLogsCount || 0})`,
+                        value: 'logs',
+                        to: `${pathname}?tab=logs`,
                         content: (
                           <Suspense fallback={<LoadingCard />}>
-                            <InternalTxs hash={props.data.hash} {...props} />
+                            <TxLogs {...props} />
                           </Suspense>
                         ),
                       },
-                    ]
-                  : []),
-                ...(checkChainFeature(props.chainConfig, 'balances')
-                  ? [
-                      {
-                        title: (
-                          <>
-                            Balance Changes{' '}
-                            <Label
-                              title="alpha"
-                              tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
-                              className={styles['label-info']}
-                            />
-                          </>
-                        ),
-                        value: 'balanceChanges',
-                        to: `${pathname}?tab=balanceChanges`,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TxBalanceChanges {...props} />
-                          </Suspense>
-                        ),
-                      },
-                    ]
-                  : []),
-                {
-                  title: `Logs (${props.data.receiptLogsCount || 0})`,
-                  value: 'logs',
-                  to: `${pathname}?tab=logs`,
-                  content: (
-                    <Suspense fallback={<LoadingCard />}>
-                      <TxLogs {...props} />
-                    </Suspense>
-                  ),
-                },
-                ...(checkChainFeature(props.chainConfig, 'traces')
-                  ? [
-                      {
-                        title: 'Trace',
-                        value: 'trace',
-                        to: `${pathname}?tab=trace`,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TxTrace {...props} />
-                          </Suspense>
-                        ),
-                      },
+                      ...(checkChainFeature(props.chainConfig, 'traces')
+                        ? [
+                            {
+                              title: 'Trace',
+                              value: 'trace',
+                              to: `${pathname}?tab=trace`,
+                              content: (
+                                <Suspense fallback={<LoadingCard />}>
+                                  <TxTrace {...props} />
+                                </Suspense>
+                              ),
+                            },
+                          ]
+                        : []),
                     ]
                   : []),
               ]}

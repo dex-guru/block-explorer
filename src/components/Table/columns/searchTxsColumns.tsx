@@ -18,8 +18,13 @@ export const searchTxsColumns: IColumn<TransactionModel>[] = [
         }
         postfix={
           <>
-            <TimeAgo timestamp={data.blockTimestamp} /> in{' '}
-            <Address address={`${data.blockNumber}`} type="block" isCopy />
+            <TimeAgo timestamp={data.blockTimestamp} />
+            {!!data.blockNumber ? (
+              <>
+                in{' '}
+                <Address address={`${data.blockNumber}`} type="block" isCopy />
+              </>
+            ) : null}
           </>
         }
       />
