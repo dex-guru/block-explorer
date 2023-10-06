@@ -1,11 +1,14 @@
-import { FC, useMemo, useState } from 'react'
+import { FC, MouseEvent, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
+import Cookies from 'js-cookie'
 import InfoBlock from './InfoBlock'
 import PageMenu, { PageMenuMainLink } from './PageMenu'
 import { PageHeaderProps } from './types'
 import Logo from '@/components/Logo'
 import Search from '@/components/Search'
+import { AUTH_COOKIE_NAME } from '@/constants'
 import { checkChainFeature } from '@/lib/utils'
 import styles from './PageHeader.module.scss'
 
@@ -18,6 +21,8 @@ const NetworkSelect = dynamic(() => import('@/components/NetworkSelect'), {
 
 const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const { openConnectModal } = useConnectModal()
 
   const links = useMemo(() => {
     const baseLinks: PageMenuMainLink[] = [
@@ -60,6 +65,13 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                 {
                   caption: 'Data Warehouse',
                   href: 'https://warehouse.dex.guru',
+                  onClick: (e: MouseEvent) => {
+                    const accessTokenCookie = Cookies.get(AUTH_COOKIE_NAME)
+                    if (!accessTokenCookie && openConnectModal) {
+                      openConnectModal()
+                      e.preventDefault()
+                    }
+                  },
                 },
               ]
             : []),

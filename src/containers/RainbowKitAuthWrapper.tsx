@@ -20,6 +20,7 @@ import jwt_decode from 'jwt-decode'
 import { SiweMessage } from 'siwe'
 import { useAccount } from 'wagmi'
 import {
+  AUTH_COOKIE_NAME,
   dexGuruLoginApiV2Url,
   dexGuruLoginApiV3Url,
   JWT_TOKEN_REFRESH_INTERVAL,
@@ -41,7 +42,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         setStatus('authenticated')
         localStorage.setItem('accessToken', accessToken)
         const decoded = jwt_decode(accessToken) as { exp: number }
-        Cookies.set('access_token_cookie', accessToken, {
+        Cookies.set(AUTH_COOKIE_NAME, accessToken, {
           domain: getRootDomain(window.location.host) || undefined,
           expires: new Date(decoded?.exp * 1000),
         })
@@ -65,7 +66,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
       account && setStatus('authenticated')
     } else {
       localStorage.removeItem('accessToken')
-      Cookies.remove('access_token_cookie')
+      Cookies.remove(AUTH_COOKIE_NAME)
       tokenRefresh()
     }
 
@@ -136,7 +137,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
           account_id && localStorage.setItem('accountId', account_id)
           access_token && localStorage.setItem('accessToken', access_token)
           const decoded = jwt_decode(access_token) as { exp: number }
-          Cookies.set('access_token_cookie', access_token, {
+          Cookies.set(AUTH_COOKIE_NAME, access_token, {
             domain: getRootDomain(window.location.host) || undefined,
             expires: new Date(decoded?.exp * 1000),
           })
@@ -148,7 +149,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         signOut: async () => {
           localStorage.removeItem('accountId')
           localStorage.removeItem('accessToken')
-          Cookies.remove('access_token_cookie')
+          Cookies.remove(AUTH_COOKIE_NAME)
           localStorage.removeItem('refreshToken')
           setStatus('unauthenticated')
         },
