@@ -422,3 +422,7 @@ export const avg = (arr: number[]) => {
 export const arrayUniqueValues = <T>(arr: T[]) => {
   return [...new Set(arr)]
 }
+
+export const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

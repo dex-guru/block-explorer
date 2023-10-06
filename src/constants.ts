@@ -6,3 +6,14 @@ export const CHAIN_ID = parseInt(
 )
 
 export const WALLET_CONNECT_PROJECT_ID = '1e58a7f9d4c5cbcb303af41525c9cc14'
+export const JWT_TOKEN_REFRESH_INTERVAL = 60 * 60 * 1000 // 1 hour
+
+export const environment = process.env.NODE_ENV
+
+const authApiHost =
+  environment?.toLocaleLowerCase() !== 'production'
+    ? 'https://auth-api-stage.dex.guru'
+    : 'https://auth-developers.dex.guru'
+
+export const dexGuruLoginApiV3Url = `${authApiHost}/v3`
+export const dexGuruLoginApiV2Url = `${authApiHost}/v2`
