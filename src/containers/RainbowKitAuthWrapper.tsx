@@ -15,6 +15,7 @@ import { AuthenticationAdapter } from '@rainbow-me/rainbowkit/dist/components/Ra
 import '@rainbow-me/rainbowkit/styles.css'
 import { loginRequest } from '@telekomconsalting/dex-guru-internal-sdk/lib/adapters/apiAuthAdapter'
 import { refreshToken } from '@telekomconsalting/dex-guru-internal-sdk/lib/services/authService'
+import Cookies from 'js-cookie'
 import jwt_decode from 'jwt-decode'
 import { SiweMessage } from 'siwe'
 import { useAccount } from 'wagmi'
@@ -23,7 +24,7 @@ import {
   dexGuruLoginApiV3Url,
   JWT_TOKEN_REFRESH_INTERVAL,
 } from '../constants'
-import { sleep } from '@/lib/utils'
+import { getRootDomain, sleep } from '@/lib/utils'
 
 const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
   const [status, setStatus] = useState<AuthenticationStatus>('unauthenticated')
@@ -36,9 +37,14 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         setStatus('unauthenticated')
         throw new Error(error)
       }
-      if (account) {
+      if (account && accessToken) {
         setStatus('authenticated')
-        accessToken && localStorage.setItem('accessToken', accessToken)
+        localStorage.setItem('accessToken', accessToken)
+        const decoded = jwt_decode(accessToken) as { exp: number }
+        Cookies.set('access_token_cookie', accessToken, {
+          domain: getRootDomain(window.location.host) || undefined,
+          expires: new Date(decoded?.exp * 1000),
+        })
       }
     })
   }
@@ -59,6 +65,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
       account && setStatus('authenticated')
     } else {
       localStorage.removeItem('accessToken')
+      Cookies.remove('access_token_cookie')
       tokenRefresh()
     }
 
@@ -128,6 +135,11 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
           const { access_token, refresh_token, account_id } = await response
           account_id && localStorage.setItem('accountId', account_id)
           access_token && localStorage.setItem('accessToken', access_token)
+          const decoded = jwt_decode(access_token) as { exp: number }
+          Cookies.set('access_token_cookie', access_token, {
+            domain: getRootDomain(window.location.host) || undefined,
+            expires: new Date(decoded?.exp * 1000),
+          })
           refresh_token && localStorage.setItem('refreshToken', refresh_token)
           const status = access_token ? 'authenticated' : 'unauthenticated'
           setStatus(status)
@@ -136,6 +148,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         signOut: async () => {
           localStorage.removeItem('accountId')
           localStorage.removeItem('accessToken')
+          Cookies.remove('access_token_cookie')
           localStorage.removeItem('refreshToken')
           setStatus('unauthenticated')
         },
