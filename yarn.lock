@@ -2328,10 +2328,10 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@rainbow-me/rainbowkit@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-1.1.0.tgz#ad55597ae43903d2f075e777ac6397537f6f2f53"
-  integrity sha512-kSMsEDZY4nWC9ITSh5Fj6QmcDZCWrIrpHJrW6+VeuU7wMVtBmzuCegMi3SMqqvQtgBktfgooflTELv/2I4wuvQ==
+"@rainbow-me/rainbowkit@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-1.1.1.tgz#be2b4ed95943d9d0ec1af4bb780bbb2663203d9e"
+  integrity sha512-6NGeH2SpJYolstt9RXU6XwmvyL29XKc6OYZtctvdM83F/WNkRX+ywwBrfNNES9BAS6QNdOnPa7nIu+ghtFBgnQ==
   dependencies:
     "@vanilla-extract/css" "1.9.1"
     "@vanilla-extract/dynamic" "2.0.2"
