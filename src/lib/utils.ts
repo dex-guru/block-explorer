@@ -422,3 +422,20 @@ export const avg = (arr: number[]) => {
 export const arrayUniqueValues = <T>(arr: T[]) => {
   return [...new Set(arr)]
 }
+
+export const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export const getRootDomain = (url: string): string | null => {
+  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)/)
+  if (match) {
+    const domainParts = match[1].split('.').filter((part) => part !== 'www')
+    if (domainParts.length >= 2) {
+      return domainParts.slice(-2).join('.')
+    } else {
+      return match[1]
+    }
+  }
+  return null
+}
