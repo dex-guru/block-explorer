@@ -13,6 +13,9 @@ import Token from '@/components/Token'
 import { getNormalizedValue } from '@/lib/utils'
 import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 
+const getTokenData = (tokens?: TokenModel[], address?: string | null) =>
+  tokens?.find((tkn) => tkn.address.toLowerCase() === address?.toLowerCase())
+
 export const balanceChangesColumns: (
   chainConfig: ChainConfigModel,
   tokens?: TokenModel[],
@@ -28,7 +31,7 @@ export const balanceChangesColumns: (
     accessor: 'address',
     title: 'Address',
     render: (row) => {
-      const tokenData = tokens?.find((tkn) => tkn.address === row.address)
+      const tokenData = getTokenData(tokens, row.address)
 
       return (
         <>
@@ -53,8 +56,14 @@ export const balanceChangesColumns: (
     title: 'Balance',
     render: (row) => (
       <ul className={styles.data}>
-        {row.balances?.map((balance, idx) => {
-          const tokenData = tokens?.find((tkn) => tkn.address === row.address)
+        {row.tokens?.map((token, idx) => {
+          const tokenData = getTokenData(tokens, token)
+          const balance = row.balances[idx]
+
+          const decimals =
+            token === null
+              ? chainConfig.nativeCurrency.decimals
+              : tokenData?.decimals
 
           return (
             <li
@@ -67,7 +76,7 @@ export const balanceChangesColumns: (
             >
               <div className={styles.dataNumber}>
                 {balance.isPositive() ? '+' : ''}
-                {getNormalizedValue(balance, tokenData?.decimals, {
+                {getNormalizedValue(balance, decimals, {
                   highPrecession: true,
                 }) || ''}
               </div>
@@ -83,7 +92,7 @@ export const balanceChangesColumns: (
     render: (row) => (
       <ul className={styles.data}>
         {row.tokens?.map((token, idx) => {
-          const tokenData = tokens?.find((tkn) => tkn.address === token)
+          const tokenData = getTokenData(tokens, token)
 
           return (
             <li className={styles.dataRow} key={idx}>
