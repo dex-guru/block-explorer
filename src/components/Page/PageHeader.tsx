@@ -9,6 +9,7 @@ import { PageHeaderProps } from './types'
 import Logo from '@/components/Logo'
 import Search from '@/components/Search'
 import { AUTH_COOKIE_NAME } from '@/constants'
+import { SUCCESS_AUTH_EVENT } from '@/containers/RainbowKitAuthWrapper'
 import { checkChainFeature } from '@/lib/utils'
 import styles from './PageHeader.module.scss'
 
@@ -69,6 +70,12 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                     const accessTokenCookie = Cookies.get(AUTH_COOKIE_NAME)
                     if (!accessTokenCookie && openConnectModal) {
                       openConnectModal()
+                      document.addEventListener(
+                        SUCCESS_AUTH_EVENT,
+                        () =>
+                          window.open('https://warehouse.dex.guru', '_blank'),
+                        { once: true }
+                      )
                       e.preventDefault()
                     }
                   },

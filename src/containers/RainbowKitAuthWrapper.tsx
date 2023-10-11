@@ -27,6 +27,8 @@ import {
 } from '../constants'
 import { getRootDomain, sleep } from '@/lib/utils'
 
+export const SUCCESS_AUTH_EVENT = 'SUCCESS_AUTH_EVENT'
+
 const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
   const [status, setStatus] = useState<AuthenticationStatus>('unauthenticated')
   const { address: account, connector } = useAccount()
@@ -144,6 +146,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
           refresh_token && localStorage.setItem('refreshToken', refresh_token)
           const status = access_token ? 'authenticated' : 'unauthenticated'
           setStatus(status)
+          document.dispatchEvent(new Event(SUCCESS_AUTH_EVENT))
           return Boolean(access_token)
         },
         signOut: async () => {
