@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -28,6 +28,16 @@ const Erc20DataTable = dynamic(
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
 
+const eoa = (
+  <span
+    key="type"
+    data-tooltip-content="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
+    data-tooltip-id="app-tooltip"
+  >
+    EOA
+  </span>
+)
+
 const AddressView: FC<IAddressViewProps> = ({
   address,
   tab,
@@ -35,6 +45,7 @@ const AddressView: FC<IAddressViewProps> = ({
   chain,
   tokenHoldingsStats,
 }) => {
+  const [tags, setTags] = useState([eoa])
   const router = useRouter()
   const pathname = router.asPath.split('?')[0]
 
@@ -46,20 +57,10 @@ const AddressView: FC<IAddressViewProps> = ({
       : `Not a ${chain.config.name} address`
 
 
-  const tags = useMemo(async () => {
+  useEffect(() => {
     const web3Name = createWeb3Name()
-    const ensName = await web3Name.getDomainName({ address: checkSumAddress, queryChainIdList: [chain.config.chainId] })
+    web3Name.getDomainName({ address: checkSumAddress, queryChainIdList: [chain.config.chainId] }).then(ensName => ensName && setTags([eoa, <>{ensName}</>]))
 
-    return ([
-      <span
-        key="type"
-        data-tooltip-content="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
-        data-tooltip-id="app-tooltip"
-      >
-        EOA
-      </span>,
-      ensName,
-    ])
   }, [chain.config.chainId, checkSumAddress])
 
   return (
