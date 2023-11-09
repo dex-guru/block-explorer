@@ -22,6 +22,11 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.9.4.tgz#aae21cb858bbb0411949d5b7b3051f4209043f62"
   integrity sha512-UK0bHA7hh9cR39V+4gl2/NnBBjoXIxkuWAPCaY4X7fbH4L/azIi7ilWOCjMUYfpJgraLUAqkRi2BqrjME8Rynw==
 
+"@adraffy/ens-normalize@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.0.tgz#d2a39395c587e092d77cbbc80acf956a54f38bf7"
+  integrity sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==
+
 "@ampproject/remapping@^2.2.0":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.1.tgz#99e8e11851128b8702cd57c33684f1d0f260b630"
@@ -1219,6 +1224,11 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
+
+"@ensdomains/ens-validation@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@ensdomains/ens-validation/-/ens-validation-0.1.0.tgz#9ebfe66016fbf069a6ebca70c043714f6f02fbe6"
+  integrity sha512-rbDh2K6GfqXvBcJUISaTTYEt3f079WA4ohTE5Lh4/8EaaPAk/9vk3EisMUQV2UVxeFIZQEEyRCIOmRTpqN0W7A==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
@@ -3604,6 +3614,15 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
+
+"@web3-name-sdk/core@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@web3-name-sdk/core/-/core-0.1.2.tgz#0bb1535516792faf1cc6ab93ca8202c18e194abe"
+  integrity sha512-wpd9WXwVAb6nfOj/R3xntKJDfsR1mzz+SjATdZ3w7ZuCC1QcPw6QjYGPgmmEdqIFdlWlrrjWEPUrjBpks9mmWQ==
+  dependencies:
+    "@adraffy/ens-normalize" "^1.10.0"
+    "@ensdomains/ens-validation" "^0.1.0"
+    viem "^1.10.9"
 
 "@whatwg-node/events@^0.0.3":
   version "0.0.3"
