@@ -92,6 +92,7 @@ const nextConfig = {
       },
     ]
   },
+  transpilePackages: ['@web3-name-sdk/core'], // Resolve SyntaxError: Named export 'toArray' not found. The requested module 'lodash' is a CommonJS module, which may not support all module.exports as named exports.
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
