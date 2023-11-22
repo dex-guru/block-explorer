@@ -2,7 +2,6 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isAddress } from 'viem'
-import { WagmiConfig } from 'wagmi'
 import {
   AddressModel,
   ChainConfigModel,
@@ -13,7 +12,6 @@ import ContractView from '@/components/ContractView'
 import { IconNoData } from '@/components/Icons'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -34,7 +32,6 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
-  const { wagmiConfig, chains } = useWagmiConfig(chainConfig)
 
   if (!address) {
     return null
@@ -48,17 +45,14 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
 
   if (isContract) {
     return (
-      <WagmiConfig config={wagmiConfig}>
-        <ContractView
-          address={onlyAddress}
-          tab={tab}
-          chains={chains}
-          type="token"
-          addressInfo={addressInfo}
-          chain={{ stats: chainStats, config: chainConfig }}
-          tokenHoldingsStats={tokenHoldingsStats}
-        />
-      </WagmiConfig>
+      <ContractView
+        address={onlyAddress}
+        tab={tab}
+        type="token"
+        addressInfo={addressInfo}
+        chain={{ stats: chainStats, config: chainConfig }}
+        tokenHoldingsStats={tokenHoldingsStats}
+      />
     )
   }
 

@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { isAddress } from 'viem'
-import { WagmiConfig } from 'wagmi'
 import {
   AddressModel,
   ChainConfigModel,
@@ -10,7 +9,6 @@ import {
 } from '@/__generated__/resolvers-types'
 import AddressView from '@/components/AddressView'
 import ContractView from '@/components/ContractView'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -31,7 +29,6 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
-  const { wagmiConfig, chains } = useWagmiConfig(chainConfig)
 
   if (!address) {
     return null
@@ -43,26 +40,23 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
 
   const isContract = addressInfo?.addressType === 'smart_contract'
   return (
-    <WagmiConfig config={wagmiConfig}>
-      {isContract ? (
-        <ContractView
-          address={onlyAddress}
-          tab={tab}
-          chains={chains}
-          addressInfo={addressInfo}
-          chain={{ stats: chainStats, config: chainConfig }}
-          tokenHoldingsStats={tokenHoldingsStats}
-        />
-      ) : (
-        <AddressView
-          address={onlyAddress}
-          tab={tab}
-          addressInfo={addressInfo}
-          chain={{ stats: chainStats, config: chainConfig }}
-          tokenHoldingsStats={tokenHoldingsStats}
-        />
-      )}
-    </WagmiConfig>
+    isContract ? (
+      <ContractView
+        address={onlyAddress}
+        tab={tab}
+        addressInfo={addressInfo}
+        chain={{ stats: chainStats, config: chainConfig }}
+        tokenHoldingsStats={tokenHoldingsStats}
+      />
+    ) : (
+      <AddressView
+        address={onlyAddress}
+        tab={tab}
+        addressInfo={addressInfo}
+        chain={{ stats: chainStats, config: chainConfig }}
+        tokenHoldingsStats={tokenHoldingsStats}
+      />
+    )
   )
 }
 

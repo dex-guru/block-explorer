@@ -7,6 +7,7 @@ import { GasPriceProps, GasPriceValue } from './types'
 import Card from '@/components/Card'
 import { avg, checkChainFeature, formatFeeHistory } from '@/lib/utils'
 import styles from './GasPrice.module.scss'
+import { usePublicClient } from 'wagmi'
 
 const DateTime = dynamic(() => import('@/components/DateTime'), { ssr: false })
 
@@ -33,21 +34,20 @@ const GasPrice: FC<GasPriceProps> = ({
   chainStats,
   className,
   onChange,
-  publicClient,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
   const pollInterval = Math.max(chainConfig.blockTime || 0, 15000)
   const isEip1559 = checkChainFeature(chainConfig, 'EIP1559')
-
+  const publicClient = usePublicClient()
   const getData = useCallback(() => {
     setIsLoading(true)
     if (!publicClient) {
       return
     }
 
-    const client = publicClient({ chainId: chainConfig.chainId })
+    const client = publicClient
 
     try {
       if (isEip1559) {
@@ -92,7 +92,7 @@ const GasPrice: FC<GasPriceProps> = ({
     } catch {
       //
     }
-  }, [publicClient, onChange, chainConfig, isEip1559])
+  }, [publicClient, onChange, isEip1559])
 
   useEffect(getData, [getData])
   useIntervalWhen(getData, pollInterval, !isLoading, false)

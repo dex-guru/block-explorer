@@ -29,8 +29,6 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
   chainConfig,
   chainStats,
 }) => {
-  const { publicClient } = useWagmiConfig(chainConfig)
-
   const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
   const low = Math.ceil(((gasData?.base || 0) + (gasData?.low || 0)) / 10 ** 9)
@@ -38,11 +36,10 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
     ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
   )
 
-  const pageTitle = `${
-    gasData
+  const pageTitle = `${gasData
       ? `${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit} – `
       : ''
-  }${chainConfig.name} Gas Tracker`
+    }${chainConfig.name} Gas Tracker`
 
   return (
     <>
@@ -57,7 +54,6 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
           <GasPrice
             chainConfig={chainConfig}
             chainStats={chainStats}
-            publicClient={publicClient}
             onChange={setGasData}
           />
         </DetailsView>
