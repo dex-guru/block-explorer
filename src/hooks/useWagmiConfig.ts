@@ -36,7 +36,7 @@ import {
   zerionWallet,
 } from '@rainbow-me/rainbowkit/wallets'
 import { publicProvider } from '@wagmi/core/providers/public'
-import get from 'lodash.get'
+import get from 'lodash/get'
 import * as viemChains from 'viem/chains'
 import { configureChains, createConfig } from 'wagmi'
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
