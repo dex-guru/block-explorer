@@ -1,5 +1,40 @@
 import { useMemo } from 'react'
-import { getDefaultWallets } from '@rainbow-me/rainbowkit'
+import { connectorsForWallets, getDefaultWallets } from '@rainbow-me/rainbowkit'
+import {
+  argentWallet,
+  bifrostWallet,
+  bitKeepWallet,
+  bitskiWallet,
+  braveWallet,
+  coin98Wallet,
+  coinbaseWallet,
+  coreWallet,
+  dawnWallet,
+  enkryptWallet,
+  foxWallet,
+  frameWallet,
+  frontierWallet,
+  imTokenWallet,
+  injectedWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  mewWallet,
+  okxWallet,
+  omniWallet,
+  oneKeyWallet,
+  phantomWallet,
+  rabbyWallet,
+  rainbowWallet,
+  safeWallet,
+  tahoWallet,
+  talismanWallet,
+  tokenPocketWallet,
+  trustWallet,
+  uniswapWallet,
+  walletConnectWallet,
+  xdefiWallet,
+  zerionWallet,
+} from '@rainbow-me/rainbowkit/wallets'
 import { publicProvider } from '@wagmi/core/providers/public'
 import { get } from 'lodash'
 import * as viemChains from 'viem/chains'
@@ -47,15 +82,55 @@ export const useWagmiConfig = (chainConfig: ChainConfigModel) => {
     chainConfig.shortName,
   ])
 
-  const { connectors } = useMemo(
-    () =>
-      getDefaultWallets({
-        appName: 'Block Explorer',
-        chains,
-        projectId: WALLET_CONNECT_PROJECT_ID,
-      }),
-    [chains]
-  )
+  const connectors = useMemo(() => {
+    const projectId = WALLET_CONNECT_PROJECT_ID
+    const appName = `Block Explorer ${chains[0].id}`
+    return connectorsForWallets([
+      {
+        groupName: 'Suggested',
+        wallets: [
+          injectedWallet({ chains }),
+          rainbowWallet({ projectId, chains }),
+          metaMaskWallet({ projectId, chains }),
+          trustWallet({ chains, projectId }),
+          walletConnectWallet({ projectId, chains }),
+        ],
+      },
+      {
+        groupName: 'Others',
+        wallets: [
+          argentWallet({ chains, projectId }),
+          bitKeepWallet({ chains, projectId }),
+          bifrostWallet({ chains, projectId, walletConnectVersion: '2' }),
+          bitskiWallet({ chains }),
+          braveWallet({ chains }),
+          coinbaseWallet({ chains, appName }),
+          coin98Wallet({ chains, projectId }),
+          coreWallet({ chains, projectId }),
+          dawnWallet({ chains }),
+          enkryptWallet({ chains }),
+          foxWallet({ chains, projectId }),
+          frameWallet({ chains }),
+          frontierWallet({ chains, projectId }),
+          ledgerWallet({ chains, projectId }),
+          imTokenWallet({ chains, projectId }),
+          mewWallet({ chains }),
+          okxWallet({ chains, projectId }),
+          omniWallet({ chains, projectId }),
+          oneKeyWallet({ chains }),
+          phantomWallet({ chains }),
+          rabbyWallet({ chains }),
+          safeWallet({ chains }),
+          tahoWallet({ chains }),
+          talismanWallet({ chains }),
+          tokenPocketWallet({ chains, projectId }),
+          uniswapWallet({ chains, projectId }),
+          xdefiWallet({ chains }),
+          zerionWallet({ chains, projectId }),
+        ],
+      },
+    ])
+  }, [chains])
 
   const wagmiConfig = useMemo(
     () =>
