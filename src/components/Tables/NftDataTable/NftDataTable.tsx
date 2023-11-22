@@ -18,8 +18,7 @@ interface INftDataTableProps {
 }
 
 export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
-  const [getNfts, { data, loading, previousData }] =
-    useLazyQuery(GET_ERC721_EVENTS)
+  const [getNfts, { data, loading, previousData }] = useLazyQuery(GET_ERC721_EVENTS)
   const isMount = useIsMount()
 
   const getVariables = useCallback(
@@ -85,9 +84,7 @@ export const NftDataTable: FC<INftDataTableProps> = ({ address }) => {
           className={styles.warehouse}
           target="_blank"
           rel="noreferrer noopener"
-          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${
-            address ? 84 : 76
-          } `}
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${address ? 84 : 76} `}
         />
       }
       isLoading={loading}

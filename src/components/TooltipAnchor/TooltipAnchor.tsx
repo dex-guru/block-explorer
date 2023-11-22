@@ -5,16 +5,9 @@ import IconInfo from '@/images/icons/info.svg'
 import { getTextWithAnchors } from '@/lib/utils'
 import styles from './TooltipAnchor.module.scss'
 
-export const TooltipAnchor: FC<TooltipAnchorProps> = ({
-  tooltip,
-  className,
-  place,
-  type,
-}) => {
+export const TooltipAnchor: FC<TooltipAnchorProps> = ({ tooltip, className, place, type }) => {
   const tooltipContent =
-    typeof tooltip === 'string'
-      ? getTextWithAnchors(tooltip)
-      : renderToStaticMarkup(<>{tooltip}</>)
+    typeof tooltip === 'string' ? getTextWithAnchors(tooltip) : renderToStaticMarkup(<>{tooltip}</>)
   const clickable = tooltipContent.includes('<a')
 
   return (
@@ -25,8 +18,7 @@ export const TooltipAnchor: FC<TooltipAnchorProps> = ({
       data-tooltip-html={tooltipContent}
       data-tooltip-id="app-tooltip"
       data-tooltip-place={place}
-      data-tooltip-variant={type}
-    >
+      data-tooltip-variant={type}>
       <IconInfo className={styles.icon} />
       <span className={styles.caption}>Details</span>
     </span>

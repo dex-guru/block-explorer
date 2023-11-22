@@ -1,11 +1,4 @@
-import {
-  ChangeEventHandler,
-  FC,
-  FormEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { ChangeEventHandler, FC, FormEventHandler, useEffect, useRef, useState } from 'react'
 import { sanitize } from 'isomorphic-dompurify'
 import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
 import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'

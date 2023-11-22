@@ -1,9 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  FormEventHandler,
-  useEffect,
-  useState,
-} from 'react'
+import React, { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { getAddress, isHex } from 'viem'
 import styles from '../../../Verifier.module.scss'
@@ -24,9 +19,7 @@ import { CHAIN_ID } from '@/constants'
 type ChainAddressFormProps = {
   customStatus: string
   checkedContract: SendableContract
-  verifyCheckedContract: (
-    sendable: VerificationInput
-  ) => Promise<VerifyResponse | undefined>
+  verifyCheckedContract: (sendable: VerificationInput) => Promise<VerifyResponse | undefined>
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 const ChainAddressForm = ({
@@ -39,8 +32,7 @@ const ChainAddressForm = ({
   const [isInvalidAddress, setIsInvalidAddress] = useState<boolean>(false)
   const [foundMatches, setFoundMatches] = useState<CheckAllByAddressResult>()
   const [creatorTxHash, setCreatorTxHash] = useState<string>('')
-  const [isInvalidCreatorTxHash, setIsInvalidCreatorTxHash] =
-    useState<boolean>(false)
+  const [isInvalidCreatorTxHash, setIsInvalidCreatorTxHash] = useState<boolean>(false)
 
   useEffect(() => {
     if (checkedContract.address) {
@@ -66,15 +58,11 @@ const ChainAddressForm = ({
 
     checkAllByAddresses(checksummedAddress, CHAIN_ID.toString()).then((res) => {
       // checkAllByAddresses inputs and outptus multiple addresses.
-      const currentAddressMatches = res.find(
-        (match) => (match.address = checksummedAddress)
-      )
+      const currentAddressMatches = res.find((match) => (match.address = checksummedAddress))
       setFoundMatches(currentAddressMatches)
     })
   }
-  const handleCreatorTxHashChange: ChangeEventHandler<HTMLInputElement> = (
-    e
-  ) => {
+  const handleCreatorTxHashChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const tempHash = e.target.value
     setCreatorTxHash(tempHash)
     if (!isHex(tempHash) || tempHash.length !== 34) {
@@ -126,10 +114,7 @@ const ChainAddressForm = ({
                 </>
               ),
               value: (
-                <DetailedView
-                  checkedContract={checkedContract}
-                  className={styles.viewDetails}
-                />
+                <DetailedView checkedContract={checkedContract} className={styles.viewDetails} />
               ),
             },
             {
@@ -138,8 +123,7 @@ const ChainAddressForm = ({
                   className={clsx({
                     [styles.viewInputInvalid]: isInvalidAddress,
                   })}
-                  htmlFor="address"
-                >
+                  htmlFor="address">
                   Address
                 </label>
               ),
@@ -160,8 +144,7 @@ const ChainAddressForm = ({
                   className={clsx({
                     [styles.viewInputInvalid]: isInvalidCreatorTxHash,
                   })}
-                  htmlFor="creatorTxHash"
-                >
+                  htmlFor="creatorTxHash">
                   Creator Tx Hash (optional)
                 </label>
               ),

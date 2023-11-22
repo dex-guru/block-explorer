@@ -1,10 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { clsx } from 'clsx'
-import {
-  ChainConfigModel,
-  Maybe,
-  TokenModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, Maybe, TokenModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import Label from '@/components/Label'
@@ -61,9 +57,7 @@ export const balanceChangesColumns: (
           const balance = row.balances[idx]
 
           const decimals =
-            token === null
-              ? chainConfig.nativeCurrency.decimals
-              : tokenData?.decimals
+            token === null ? chainConfig.nativeCurrency.decimals : tokenData?.decimals
 
           return (
             <li
@@ -72,8 +66,7 @@ export const balanceChangesColumns: (
                 { [styles.negative]: balance.isNegative() },
                 { [styles.positive]: balance.isPositive() }
               )}
-              key={idx}
-            >
+              key={idx}>
               <div className={styles.dataNumber}>
                 {balance.isPositive() ? '+' : ''}
                 {getNormalizedValue(balance, decimals, {

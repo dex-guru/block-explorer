@@ -2,13 +2,7 @@ import { FC, ReactNode } from 'react'
 import clsx from 'clsx'
 import { MessageProps, MessageType } from './types'
 import Button from '@/components/Button'
-import {
-  IconDanger,
-  IconIdea,
-  IconQuestion,
-  IconSuccess,
-  IconWarning,
-} from '@/components/Icons'
+import { IconDanger, IconIdea, IconQuestion, IconSuccess, IconWarning } from '@/components/Icons'
 import styles from './Message.module.scss'
 
 const icons: Record<MessageType, ReactNode> = {
@@ -19,29 +13,15 @@ const icons: Record<MessageType, ReactNode> = {
   prompt: <IconQuestion className={styles.icon} />,
 }
 
-const Message: FC<MessageProps> = ({
-  text,
-  type,
-  className,
-  children,
-  actions,
-}) => {
+const Message: FC<MessageProps> = ({ text, type, className, children, actions }) => {
   const renderActions = () => {
     return actions?.map((action, idx) => {
-      return (
-        <Button
-          key={idx}
-          {...action}
-          className={clsx(styles.action, action.className)}
-        />
-      )
+      return <Button key={idx} {...action} className={clsx(styles.action, action.className)} />
     })
   }
 
   return (
-    <div
-      className={clsx(styles.container, type ? styles[type] : '', className)}
-    >
+    <div className={clsx(styles.container, type ? styles[type] : '', className)}>
       {icons[type || 'info']}
 
       <div className={styles.body}>{text || children}</div>

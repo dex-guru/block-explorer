@@ -1,5 +1,4 @@
-export const REPOSITORY_SERVER_URL =
-  process.env.NEXT_PUBLIC_SOURCIFY_REPOSITORY_URL
+export const REPOSITORY_SERVER_URL = process.env.NEXT_PUBLIC_SOURCIFY_REPOSITORY_URL
 export const SERVER_URL = process.env.NEXT_PUBLIC_SOURCIFY_SERVER_URL
 export const DOCS_URL = 'https://docs.sourcify.dev'
 export const PLAYGROUND_URL = 'https://playground.sourcify.dev'

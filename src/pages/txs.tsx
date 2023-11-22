@@ -21,15 +21,10 @@ import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TRANSACTIONS_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-} from '@/lib/utils'
+import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
-const Erc20DataTable = dynamic(
-  () => import('@/components/Tables/Erc20DataTable/')
-)
+const Erc20DataTable = dynamic(() => import('@/components/Tables/Erc20DataTable/'))
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 
 interface ITxsProps {
@@ -88,9 +83,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
   }
 
   const pageTitle = `${props.chainConfig.name} ${
-    block
-      ? `Transactions in a single block ${block?.toString()}`
-      : 'Transactions'
+    block ? `Transactions in a single block ${block?.toString()}` : 'Transactions'
   }`
 
   return (
@@ -109,8 +102,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
       <Page chainConfig={props.chainConfig}>
         <DetailsView
           title={block ? 'Transactions in block' : 'Transactions'}
-          address={block?.toString()}
-        >
+          address={block?.toString()}>
           {!block && (
             <Summary
               stats={[
@@ -121,11 +113,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                       {financialFormatLowValueHighPrecision(
                         props.transactionStats?.transactions24H
                       )}{' '}
-                      <Delta
-                        value={
-                          props.transactionStats?.transactionsDelta24H * 100
-                        }
-                      />
+                      <Delta value={props.transactionStats?.transactionsDelta24H * 100} />
                     </>
                   ),
                 },
@@ -138,10 +126,9 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   ),
                   value: (
                     <Value
-                      value={financialFormat(
-                        props.chainStats?.transactionsPerSecond || 0,
-                        { decimals: 2 }
-                      )}
+                      value={financialFormat(props.chainStats?.transactionsPerSecond || 0, {
+                        decimals: 2,
+                      })}
                       suffix={<>&nbsp;txs/sec</>}
                     />
                   ),
@@ -157,16 +144,9 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                   ),
                   value: (
                     <Value
-                      value={financialFormat(
-                        props.transactionStats?.networkTransactionsFee24H
-                      )}
-                      suffix={
-                        <>&nbsp;{props.chainConfig.nativeCurrency.symbol}</>
-                      }
-                      delta={
-                        props.transactionStats?.networkTransactionsFeeDelta24H *
-                        100
-                      }
+                      value={financialFormat(props.transactionStats?.networkTransactionsFee24H)}
+                      suffix={<>&nbsp;{props.chainConfig.nativeCurrency.symbol}</>}
+                      delta={props.transactionStats?.networkTransactionsFeeDelta24H * 100}
                     />
                   ),
                 },
@@ -186,9 +166,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
                           props.chainStats.nativeTokenPriceUsd
                       )}
                       prefix="$"
-                      delta={
-                        props.transactionStats?.avgTransactionsFeeDelta24H * 100
-                      }
+                      delta={props.transactionStats?.avgTransactionsFeeDelta24H * 100}
                     />
                   ),
                 },

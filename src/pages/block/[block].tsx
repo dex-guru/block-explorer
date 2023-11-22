@@ -1,11 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import {
-  BlockModel,
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { BlockModel, ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView/DetailsView'
 import { IconNoData, IconSearch } from '@/components/Icons'
@@ -67,15 +63,10 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
                 chainConfig={chainConfig}
                 address={data?.number.toString()}
               />
-            }
-          >
+            }>
             <Ad />
 
-            <BlockOverview
-              data={data}
-              chainConfig={chainConfig}
-              chainStats={chainStats}
-            />
+            <BlockOverview data={data} chainConfig={chainConfig} chainStats={chainStats} />
           </DetailsView>
         )}
       </Page>

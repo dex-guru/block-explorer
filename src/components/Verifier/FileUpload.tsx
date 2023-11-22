@@ -40,8 +40,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 
   const uploaderTitle = !!displayFiles.length ? (
     <>
-      Added Files{' '}
-      <Label className={styles.uploadTag}>{displayFiles.length}</Label>
+      Added Files <Label className={styles.uploadTag}>{displayFiles.length}</Label>
     </>
   ) : undefined
 
@@ -63,21 +62,16 @@ const FileUpload: React.FC<FileUploadProps> = ({
       className={clsx(styles.upload, {
         [styles.uploadBodyLoading]: isLoading,
       })}
-      header={uploaderClear}
-    >
+      header={uploaderClear}>
       <div
         {...getRootProps()}
         className={clsx(styles.uploadZone, {
           [styles.uploadBodyLoading]: isLoading,
-        })}
-      >
+        })}>
         <input {...getInputProps()} type="file" />
 
         <div className={styles.uploadZoneBody}>
-          <span className={styles.uploadPropose}>
-            Drag and drop files to page
-          </span>{' '}
-          or
+          <span className={styles.uploadPropose}>Drag and drop files to page</span> or
           <span className={styles.uploadBrowse}>Browse Files</span>
         </div>
 
@@ -90,9 +84,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </Message>
       )}
 
-      {!!displayFiles.length && (
-        <ul className={styles.uploadList}>{displayFiles}</ul>
-      )}
+      {!!displayFiles.length && <ul className={styles.uploadList}>{displayFiles}</ul>}
     </Card>
   )
 }

@@ -21,8 +21,7 @@ export const searchTxsColumns: IColumn<TransactionModel>[] = [
             <TimeAgo timestamp={data.blockTimestamp} />
             {!!data.blockNumber ? (
               <>
-                in{' '}
-                <Address address={`${data.blockNumber}`} type="block" isCopy />
+                in <Address address={`${data.blockNumber}`} type="block" isCopy />
               </>
             ) : null}
           </>

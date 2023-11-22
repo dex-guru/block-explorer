@@ -16,15 +16,11 @@ interface ITransfersDataTableProps {
   address?: string
 }
 
-export const TransfersDataTable: FC<ITransfersDataTableProps> = ({
-  address,
-}) => {
+export const TransfersDataTable: FC<ITransfersDataTableProps> = ({ address }) => {
   const [getErc2Events, { data, loading, previousData }] = useLazyQuery<{
     erc20Events: { data: Erc20EventModel[]; total: number }
   }>(GET_ERC20_EVENTS)
-  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
-    GET_ERC20_EVENTS_TOTALS
-  )
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(GET_ERC20_EVENTS_TOTALS)
   const isMount = useIsMount()
 
   const getVariables = useCallback(

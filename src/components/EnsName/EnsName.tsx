@@ -3,12 +3,7 @@ import { createWeb3Name } from '@web3-name-sdk/core'
 import { EnsNameProp } from './types'
 import Label from '@/components/Label'
 
-const EnsName: FC<EnsNameProp> = ({
-  address,
-  chainConfig,
-  isTag,
-  className,
-}) => {
+const EnsName: FC<EnsNameProp> = ({ address, chainConfig, isTag, className }) => {
   const [data, setData] = useState<string | null>(null)
 
   useEffect(() => {

@@ -68,9 +68,7 @@ const GraphContent: FC<{
     }
 
     const hostname =
-      typeof window !== 'undefined' && window.location.hostname
-        ? window.location.hostname
-        : ''
+      typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : ''
 
     const svgBlob = new Blob(
       [
@@ -128,9 +126,7 @@ const GraphContent: FC<{
             })}
             // caption="Full Screen"
             data-tooltip-id="app-tooltip"
-            data-tooltip-content={`${
-              document.fullscreenElement ? 'Exit' : 'Enter'
-            } Fullscreen`}
+            data-tooltip-content={`${document.fullscreenElement ? 'Exit' : 'Enter'} Fullscreen`}
             onClick={handleFullScreen}
             icon={<FullscreenIcon className={styles.icon} />}
           />
@@ -145,10 +141,7 @@ const GraphContent: FC<{
         </div>
       )}
       <div className={styles.body}>
-        <TransformComponent
-          wrapperClass={styles.canvas}
-          contentClass={styles.layer}
-        >
+        <TransformComponent wrapperClass={styles.canvas} contentClass={styles.layer}>
           <div className={styles.graph} ref={refContainer} />
         </TransformComponent>
       </div>

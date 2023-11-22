@@ -1,9 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
 import Page from '@/components/Page'

@@ -3,13 +3,7 @@ import clsx from 'clsx'
 import { LabelProps } from './types'
 import styles from './Label.module.scss'
 
-const Label: FC<LabelProps> = ({
-  title,
-  className,
-  type = 'tag',
-  children,
-  tooltip,
-}) => {
+const Label: FC<LabelProps> = ({ title, className, type = 'tag', children, tooltip }) => {
   if (!title && !children) {
     return null
   }
@@ -22,10 +16,7 @@ const Label: FC<LabelProps> = ({
     : {}
 
   return (
-    <span
-      className={clsx(styles.container, styles[type], className)}
-      {...tooltipData}
-    >
+    <span className={clsx(styles.container, styles[type], className)} {...tooltipData}>
       {title || children}
     </span>
   )

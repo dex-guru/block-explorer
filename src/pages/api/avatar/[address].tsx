@@ -13,9 +13,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    const svg = renderToStaticMarkup(
-      <JazzIcon size={32} seed={jsNumberForAddress(lowerAddress)} />
-    )
+    const svg = renderToStaticMarkup(<JazzIcon size={32} seed={jsNumberForAddress(lowerAddress)} />)
     res.setHeader('Cache-Control', 's-maxage=31536000')
     res.setHeader('Content-Type', 'image/svg+xml')
     res.send(svg)

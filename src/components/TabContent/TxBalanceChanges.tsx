@@ -64,8 +64,7 @@ const TxBalanceChanges: FC<{
   )
 
   const isLoading = loadingLogs || loadingTxs
-  const hasData =
-    !!logsData?.logs?.length || !!txsData?.internalTransactions.data?.length
+  const hasData = !!logsData?.logs?.length || !!txsData?.internalTransactions.data?.length
 
   if (!hash || (calledLogs && calledTxs && !isLoading && !hasData)) {
     return <StateView icon={<IconEmpty />} title="No TX logs was found" />
@@ -92,13 +91,9 @@ const TxBalanceChanges: FC<{
       changes
         ?.filter((row) => row.address === address)
         .forEach((row) => {
-          const tokenIdx = result.tokens.findIndex(
-            (token) => token === row.token
-          )
+          const tokenIdx = result.tokens.findIndex((token) => token === row.token)
           if (tokenIdx >= 0 && result.balances[tokenIdx]) {
-            result.balances[tokenIdx] = result.balances[tokenIdx].plus(
-              row.change
-            )
+            result.balances[tokenIdx] = result.balances[tokenIdx].plus(row.change)
           } else {
             result.tokens.push(row.token)
             result.balances.push(row.change)
@@ -138,12 +133,7 @@ const TxBalanceChanges: FC<{
       </Details>
       <Table
         data={tableData}
-        columns={balanceChangesColumns(
-          chainConfig,
-          tokens,
-          data.fromAddress,
-          data.toAddress
-        )}
+        columns={balanceChangesColumns(chainConfig, tokens, data.fromAddress, data.toAddress)}
         className={styles.table}
       />
     </Card>

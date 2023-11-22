@@ -50,13 +50,10 @@ const Dropdown: FC<DropdownProps> = ({
           [styles.open]: isCurrentOpen,
         })}
         onClick={handleClick}
-        ref={ref}
-      >
+        ref={ref}>
         {!!icon && <span className={styles.icon}>{icon}</span>}
         {!!caption && <span className={styles.caption}>{caption}</span>}
-        <IconArrowDown
-          className={clsx(styles.arrow, { [styles.arrowOpen]: isCurrentOpen })}
-        />
+        <IconArrowDown className={clsx(styles.arrow, { [styles.arrowOpen]: isCurrentOpen })} />
       </button>
 
       {isCurrentOpen && (
@@ -66,8 +63,7 @@ const Dropdown: FC<DropdownProps> = ({
           toggle={ref.current}
           isOpen={isCurrentOpen}
           onOpen={handleOpen}
-          onClose={handleClose}
-        >
+          onClose={handleClose}>
           {content || children}
         </DropdownContent>
       )}

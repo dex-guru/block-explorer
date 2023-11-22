@@ -26,10 +26,7 @@ import ShortCosmosTxsTable from '@/components/Tables/ShortCosmosTxs'
 import { ShortTxsTable } from '@/components/Tables/ShortTxs'
 import Value from '@/components/Value'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import {
-  GET_BLOCKS_SHORT,
-  GET_BLOCKS_TXNS_CHAIN_STATS,
-} from '@/lib/apollo/queries'
+import { GET_BLOCKS_SHORT, GET_BLOCKS_TXNS_CHAIN_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import {
   checkChainFeature,
@@ -59,20 +56,14 @@ const Index: NextPage<IndexProps> = (props) => {
 
   const [isCosmos, setIsCosmos] = useState(false)
 
-  const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(
-    GET_BLOCKS_SHORT,
-    {
-      variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
-      pollInterval: Number(chainConfig?.blockTime || process.env.pollInterval),
-    }
-  )
+  const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(GET_BLOCKS_SHORT, {
+    variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
+    pollInterval: Number(chainConfig?.blockTime || process.env.pollInterval),
+  })
 
   useEffect(() => {
     if (!loading && blocksUpdate) {
-      const blocksWithTimeDiff = getBlocksWithTimeDiff(
-        blocksUpdate.blocks,
-        ITEMS_PER_PAGE
-      )
+      const blocksWithTimeDiff = getBlocksWithTimeDiff(blocksUpdate.blocks, ITEMS_PER_PAGE)
 
       setBlocks(blocksWithTimeDiff)
     }
@@ -85,10 +76,7 @@ const Index: NextPage<IndexProps> = (props) => {
     },
   ]
 
-  const lastBlockNumber = Math.max(
-    blocks[0]?.number,
-    props.chainStats.lastBlockNumber
-  )
+  const lastBlockNumber = Math.max(blocks[0]?.number, props.chainStats.lastBlockNumber)
 
   const statsDisplay = [
     {
@@ -97,11 +85,7 @@ const Index: NextPage<IndexProps> = (props) => {
     },
     {
       title: 'Transactions',
-      value: (
-        <Value
-          value={financialFormatLowValueHighPrecision(stats.transactionsCount)}
-        />
-      ),
+      value: <Value value={financialFormatLowValueHighPrecision(stats.transactionsCount)} />,
     },
     {
       title: 'TPS',
@@ -132,44 +116,21 @@ const Index: NextPage<IndexProps> = (props) => {
     },
     {
       title: 'Total Addresses',
-      tooltip:
-        'Total of distinct address numbers who send at least one transaction on-chain.',
-      value: (
-        <Value
-          value={financialFormatLowValueHighPrecision(
-            stats.activeAddressesCount
-          )}
-        />
-      ),
+      tooltip: 'Total of distinct address numbers who send at least one transaction on-chain.',
+      value: <Value value={financialFormatLowValueHighPrecision(stats.activeAddressesCount)} />,
     },
     {
       title: 'Active Addresses, 24h',
-      value: (
-        <Value
-          value={financialFormatLowValueHighPrecision(
-            stats.activeAddressesCount24h
-          )}
-        />
-      ),
+      value: <Value value={financialFormatLowValueHighPrecision(stats.activeAddressesCount24h)} />,
     },
     {
       title: 'Smart Contracts',
       tooltip: 'Total number of smart contracts created on-chain.',
-      value: (
-        <Value
-          value={financialFormatLowValueHighPrecision(
-            stats.smartContractsCount
-          )}
-        />
-      ),
+      value: <Value value={financialFormatLowValueHighPrecision(stats.smartContractsCount)} />,
     },
     {
       title: 'Average Block Time, 24h',
-      value: (
-        <Value
-          value={financialFormatLowValueHighPrecision(stats.averageBlockTime)}
-        />
-      ),
+      value: <Value value={financialFormatLowValueHighPrecision(stats.averageBlockTime)} />,
     },
     // {
     //   title: `${chainConfig.nativeCurrency.symbol} Max Supply`,
@@ -197,12 +158,9 @@ const Index: NextPage<IndexProps> = (props) => {
       value: (
         <Link href="/csr">
           <Value
-            value={financialFormatLowValueHighPrecision(
-              props.csrStats.sumRevenue,
-              {
-                decimals: 2,
-              }
-            )}
+            value={financialFormatLowValueHighPrecision(props.csrStats.sumRevenue, {
+              decimals: 2,
+            })}
             suffix={<>&nbsp;{props.chainConfig.nativeCurrency.symbol}</>}
           />
         </Link>
@@ -248,8 +206,7 @@ const Index: NextPage<IndexProps> = (props) => {
                 caption: 'View all blocks',
                 to: '/blocks',
               },
-            ]}
-          >
+            ]}>
             <Table
               columns={lastBlocksColumns}
               data={blocks}
@@ -285,16 +242,10 @@ const Index: NextPage<IndexProps> = (props) => {
                     },
                   ]
                 : undefined
-            }
-          >
+            }>
             {isCosmos && <ShortCosmosTxsTable chainConfig={chainConfig} />}
 
-            {!isCosmos && (
-              <ShortTxsTable
-                data={props.transactions}
-                chainConfig={chainConfig}
-              />
-            )}
+            {!isCosmos && <ShortTxsTable data={props.transactions} chainConfig={chainConfig} />}
           </Card>
         </Grid>
       </Page>
@@ -319,10 +270,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ? logger.error(error, 'Error getting GET_BLOCKS_TXNS_CHAIN_STATS info')
     : logger.info({ msg: 'Got GET_BLOCKS_TXNS_CHAIN_STATS info', data })
 
-  const blocksWithTimeDiff = getBlocksWithTimeDiff(
-    data?.blocks || [],
-    ITEMS_PER_PAGE
-  )
+  const blocksWithTimeDiff = getBlocksWithTimeDiff(data?.blocks || [], ITEMS_PER_PAGE)
 
   return addApolloState(apolloClient, {
     props: {

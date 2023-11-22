@@ -37,10 +37,7 @@ export const useTypewriter = (text = '', delay = 30) => {
         return
       }
 
-      const [printed, notPrinted] = [
-        text.substring(0, index + 1),
-        text.substring(index),
-      ]
+      const [printed, notPrinted] = [text.substring(0, index + 1), text.substring(index)]
       setResult([printed, notPrinted])
       setIndex(index + 1)
     },

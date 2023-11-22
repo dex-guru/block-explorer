@@ -18,12 +18,7 @@ export interface IFormProps {
   isWrite?: boolean
 }
 
-const ContractMethodForm: FC<IFormProps> = ({
-  method,
-  address,
-  abi,
-  isWrite,
-}) => {
+const ContractMethodForm: FC<IFormProps> = ({ method, address, abi, isWrite }) => {
   const {
     register,
     handleSubmit,
@@ -33,15 +28,12 @@ const ContractMethodForm: FC<IFormProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const chainId = useChainId()
 
-  const [callResult, setCallResult] = useState<
-    { isError: boolean; text: string } | undefined
-  >(undefined)
+  const [callResult, setCallResult] = useState<{ isError: boolean; text: string } | undefined>(
+    undefined
+  )
 
   const onRead = useCallback(
-    async (
-      args: { [key: string]: string },
-      event?: React.BaseSyntheticEvent
-    ) => {
+    async (args: { [key: string]: string }, event?: React.BaseSyntheticEvent) => {
       event?.preventDefault()
       setCallResult(undefined)
       setIsLoading(true)
@@ -67,10 +59,7 @@ const ContractMethodForm: FC<IFormProps> = ({
   )
 
   const onWrite = useCallback(
-    async (
-      args: { [key: string]: string },
-      event?: React.BaseSyntheticEvent
-    ) => {
+    async (args: { [key: string]: string }, event?: React.BaseSyntheticEvent) => {
       event?.preventDefault()
       setCallResult(undefined)
       setIsLoading(true)
@@ -109,8 +98,7 @@ const ContractMethodForm: FC<IFormProps> = ({
       <form
         key={method.name}
         onSubmit={handleSubmit(isWrite ? onWrite : onRead)}
-        className={styles.form}
-      >
+        className={styles.form}>
         <>
           {method.inputs?.map((input, index: number) => {
             const name = `input-${index}-${input.name}`
@@ -119,20 +107,14 @@ const ContractMethodForm: FC<IFormProps> = ({
 
             return (
               <label key={index} className={styles.field}>
-                <Heading
-                  caption={input.name}
-                  size="xs"
-                  className={styles.label}
-                />
+                <Heading caption={input.name} size="xs" className={styles.label} />
                 <input
                   {...register(name, {
                     required: true,
                     validate: validator,
                   })}
                   className={styles.input}
-                  placeholder={`${input.name} (${
-                    input.internalType || input.type
-                  })`}
+                  placeholder={`${input.name} (${input.internalType || input.type})`}
                 />
                 {errorMessage && <span>{errorMessage}</span>}
               </label>
@@ -140,19 +122,9 @@ const ContractMethodForm: FC<IFormProps> = ({
           })}
           {method.stateMutability === 'payable' && (
             <label className={styles.field}>
-              <Heading
-                caption="native token amount (payable)"
-                size="xs"
-                className={styles.label}
-              />
-              <input
-                {...register('payable')}
-                className={styles.input}
-                placeholder="payable"
-              />
-              {errors.payable && (
-                <span>{errors.payable.message?.toString()}</span>
-              )}
+              <Heading caption="native token amount (payable)" size="xs" className={styles.label} />
+              <input {...register('payable')} className={styles.input} placeholder="payable" />
+              {errors.payable && <span>{errors.payable.message?.toString()}</span>}
             </label>
           )}
           <div className={styles.proceed}>
@@ -164,10 +136,7 @@ const ContractMethodForm: FC<IFormProps> = ({
             />
             {isLoading && <Loading className={styles.loader} />}
             {!!callResult && (
-              <Message
-                text={callResult.text}
-                type={callResult.isError ? 'danger' : 'info'}
-              />
+              <Message text={callResult.text} type={callResult.isError ? 'danger' : 'info'} />
             )}
           </div>
         </>

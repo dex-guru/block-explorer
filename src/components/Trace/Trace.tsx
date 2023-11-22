@@ -15,10 +15,7 @@ import styles from './Trace.module.scss'
 
 const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
   const decValue = new BigNumber(data.value, 16).toString(10)
-  const displayValue = getNormalizedValue(
-    decValue,
-    chainConfig?.nativeCurrency?.decimals
-  )
+  const displayValue = getNormalizedValue(decValue, chainConfig?.nativeCurrency?.decimals)
 
   const content = (
     <div className={styles.content}>
@@ -79,9 +76,7 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
       ? [
           {
             title: 'Error',
-            value: (
-              <Message text={error} type="danger" className={styles.message} />
-            ),
+            value: <Message text={error} type="danger" className={styles.message} />,
           },
         ]
       : []),
@@ -152,10 +147,7 @@ const Trace: FC<TraceProps> = ({ data, chainConfig }) => {
           })}
         />
 
-        <TraceL2Events
-          title="Before EVM Transfers"
-          events={beforeEVMTransfers}
-        />
+        <TraceL2Events title="Before EVM Transfers" events={beforeEVMTransfers} />
 
         <TraceL2Events title="After EVM Transfers" events={afterEVMTransfers} />
 

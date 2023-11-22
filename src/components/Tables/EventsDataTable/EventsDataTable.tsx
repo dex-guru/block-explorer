@@ -16,8 +16,7 @@ interface IEventsDataTableProps {
 const PER_PAGE = 10
 
 export const EventsDataTable: FC<IEventsDataTableProps> = ({ address }) => {
-  const [getEvents, { data, loading, previousData }] =
-    useLazyQuery(GET_LOGS_BY_ADDRESS)
+  const [getEvents, { data, loading, previousData }] = useLazyQuery(GET_LOGS_BY_ADDRESS)
   const isMount = useIsMount()
 
   const getVariables = useCallback(

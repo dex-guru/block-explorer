@@ -58,24 +58,14 @@ const ContractTab: FC<{
         <>
           <Message type="danger">
             This smart contract is not verified according to{' '}
-            <Link
-              href="https://sourcify.dev/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <Link href="https://sourcify.dev/" rel="noopener noreferrer" target="_blank">
               Sourcify
             </Link>
-            . Make sure you understand the risks of interacting with unverified
-            smart contracts.
+            . Make sure you understand the risks of interacting with unverified smart contracts.
           </Message>
           <Message type="info">
-            As a contract owner, you can get your smart contract verified with
-            Sourcify{' '}
-            <Link
-              href="/verifyContract"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            As a contract owner, you can get your smart contract verified with Sourcify{' '}
+            <Link href="/verifyContract" rel="noopener noreferrer" target="_blank">
               here
             </Link>
             .
@@ -83,14 +73,8 @@ const ContractTab: FC<{
         </>
       )}
 
-      <TabPanel
-        tabsClassName={tabsStyles.inner}
-        tabs={contractTabs}
-        value={tab}
-      >
-        {abi && ['readContract', 'writeContract'].includes(tab as string) && (
-          <ConnectButton />
-        )}
+      <TabPanel tabsClassName={tabsStyles.inner} tabs={contractTabs} value={tab}>
+        {abi && ['readContract', 'writeContract'].includes(tab as string) && <ConnectButton />}
 
         {(tab === 'code' || !abi) && <Files match={match} address={address} />}
 
@@ -100,11 +84,7 @@ const ContractTab: FC<{
               <>
                 {!!abi &&
                   (abi as Abi)
-                    .filter(
-                      (item) =>
-                        item.type === 'function' &&
-                        item.stateMutability === 'view'
-                    )
+                    .filter((item) => item.type === 'function' && item.stateMutability === 'view')
                     .map((method, index) => {
                       const contractMethod = method as AbiFunction & {
                         type: 'function'

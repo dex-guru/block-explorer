@@ -33,9 +33,7 @@ const Button: FC<React.HTMLProps<HTMLAnchorElement> & ButtonProps> = ({
   const content = (
     <>
       {!!icon && <span className={styles.icon}>{icon}</span>}
-      {(caption || children) && (
-        <span className={styles.caption}>{caption || children}</span>
-      )}
+      {(caption || children) && <span className={styles.caption}>{caption || children}</span>}
       {!!indicator && <span className={styles.indicator}>{indicator}</span>}
     </>
   )

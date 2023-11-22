@@ -41,8 +41,7 @@ const getBalanceFlows = (
   sortedLogs?.forEach((log) => {
     const logName = log.eventName?.toLowerCase()
     const isImportantLog =
-      logName?.startsWith('transfer') ||
-      ['withdrawal', 'deposit'].includes(logName || '')
+      logName?.startsWith('transfer') || ['withdrawal', 'deposit'].includes(logName || '')
 
     if (!isImportantLog || !log.decodedInput) {
       return
@@ -62,8 +61,7 @@ const getBalanceFlows = (
       ? log.address
       : log.decodedInput.find(
           (row) =>
-            row.type === 'address' &&
-            (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
+            row.type === 'address' && (isDeposit ? log.address : ['to', 'dst'].includes(row.name))
         )?.value
     const token = log.address
 
@@ -78,10 +76,7 @@ const getBalanceFlows = (
     }
 
     log.decodedInput
-      .filter(
-        (row) =>
-          ['value', 'wad'].includes(row.name) || row.name.startsWith('amount')
-      )
+      .filter((row) => ['value', 'wad'].includes(row.name) || row.name.startsWith('amount'))
       .forEach((row) => {
         const bigValue = new BigNumber(row.value || 0)
         if (bigValue.isZero()) {
@@ -112,14 +107,9 @@ const getBalanceFlows = (
     })
   })
 
-  const addressesUsed = arrayUniqueValues<string>(
-    addresses.filter((address) => !!address)
-  )
+  const addressesUsed = arrayUniqueValues<string>(addresses.filter((address) => !!address))
 
-  return [
-    result.filter((row) => !row.amount.isZero()),
-    addressesUsed as string[],
-  ]
+  return [result.filter((row) => !row.amount.isZero()), addressesUsed as string[]]
 }
 
 const getBalanceChangeRows = (balanceFlows: BalanceFlow[]): BalanceRow[] => {
@@ -154,12 +144,10 @@ export const useBalanceChanges = (
 ) => {
   const [balanceFlows, addressesUsed] =
     logs && internalTxs ? getBalanceFlows(logs, internalTxs) : [null, null]
-  const balanceChanges = balanceFlows
-    ? getBalanceChangeRows(balanceFlows)
-    : null
+  const balanceChanges = balanceFlows ? getBalanceChangeRows(balanceFlows) : null
   const addresses = balanceChanges
-    ? arrayUniqueValues<string>(balanceChanges?.map((row) => row.address)).sort(
-        (a) => (a === fromAddress ? -1 : a === toAddress ? 1 : 0)
+    ? arrayUniqueValues<string>(balanceChanges?.map((row) => row.address)).sort((a) =>
+        a === fromAddress ? -1 : a === toAddress ? 1 : 0
       )
     : null
 

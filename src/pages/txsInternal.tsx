@@ -15,10 +15,7 @@ import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import { internalTxsColumns } from '@/components/Table/columns/internalTxsColumns'
 import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
-import {
-  GET_INTERNAL_TXS,
-  GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN,
-} from '@/lib/apollo/queries'
+import { GET_INTERNAL_TXS, GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { checkChainFeature } from '@/lib/utils'
 import { PaginationVariables } from '@/types'

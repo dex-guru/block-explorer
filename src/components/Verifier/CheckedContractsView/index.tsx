@@ -6,9 +6,7 @@ import Card from '@/components/Card'
 
 type CheckedContractsViewProps = {
   checkedContracts: SendableContract[]
-  verifyCheckedContract: (
-    sendable: VerificationInput
-  ) => Promise<VerifyResponse | undefined>
+  verifyCheckedContract: (sendable: VerificationInput) => Promise<VerifyResponse | undefined>
 }
 
 const CheckedContractsView: React.FC<CheckedContractsViewProps> = ({

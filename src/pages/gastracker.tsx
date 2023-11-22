@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import Dashboard from '@/components/Dashboard'
 import DetailsView from '@/components/DetailsView'
@@ -23,22 +20,14 @@ interface GasTrackerPageProps {
   dashboard: TRedashDashboard
 }
 
-const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
-  dashboard,
-  chainConfig,
-  chainStats,
-}) => {
+const GasTrackerPage: NextPage<GasTrackerPageProps> = ({ dashboard, chainConfig, chainStats }) => {
   const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
   const low = Math.ceil(((gasData?.base || 0) + (gasData?.low || 0)) / 10 ** 9)
-  const high = Math.ceil(
-    ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
-  )
+  const high = Math.ceil(((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9)
 
   const pageTitle = `${
-    gasData
-      ? `${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit} – `
-      : ''
+    gasData ? `${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit} – ` : ''
   }${chainConfig.name} Gas Tracker`
 
   return (
@@ -51,11 +40,7 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
       </Head>
       <Page chainConfig={chainConfig}>
         <DetailsView title={`${chainConfig.name} Gas Tracker`}>
-          <GasPrice
-            chainConfig={chainConfig}
-            chainStats={chainStats}
-            onChange={setGasData}
-          />
+          <GasPrice chainConfig={chainConfig} chainStats={chainStats} onChange={setGasData} />
         </DetailsView>
 
         <Ad />

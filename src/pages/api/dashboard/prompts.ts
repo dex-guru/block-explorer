@@ -20,18 +20,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   })
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_LANGCHAIN_API_URL || ''}/prompts/`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-          session: '19359a61ae2446b51b549167b014da2fcf265768',
-        },
-        body: requestParameters,
-      }
-    )
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LANGCHAIN_API_URL || ''}/prompts/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+        session: '19359a61ae2446b51b549167b014da2fcf265768',
+      },
+      body: requestParameters,
+    })
 
     if (response.ok) {
       const data = await response.json()

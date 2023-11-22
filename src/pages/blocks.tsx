@@ -22,10 +22,7 @@ import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_BLOCKS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-} from '@/lib/utils'
+import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
 import styles from './Pages.module.scss'
 
@@ -74,29 +71,21 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
             stats={[
               {
                 title: 'Last Block Number',
-                value: financialFormatLowValueHighPrecision(
-                  props?.chainStats?.lastBlockNumber
-                ),
+                value: financialFormatLowValueHighPrecision(props?.chainStats?.lastBlockNumber),
               },
               {
                 title: 'Last Safe Block',
-                value: financialFormatLowValueHighPrecision(
-                  props?.blockStats?.lastSafeBlock
-                ),
+                value: financialFormatLowValueHighPrecision(props?.blockStats?.lastSafeBlock),
               },
               {
                 title: 'Burnt Fees',
-                value: financialFormatLowValueHighPrecision(
-                  props?.blockStats?.burntFees
-                ),
+                value: financialFormatLowValueHighPrecision(props?.blockStats?.burntFees),
               },
               {
                 title: 'Network Utilization',
                 value: (
                   <Value
-                    value={financialFormat(
-                      props?.blockStats?.networkUtilization24H
-                    )}
+                    value={financialFormat(props?.blockStats?.networkUtilization24H)}
                     suffix="%"
                   />
                 ),

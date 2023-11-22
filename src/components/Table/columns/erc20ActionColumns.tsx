@@ -9,9 +9,7 @@ import { financialFormat } from '@/lib/utils'
 import stylesTable from '@/components/Table/Table.module.scss'
 import styles from '@/pages/Pages.module.scss'
 
-export const erc20ActionColumns = (
-  dexes: DexModel[]
-): IColumn<Erc20EventModel>[] => [
+export const erc20ActionColumns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
   {
     accessor: 'dex',
     title: 'DEX',
@@ -40,17 +38,13 @@ export const erc20ActionColumns = (
     accessor: 'fromAddress',
     title: 'From',
     modifier: 'address',
-    render: (data) => (
-      <Address address={data.fromAddress} type="account" isCopy />
-    ),
+    render: (data) => <Address address={data.fromAddress} type="account" isCopy />,
   },
   {
     accessor: 'toAddress',
     title: 'To',
     modifier: 'address',
-    render: (data) => (
-      <Address address={`${data.toAddress}`} type="account" isCopy />
-    ),
+    render: (data) => <Address address={`${data.toAddress}`} type="account" isCopy />,
   },
   {
     accessor: 'eventType',
@@ -71,9 +65,7 @@ export const erc20ActionColumns = (
         {data.amounts.map((amount, idx) => {
           return (
             <li className={stylesTable.dataRow} key={idx}>
-              <div className={stylesTable.dataNumber}>
-                {financialFormat(amount)}
-              </div>
+              <div className={stylesTable.dataNumber}>{financialFormat(amount)}</div>
             </li>
           )
         })}

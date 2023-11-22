@@ -8,9 +8,5 @@ export type HeatmapChartProps = {
   keys: { x: string; y: string; val: string }
   tickXFormatter?: (value: string) => string
   tickYFormatter?: (value: string) => string
-  tooltipFormat?: (props: {
-    x: string
-    y: string
-    value: string | number
-  }) => string
+  tooltipFormat?: (props: { x: string; y: string; value: string | number }) => string
 }

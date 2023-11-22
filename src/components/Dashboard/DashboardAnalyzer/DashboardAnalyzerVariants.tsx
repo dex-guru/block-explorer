@@ -42,12 +42,7 @@ const DashboardAnalyzerVariants: FC<{
             }
 
             return (
-              <Button
-                key={idx}
-                caption={prompt}
-                className={styles.prompt}
-                onClick={handleClick}
-              />
+              <Button key={idx} caption={prompt} className={styles.prompt} onClick={handleClick} />
             )
           })}
         </div>

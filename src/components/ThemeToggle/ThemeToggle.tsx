@@ -38,10 +38,7 @@ const ThemeToggle: FC<ThemeToggleProps> = ({ className, onChange }) => {
       <input
         type="checkbox"
         defaultChecked={currentTheme === Theme.dark}
-        className={clsx(
-          'theme-toggle__control',
-          styles['theme-toggle__control']
-        )}
+        className={clsx('theme-toggle__control', styles['theme-toggle__control'])}
         onChange={handleThemeChange}
       />
     </label>

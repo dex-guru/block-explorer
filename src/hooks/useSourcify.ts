@@ -17,11 +17,7 @@ export const sourcifyMetadata = (address: string, chainId: number) => {
   return `${sourcifyPath(address, chainId)}/metadata.json`
 }
 
-export const sourcifySourceFile = (
-  address: string,
-  chainId: number,
-  filepath: string
-) =>
+export const sourcifySourceFile = (address: string, chainId: number, filepath: string) =>
   `${sourcifyPath(address, chainId)}/${chainId}/${address}/sources/${filepath}`
 
 const sourcifyFetcher: Fetcher<
@@ -76,10 +72,7 @@ export const useSourcifyMetadata = (
     address === undefined || chainId === undefined
       ? null
       : ['sourcify', address, chainId, sourcifySource]
-  const { data, error } = useSWRImmutable<Match | null | undefined>(
-    metadataURL,
-    sourcifyFetcher
-  )
+  const { data, error } = useSWRImmutable<Match | null | undefined>(metadataURL, sourcifyFetcher)
   if (error) {
     return null
   }
@@ -94,17 +87,9 @@ const contractFetcher: Fetcher<string | null, string> = async (url: string) => {
   return null
 }
 
-export const useContract = (
-  checksummedAddress: string,
-  networkId: number,
-  filename: string
-) => {
+export const useContract = (checksummedAddress: string, networkId: number, filename: string) => {
   const normalizedFilename = filename.replaceAll(/[@:]/g, '_')
-  const url = sourcifySourceFile(
-    checksummedAddress,
-    networkId,
-    normalizedFilename
-  )
+  const url = sourcifySourceFile(checksummedAddress, networkId, normalizedFilename)
 
   const { data, error } = useSWRImmutable(url, contractFetcher)
   if (error) {
@@ -113,9 +98,7 @@ export const useContract = (
   return data
 }
 
-export const useHasCode = (
-  address: string | undefined
-): boolean | undefined => {
+export const useHasCode = (address: string | undefined): boolean | undefined => {
   const url = `https://sourcify.dev/server/check-all-by-addresses?addresses=${address}&chainIds=${CHAIN_ID}`
   const { data, error } = useSWRImmutable(url, (fetchUrl: string) =>
     fetch(fetchUrl).then((r) => r.json())

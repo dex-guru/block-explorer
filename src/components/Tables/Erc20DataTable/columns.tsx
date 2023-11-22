@@ -27,9 +27,7 @@ export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [
     title: 'Method',
     modifier: 'address',
     render: (data) => (
-      <Label className={clsx(styles.tag, styles[data.eventType])}>
-        {data.eventType}
-      </Label>
+      <Label className={clsx(styles.tag, styles[data.eventType])}>{data.eventType}</Label>
     ),
   },
   {

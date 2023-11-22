@@ -44,20 +44,15 @@ export function Table<T>({
 
   return (
     <div className={clsx(styles.container, className)} ref={ref}>
-      <table
-        className={clsx(styles.table, { [styles.tableLoading]: isLoading })}
-      >
+      <table className={clsx(styles.table, { [styles.tableLoading]: isLoading })}>
         {showHeader && (
-          <thead
-            className={clsx(styles.thead, { [styles.theadLoading]: isLoading })}
-          >
+          <thead className={clsx(styles.thead, { [styles.theadLoading]: isLoading })}>
             {header}
           </thead>
         )}
         <TransitionGroup
           component={'tbody'}
-          className={clsx(styles.tbody, { [styles.tbodyLoading]: isLoading })}
-        >
+          className={clsx(styles.tbody, { [styles.tbodyLoading]: isLoading })}>
           {rows}
         </TransitionGroup>
       </table>

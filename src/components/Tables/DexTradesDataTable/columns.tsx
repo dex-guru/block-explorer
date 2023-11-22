@@ -7,10 +7,7 @@ import { IColumn } from '@/components/Table/types'
 import TimeAgo from '@/components/TimeAgo'
 import Token from '@/components/Token'
 import Value from '@/components/Value'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-} from '@/lib/utils'
+import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './DexTradesDataTable.module.scss'
 
 export const dexTradesColumns = (
@@ -28,11 +25,7 @@ export const dexTradesColumns = (
             : 'buy'
           : data.eventType
 
-      return (
-        <Label className={clsx(styles.tag, styles[eventType])}>
-          {eventType}
-        </Label>
-      )
+      return <Label className={clsx(styles.tag, styles[eventType])}>{eventType}</Label>
     },
   },
   {
@@ -125,8 +118,7 @@ export const dexTradesColumns = (
       if (data.eventType === 'burn') {
         return (
           <>
-            LP{' '}
-            <span className={styles.muted}>{data.tokenSymbols.join('/')}</span>
+            LP <span className={styles.muted}>{data.tokenSymbols.join('/')}</span>
           </>
         )
       }
@@ -154,9 +146,7 @@ export const dexTradesColumns = (
     title: 'From',
     modifier: 'address',
     render: (data) =>
-      data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" isCopy />
-      ) : null,
+      data.fromAddress ? <Address address={data.fromAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'amounts',
@@ -209,8 +199,7 @@ export const dexTradesColumns = (
       if (data.eventType === 'mint') {
         return (
           <>
-            LP{' '}
-            <span className={styles.muted}>{data.tokenSymbols.join('/')}</span>
+            LP <span className={styles.muted}>{data.tokenSymbols.join('/')}</span>
           </>
         )
       }
@@ -238,16 +227,12 @@ export const dexTradesColumns = (
     title: 'To',
     modifier: 'address',
     render: (data) =>
-      data.toAddress ? (
-        <Address address={data.toAddress} type="account" isCopy />
-      ) : null,
+      data.toAddress ? <Address address={data.toAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'prices',
     title: 'Token Price',
     type: 'number',
-    render: (data) => (
-      <Value prefix="$" value={financialFormat(data.prices[1])} />
-    ),
+    render: (data) => <Value prefix="$" value={financialFormat(data.prices[1])} />,
   },
 ]

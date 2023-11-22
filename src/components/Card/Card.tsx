@@ -16,13 +16,7 @@ export const Card: FC<CardProps> = ({
 }) => {
   const renderActions = () => {
     return actions?.map((button, idx) => {
-      return (
-        <Button
-          key={idx}
-          {...button}
-          className={clsx(styles.action, button.className)}
-        />
-      )
+      return <Button key={idx} {...button} className={clsx(styles.action, button.className)} />
     })
   }
 

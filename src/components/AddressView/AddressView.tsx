@@ -22,9 +22,7 @@ import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
-const Erc20DataTable = dynamic(
-  () => import('@/components/Tables/Erc20DataTable')
-)
+const Erc20DataTable = dynamic(() => import('@/components/Tables/Erc20DataTable'))
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
 
@@ -32,8 +30,7 @@ const eoa = (
   <span
     key="type"
     data-tooltip-content="Externally Owned Account – anyone with private keys controls this account. It can be thought of as a wallet address."
-    data-tooltip-id="app-tooltip"
-  >
+    data-tooltip-id="app-tooltip">
     EOA
   </span>
 )
@@ -79,10 +76,7 @@ const AddressView: FC<IAddressViewProps> = ({
       </Head>
       <Page chainConfig={chain.config}>
         {!addressInfo?.address && isAddress(address) && (
-          <StateView
-            icon={<IconSearch />}
-            title={<>Address {checkSumAddress} not&nbsp;found</>}
-          />
+          <StateView icon={<IconSearch />} title={<>Address {checkSumAddress} not&nbsp;found</>} />
         )}
 
         {!isAddress(address) && (
@@ -100,14 +94,7 @@ const AddressView: FC<IAddressViewProps> = ({
             tags={tags}
             type="address"
             chainConfig={chain.config}
-            header={
-              <OpenWith
-                type={'address'}
-                chainConfig={chain.config}
-                address={address}
-              />
-            }
-          >
+            header={<OpenWith type={'address'} chainConfig={chain.config} address={address} />}>
             <Properties
               data={[
                 {
@@ -122,10 +109,7 @@ const AddressView: FC<IAddressViewProps> = ({
                 {
                   title: `${chain?.config?.nativeCurrency.symbol} Value:`,
                   value: (
-                    <Value
-                      value={financialFormat(addressInfo?.nativeBalanceUSD)}
-                      prefix="$"
-                    />
+                    <Value value={financialFormat(addressInfo?.nativeBalanceUSD)} prefix="$" />
                   ),
                 },
                 {

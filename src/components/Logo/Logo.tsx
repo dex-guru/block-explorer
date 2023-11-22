@@ -8,13 +8,7 @@ import styles from './Logo.module.scss'
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
   const content = (
     <div className={styles.container}>
-      <Image
-        src={url}
-        className={styles.image}
-        alt="Logo"
-        width={32}
-        height={32}
-      />
+      <Image src={url} className={styles.image} alt="Logo" width={32} height={32} />
       {!!title && (
         <div className={styles.content}>
           <strong className={styles.title}>{title} Explorer</strong>{' '}

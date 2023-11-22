@@ -33,8 +33,7 @@ const DateTime: FC<DateTimeProps> = ({
     return null
   }
 
-  let method: 'toLocaleString' | 'toLocaleTimeString' | 'toLocaleDateString' =
-    'toLocaleString'
+  let method: 'toLocaleString' | 'toLocaleTimeString' | 'toLocaleDateString' = 'toLocaleString'
 
   if (!showDate) {
     method = 'toLocaleTimeString'

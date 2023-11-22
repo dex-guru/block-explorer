@@ -156,11 +156,7 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.eigenphi,
     explorersData.coinGecko,
   ],
-  42170: [
-    explorersData.dexguru,
-    explorersData.arbitrumNovaScan,
-    explorersData.coinGecko,
-  ],
+  42170: [explorersData.dexguru, explorersData.arbitrumNovaScan, explorersData.coinGecko],
   10: [
     explorersData.dexguru,
     explorersData.optimismExplorer,

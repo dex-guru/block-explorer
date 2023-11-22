@@ -10,17 +10,13 @@ export const nftTransfersColumns: IColumn<Erc721TransferModel>[] = [
     accessor: 'fromAddress',
     title: 'From',
     modifier: 'address',
-    render: (data) => (
-      <Address address={data.fromAddress} type="account" isCopy />
-    ),
+    render: (data) => <Address address={data.fromAddress} type="account" isCopy />,
   },
   {
     accessor: 'toAddress',
     title: 'To',
     modifier: 'address',
-    render: (data) => (
-      <Address address={`${data.toAddress}`} type="account" isCopy />
-    ),
+    render: (data) => <Address address={`${data.toAddress}`} type="account" isCopy />,
   },
   {
     accessor: 'value',
@@ -33,11 +29,7 @@ export const nftTransfersColumns: IColumn<Erc721TransferModel>[] = [
     accessor: 'tokenSymbols',
     type: 'text',
     render: (data) => {
-      return (
-        <Link href={AddressValues['token'].url(data.tokenAddress) || ''}>
-          {data.tokenId}
-        </Link>
-      )
+      return <Link href={AddressValues['token'].url(data.tokenAddress) || ''}>{data.tokenId}</Link>
     },
   },
 ]

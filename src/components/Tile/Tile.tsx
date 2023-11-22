@@ -3,14 +3,7 @@ import clsx from 'clsx'
 import { TileProps } from './types'
 import styles from './Tile.module.scss'
 
-const Tile: FC<TileProps> = ({
-  title,
-  prefix,
-  postfix,
-  icon,
-  className,
-  children,
-}) => {
+const Tile: FC<TileProps> = ({ title, prefix, postfix, icon, className, children }) => {
   return (
     <div className={clsx(styles.container, className)}>
       {!!icon && <div className={styles.icon}>{icon}</div>}

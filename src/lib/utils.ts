@@ -4,9 +4,7 @@ import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
 
 export const getRootElement = () =>
-  document.getElementById('page') ||
-  document.getElementById('__next') ||
-  document.body
+  document.getElementById('page') || document.getElementById('__next') || document.body
 
 export const getShortDate = (value: number, isSeconds = true) => {
   const date = new Date(value * (isSeconds ? 1000 : 1))
@@ -25,19 +23,13 @@ export const getNormalizedValue = (
 ): string => {
   const result = new BigNumber(value)
 
-  return financialFormatLowValueHighPrecision(
-    result.shiftedBy(-decimals),
-    options
-  )
+  return financialFormatLowValueHighPrecision(result.shiftedBy(-decimals), options)
 }
 
 export const getShortAddress = (address: string, count = 4): string => {
   const charCount = Math.max(count, 4)
 
-  const regexp = new RegExp(
-    `(0x)([0-9a-f]{${charCount - 1}})(.+)([0-9a-f]{${charCount}})`,
-    'i'
-  )
+  const regexp = new RegExp(`(0x)([0-9a-f]{${charCount - 1}})(.+)([0-9a-f]{${charCount}})`, 'i')
 
   const result = address.replace(regexp, '$1$2…$4')
   return result
@@ -86,9 +78,7 @@ export const wrapLinkWithAnchor = (link: string): string => {
   return `<a href="${linkResult}" target="_blank">${descr}</a>`
 }
 
-const _prepareValue = (
-  value: string | number | BigNumber
-): BigNumber | false => {
+const _prepareValue = (value: string | number | BigNumber): BigNumber | false => {
   if (!value && value !== 0) {
     return false
   }
@@ -136,9 +126,7 @@ export const financialFormat = (
   value: string | number | BigNumber,
   options?: FinancialFormatOptions
 ): string => {
-  const roundBigNumbersFrom = options?.disableRounding
-    ? ''
-    : options?.roundBigNumbersFrom || 'B' // by default round M and B
+  const roundBigNumbersFrom = options?.disableRounding ? '' : options?.roundBigNumbersFrom || 'B' // by default round M and B
 
   let decimals = options?.decimals
 
@@ -211,9 +199,7 @@ export const financialFormat = (
     if (
       data.gte(1000000000) &&
       data.lt(1000000000000) &&
-      (roundBigNumbersFrom === 'B' ||
-        roundBigNumbersFrom === 'M' ||
-        roundBigNumbersFrom === 'K')
+      (roundBigNumbersFrom === 'B' || roundBigNumbersFrom === 'M' || roundBigNumbersFrom === 'K')
     ) {
       formatConfig.suffix = 'B'
       data = data.shiftedBy(-9)
@@ -238,19 +224,9 @@ export const financialFormat = (
   const clean = result.match(/^0*([0-9,]+(?:\.?(?:(?!0+$)[0-9MBKT])+)?)/) // remove trailing zeroes
 
   if (clean) {
-    return _appendPrefixSuffix(
-      clean[1],
-      options?.prefix,
-      options?.suffix,
-      isNegative
-    )
+    return _appendPrefixSuffix(clean[1], options?.prefix, options?.suffix, isNegative)
   } else {
-    return _appendPrefixSuffix(
-      result,
-      options?.prefix,
-      options?.suffix,
-      isNegative
-    )
+    return _appendPrefixSuffix(result, options?.prefix, options?.suffix, isNegative)
   }
 }
 
@@ -272,9 +248,7 @@ export const financialFormatLowValueHighPrecision = (
   return financialFormat(data, newOptions)
 }
 
-export const isValidBlockNumber = (
-  block: string | string[] | undefined
-): boolean => {
+export const isValidBlockNumber = (block: string | string[] | undefined): boolean => {
   if (!block) {
     return false
   }
@@ -347,10 +321,8 @@ export const rgbToHsl = (rI: number, gI: number, bI: number) => {
 
 export const hexToHsl = (hex: string) => rgbToHsl(...hexToRgb(hex))
 
-export const checkChainFeature = (
-  chainConfig: ChainConfigModel,
-  feature: string
-) => chainConfig?.features?.some((x) => x.name === feature)
+export const checkChainFeature = (chainConfig: ChainConfigModel, feature: string) =>
+  chainConfig?.features?.some((x) => x.name === feature)
 
 export const getSlug = (value: string) => {
   return value
@@ -383,10 +355,7 @@ export const formatAutoDetect = (
   return valueStr
 }
 
-export const formatFeeHistory = (
-  result: GetFeeHistoryReturnType,
-  includePending: boolean
-) => {
+export const formatFeeHistory = (result: GetFeeHistoryReturnType, includePending: boolean) => {
   let blockNum = result.oldestBlock
   let index = 0
   const historicalBlocks = result?.gasUsedRatio?.length || 0

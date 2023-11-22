@@ -13,9 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  res
-    .status(404)
-    .json({ statusCode: 404, message: `wrong response for ${requestUrl}` })
+  res.status(404).json({ statusCode: 404, message: `wrong response for ${requestUrl}` })
 }
 
 export default handler

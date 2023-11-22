@@ -7,9 +7,7 @@ import StateView from '@/components/StateView'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
-const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
-  chainConfig,
-}) => {
+const TxIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   const pageTitle = `No TX hash provided on ${chainConfig.name}`
 
   return (

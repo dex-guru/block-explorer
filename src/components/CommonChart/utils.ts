@@ -1,9 +1,6 @@
 import { CommonChartDataset } from './types'
 
-export const generateCommonChartData = (
-  series: CommonChartDataset[],
-  idxKey: string
-) => {
+export const generateCommonChartData = (series: CommonChartDataset[], idxKey: string) => {
   const objData: Record<string | number, unknown> = {}
 
   series.forEach((dataset) => {

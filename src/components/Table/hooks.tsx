@@ -15,15 +15,11 @@ export const useBodyRows = <T,>(options: {
   isHeader?: boolean
   getRowKey?: (rowData: T) => string
 }) => {
-  const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } =
-    options
+  const { columns, data, onRowClick, rowClassName, isHeader, getRowKey } = options
 
   return data?.map((dataItem, rowIdx) => {
     const cells = columns.map((column, cellIdx) => {
-      const className = clsx(
-        styles[column.type || 'text'],
-        styles[column.modifier || 'default']
-      )
+      const className = clsx(styles[column.type || 'text'], styles[column.modifier || 'default'])
 
       const cellDisplay = column.render
         ? column.render(dataItem || ({} as T), column.placeholder, rowIdx)
@@ -32,11 +28,7 @@ export const useBodyRows = <T,>(options: {
         : column.placeholder || ''
 
       return (
-        <Cell
-          th={isHeader}
-          key={`${column.accessor}-${cellIdx}`}
-          className={className}
-        >
+        <Cell th={isHeader} key={`${column.accessor}-${cellIdx}`} className={className}>
           {cellDisplay}
         </Cell>
       )
@@ -49,13 +41,11 @@ export const useBodyRows = <T,>(options: {
         key={getRowKey ? getRowKey(dataItem) : rowIdx}
         timeout={500}
         nodeRef={ref}
-        classNames="item"
-      >
+        classNames="item">
         <Row
           ref={ref}
           className={clsx(styles.trow, styles.tbodyrow, rowClassName)}
-          onClick={() => onRowClick && onRowClick(dataItem)}
-        >
+          onClick={() => onRowClick && onRowClick(dataItem)}>
           {cells}
         </Row>
       </CSSTransition>
@@ -71,22 +61,14 @@ export const useHeader = <T,>(
   rowClassName?: string
 ) => {
   const cells = columns.map((column, idx) => {
-    const className = clsx(
-      styles[column.type || 'text'],
-      styles[column.modifier || 'default']
-    )
+    const className = clsx(styles[column.type || 'text'], styles[column.modifier || 'default'])
 
     return (
       <Cell th={true} key={`${column.accessor}-${idx}`} className={className}>
-        {column.title}{' '}
-        {!!column.tooltip && <TooltipAnchor tooltip={column.tooltip} />}
+        {column.title} {!!column.tooltip && <TooltipAnchor tooltip={column.tooltip} />}
       </Cell>
     )
   })
 
-  return (
-    <Row className={clsx(styles.trow, styles.theadrow, rowClassName)}>
-      {cells}
-    </Row>
-  )
+  return <Row className={clsx(styles.trow, styles.theadrow, rowClassName)}>{cells}</Row>
 }

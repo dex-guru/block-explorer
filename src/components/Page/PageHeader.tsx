@@ -72,8 +72,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                       openConnectModal()
                       document.addEventListener(
                         SUCCESS_AUTH_EVENT,
-                        () =>
-                          window.open('https://warehouse.dex.guru', '_blank'),
+                        () => window.open('https://warehouse.dex.guru', '_blank'),
                         { once: true }
                       )
                       e.preventDefault()
@@ -104,9 +103,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                 },
               ]
             : []),
-          ...(checkChainFeature(chainConfig, 'csr')
-            ? [{ caption: 'CSR', href: '/csr' }]
-            : []),
+          ...(checkChainFeature(chainConfig, 'csr') ? [{ caption: 'CSR', href: '/csr' }] : []),
         ],
       },
     ]
@@ -128,17 +125,10 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
       <div className={styles.search}>
         <Search className={styles.searchElement} />
       </div>
-      <PageMenu
-        className={styles.menu}
-        links={links}
-        onOpenChange={onOpenChange}
-      />
+      <PageMenu className={styles.menu} links={links} onOpenChange={onOpenChange} />
       {!!chainConfig.relatives.length && (
         <div className={styles.network}>
-          <NetworkSelect
-            current={chainConfig.chain}
-            variants={chainConfig.relatives}
-          />
+          <NetworkSelect current={chainConfig.chain} variants={chainConfig.relatives} />
         </div>
       )}
       <div className={styles.theme}>

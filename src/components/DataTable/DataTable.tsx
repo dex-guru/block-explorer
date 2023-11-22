@@ -3,10 +3,7 @@ import clsx from 'clsx'
 import { DataTableProps } from './types'
 import { IconNoData, IconSearch } from '@/components/Icons'
 import Loading from '@/components/Loading'
-import Pagination, {
-  DEFAULT_FIRST_PAGE,
-  DEFAULT_PER_PAGE,
-} from '@/components/Pagination'
+import Pagination, { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE } from '@/components/Pagination'
 import PerPageSelector from '@/components/PerPageSelector'
 import StateView from '@/components/StateView'
 import Table from '@/components/Table'
@@ -43,12 +40,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
   }, [total])
 
   const renderPerPage = useCallback(() => {
-    return (
-      <PerPageSelector
-        onChange={onChangePerPageHandler}
-        defaultPerPage={currentPerPage}
-      />
-    )
+    return <PerPageSelector onChange={onChangePerPageHandler} defaultPerPage={currentPerPage} />
   }, [currentPerPage, onChangePerPageHandler])
 
   const renderPagination = useCallback(() => {
@@ -93,8 +85,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
         className={clsx(styles.totalRows, {
           [styles.totalRowsGet]: !fullTotal && getFullTotal,
         })}
-        onClick={handleClick}
-      >
+        onClick={handleClick}>
         Total {financialFormat(currentTotal, { roundBigNumbersFrom: 'T' })}
         {hasFullTotal ? '+' : null} rows
         {currentTotal >= 1000 && (
@@ -102,9 +93,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
             &nbsp;
             <TooltipAnchor
               tooltip={`Showing the last 1,000 records${
-                !fullTotal && hasFullTotal
-                  ? ', click to get full total count.'
-                  : ''
+                !fullTotal && hasFullTotal ? ', click to get full total count.' : ''
               }`}
             />
           </>
@@ -120,9 +109,7 @@ export function DataTable<T>(props: DataTableProps<T>) {
         {renderTotal()}
       </div>
       <div className={styles.pager}>{renderPagination()}</div>
-      <div className={styles.tools}>
-        {!!header && <div className={styles.tools}>{header}</div>}
-      </div>
+      <div className={styles.tools}>{!!header && <div className={styles.tools}>{header}</div>}</div>
     </div>
   )
 

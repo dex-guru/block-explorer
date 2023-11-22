@@ -28,9 +28,7 @@ import { checkChainFeature } from '@/lib/utils'
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))
 const TxTrace = dynamic(() => import('@/components/TabContent/TxTrace'))
-const TxBalanceChanges = dynamic(
-  () => import('@/components/TabContent/TxBalanceChanges')
-)
+const TxBalanceChanges = dynamic(() => import('@/components/TabContent/TxBalanceChanges'))
 const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 
 export const MAX_EVENTS_PER_PAGE = 10
@@ -50,9 +48,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
-  const pageTitle = `${props.chainConfig.name} Transaction ${
-    props.data?.hash || 'not found'
-  }`
+  const pageTitle = `${props.chainConfig.name} Transaction ${props.data?.hash || 'not found'}`
 
   return (
     <>
@@ -70,9 +66,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
       </Head>
 
       <Page chainConfig={props.chainConfig}>
-        {!props.data?.hash && (
-          <StateView icon={<IconEmpty />} title="No TX was found" />
-        )}
+        {!props.data?.hash && <StateView icon={<IconEmpty />} title="No TX was found" />}
 
         {!!props.data?.hash && (
           <DetailsView
@@ -81,13 +75,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
             type="tx"
             chainConfig={props.chainConfig}
             header={
-              <OpenWith
-                type={'tx'}
-                chainConfig={props.chainConfig}
-                address={props.data?.hash}
-              />
-            }
-          >
+              <OpenWith type={'tx'} chainConfig={props.chainConfig} address={props.data?.hash} />
+            }>
             <Ad />
 
             <TabPanel
@@ -112,10 +101,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
                               to: `${pathname}?tab=internal`,
                               content: (
                                 <Suspense fallback={<LoadingCard />}>
-                                  <InternalTxs
-                                    hash={props.data.hash}
-                                    {...props}
-                                  />
+                                  <InternalTxs hash={props.data.hash} {...props} />
                                 </Suspense>
                               ),
                             },

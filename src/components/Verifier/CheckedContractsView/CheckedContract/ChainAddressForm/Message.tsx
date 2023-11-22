@@ -33,39 +33,27 @@ const RepoLinks = ({ status, address, overrideLabel }: RepoLinkProps) => {
         <a
           href={generateRepoLink(address, status)}
           className="underline"
-          key={`${address}-${CHAIN_ID}-repo-link`}
-        >
+          key={`${address}-${CHAIN_ID}-repo-link`}>
           (#{CHAIN_ID})
         </a>
       </span>
     </p>
   )
 }
-const Message = ({
-  customStatus,
-  foundMatches,
-  checkedContract,
-}: MessageProps) => {
+const Message = ({ customStatus, foundMatches, checkedContract }: MessageProps) => {
   const chain = CHAIN_ID
-  const bgColor =
-    customStatus === 'perfect' ? 'bg-green-100' : 'bg-partialMatch-100'
-  const outlineColor =
-    customStatus === 'perfect'
-      ? 'outline-green-400'
-      : 'outline-partialMatch-400'
+  const bgColor = customStatus === 'perfect' ? 'bg-green-100' : 'bg-partialMatch-100'
+  const outlineColor = customStatus === 'perfect' ? 'outline-green-400' : 'outline-partialMatch-400'
 
-  const darkTextColor =
-    customStatus === 'perfect' ? 'text-green-700' : 'text-partialMatch-700'
+  const darkTextColor = customStatus === 'perfect' ? 'text-green-700' : 'text-partialMatch-700'
   // Show success after successfull verification
   if (chain && (customStatus === 'perfect' || customStatus === 'partial')) {
     return (
-      <div
-        className={`${bgColor} px-4 py-2 rounded-md outline-2 ${outlineColor} outline`}
-      >
+      <div className={`${bgColor} px-4 py-2 rounded-md outline-2 ${outlineColor} outline`}>
         <p className="break-all">
           Verification successful!{' '}
-          <span className={`${darkTextColor} font-bold`}>{customStatus}ly</span>{' '}
-          verified at <b>{chain}</b>:{checkedContract.address}
+          <span className={`${darkTextColor} font-bold`}>{customStatus}ly</span> verified at{' '}
+          <b>{chain}</b>:{checkedContract.address}
           {checkedContract?.address && (
             <RepoLinks
               chainIds={[chain.toString()]}
@@ -83,13 +71,10 @@ const Message = ({
     (customStatus === 'perfect' || customStatus === 'partial')
   ) {
     return (
-      <div
-        className={`${bgColor} px-4 py-2 rounded-md outline-2 ${outlineColor} outline`}
-      >
+      <div className={`${bgColor} px-4 py-2 rounded-md outline-2 ${outlineColor} outline`}>
         <p className="break-all">
           Verification successful!{' '}
-          <span className={`${darkTextColor} font-bold`}>{customStatus}ly</span>{' '}
-          create2 verified:
+          <span className={`${darkTextColor} font-bold`}>{customStatus}ly</span> create2 verified:
           {checkedContract.address}
         </p>
       </div>
@@ -100,9 +85,7 @@ const Message = ({
       console.log(checkedContract.statusMessage)
       return (
         <div className="bg-yellow-100 px-4 py-2 rounded-md outline-2 outline-yellow-400 outline">
-          <p className="break-all whitespace-pre-wrap">
-            {checkedContract.statusMessage}
-          </p>
+          <p className="break-all whitespace-pre-wrap">{checkedContract.statusMessage}</p>
         </div>
       )
     }
@@ -117,8 +100,7 @@ const Message = ({
       .map((idMatch) => idMatch.chainId)
     return (
       <div
-        className={`bg-ceruleanBlue-200 px-4 py-2 rounded-md outline-2 outline-ceruleanBlue-300 outline text-ceruleanBlue-800`}
-      >
+        className={`bg-ceruleanBlue-200 px-4 py-2 rounded-md outline-2 outline-ceruleanBlue-300 outline text-ceruleanBlue-800`}>
         <p className="break-all">
           Contract <b>{foundMatches.address}</b> is already verified:
         </p>

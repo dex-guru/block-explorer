@@ -9,9 +9,7 @@ import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 
-const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({
-  chainConfig,
-}) => {
+const VerifyContract: NextPage<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   return (
     <>
       <Head>

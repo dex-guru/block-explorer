@@ -42,8 +42,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
 
   const pageTitle = `${chainConfig.name} Charts & Statistics`
 
-  const activeDashboards =
-    dashboards?.filter((item) => !item.is_archived && !item.is_draft) || []
+  const activeDashboards = dashboards?.filter((item) => !item.is_archived && !item.is_draft) || []
 
   const tags: string[] = []
   activeDashboards?.forEach((dashboard) => {
@@ -65,9 +64,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
       }
     })
 
-  const [currentTab, setCurrentTab] = useState<string>(
-    (tab as string) || tabs?.[0]?.value || ''
-  )
+  const [currentTab, setCurrentTab] = useState<string>((tab as string) || tabs?.[0]?.value || '')
 
   if (!checkChainFeature(chainConfig, 'charts')) {
     return null
@@ -90,10 +87,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
           const exactType = (options?.globalSeriesType || type).toLowerCase()
 
           const typeProps = {
-            className: clsx(
-              styles.illustrationBlock,
-              styles[`illustrationBlock-${exactType}`]
-            ),
+            className: clsx(styles.illustrationBlock, styles[`illustrationBlock-${exactType}`]),
             style: {
               gridColumn: `${options.col + 1} / span ${options.sizeX}`,
               gridRow: `${options.row + 1} / span ${options.sizeY}`,
@@ -169,9 +163,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             />
           </div>
         </div>
-        <div className={styles.dashboardBody}>
-          {renderDashboardCardIllustration(dashboard)}
-        </div>
+        <div className={styles.dashboardBody}>{renderDashboardCardIllustration(dashboard)}</div>
       </Link>
     )
   }
@@ -197,14 +189,11 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
             tabs={tabs}
             value={currentTab}
             onChange={handleChange}
-            tabsClassName={styles.tabs}
-          >
+            tabsClassName={styles.tabs}>
             <div className={styles.dashboards}>
               <ul className={styles.list}>
                 {activeDashboards
-                  .filter((dashboard) =>
-                    dashboard.tags.includes(currentTabTag.toString())
-                  )
+                  .filter((dashboard) => dashboard.tags.includes(currentTabTag.toString()))
                   .map((dashboard) => (
                     <li className={styles.item} key={dashboard.id}>
                       {renderDashboardCard(dashboard)}

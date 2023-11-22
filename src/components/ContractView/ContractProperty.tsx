@@ -9,11 +9,7 @@ export interface IContractPropertyProps {
   abi: Abi
   address: string
 }
-const ContractProperty: FC<IContractPropertyProps> = ({
-  method,
-  address,
-  abi,
-}) => {
+const ContractProperty: FC<IContractPropertyProps> = ({ method, address, abi }) => {
   const { data, isLoading } = useContractRead({
     address: address as `0x${string}`,
     abi,

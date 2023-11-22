@@ -14,10 +14,7 @@ import {
   subYears,
 } from 'date-fns'
 
-type DateTimeFormat =
-  | 'date-range'
-  | 'datetime-range'
-  | 'datetime-range-with-seconds'
+type DateTimeFormat = 'date-range' | 'datetime-range' | 'datetime-range-with-seconds'
 
 export const DYNAMIC_DATE_PREFIX = 'd_'
 export const DEFAULT_DATE_RANGE = 'last_30_days'
@@ -32,9 +29,7 @@ export const isDynamicDateRangePeriod = (value: string): boolean => {
 
   return (
     re.test(value) &&
-    !!Object.keys(DYNAMIC_DATE_RANGES).includes(
-      value.substring(DYNAMIC_DATE_PREFIX.length)
-    )
+    !!Object.keys(DYNAMIC_DATE_RANGES).includes(value.substring(DYNAMIC_DATE_PREFIX.length))
   )
 }
 
@@ -42,8 +37,7 @@ export const getDynamicDateRangePeriod = (
   value: string,
   type: DateTimeFormat = 'date-range'
 ): { start: string | null; end: string | null } => {
-  const range =
-    DYNAMIC_DATE_RANGES[value.substring(DYNAMIC_DATE_PREFIX.length)].value()
+  const range = DYNAMIC_DATE_RANGES[value.substring(DYNAMIC_DATE_PREFIX.length)].value()
 
   return {
     start: getFormattedDate(range.start, type) || null,

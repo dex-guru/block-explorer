@@ -3,10 +3,9 @@ import dynamic from 'next/dynamic'
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
 
-const DashboardAnalyzerOverview = dynamic(
-  () => import('./DashboardAnalyzerOverview'),
-  { ssr: false }
-)
+const DashboardAnalyzerOverview = dynamic(() => import('./DashboardAnalyzerOverview'), {
+  ssr: false,
+})
 const DashboardAnalyzerChat = dynamic(() => import('./DashboardAnalyzerChat'), {
   ssr: false,
 })
@@ -23,20 +22,16 @@ const DashboardAnalyzer: FC<{
 }> = ({ slug, params, onChatToggle }) => {
   const [currentTab, setCurrentTab] = useState<string>('')
   const [history, setHistory] = useState<DashboardAnalyzerHistory[]>([])
-  const [historyEntry, setHistoryEntry] =
-    useState<DashboardAnalyzerHistory | null>(null)
+  const [historyEntry, setHistoryEntry] = useState<DashboardAnalyzerHistory | null>(null)
 
   const handleChangeTab = (value: string) => {
     setCurrentTab(value)
     onChatToggle?.(value === 'ai')
   }
 
-  const handleHistoryChange = useCallback(
-    (prompt_submitted: string, summary: string) => {
-      setHistoryEntry({ prompt_submitted, summary })
-    },
-    []
-  )
+  const handleHistoryChange = useCallback((prompt_submitted: string, summary: string) => {
+    setHistoryEntry({ prompt_submitted, summary })
+  }, [])
 
   useEffect(() => {
     if (!historyEntry) {

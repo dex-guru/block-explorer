@@ -4,10 +4,8 @@ import { HeatmapChartProps } from './types'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import styles from './HeatmapChart.module.scss'
 
-const format = (
-  value: string | number,
-  formatter?: (value: string) => string
-): string => formatter?.(value.toString()) || value.toString()
+const format = (value: string | number, formatter?: (value: string) => string): string =>
+  formatter?.(value.toString()) || value.toString()
 
 const HeatmapChart: FC<HeatmapChartProps> = ({
   data,

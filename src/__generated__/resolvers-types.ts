@@ -1,8 +1,4 @@
-import {
-  GraphQLResolveInfo,
-  GraphQLScalarType,
-  GraphQLScalarTypeConfig,
-} from 'graphql'
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
 
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -725,18 +721,8 @@ export interface SubscriptionSubscriberObject<
   TContext,
   TArgs
 > {
-  subscribe: SubscriptionSubscribeFn<
-    { [key in TKey]: TResult },
-    TParent,
-    TContext,
-    TArgs
-  >
-  resolve?: SubscriptionResolveFn<
-    TResult,
-    { [key in TKey]: TResult },
-    TContext,
-    TArgs
-  >
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -744,13 +730,7 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>
 }
 
-export type SubscriptionObject<
-  TResult,
-  TKey extends string,
-  TParent,
-  TContext,
-  TArgs
-> =
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>
 
@@ -761,9 +741,7 @@ export type SubscriptionResolver<
   TContext = {},
   TArgs = {}
 > =
-  | ((
-      ...args: any[]
-    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
@@ -780,12 +758,7 @@ export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
 
 export type NextResolverFn<T> = () => Promise<T>
 
-export type DirectiveResolverFn<
-  TResult = {},
-  TParent = {},
-  TContext = {},
-  TArgs = {}
-> = (
+export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
@@ -900,21 +873,13 @@ export type AddressModelResolvers<
   addressType?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   assetsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   assetsValueUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
-  assetsValueUSD24hDelta?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
+  assetsValueUSD24hDelta?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   logoURL?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   nativeBalance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   nativeBalanceUSD?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   symbol?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  tokenLists?: Resolver<
-    Array<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  tokenLists?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -934,11 +899,7 @@ export type BlockModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['BlockModel'] = ResolversParentTypes['BlockModel']
 > = ResolversObject<{
-  baseFeePerGas?: Resolver<
-    Maybe<ResolversTypes['Decimal']>,
-    ParentType,
-    ContextType
-  >
+  baseFeePerGas?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>
   difficulty?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   extraData?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   gasLimit?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
@@ -967,11 +928,7 @@ export type BlockStatsModelResolvers<
   blocksCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   burntFees?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   lastSafeBlock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  networkUtilization24H?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
+  networkUtilization24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -979,16 +936,8 @@ export type CsrStatsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['CSRStatsModel'] = ResolversParentTypes['CSRStatsModel']
 > = ResolversObject<{
-  burned?: Resolver<
-    Array<ResolversTypes['TimeSeriesChartModel']>,
-    ParentType,
-    ContextType
-  >
-  netEmissions?: Resolver<
-    Array<ResolversTypes['TimeSeriesChartModel']>,
-    ParentType,
-    ContextType
-  >
+  burned?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>
+  netEmissions?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>
   sumContracts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   sumRevenue?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   sumTx?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
@@ -1004,38 +953,18 @@ export type ChainConfigModelResolvers<
   chainColor?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   dexes?: Resolver<Array<ResolversTypes['DexModel']>, ParentType, ContextType>
-  explorers?: Resolver<
-    Array<ResolversTypes['ExplorerModel']>,
-    ParentType,
-    ContextType
-  >
+  explorers?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>
   faucets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
-  features?: Resolver<
-    Array<ResolversTypes['ChainFeatureModel']>,
-    ParentType,
-    ContextType
-  >
+  features?: Resolver<Array<ResolversTypes['ChainFeatureModel']>, ParentType, ContextType>
   gasUnit?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  guruBlockExplorer?: Resolver<
-    Maybe<ResolversTypes['BlockExplorerModel']>,
-    ParentType,
-    ContextType
-  >
+  guruBlockExplorer?: Resolver<Maybe<ResolversTypes['BlockExplorerModel']>, ParentType, ContextType>
   icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   infoURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  nativeCurrency?: Resolver<
-    ResolversTypes['NativeCurrencyModel'],
-    ParentType,
-    ContextType
-  >
+  nativeCurrency?: Resolver<ResolversTypes['NativeCurrencyModel'], ParentType, ContextType>
   networkId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  relatives?: Resolver<
-    Array<ResolversTypes['ExplorerModel']>,
-    ParentType,
-    ContextType
-  >
+  relatives?: Resolver<Array<ResolversTypes['ExplorerModel']>, ParentType, ContextType>
   rpc?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
   shortName?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -1053,45 +982,17 @@ export type ChainStatsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['ChainStatsModel'] = ResolversParentTypes['ChainStatsModel']
 > = ResolversObject<{
-  activeAddressesCount?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  activeAddressesCount24h?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  averageBlockTime?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
+  activeAddressesCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  activeAddressesCount24h?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  averageBlockTime?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   lastBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  liquidity24hDelta?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
+  liquidity24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   liquidityUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   marketCap?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   mediumGasPrice?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
-  nativeTokenPriceUsd?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  nativeTokenPriceUsd24hDelta?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  smartContractsCount?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
+  nativeTokenPriceUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  nativeTokenPriceUsd24hDelta?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  smartContractsCount?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   tokenSupply?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   transactionsCountHistory?: Resolver<
@@ -1099,26 +1000,10 @@ export type ChainStatsModelResolvers<
     ParentType,
     ContextType
   >
-  transactionsPerSecond?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  transactionsPerSecondDailyAVG?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  transactionsPerSecondFiveMinutesAVG?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  volume24hDeltaUsd?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
+  transactionsPerSecond?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  transactionsPerSecondDailyAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  transactionsPerSecondFiveMinutesAVG?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  volume24hDeltaUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   volume24hUsd?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1158,16 +1043,8 @@ export type CosmosModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['CosmosModel'] = ResolversParentTypes['CosmosModel']
 > = ResolversObject<{
-  blocks?: Resolver<
-    Array<ResolversTypes['CosmosBlockModel']>,
-    ParentType,
-    ContextType
-  >
-  transactions?: Resolver<
-    Array<ResolversTypes['CosmosTransactionModel']>,
-    ParentType,
-    ContextType
-  >
+  blocks?: Resolver<Array<ResolversTypes['CosmosBlockModel']>, ParentType, ContextType>
+  transactions?: Resolver<Array<ResolversTypes['CosmosTransactionModel']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1220,26 +1097,10 @@ export type Erc20EventModelResolvers<
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   prices?: Resolver<Array<ResolversTypes['Decimal']>, ParentType, ContextType>
   toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  tokenAddresses?: Resolver<
-    Array<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
-  tokenLogos?: Resolver<
-    Array<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
-  tokenNames?: Resolver<
-    Array<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
-  tokenSymbols?: Resolver<
-    Array<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  tokenAddresses?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  tokenLogos?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  tokenNames?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  tokenSymbols?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1247,11 +1108,7 @@ export type Erc20EventsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['ERC20EventsModel'] = ResolversParentTypes['ERC20EventsModel']
 > = ResolversObject<{
-  data?: Resolver<
-    Array<ResolversTypes['ERC20EventModel']>,
-    ParentType,
-    ContextType
-  >
+  data?: Resolver<Array<ResolversTypes['ERC20EventModel']>, ParentType, ContextType>
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1263,11 +1120,7 @@ export type Erc721TransferModelResolvers<
   blockTimestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   fromAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  operatorAddress?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  operatorAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   toAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   tokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   tokenId?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
@@ -1320,11 +1173,7 @@ export type InternalTransactionsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['InternalTransactionsModel'] = ResolversParentTypes['InternalTransactionsModel']
 > = ResolversObject<{
-  data?: Resolver<
-    Array<ResolversTypes['InternalTransactionModel']>,
-    ParentType,
-    ContextType
-  >
+  data?: Resolver<Array<ResolversTypes['InternalTransactionModel']>, ParentType, ContextType>
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1350,8 +1199,7 @@ export type LogModelResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
-export interface LongScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
+export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
   name: 'Long'
 }
 
@@ -1359,11 +1207,7 @@ export type NftTransfersModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['NFTTransfersModel'] = ResolversParentTypes['NFTTransfersModel']
 > = ResolversObject<{
-  data?: Resolver<
-    Array<ResolversTypes['ERC721TransferModel']>,
-    ParentType,
-    ContextType
-  >
+  data?: Resolver<Array<ResolversTypes['ERC721TransferModel']>, ParentType, ContextType>
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1375,11 +1219,7 @@ export type NativeCurrencyModelResolvers<
   decimals?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  wrappedAddress?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  wrappedAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1393,19 +1233,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryAddressArgs, 'address' | 'chainId'>
   >
-  allChainConfigs?: Resolver<
-    Array<ResolversTypes['ChainConfigModel']>,
-    ParentType,
-    ContextType
-  >
+  allChainConfigs?: Resolver<Array<ResolversTypes['ChainConfigModel']>, ParentType, ContextType>
   balances?: Resolver<
     Array<ResolversTypes['TokenBalanceModel']>,
     ParentType,
     ContextType,
-    RequireFields<
-      QueryBalancesArgs,
-      'chainId' | 'first' | 'skip' | 'tokenAddress'
-    >
+    RequireFields<QueryBalancesArgs, 'chainId' | 'first' | 'skip' | 'tokenAddress'>
   >
   balancesStats?: Resolver<
     Maybe<ResolversTypes['TokenBalancesStatsModel']>,
@@ -1419,11 +1252,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<
       QueryBlockStatsArgs,
-      | 'blockNumberEnd'
-      | 'blockNumberStart'
-      | 'chainId'
-      | 'timestampEnd'
-      | 'timestampStart'
+      'blockNumberEnd' | 'blockNumberStart' | 'chainId' | 'timestampEnd' | 'timestampStart'
     >
   >
   blocks?: Resolver<
@@ -1458,10 +1287,7 @@ export type QueryResolvers<
     ResolversTypes['Boolean'],
     ParentType,
     ContextType,
-    RequireFields<
-      QueryCheckTokenImpersonatorArgs,
-      'address' | 'chainId' | 'ticker'
-    >
+    RequireFields<QueryCheckTokenImpersonatorArgs, 'address' | 'chainId' | 'ticker'>
   >
   contractCode?: Resolver<
     Maybe<ResolversTypes['ContractCodeModel']>,
@@ -1511,28 +1337,19 @@ export type QueryResolvers<
     ResolversTypes['InternalTransactionsModel'],
     ParentType,
     ContextType,
-    RequireFields<
-      QueryInternalTransactionsArgs,
-      'address' | 'chainId' | 'first' | 'hash' | 'skip'
-    >
+    RequireFields<QueryInternalTransactionsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>
   >
   logs?: Resolver<
     Array<ResolversTypes['LogModel']>,
     ParentType,
     ContextType,
-    RequireFields<
-      QueryLogsArgs,
-      'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'
-    >
+    RequireFields<QueryLogsArgs, 'address' | 'chainId' | 'first' | 'skip' | 'transactionHash'>
   >
   nftEvents?: Resolver<
     ResolversTypes['NFTTransfersModel'],
     ParentType,
     ContextType,
-    RequireFields<
-      QueryNftEventsArgs,
-      'address' | 'chainId' | 'first' | 'hash' | 'skip'
-    >
+    RequireFields<QueryNftEventsArgs, 'address' | 'chainId' | 'first' | 'hash' | 'skip'>
   >
   search?: Resolver<
     ResolversTypes['Search'],
@@ -1544,10 +1361,7 @@ export type QueryResolvers<
     Array<ResolversTypes['TokenHoldingsModel']>,
     ParentType,
     ContextType,
-    RequireFields<
-      QueryTokenHoldingsArgs,
-      'address' | 'chainId' | 'first' | 'skip'
-    >
+    RequireFields<QueryTokenHoldingsArgs, 'address' | 'chainId' | 'first' | 'skip'>
   >
   tokenHoldingsStats?: Resolver<
     Maybe<ResolversTypes['TokenHoldingsStatsModel']>,
@@ -1565,10 +1379,7 @@ export type QueryResolvers<
     ResolversTypes['TopTokensModel'],
     ParentType,
     ContextType,
-    RequireFields<
-      QueryTopTokensArgs,
-      'chainId' | 'first' | 'onlyVerified' | 'skip'
-    >
+    RequireFields<QueryTopTokensArgs, 'chainId' | 'first' | 'onlyVerified' | 'skip'>
   >
   traces?: Resolver<
     ResolversTypes['TransactionTraceModel'],
@@ -1615,22 +1426,10 @@ export type SearchResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Search'] = ResolversParentTypes['Search']
 > = ResolversObject<{
-  addresses?: Resolver<
-    Array<ResolversTypes['AddressModel']>,
-    ParentType,
-    ContextType
-  >
-  blocks?: Resolver<
-    Array<ResolversTypes['BlockModel']>,
-    ParentType,
-    ContextType
-  >
+  addresses?: Resolver<Array<ResolversTypes['AddressModel']>, ParentType, ContextType>
+  blocks?: Resolver<Array<ResolversTypes['BlockModel']>, ParentType, ContextType>
   query?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  transactions?: Resolver<
-    Array<ResolversTypes['TransactionModel']>,
-    ParentType,
-    ContextType
-  >
+  transactions?: Resolver<Array<ResolversTypes['TransactionModel']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1638,12 +1437,7 @@ export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = ResolversObject<{
-  newBlock?: SubscriptionResolver<
-    ResolversTypes['BlockModel'],
-    'newBlock',
-    ParentType,
-    ContextType
-  >
+  newBlock?: SubscriptionResolver<ResolversTypes['BlockModel'], 'newBlock', ParentType, ContextType>
   newTransaction?: SubscriptionResolver<
     ResolversTypes['TransactionModel'],
     'newTransaction',
@@ -1666,11 +1460,7 @@ export type TokenBalanceModelResolvers<
   ParentType extends ResolversParentTypes['TokenBalanceModel'] = ResolversParentTypes['TokenBalanceModel']
 > = ResolversObject<{
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  holderType?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  holderType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   label?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   percentage?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
@@ -1682,43 +1472,15 @@ export type TokenBalancesStatsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['TokenBalancesStatsModel'] = ResolversParentTypes['TokenBalancesStatsModel']
 > = ResolversObject<{
-  fullyDilutedValuation?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >
+  fullyDilutedValuation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   holders?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
-  holdersChange?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >
-  holdersChart?: Resolver<
-    Array<ResolversTypes['TimeSeriesChartModel']>,
-    ParentType,
-    ContextType
-  >
-  maxTotalSupply?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >
+  holdersChange?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
+  holdersChart?: Resolver<Array<ResolversTypes['TimeSeriesChartModel']>, ParentType, ContextType>
+  maxTotalSupply?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
   price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
-  priceChange?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >
-  priceNative?: Resolver<
-    Maybe<ResolversTypes['Float']>,
-    ParentType,
-    ContextType
-  >
-  totalTransfers?: Resolver<
-    Maybe<ResolversTypes['Int']>,
-    ParentType,
-    ContextType
-  >
+  priceChange?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
+  priceNative?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>
+  totalTransfers?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1780,11 +1542,7 @@ export type TopTokensModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['TopTokensModel'] = ResolversParentTypes['TopTokensModel']
 > = ResolversObject<{
-  data?: Resolver<
-    Array<ResolversTypes['TopTokenModel']>,
-    ParentType,
-    ContextType
-  >
+  data?: Resolver<Array<ResolversTypes['TopTokenModel']>, ParentType, ContextType>
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1801,52 +1559,20 @@ export type TransactionModelResolvers<
   gasPrice?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   input?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  maxFeePerGas?: Resolver<
-    Maybe<ResolversTypes['Decimal']>,
-    ParentType,
-    ContextType
-  >
-  maxPriorityFeePerGas?: Resolver<
-    Maybe<ResolversTypes['Decimal']>,
-    ParentType,
-    ContextType
-  >
+  maxFeePerGas?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>
+  maxPriorityFeePerGas?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>
   nonce?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  receiptContractAddress?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
-  receiptCumulativeGasUsed?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  receiptEffectiveGasPrice?: Resolver<
-    Maybe<ResolversTypes['Decimal']>,
-    ParentType,
-    ContextType
-  >
+  receiptContractAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  receiptCumulativeGasUsed?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  receiptEffectiveGasPrice?: Resolver<Maybe<ResolversTypes['Decimal']>, ParentType, ContextType>
   receiptGasUsed?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
-  receiptLogsCount?: Resolver<
-    Maybe<ResolversTypes['Int']>,
-    ParentType,
-    ContextType
-  >
-  receiptRoot?: Resolver<
-    Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >
+  receiptLogsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  receiptRoot?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   receiptStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   toAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   transactionIndex?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  transactionType?: Resolver<
-    Maybe<ResolversTypes['Int']>,
-    ParentType,
-    ContextType
-  >
+  transactionType?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
   value?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -1855,33 +1581,13 @@ export type TransactionStatsModelResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['TransactionStatsModel'] = ResolversParentTypes['TransactionStatsModel']
 > = ResolversObject<{
-  avgTransactionsFee24H?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
-  avgTransactionsFeeDelta24H?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
-  networkTransactionsFee24H?: Resolver<
-    ResolversTypes['Decimal'],
-    ParentType,
-    ContextType
-  >
-  networkTransactionsFeeDelta24H?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
+  avgTransactionsFee24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  avgTransactionsFeeDelta24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  networkTransactionsFee24H?: Resolver<ResolversTypes['Decimal'], ParentType, ContextType>
+  networkTransactionsFeeDelta24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   transactions24H?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   transactionsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  transactionsDelta24H?: Resolver<
-    ResolversTypes['Float'],
-    ParentType,
-    ContextType
-  >
+  transactionsDelta24H?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 

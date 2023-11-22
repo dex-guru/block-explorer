@@ -28,9 +28,7 @@ export const tokensColumns: IColumn<TokenHoldingsModel>[] = [
       return (
         <Value
           className={styles.holder}
-          value={
-            <Address address={data.contractAddress} type="account" isCopy />
-          }
+          value={<Address address={data.contractAddress} type="account" isCopy />}
           icon={
             <IconContract
               data-tooltip-id="app-tooltip"

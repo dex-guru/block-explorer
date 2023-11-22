@@ -4,18 +4,13 @@ import { AnalyticsProps } from './types'
 import Dashboard from '@/components/Dashboard'
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
-import {
-  getRedashDashboard,
-  getRedashDashboardsByTag,
-} from '@/lib/redash/client'
+import { getRedashDashboard, getRedashDashboardsByTag } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Analytics.module.scss'
 
 const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   const [isMounted, setIsMounted] = useState(false)
-  const [dashboardsData, setDashboardsData] = useState<
-    TRedashDashboard[] | null
-  >(null)
+  const [dashboardsData, setDashboardsData] = useState<TRedashDashboard[] | null>(null)
   const [tab, setTab] = useState<number>(0)
 
   useEffect(() => {
@@ -65,11 +60,7 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
   if (dashboardsData?.length === 1) {
     return (
       <Card className={styles.container}>
-        <Dashboard
-          data={dashboardsData[0]}
-          params={params}
-          className={styles.dashboard}
-        />
+        <Dashboard data={dashboardsData[0]} params={params} className={styles.dashboard} />
       </Card>
     )
   }
@@ -78,13 +69,7 @@ const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {
     return {
       title: dashboard.name,
       value: dashboard.id,
-      content: (
-        <Dashboard
-          data={dashboard}
-          params={params}
-          className={styles.dashboard}
-        />
-      ),
+      content: <Dashboard data={dashboard} params={params} className={styles.dashboard} />,
     }
   })
 

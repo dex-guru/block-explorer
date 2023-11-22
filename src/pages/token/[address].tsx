@@ -36,9 +36,7 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
     return null
   }
 
-  const onlyAddress = (
-    Array.isArray(address) ? address[0] : address
-  ).toLowerCase()
+  const onlyAddress = (Array.isArray(address) ? address[0] : address).toLowerCase()
 
   const isContract = addressInfo?.addressType === 'smart_contract'
 

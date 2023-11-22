@@ -133,8 +133,7 @@ const Graph: FC<GraphProps> = ({
         smooth={true}
         limitToBounds={false}
         minScale={0.75}
-        maxScale={40}
-      >
+        maxScale={40}>
         <GraphContent
           config={{ ...DEFAULT_CONFIG, ...config }}
           onFullscreen={handleFullScreen}

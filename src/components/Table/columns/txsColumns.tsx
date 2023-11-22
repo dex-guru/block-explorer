@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
 import styles from '../Table.module.scss'
 import { TransactionModel } from '@/__generated__/resolvers-types'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
 import Tile from '@/components/Tile'
@@ -26,9 +23,7 @@ export const txsColumns = (
     accessor: 'blockNumber',
     title: 'Block',
     modifier: 'address',
-    render: (data) => (
-      <Address address={`${data.blockNumber}`} type="block" isCopy />
-    ),
+    render: (data) => <Address address={`${data.blockNumber}`} type="block" isCopy />,
   },
   {
     accessor: 'blockTimestamp',
@@ -40,18 +35,14 @@ export const txsColumns = (
     title: 'From',
     modifier: 'address',
     render: (data) =>
-      data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" isCopy />
-      ) : null,
+      data.fromAddress ? <Address address={data.fromAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'toAddress',
     title: 'To',
     modifier: 'address',
     render: (data) =>
-      data.toAddress ? (
-        <Address address={data.toAddress} type="account" isCopy />
-      ) : null,
+      data.toAddress ? <Address address={data.toAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'value',
@@ -66,10 +57,7 @@ export const txsColumns = (
           className={styles.valueNativeWithStable}
           title={
             <Value
-              value={getNormalizedValue(
-                bigValue,
-                chainConfig?.nativeCurrency.decimals
-              )}
+              value={getNormalizedValue(bigValue, chainConfig?.nativeCurrency.decimals)}
               suffix={
                 chainConfig?.nativeCurrency.symbol ? (
                   <>&nbsp;{chainConfig?.nativeCurrency.symbol}</>
@@ -81,9 +69,7 @@ export const txsColumns = (
             <Value
               prefix="$"
               value={getNormalizedValue(
-                bigValue.multipliedBy(
-                  Number(chainStats?.nativeTokenPriceUsd || 0)
-                ),
+                bigValue.multipliedBy(Number(chainStats?.nativeTokenPriceUsd || 0)),
                 chainConfig?.nativeCurrency.decimals,
                 { decimals: 2 }
               )}

@@ -5,11 +5,7 @@ import DashboardWidget from './DashboardWidget/DashboardWidget'
 import Button from '@/components/Button'
 import DetailsView from '@/components/DetailsView'
 import StateView from '@/components/StateView'
-import {
-  DEFAULT_DATE_RANGE,
-  DYNAMIC_DATE_PREFIX,
-  getDynamicDateRangePeriod,
-} from '@/lib/dates'
+import { DEFAULT_DATE_RANGE, DYNAMIC_DATE_PREFIX, getDynamicDateRangePeriod } from '@/lib/dates'
 import { generateRedashDashboardParams } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
 import styles from './Dashboard.module.scss'
@@ -36,23 +32,12 @@ const Dashboard: FC<{
   )
 
   const dashboardAnalyzer = useMemo(
-    () => (
-      <DashboardAnalyzer
-        slug={data.slug}
-        params={parameters}
-        onChatToggle={setIsChatOpen}
-      />
-    ),
+    () => <DashboardAnalyzer slug={data.slug} params={parameters} onChatToggle={setIsChatOpen} />,
     [data.slug, parameters]
   )
 
   if (!data?.id) {
-    return (
-      <StateView
-        icon={<IconNoData className={styles.icon} />}
-        title="No dashboard data"
-      />
-    )
+    return <StateView icon={<IconNoData className={styles.icon} />} title="No dashboard data" />
   }
 
   const sortedWidgets =
@@ -80,18 +65,13 @@ const Dashboard: FC<{
           rel="noreferrer noopener"
           href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
         />
-      }
-    >
+      }>
       {dashboardAnalyzer}
 
       {!isChatOpen && (
         <div className={styles.dashboard}>
           {sortedWidgets.map((widget) => (
-            <DashboardWidget
-              data={widget}
-              params={parameters}
-              key={widget.id}
-            />
+            <DashboardWidget data={widget} params={parameters} key={widget.id} />
           ))}
         </div>
       )}

@@ -1,10 +1,5 @@
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react'
-import {
-  RainbowKitProvider,
-  darkTheme,
-  lightTheme,
-  Theme,
-} from '@rainbow-me/rainbowkit'
+import { RainbowKitProvider, darkTheme, lightTheme, Theme } from '@rainbow-me/rainbowkit'
 import merge from 'lodash.merge'
 import { WagmiConfig } from 'wagmi'
 import { Theme as ThemeEnum } from '../ThemeToggle'
@@ -56,8 +51,7 @@ const Page: FC<PageProps> = ({ children, chainConfig }) => {
           '--color-accent-base-s': `${s * 100}%`,
           '--color-accent-base-l': `${l * 100}%`,
         } as CSSProperties
-      }
-    >
+      }>
       <div className={styles.header}>
         <PageHeader chainConfig={chainConfig} />
       </div>

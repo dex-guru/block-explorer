@@ -47,8 +47,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
           return (
             <div key={index} className={styles.tile}>
               <strong className={styles.tileTitle}>
-                {stat.title}{' '}
-                {!!stat.tooltip && <TooltipAnchor tooltip={stat.tooltip} />}
+                {stat.title} {!!stat.tooltip && <TooltipAnchor tooltip={stat.tooltip} />}
               </strong>{' '}
               <span className={styles.tileValue}>{stat.value}</span>
             </div>

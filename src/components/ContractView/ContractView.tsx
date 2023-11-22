@@ -9,10 +9,7 @@ import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import Ad from '../Ad'
 import { IContractViewProps } from './types'
-import {
-  ContractCreatorModel,
-  TokenBalancesStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ContractCreatorModel, TokenBalancesStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import AddressWallet from '@/components/AddressWallet'
@@ -43,15 +40,9 @@ import styles from './ContractView.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
-const HoldersDataTable = dynamic(
-  () => import('@/components/Tables/HoldersDataTable/')
-)
-const DexTradesDataTable = dynamic(
-  () => import('@/components/Tables/DexTradesDataTable/')
-)
-const Erc20DataTable = dynamic(
-  () => import('@/components/Tables/Erc20DataTable')
-)
+const HoldersDataTable = dynamic(() => import('@/components/Tables/HoldersDataTable/'))
+const DexTradesDataTable = dynamic(() => import('@/components/Tables/DexTradesDataTable/'))
+const Erc20DataTable = dynamic(() => import('@/components/Tables/Erc20DataTable'))
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
@@ -95,8 +86,7 @@ const ContractView: FC<IContractViewProps> = ({
 
   const hasSources = !!match?.metadata?.sources
 
-  const isSubTab =
-    !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+  const isSubTab = !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
@@ -192,9 +182,7 @@ const ContractView: FC<IContractViewProps> = ({
   const pageTitle = `${chain.config.name} ${
     type === 'token'
       ? `Token ${addressInfo.symbol}${
-          addressInfo.name !== addressInfo.symbol
-            ? ` (${addressInfo.name})`
-            : ''
+          addressInfo.name !== addressInfo.symbol ? ` (${addressInfo.name})` : ''
         }`
       : `Contract ${checkSumAddress}`
   }`
@@ -226,8 +214,7 @@ const ContractView: FC<IContractViewProps> = ({
               chainConfig={chain.config}
               address={address}
             />
-          }
-        >
+          }>
           <Grid>
             <Properties
               title="Overview:"
@@ -239,21 +226,14 @@ const ContractView: FC<IContractViewProps> = ({
                         value: (
                           <Value
                             value={financialFormat(addressInfo.nativeBalance)}
-                            suffix={
-                              <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
-                            }
+                            suffix={<>&nbsp;{chain?.config?.nativeCurrency.symbol}</>}
                           />
                         ),
                       },
                       {
                         title: `${chain?.config?.nativeCurrency.symbol} Value:`,
                         value: (
-                          <Value
-                            value={financialFormat(
-                              addressInfo.nativeBalanceUSD
-                            )}
-                            prefix="$"
-                          />
+                          <Value value={financialFormat(addressInfo.nativeBalanceUSD)} prefix="$" />
                         ),
                       },
                       {
@@ -276,24 +256,16 @@ const ContractView: FC<IContractViewProps> = ({
                         value: (
                           <Separated>
                             <Value
-                              value={financialFormat(
-                                balancesStats?.fullyDilutedValuation || 0
-                              )}
+                              value={financialFormat(balancesStats?.fullyDilutedValuation || 0)}
                               prefix="$"
                             />
-                            <Value
-                              value={financialFormat(
-                                balancesStats?.maxTotalSupply || 0
-                              )}
-                            />
+                            <Value value={financialFormat(balancesStats?.maxTotalSupply || 0)} />
                           </Separated>
                         ),
                       },
                       {
                         title: 'Total Transfers:',
-                        value: financialFormat(
-                          balancesStats?.totalTransfers || 0
-                        ),
+                        value: financialFormat(balancesStats?.totalTransfers || 0),
                       },
                       {
                         title: 'Holders:',
@@ -301,9 +273,7 @@ const ContractView: FC<IContractViewProps> = ({
                           <div className={styles.holders}>
                             <Separated>
                               <Value
-                                value={financialFormat(
-                                  balancesStats?.holders || 0
-                                )}
+                                value={financialFormat(balancesStats?.holders || 0)}
                                 delta={
                                   balancesStats?.holdersChange
                                     ? (balancesStats.holdersChange || 0) * 100
@@ -321,15 +291,12 @@ const ContractView: FC<IContractViewProps> = ({
                                         hide: true,
                                         tickFormatter: (value: number) => {
                                           const date = new Date(value * 1000)
-                                          return date.toLocaleDateString(
-                                            'en-GB',
-                                            {
-                                              timeZone: 'UTC',
-                                              month: 'short',
-                                              year: '2-digit',
-                                              day: '2-digit',
-                                            }
-                                          )
+                                          return date.toLocaleDateString('en-GB', {
+                                            timeZone: 'UTC',
+                                            month: 'short',
+                                            year: '2-digit',
+                                            day: '2-digit',
+                                          })
                                         },
                                         axisLine: false,
                                         tickLine: false,
@@ -389,20 +356,13 @@ const ContractView: FC<IContractViewProps> = ({
                               type="account"
                               isCopy
                             />{' '}
-                            at txn{' '}
-                            <Address
-                              address={contractCreator.txHash}
-                              type="tx"
-                              isCopy
-                            />
+                            at txn <Address address={contractCreator.txHash} type="tx" isCopy />
                           </div>
                         ),
                       },
                       {
                         title: 'Timestamp:',
-                        value: (
-                          <DateTime timestamp={contractCreator.timestamp} />
-                        ),
+                        value: <DateTime timestamp={contractCreator.timestamp} />,
                       },
                     ]
                   : []),
@@ -414,11 +374,8 @@ const ContractView: FC<IContractViewProps> = ({
                         value: (
                           <div>
                             <Link
-                              href={
-                                AddressValues['token'].url(address || '') || ''
-                              }
-                              className={styles.token}
-                            >
+                              href={AddressValues['token'].url(address || '') || ''}
+                              className={styles.token}>
                               {tokenIcon}{' '}
                               <span className={styles.tokenName}>
                                 {addressInfo.name} ({addressInfo.symbol})
@@ -441,13 +398,7 @@ const ContractView: FC<IContractViewProps> = ({
                         value: (
                           <Value
                             className={styles.token}
-                            value={
-                              <Address
-                                address={address}
-                                type="account"
-                                isCopy
-                              />
-                            }
+                            value={<Address address={address} type="account" isCopy />}
                             icon={
                               <IconContract
                                 data-tooltip-id="app-tooltip"
@@ -495,8 +446,7 @@ const ContractView: FC<IContractViewProps> = ({
                 ? [
                     {
                       title: 'Transactions',
-                      tooltip:
-                        'Transactions where the address is a sending party.',
+                      tooltip: 'Transactions where the address is a sending party.',
                       value: '',
                       to: pathname,
                       content: <TxsDataTable address={address} />,
@@ -550,11 +500,7 @@ const ContractView: FC<IContractViewProps> = ({
                       to: { pathname, query: { tab: 'analytics' } },
                       content: (
                         <Analytics
-                          tag={
-                            type === 'token'
-                              ? 'Token Contract'
-                              : 'Smart Contract'
-                          }
+                          tag={type === 'token' ? 'Token Contract' : 'Smart Contract'}
                           params={{
                             network: chain.config.shortName,
                             address: address.toLowerCase(),
@@ -565,17 +511,10 @@ const ContractView: FC<IContractViewProps> = ({
                   ]
                 : []),
             ]}
-            value={tab || ''}
-          >
+            value={tab || ''}>
             {/* Content here should depend on Tab's query param value */}
 
-            {isSubTab && (
-              <ContractTab
-                match={match}
-                address={address}
-                tab={tab as string}
-              />
-            )}
+            {isSubTab && <ContractTab match={match} address={address} tab={tab as string} />}
           </TabPanel>
         </DetailsView>
       </Page>

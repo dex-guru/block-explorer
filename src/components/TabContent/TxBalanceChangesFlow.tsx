@@ -59,22 +59,16 @@ const TxBalanceChangesFlow: FC<{
       .forEach((row) => {
         const addrIdx = addresses.findIndex((address) => address === row.to)
         const to = addrIdx >= 0 ? `a${addrIdx}` : 'Incorrect Data'
-        graphTextLines.push(
-          `${from}-->|"${labelRenderHtml(row.amount, row.token)}"|${to}`
-        )
+        graphTextLines.push(`${from}-->|"${labelRenderHtml(row.amount, row.token)}"|${to}`)
       })
   })
 
   const svgProcess = (svg: string) => {
-    return svg.replace(
-      /href="\/(token|address)\/(0x[a-f0-9]+)"/gm,
-      (hrefAttr, type, addr) => {
-        const imgUrl =
-          tokens?.find((token) => token.address === addr)?.logoURI ||
-          `/api/avatar/${addr}`
-        return `data-tooltip-content="${addr}" data-tooltip-id="app-tooltip" style="--img:url(${imgUrl})" ${hrefAttr}"`
-      }
-    )
+    return svg.replace(/href="\/(token|address)\/(0x[a-f0-9]+)"/gm, (hrefAttr, type, addr) => {
+      const imgUrl =
+        tokens?.find((token) => token.address === addr)?.logoURI || `/api/avatar/${addr}`
+      return `data-tooltip-content="${addr}" data-tooltip-id="app-tooltip" style="--img:url(${imgUrl})" ${hrefAttr}"`
+    })
   }
 
   return (

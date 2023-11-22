@@ -2,11 +2,7 @@ import React, { useState } from 'react'
 import clsx from 'clsx'
 import DetailedView from '../../DetailedView'
 import styles from '../../Verifier.module.scss'
-import {
-  SendableContract,
-  VerificationInput,
-  VerifyResponse,
-} from '../../types'
+import { SendableContract, VerificationInput, VerifyResponse } from '../../types'
 import { Status } from '../../types'
 import ChainAddressForm from './ChainAddressForm'
 import Invalid from './Invalid'
@@ -19,9 +15,7 @@ import Properties from '@/components/Properties'
 type CheckedContractProps = {
   isOpen?: boolean
   checkedContract: SendableContract
-  verifyCheckedContract: (
-    sendable: VerificationInput
-  ) => Promise<VerifyResponse | undefined>
+  verifyCheckedContract: (sendable: VerificationInput) => Promise<VerifyResponse | undefined>
 }
 
 type CustomStatus = Status | 'missing' | 'invalid'
@@ -59,17 +53,13 @@ const CheckedContract: React.FC<CheckedContractProps> = ({
   let customStatus: CustomStatus
   if (checkedContract.status === 'perfect') customStatus = 'perfect'
   else if (checkedContract.status === 'partial') customStatus = 'partial'
-  else if (Object.keys(checkedContract.files.missing).length > 0)
-    customStatus = 'missing'
+  else if (Object.keys(checkedContract.files.missing).length > 0) customStatus = 'missing'
   // Missing files status takes precedence over invalid
-  else if (Object.keys(checkedContract.files.invalid).length > 0)
-    customStatus = 'invalid'
+  else if (Object.keys(checkedContract.files.invalid).length > 0) customStatus = 'invalid'
   else customStatus = 'error'
 
   const status = (
-    <Label
-      className={clsx(styles.contractTag, statusText[customStatus].className)}
-    >
+    <Label className={clsx(styles.contractTag, statusText[customStatus].className)}>
       {statusText[customStatus].text}
     </Label>
   )
@@ -88,8 +78,7 @@ const CheckedContract: React.FC<CheckedContractProps> = ({
           {checkedContract.name} {status}
         </>
       }
-      className={styles.contract}
-    >
+      className={styles.contract}>
       {isLoading && <LoadingCard />}
 
       {['perfect', 'partial', 'error'].includes(customStatus) && (
@@ -122,9 +111,7 @@ const CheckedContract: React.FC<CheckedContractProps> = ({
         </>
       )}
 
-      {customStatus === 'invalid' && (
-        <Invalid checkedContract={checkedContract} />
-      )}
+      {customStatus === 'invalid' && <Invalid checkedContract={checkedContract} />}
     </Details>
   )
 }
