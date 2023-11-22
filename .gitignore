@@ -36,4 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 .idea
-.vscode
+
+#exclude .vscode but launch.json
+.vscode/* 
+!.vscode/launch.json
