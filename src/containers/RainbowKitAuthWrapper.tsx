@@ -38,28 +38,30 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
   const accountRef = useRef(account)
 
   const tokenRefresh = useCallback((): void => {
-    refreshToken(dexGuruLoginApiV2Url).then(({ error, accessToken, refreshToken }) => {
-      if (error) {
-        setStatus('unauthenticated')
-        throw new Error(error)
-      }
-      if (account && accessToken && refreshToken) {
-        setStatus('authenticated')
-        localStorage.setItem(LocalStorageKeyEnum.access_token, accessToken)
-        const accessDecoded = jwt_decode(accessToken) as { exp: number }
-        Cookies.set(AUTH_COOKIE_NAME, accessToken, {
-          domain: getRootDomain(window.location.host) || undefined,
-          expires: new Date(accessDecoded?.exp * 1000),
-        })
+    refreshToken(dexGuruLoginApiV2Url).then(
+      ({ error, accessToken, refreshToken }) => {
+        if (error) {
+          setStatus('unauthenticated')
+          throw new Error(error)
+        }
+        if (account && accessToken && refreshToken) {
+          setStatus('authenticated')
+          localStorage.setItem(LocalStorageKeyEnum.access_token, accessToken)
+          const accessDecoded = jwt_decode(accessToken) as { exp: number }
+          Cookies.set(AUTH_COOKIE_NAME, accessToken, {
+            domain: getRootDomain(window.location.host) || undefined,
+            expires: new Date(accessDecoded?.exp * 1000),
+          })
 
-        localStorage.setItem(LocalStorageKeyEnum.refresh_token, refreshToken)
-        const refreshDecoded = jwt_decode(refreshToken) as { exp: number }
-        Cookies.set(AUTH_REFRESH_COOKIE_NAME, refreshToken, {
-          domain: getRootDomain(window.location.host) || undefined,
-          expires: new Date(refreshDecoded?.exp * 1000),
-        })
+          localStorage.setItem(LocalStorageKeyEnum.refresh_token, refreshToken)
+          const refreshDecoded = jwt_decode(refreshToken) as { exp: number }
+          Cookies.set(AUTH_REFRESH_COOKIE_NAME, refreshToken, {
+            domain: getRootDomain(window.location.host) || undefined,
+            expires: new Date(refreshDecoded?.exp * 1000),
+          })
+        }
       }
-    })
+    )
   }, [account])
 
   useEffect(() => {
@@ -130,7 +132,8 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
           message: SiweMessage
           signature: string
         }) => {
-          const accountId = localStorage.getItem(LocalStorageKeyEnum.account_id) || undefined
+          const accountId =
+            localStorage.getItem(LocalStorageKeyEnum.account_id) || undefined
           if (!accountRef.current) {
             // when you disconnect and then immediately connect again, account isn't resolved yet
             // and the error is thrown. so we need to wait a bit
@@ -146,7 +149,8 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
             signature
           )
           const { access_token, refresh_token, account_id } = await response
-          account_id && localStorage.setItem(LocalStorageKeyEnum.account_id, account_id)
+          account_id &&
+            localStorage.setItem(LocalStorageKeyEnum.account_id, account_id)
 
           localStorage.setItem(LocalStorageKeyEnum.access_token, access_token)
           const accessDecoded = jwt_decode(access_token) as { exp: number }

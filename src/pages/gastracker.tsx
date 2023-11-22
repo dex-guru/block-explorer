@@ -10,7 +10,6 @@ import Dashboard from '@/components/Dashboard'
 import DetailsView from '@/components/DetailsView'
 import GasPrice, { GasPriceValue } from '@/components/GasPrice'
 import Page from '@/components/Page'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -36,10 +35,11 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({
     ((gasData?.base || 0) + (gasData?.high || 0)) / 10 ** 9
   )
 
-  const pageTitle = `${gasData
+  const pageTitle = `${
+    gasData
       ? `${low}${low !== high ? ` – ${high}` : ''} ${chainConfig.gasUnit} – `
       : ''
-    }${chainConfig.name} Gas Tracker`
+  }${chainConfig.name} Gas Tracker`
 
   return (
     <>

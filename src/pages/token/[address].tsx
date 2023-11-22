@@ -32,7 +32,6 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
-
   if (!address) {
     return null
   }

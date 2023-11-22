@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { createWeb3Name } from '@web3-name-sdk/core'
 import { isAddress, getAddress } from 'viem'
 import Ad from '../Ad'
 import ChainSelect from '../ChainSelect/ChainSelect'
@@ -19,7 +20,6 @@ import TabPanel from '@/components/TabPanel'
 import Value from '@/components/Value'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
-import { createWeb3Name } from '@web3-name-sdk/core'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
 const Erc20DataTable = dynamic(
@@ -53,14 +53,17 @@ const AddressView: FC<IAddressViewProps> = ({
   const pageTitle = addressInfo?.address
     ? `${chain.config.name} Address ${checkSumAddress}`
     : isAddress(address)
-      ? `No address ${address} on ${chain.config.name}`
-      : `Not a ${chain.config.name} address`
-
+    ? `No address ${address} on ${chain.config.name}`
+    : `Not a ${chain.config.name} address`
 
   useEffect(() => {
     const web3Name = createWeb3Name()
-    web3Name.getDomainName({ address: checkSumAddress, queryChainIdList: [chain.config.chainId] }).then(ensName => ensName && setTags([eoa, <>{ensName}</>]))
-
+    web3Name
+      .getDomainName({
+        address: checkSumAddress,
+        queryChainIdList: [chain.config.chainId],
+      })
+      .then((ensName) => ensName && setTags([eoa, <>{ensName}</>]))
   }, [chain.config.chainId, checkSumAddress])
 
   return (
@@ -178,21 +181,21 @@ const AddressView: FC<IAddressViewProps> = ({
                 },
                 ...(checkChainFeature(chain.config, 'charts')
                   ? [
-                    {
-                      title: 'Analytics',
-                      value: 'analytics',
-                      to: `${pathname}?tab=analytics`,
-                      content: (
-                        <Analytics
-                          tag="EOA"
-                          params={{
-                            network: chain.config.shortName,
-                            address: address.toLowerCase(),
-                          }}
-                        />
-                      ),
-                    },
-                  ]
+                      {
+                        title: 'Analytics',
+                        value: 'analytics',
+                        to: `${pathname}?tab=analytics`,
+                        content: (
+                          <Analytics
+                            tag="EOA"
+                            params={{
+                              network: chain.config.shortName,
+                              address: address.toLowerCase(),
+                            }}
+                          />
+                        ),
+                      },
+                    ]
                   : []),
                 {
                   title: 'Comments',
