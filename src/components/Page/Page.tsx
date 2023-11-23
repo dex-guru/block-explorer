@@ -1,6 +1,6 @@
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react'
 import { RainbowKitProvider, darkTheme, lightTheme, Theme } from '@rainbow-me/rainbowkit'
-import merge from 'lodash.merge'
+import merge from 'lodash/merge'
 import { WagmiConfig } from 'wagmi'
 import { Theme as ThemeEnum } from '../ThemeToggle'
 import { THEME_STORAGE_NAME, getCurrentTheme } from '../ThemeToggle/ThemeToggle'
