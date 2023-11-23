@@ -2,12 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import bytes from 'bytes'
 import CheckedContractsView from './CheckedContractsView'
 import FileUpload from './FileUpload'
-import {
-  ADD_FILES_URL,
-  RESTART_SESSION_URL,
-  SESSION_DATA_URL,
-  VERIFY_URL,
-} from './constants'
+import { ADD_FILES_URL, RESTART_SESSION_URL, SESSION_DATA_URL, VERIFY_URL } from './constants'
 import {
   DropzoneFile,
   IGenericError,
@@ -26,9 +21,7 @@ const Verifier: React.FC = () => {
   const [addedFiles, setAddedFiles] = useState<string[]>([])
   const [unusedFiles, setUnusedFiles] = useState<string[]>([])
   const [filesContent, setFilesContent] = useState({ files: {} })
-  const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>(
-    []
-  )
+  const [checkedContracts, setCheckedContracts] = useState<SendableContract[]>([])
   const [errorMessage, setErrorMessage] = useState<string>()
 
   useEffect(() => {
@@ -79,9 +72,7 @@ const Verifier: React.FC = () => {
         }
         if (isSessionAPI) {
           setUnusedFiles([...(res as unknown as SessionResponse).unused])
-          setCheckedContracts([
-            ...(res as unknown as SessionResponse).contracts,
-          ])
+          setCheckedContracts([...(res as unknown as SessionResponse).contracts])
           setAddedFiles([...(res as unknown as SessionResponse).files])
         }
         setErrorMessage('')
@@ -113,10 +104,7 @@ const Verifier: React.FC = () => {
       // remove absolute path
       if (file.path.startsWith('/')) filePath = file.path.substring(1)
       // If a zip, send a seperate request, since there's already no file path
-      if (
-        file.type === 'application/zip' ||
-        file.type === 'application/x-zip-compressed'
-      ) {
+      if (file.type === 'application/zip' || file.type === 'application/x-zip-compressed') {
         const formData = new FormData()
         formData.append('files', file)
         await fetchAndUpdate(ADD_FILES_URL, {
@@ -176,12 +164,10 @@ const Verifier: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <Message type="info">
-          Verify smart contracts by recompiling with the Solidity source code
-          and metadata.
+          Verify smart contracts by recompiling with the Solidity source code and metadata.
         </Message>
         <Message type="warn">
-          Once a contract is verified it can&apos;t be removed from the Sourcify
-          repository.
+          Once a contract is verified it can&apos;t be removed from the Sourcify repository.
         </Message>
       </div>
       <Grid className={styles.body}>

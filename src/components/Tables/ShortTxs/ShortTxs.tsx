@@ -1,10 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { lastTxsColumns } from './columns'
-import {
-  ChainConfigModel,
-  TransactionModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, TransactionModel } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { TRANSACTIONS_LAST } from '@/lib/apollo/queries'
 import styles from './ShortTxs.module.scss'
@@ -15,16 +12,12 @@ interface IShortTxsTableProps {
 }
 
 export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
-  const [transactions, setTransactions] = useState<TransactionModel[]>(
-    props.data
-  )
+  const [transactions, setTransactions] = useState<TransactionModel[]>(props.data)
 
   const { data, loading } = useQuery<{
     transactions: TransactionModel[]
   }>(TRANSACTIONS_LAST, {
-    pollInterval: Number(
-      props.chainConfig?.blockTime || process.env.pollInterval
-    ),
+    pollInterval: Number(props.chainConfig?.blockTime || process.env.pollInterval),
   })
 
   useEffect(() => {

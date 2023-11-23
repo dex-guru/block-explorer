@@ -31,14 +31,7 @@ export const LogsView: FC<ILogsViewProps> = ({ log }) => {
   const properties = [
     {
       title: 'Address',
-      value: (
-        <Address
-          address={log.address}
-          type="account"
-          isShorten={false}
-          isCopy
-        />
-      ),
+      value: <Address address={log.address} type="account" isShorten={false} isCopy />,
     },
     ...decodedProperty,
     {

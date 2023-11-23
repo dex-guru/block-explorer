@@ -1,10 +1,4 @@
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  RefObject,
-  useRef,
-  useState,
-} from 'react'
+import { ChangeEventHandler, FormEventHandler, RefObject, useRef, useState } from 'react'
 import { NextRouter, useRouter } from 'next/router'
 import { isAddress, isHex } from 'viem'
 
@@ -22,11 +16,7 @@ const doSearch = async (q: string, router: NextRouter) => {
 
   // Plain address?
   if (isAddress(maybeAddress)) {
-    router.replace(
-      `/address/${maybeAddress}${
-        maybeIndex !== '' ? `?nonce=${maybeIndex}` : ''
-      }`
-    )
+    router.replace(`/address/${maybeAddress}${maybeIndex !== '' ? `?nonce=${maybeIndex}` : ''}`)
     return
   }
 
@@ -49,10 +39,7 @@ export type useGenericSearchProps = {
   onChange?: (val: string) => void
 }
 
-export const useGenericSearch = ({
-  query,
-  onChange,
-}: useGenericSearchProps = {}): {
+export const useGenericSearch = ({ query, onChange }: useGenericSearchProps = {}): {
   ref: RefObject<HTMLInputElement>
   handleChange: ChangeEventHandler<HTMLInputElement>
   handleSubmit: FormEventHandler<HTMLFormElement>

@@ -1,20 +1,16 @@
 import { FC, useEffect, useState } from 'react'
+import { createWeb3Name } from '@web3-name-sdk/core'
 import { EnsNameProp } from './types'
 import Label from '@/components/Label'
-import { createWeb3Name } from '@web3-name-sdk/core'
 
-const EnsName: FC<EnsNameProp> = ({
-  address,
-  chainConfig,
-  isTag,
-  className,
-}) => {
+const EnsName: FC<EnsNameProp> = ({ address, chainConfig, isTag, className }) => {
   const [data, setData] = useState<string | null>(null)
 
   useEffect(() => {
     const web3Name = createWeb3Name()
-    web3Name.getDomainName({ address, queryChainIdList: [chainConfig.chainId] }).then(ensName => setData(ensName))
-
+    web3Name
+      .getDomainName({ address, queryChainIdList: [chainConfig.chainId] })
+      .then((ensName) => setData(ensName))
   }, [chainConfig.chainId, address])
 
   if (!data) {

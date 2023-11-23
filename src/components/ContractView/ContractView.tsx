@@ -9,10 +9,7 @@ import { Abi } from 'abitype'
 import { isAddress, getAddress } from 'viem'
 import Ad from '../Ad'
 import { IContractViewProps } from './types'
-import {
-  ContractCreatorModel,
-  TokenBalancesStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ContractCreatorModel, TokenBalancesStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import AddressWallet from '@/components/AddressWallet'
@@ -43,15 +40,9 @@ import styles from './ContractView.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
-const HoldersDataTable = dynamic(
-  () => import('@/components/Tables/HoldersDataTable/')
-)
-const DexTradesDataTable = dynamic(
-  () => import('@/components/Tables/DexTradesDataTable/')
-)
-const Erc20DataTable = dynamic(
-  () => import('@/components/Tables/Erc20DataTable')
-)
+const HoldersDataTable = dynamic(() => import('@/components/Tables/HoldersDataTable/'))
+const DexTradesDataTable = dynamic(() => import('@/components/Tables/DexTradesDataTable/'))
+const Erc20DataTable = dynamic(() => import('@/components/Tables/Erc20DataTable'))
 const NftDataTable = dynamic(() => import('@/components/Tables/NftDataTable'))
 const InternalTxs = dynamic(() => import('@/components/TabContent/InternalTxs'))
 const Analytics = dynamic(() => import('@/components/Analytics'))
@@ -95,8 +86,7 @@ const ContractView: FC<IContractViewProps> = ({
 
   const hasSources = !!match?.metadata?.sources
 
-  const isSubTab =
-    !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
+  const isSubTab = !!tab && ['code', 'readContract', 'writeContract'].includes(tab as string)
 
   const checkSumAddress = isAddress(address) ? getAddress(address) : address
 
@@ -189,13 +179,13 @@ const ContractView: FC<IContractViewProps> = ({
       'Contract'
     )
 
-  const pageTitle = `${chain.config.name} ${type === 'token'
-      ? `Token ${addressInfo.symbol}${addressInfo.name !== addressInfo.symbol
-        ? ` (${addressInfo.name})`
-        : ''
-      }`
+  const pageTitle = `${chain.config.name} ${
+    type === 'token'
+      ? `Token ${addressInfo.symbol}${
+          addressInfo.name !== addressInfo.symbol ? ` (${addressInfo.name})` : ''
+        }`
       : `Contract ${checkSumAddress}`
-    }`
+  }`
 
   return (
     <>
@@ -205,8 +195,9 @@ const ContractView: FC<IContractViewProps> = ({
         <link rel="canonical" href={pathname} />
         <meta
           name="description"
-          content={`Explore smart contract ${addressInfo.name || addressInfo.address
-            } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
+          content={`Explore smart contract ${
+            addressInfo.name || addressInfo.address
+          } to track recent transactions, read or write contact variables using ABI interface, and view smart contract activity in real-time.`}
         />
       </Head>
       <Page chainConfig={chain.config}>
@@ -223,132 +214,111 @@ const ContractView: FC<IContractViewProps> = ({
               chainConfig={chain.config}
               address={address}
             />
-          }
-        >
+          }>
           <Grid>
             <Properties
               title="Overview:"
               data={[
                 ...(type === 'contract'
                   ? [
-                    {
-                      title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
-                      value: (
-                        <Value
-                          value={financialFormat(addressInfo.nativeBalance)}
-                          suffix={
-                            <>&nbsp;{chain?.config?.nativeCurrency.symbol}</>
-                          }
-                        />
-                      ),
-                    },
-                    {
-                      title: `${chain?.config?.nativeCurrency.symbol} Value:`,
-                      value: (
-                        <Value
-                          value={financialFormat(
-                            addressInfo.nativeBalanceUSD
-                          )}
-                          prefix="$"
-                        />
-                      ),
-                    },
-                    {
-                      title: 'Token Holdings:',
-                      value: (
-                        <AddressWallet
-                          address={address}
-                          tokenHoldingsStats={tokenHoldingsStats}
-                          className={pageStyles.addressWallet}
-                        />
-                      ),
-                    },
-                  ]
+                      {
+                        title: `${chain?.config?.nativeCurrency.symbol} Balance:`,
+                        value: (
+                          <Value
+                            value={financialFormat(addressInfo.nativeBalance)}
+                            suffix={<>&nbsp;{chain?.config?.nativeCurrency.symbol}</>}
+                          />
+                        ),
+                      },
+                      {
+                        title: `${chain?.config?.nativeCurrency.symbol} Value:`,
+                        value: (
+                          <Value value={financialFormat(addressInfo.nativeBalanceUSD)} prefix="$" />
+                        ),
+                      },
+                      {
+                        title: 'Token Holdings:',
+                        value: (
+                          <AddressWallet
+                            address={address}
+                            tokenHoldingsStats={tokenHoldingsStats}
+                            className={pageStyles.addressWallet}
+                          />
+                        ),
+                      },
+                    ]
                   : []),
 
                 ...(type === 'token'
                   ? [
-                    {
-                      title: 'FDV / Max Supply:',
-                      value: (
-                        <Separated>
-                          <Value
-                            value={financialFormat(
-                              balancesStats?.fullyDilutedValuation || 0
-                            )}
-                            prefix="$"
-                          />
-                          <Value
-                            value={financialFormat(
-                              balancesStats?.maxTotalSupply || 0
-                            )}
-                          />
-                        </Separated>
-                      ),
-                    },
-                    {
-                      title: 'Total Transfers:',
-                      value: financialFormat(
-                        balancesStats?.totalTransfers || 0
-                      ),
-                    },
-                    {
-                      title: 'Holders:',
-                      value: (
-                        <div className={styles.holders}>
+                      {
+                        title: 'FDV / Max Supply:',
+                        value: (
                           <Separated>
                             <Value
-                              value={financialFormat(
-                                balancesStats?.holders || 0
-                              )}
-                              delta={
-                                balancesStats?.holdersChange
-                                  ? (balancesStats.holdersChange || 0) * 100
-                                  : undefined
-                              }
+                              value={financialFormat(balancesStats?.fullyDilutedValuation || 0)}
+                              prefix="$"
                             />
-                            <div className={styles.holdersChart}>
-                              <CommonChart
-                                data={holdersSeries}
-                                options={{
-                                  axis: {
-                                    x: {
-                                      type: 'number',
-                                      dataKey: 'timestamp',
-                                      hide: true,
-                                      tickFormatter: (value: number) => {
-                                        const date = new Date(value * 1000)
-                                        return date.toLocaleDateString(
-                                          'en-GB',
-                                          {
+                            <Value value={financialFormat(balancesStats?.maxTotalSupply || 0)} />
+                          </Separated>
+                        ),
+                      },
+                      {
+                        title: 'Total Transfers:',
+                        value: financialFormat(balancesStats?.totalTransfers || 0),
+                      },
+                      {
+                        title: 'Holders:',
+                        value: (
+                          <div className={styles.holders}>
+                            <Separated>
+                              <Value
+                                value={financialFormat(balancesStats?.holders || 0)}
+                                delta={
+                                  balancesStats?.holdersChange
+                                    ? (balancesStats.holdersChange || 0) * 100
+                                    : undefined
+                                }
+                              />
+                              <div className={styles.holdersChart}>
+                                <CommonChart
+                                  data={holdersSeries}
+                                  options={{
+                                    axis: {
+                                      x: {
+                                        type: 'number',
+                                        dataKey: 'timestamp',
+                                        hide: true,
+                                        tickFormatter: (value: number) => {
+                                          const date = new Date(value * 1000)
+                                          return date.toLocaleDateString('en-GB', {
                                             timeZone: 'UTC',
                                             month: 'short',
                                             year: '2-digit',
                                             day: '2-digit',
-                                          }
-                                        )
+                                          })
+                                        },
+                                        axisLine: false,
+                                        tickLine: false,
                                       },
-                                      axisLine: false,
-                                      tickLine: false,
+                                      y: {
+                                        hide: true,
+                                        tickFormatter: (value: number) =>
+                                          financialFormat(value, {
+                                            roundBigNumbersFrom: 'K',
+                                          }),
+                                        axisLine: false,
+                                        tickLine: false,
+                                      },
                                     },
-                                    y: {
-                                      hide: true,
-                                      tickFormatter: (value: number) =>
-                                        financialFormat(value, {
-                                          roundBigNumbersFrom: 'K',
-                                        }),
-                                      axisLine: false,
-                                      tickLine: false,
-                                    },
-                                  },
-                                }}
-                              />
-                            </div>
-                          </Separated>
-                        </div>
-                      ),
-                    },
-                  ]
+                                  }}
+                                />
+                              </div>
+                            </Separated>
+                          </div>
+                        ),
+                      },
+                    ]
                   : []),
               ]}
             />
@@ -358,104 +328,88 @@ const ContractView: FC<IContractViewProps> = ({
               data={[
                 ...(type === 'token'
                   ? [
-                    {
-                      title: 'Price:',
-                      value: (
-                        <Value
-                          value={financialFormat(balancesStats?.price || 0)}
-                          prefix="$"
-                          delta={
-                            balancesStats?.priceChange
-                              ? (balancesStats.priceChange || 0) * 100
-                              : undefined
-                          }
-                        />
-                      ),
-                    },
-                  ]
+                      {
+                        title: 'Price:',
+                        value: (
+                          <Value
+                            value={financialFormat(balancesStats?.price || 0)}
+                            prefix="$"
+                            delta={
+                              balancesStats?.priceChange
+                                ? (balancesStats.priceChange || 0) * 100
+                                : undefined
+                            }
+                          />
+                        ),
+                      },
+                    ]
                   : []),
 
                 ...(contractCreator
                   ? [
-                    {
-                      title: 'Creator:',
-                      value: (
-                        <div>
-                          <Address
-                            address={contractCreator.creatorAddress}
-                            type="account"
-                            isCopy
-                          />{' '}
-                          at txn{' '}
-                          <Address
-                            address={contractCreator.txHash}
-                            type="tx"
-                            isCopy
-                          />
-                        </div>
-                      ),
-                    },
-                    {
-                      title: 'Timestamp:',
-                      value: (
-                        <DateTime timestamp={contractCreator.timestamp} />
-                      ),
-                    },
-                  ]
+                      {
+                        title: 'Creator:',
+                        value: (
+                          <div>
+                            <Address
+                              address={contractCreator.creatorAddress}
+                              type="account"
+                              isCopy
+                            />{' '}
+                            at txn <Address address={contractCreator.txHash} type="tx" isCopy />
+                          </div>
+                        ),
+                      },
+                      {
+                        title: 'Timestamp:',
+                        value: <DateTime timestamp={contractCreator.timestamp} />,
+                      },
+                    ]
                   : []),
 
                 ...(type === 'contract' && addressInfo.symbol
                   ? [
-                    {
-                      title: 'Token Tracker:',
-                      value: (
-                        <div>
-                          <Link
-                            href={
-                              AddressValues['token'].url(address || '') || ''
-                            }
-                            className={styles.token}
-                          >
-                            {tokenIcon}{' '}
-                            <span className={styles.tokenName}>
-                              {addressInfo.name} ({addressInfo.symbol})
-                            </span>{' '}
-                            <span className={styles.tokenPrice}>
-                              (@$
-                              {financialFormat(balancesStats?.price || 0)})
-                            </span>
-                          </Link>
-                        </div>
-                      ),
-                    },
-                  ]
+                      {
+                        title: 'Token Tracker:',
+                        value: (
+                          <div>
+                            <Link
+                              href={AddressValues['token'].url(address || '') || ''}
+                              className={styles.token}>
+                              {tokenIcon}{' '}
+                              <span className={styles.tokenName}>
+                                {addressInfo.name} ({addressInfo.symbol})
+                              </span>{' '}
+                              <span className={styles.tokenPrice}>
+                                (@$
+                                {financialFormat(balancesStats?.price || 0)})
+                              </span>
+                            </Link>
+                          </div>
+                        ),
+                      },
+                    ]
                   : []),
 
                 ...(type === 'token'
                   ? [
-                    {
-                      title: 'Token Contract:',
-                      value: (
-                        <Value
-                          className={styles.token}
-                          value={
-                            <Address
-                              address={address}
-                              type="account"
-                              isCopy
-                            />
-                          }
-                          icon={
-                            <IconContract
-                              data-tooltip-id="app-tooltip"
-                              data-tooltip-content="Smart Contract"
-                              className={styles.contractIcon}
-                            />
-                          }
-                        />
-                      ),
-                    },
-                  ]
+                      {
+                        title: 'Token Contract:',
+                        value: (
+                          <Value
+                            className={styles.token}
+                            value={<Address address={address} type="account" isCopy />}
+                            icon={
+                              <IconContract
+                                data-tooltip-id="app-tooltip"
+                                data-tooltip-content="Smart Contract"
+                                className={styles.contractIcon}
+                              />
+                            }
+                          />
+                        ),
+                      },
+                    ]
                   : []),
               ]}
             />
@@ -467,64 +421,63 @@ const ContractView: FC<IContractViewProps> = ({
             tabs={[
               ...(type === 'token'
                 ? [
-                  {
-                    title: 'Transfers',
-                    value: '',
-                    to: pathname,
-                    content: <TransfersDataTable address={address} />,
-                  },
-                  {
-                    title: 'Holders',
-                    value: 'balances',
-                    to: { pathname, query: { tab: 'balances' } },
-                    content: <HoldersDataTable address={address} />,
-                  },
-                  {
-                    title: 'DEX Trades',
-                    value: 'trades',
-                    to: { pathname, query: { tab: 'trades' } },
-                    content: <DexTradesDataTable address={address} />,
-                  },
-                ]
+                    {
+                      title: 'Transfers',
+                      value: '',
+                      to: pathname,
+                      content: <TransfersDataTable address={address} />,
+                    },
+                    {
+                      title: 'Holders',
+                      value: 'balances',
+                      to: { pathname, query: { tab: 'balances' } },
+                      content: <HoldersDataTable address={address} />,
+                    },
+                    {
+                      title: 'DEX Trades',
+                      value: 'trades',
+                      to: { pathname, query: { tab: 'trades' } },
+                      content: <DexTradesDataTable address={address} />,
+                    },
+                  ]
                 : []),
 
               ...(type === 'contract'
                 ? [
-                  {
-                    title: 'Transactions',
-                    tooltip:
-                      'Transactions where the address is a sending party.',
-                    value: '',
-                    to: pathname,
-                    content: <TxsDataTable address={address} />,
-                  },
-                  {
-                    title: 'Internal Transactions',
-                    value: 'txsinternal',
-                    to: { pathname, query: { tab: 'txsinternal' } },
-                    content: (
-                      <InternalTxs
-                        chainConfig={chain.config}
-                        chainStats={chain.stats}
-                        address={address.toLowerCase()}
-                      />
-                    ),
-                  },
-                  {
-                    title: 'Token TXs (ERC-20)',
-                    tooltip:
-                      'On-chain events where the address either received or sent ERC-20 tokens.',
-                    value: 'tokentxns',
-                    to: { pathname, query: { tab: 'tokentxns' } },
-                    content: <Erc20DataTable address={address} />,
-                  },
-                  {
-                    title: 'NFT Token TXs',
-                    value: 'nfttxns',
-                    to: { pathname, query: { tab: 'nfttxns' } },
-                    content: <NftDataTable address={address} />,
-                  },
-                ]
+                    {
+                      title: 'Transactions',
+                      tooltip: 'Transactions where the address is a sending party.',
+                      value: '',
+                      to: pathname,
+                      content: <TxsDataTable address={address} />,
+                    },
+                    {
+                      title: 'Internal Transactions',
+                      value: 'txsinternal',
+                      to: { pathname, query: { tab: 'txsinternal' } },
+                      content: (
+                        <InternalTxs
+                          chainConfig={chain.config}
+                          chainStats={chain.stats}
+                          address={address.toLowerCase()}
+                        />
+                      ),
+                    },
+                    {
+                      title: 'Token TXs (ERC-20)',
+                      tooltip:
+                        'On-chain events where the address either received or sent ERC-20 tokens.',
+                      value: 'tokentxns',
+                      to: { pathname, query: { tab: 'tokentxns' } },
+                      content: <Erc20DataTable address={address} />,
+                    },
+                    {
+                      title: 'NFT Token TXs',
+                      value: 'nfttxns',
+                      to: { pathname, query: { tab: 'nfttxns' } },
+                      content: <NftDataTable address={address} />,
+                    },
+                  ]
                 : []),
 
               {
@@ -541,38 +494,27 @@ const ContractView: FC<IContractViewProps> = ({
               },
               ...(checkChainFeature(chain.config, 'charts')
                 ? [
-                  {
-                    title: 'Analytics',
-                    value: 'analytics',
-                    to: { pathname, query: { tab: 'analytics' } },
-                    content: (
-                      <Analytics
-                        tag={
-                          type === 'token'
-                            ? 'Token Contract'
-                            : 'Smart Contract'
-                        }
-                        params={{
-                          network: chain.config.shortName,
-                          address: address.toLowerCase(),
-                        }}
-                      />
-                    ),
-                  },
-                ]
+                    {
+                      title: 'Analytics',
+                      value: 'analytics',
+                      to: { pathname, query: { tab: 'analytics' } },
+                      content: (
+                        <Analytics
+                          tag={type === 'token' ? 'Token Contract' : 'Smart Contract'}
+                          params={{
+                            network: chain.config.shortName,
+                            address: address.toLowerCase(),
+                          }}
+                        />
+                      ),
+                    },
+                  ]
                 : []),
             ]}
-            value={tab || ''}
-          >
+            value={tab || ''}>
             {/* Content here should depend on Tab's query param value */}
 
-            {isSubTab && (
-              <ContractTab
-                match={match}
-                address={address}
-                tab={tab as string}
-              />
-            )}
+            {isSubTab && <ContractTab match={match} address={address} tab={tab as string} />}
           </TabPanel>
         </DetailsView>
       </Page>

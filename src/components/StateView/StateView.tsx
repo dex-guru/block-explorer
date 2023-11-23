@@ -16,30 +16,18 @@ const StateView: FC<StateViewProps> = ({
 }) => {
   const renderActions = () => {
     return actions?.map((action, idx) => {
-      return (
-        <Button
-          key={idx}
-          {...action}
-          className={clsx(styles.action, action.className)}
-        />
-      )
+      return <Button key={idx} {...action} className={clsx(styles.action, action.className)} />
     })
   }
 
   return (
     <div className={clsx(styles.container, className)}>
       {!!icon && <div className={styles.icon}>{icon}</div>}
-      {!!illustration && (
-        <div className={styles.illustration}>{illustration}</div>
-      )}
+      {!!illustration && <div className={styles.illustration}>{illustration}</div>}
       {(!!title || !!subtitle) && (
         <div className={styles.header}>
-          {!!title && (
-            <Heading size="md" caption={title} className={styles.title} />
-          )}
-          {!!subtitle && (
-            <Heading size="sm" caption={subtitle} className={styles.subtitle} />
-          )}
+          {!!title && <Heading size="md" caption={title} className={styles.title} />}
+          {!!subtitle && <Heading size="sm" caption={subtitle} className={styles.subtitle} />}
         </div>
       )}
       {!!children && <div className={styles.body}>{children}</div>}

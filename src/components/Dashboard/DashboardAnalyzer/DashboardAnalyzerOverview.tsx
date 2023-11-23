@@ -49,8 +49,7 @@ const DashboardAnalyzerOverview: FC<{
       <div
         className={clsx(styles.wrapper, {
           [styles.collapse]: !isShow,
-        })}
-      >
+        })}>
         <div className={styles.body}>
           <Button
             icon={

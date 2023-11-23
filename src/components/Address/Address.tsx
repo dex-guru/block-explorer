@@ -38,13 +38,7 @@ const Address: FC<AddressProps> = ({
     <>
       {showIcon &&
         (logo ? (
-          <Image
-            src={logo}
-            alt={address}
-            className={styles.icon}
-            width={24}
-            height={24}
-          />
+          <Image src={logo} alt={address} className={styles.icon} width={24} height={24} />
         ) : (
           <Avatar address={address} className={styles.icon} />
         ))}

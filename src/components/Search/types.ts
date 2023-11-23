@@ -1,8 +1,4 @@
-import {
-  AddressModel,
-  BlockModel,
-  TransactionModel,
-} from '@/__generated__/resolvers-types'
+import { AddressModel, BlockModel, TransactionModel } from '@/__generated__/resolvers-types'
 
 export type SearchResults = {
   query: string

@@ -5,12 +5,7 @@ import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import Code from '@/components/Code'
 import DateTime from '@/components/DateTime'
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconVerify,
-  IconWatch,
-} from '@/components/Icons'
+import { IconArrowLeft, IconArrowRight, IconVerify, IconWatch } from '@/components/Icons'
 import Properties from '@/components/Properties'
 import Separated from '@/components/Separated'
 import TimeAgo from '@/components/TimeAgo'
@@ -41,8 +36,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
               href={blockValues?.url(`${data.number - 1}`) || ''}
               className={clsx(styles.pageTo, {
                 [styles.disabled]: data.number < 2,
-              })}
-            >
+              })}>
               <IconArrowLeft className={styles.icon} />
             </Link>{' '}
             <Link
@@ -51,8 +45,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
               href={blockValues?.url(`${data.number + 1}`) || ''}
               className={clsx(styles.pageTo, {
                 [styles.disabled]: chainStats?.lastBlockNumber === data.number,
-              })}
-            >
+              })}>
               <IconArrowRight className={styles.icon} />
             </Link>
           </div>
@@ -98,9 +91,7 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     {
       title: 'Fee Recipient:',
       tooltip: 'Address receiving fees from transactions in this block',
-      value: (
-        <Address type="account" address={data.miner} isShorten={false} isCopy />
-      ),
+      value: <Address type="account" address={data.miner} isShorten={false} isCopy />,
     },
     {
       title: 'Block Reward:',
@@ -118,21 +109,16 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Size:',
-      tooltip:
-        "The block size is actually determined by the block's gas limit.",
+      tooltip: "The block size is actually determined by the block's gas limit.",
       value: financialFormat(data.size),
     },
     {
       title: 'Gas Used:',
-      tooltip:
-        'The total gas used in the block and its percentage of gas filled in the block.',
+      tooltip: 'The total gas used in the block and its percentage of gas filled in the block.',
       value: (
         <Separated>
           <div>{financialFormat(data.gasUsed)}</div>
-          <Value
-            value={financialFormat((data.gasUsed * 100) / data.gasLimit)}
-            suffix="%"
-          />
+          <Value value={financialFormat((data.gasUsed * 100) / data.gasLimit)} suffix="%" />
         </Separated>
       ),
     },
@@ -154,14 +140,9 @@ const BlockOverview: FC<IBlockProps> = ({ data, chainConfig, chainStats }) => {
     },
     {
       title: 'Extra Data:',
-      tooltip:
-        'Any data that can be included by the block producer in the block.',
+      tooltip: 'Any data that can be included by the block producer in the block.',
       value: (
-        <Code
-          isCopy
-          defaultFormat="hex"
-          format={{ hex: true, decode: hex2ascii }}
-        >
+        <Code isCopy defaultFormat="hex" format={{ hex: true, decode: hex2ascii }}>
           {data.extraData}
         </Code>
       ),

@@ -1,8 +1,5 @@
 import styles from '../../../pages/Pages.module.scss'
-import {
-  ChainConfigModel,
-  TransactionModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, TransactionModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IconTx } from '@/components/Icons'
 import Label from '@/components/Label'
@@ -11,9 +8,7 @@ import Tile from '@/components/Tile'
 import TimeAgo from '@/components/TimeAgo'
 import { getNormalizedValue } from '@/lib/utils'
 
-export const lastTxsColumns = (
-  chainConfig: ChainConfigModel
-): IColumn<TransactionModel>[] => [
+export const lastTxsColumns = (chainConfig: ChainConfigModel): IColumn<TransactionModel>[] => [
   {
     accessor: 'hash',
     title: 'Block',
@@ -52,11 +47,9 @@ export const lastTxsColumns = (
 
       return (
         <Label
-          title={`${getNormalizedValue(
-            data.value,
-            chainConfig.nativeCurrency.decimals,
-            { decimals: 7 }
-          )} ${chainConfig.nativeCurrency.symbol}`}
+          title={`${getNormalizedValue(data.value, chainConfig.nativeCurrency.decimals, {
+            decimals: 7,
+          })} ${chainConfig.nativeCurrency.symbol}`}
           type="accent"
         />
       )

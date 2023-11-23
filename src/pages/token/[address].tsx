@@ -32,14 +32,11 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
-
   if (!address) {
     return null
   }
 
-  const onlyAddress = (
-    Array.isArray(address) ? address[0] : address
-  ).toLowerCase()
+  const onlyAddress = (Array.isArray(address) ? address[0] : address).toLowerCase()
 
   const isContract = addressInfo?.addressType === 'smart_contract'
 

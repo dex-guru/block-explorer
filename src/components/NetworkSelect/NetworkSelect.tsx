@@ -6,11 +6,7 @@ import Button from '@/components/Button'
 import { IconQuestion } from '@/components/Icons'
 import styles from './NetworkSelect.module.scss'
 
-const NetworkSelect: FC<NetworkSelectProps> = ({
-  current,
-  className,
-  variants,
-}) => {
+const NetworkSelect: FC<NetworkSelectProps> = ({ current, className, variants }) => {
   if (!variants.length) {
     return null
   }

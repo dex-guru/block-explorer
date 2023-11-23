@@ -17,15 +17,9 @@ interface IErc20DataTableProps {
   isWalletAddress?: boolean
 }
 
-export const Erc20DataTable: FC<IErc20DataTableProps> = ({
-  address,
-  isWalletAddress,
-}) => {
-  const [getErc20, { data, loading, previousData }] =
-    useLazyQuery(GET_ERC20_EVENTS)
-  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
-    GET_ERC20_EVENTS_TOTALS
-  )
+export const Erc20DataTable: FC<IErc20DataTableProps> = ({ address, isWalletAddress }) => {
+  const [getErc20, { data, loading, previousData }] = useLazyQuery(GET_ERC20_EVENTS)
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(GET_ERC20_EVENTS_TOTALS)
   const isMount = useIsMount()
 
   const addressVar = useMemo(
@@ -101,9 +95,7 @@ export const Erc20DataTable: FC<IErc20DataTableProps> = ({
           className={styles.warehouse}
           target="_blank"
           rel="noreferrer noopener"
-          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${
-            address ? 76 : 74
-          }`}
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${address ? 76 : 74}`}
         />
       }
       isLoading={loading}

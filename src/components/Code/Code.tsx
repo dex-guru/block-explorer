@@ -29,10 +29,7 @@ const Code: FC<CodeProps> = ({
     }
 
     if (['hex', 'dec'].includes(defaultFormat)) {
-      const number = new BigNumber(
-        initialText,
-        defaultFormat === 'dec' ? 10 : 16
-      )
+      const number = new BigNumber(initialText, defaultFormat === 'dec' ? 10 : 16)
       setCurrentText(number.toString(currentFormat === 'dec' ? 10 : 16))
       return
     }

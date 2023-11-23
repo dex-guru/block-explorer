@@ -62,11 +62,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
   }, [getTransactions, getVariables])
 
   const displayData = loading ? previousData : data
-  const subtitle = address
-    ? `for ${address}`
-    : block
-    ? `for block #${block}`
-    : undefined
+  const subtitle = address ? `for ${address}` : block ? `for block #${block}` : undefined
 
   if (isMount && !data && !loading) {
     return (
@@ -100,9 +96,7 @@ export const TxsDataTable: FC<ITxsDataTableProps> = ({ address, block }) => {
           className={styles.warehouse}
           target="_blank"
           rel="noreferrer noopener"
-          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${
-            address ? 72 : 75
-          }`}
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/queries/${address ? 72 : 75}`}
         />
       }
       isLoading={loading}

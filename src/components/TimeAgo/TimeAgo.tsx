@@ -5,11 +5,7 @@ import { TimeAgoProps } from './types'
 import { getDateTime } from '@/lib/dates'
 import styles from './TimeAgo.module.scss'
 
-const TimeAgo: FC<TimeAgoProps> = ({
-  timestamp,
-  className,
-  showTooltip = true,
-}) => {
+const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className, showTooltip = true }) => {
   if (!timestamp) {
     return null
   }

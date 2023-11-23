@@ -99,8 +99,7 @@ const TxTrace: FC<{
                 language="json"
                 wrapLongLines
                 showLineNumbers
-                useInlineStyles={false}
-              >
+                useInlineStyles={false}>
                 {JSON.stringify(tracesObj, null, 4)}
               </SyntaxHighlighter>
             ),

@@ -12,18 +12,12 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
       })
       .then(({ error }) => {
         if (error) {
-          res
-            .status(500)
-            .json({ statusCode: 500, message: (error as Error).message })
+          res.status(500).json({ statusCode: 500, message: (error as Error).message })
         } else {
           res.status(200).json({ status: 'Healthy' })
         }
       })
-      .catch((err) =>
-        res
-          .status(500)
-          .json({ statusCode: 500, message: (err as Error).message })
-      )
+      .catch((err) => res.status(500).json({ statusCode: 500, message: (err as Error).message }))
   } catch (err) {
     res.status(500).json({ statusCode: 500, message: (err as Error).message })
   }

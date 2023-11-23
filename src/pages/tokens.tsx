@@ -2,11 +2,7 @@ import { ChangeEventHandler, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useLazyQuery } from '@apollo/client'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-  TopTokensModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel, TopTokensModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DataTable from '@/components/DataTable'
 import DetailsView from '@/components/DetailsView'

@@ -29,34 +29,29 @@ const AddressPage: NextPage<AddressPageServerProps> = ({
   const router = useRouter()
   const { address, tab } = router.query
 
-
   if (!address) {
     return null
   }
 
-  const onlyAddress = (
-    Array.isArray(address) ? address[0] : address
-  ).toLowerCase()
+  const onlyAddress = (Array.isArray(address) ? address[0] : address).toLowerCase()
 
   const isContract = addressInfo?.addressType === 'smart_contract'
-  return (
-    isContract ? (
-      <ContractView
-        address={onlyAddress}
-        tab={tab}
-        addressInfo={addressInfo}
-        chain={{ stats: chainStats, config: chainConfig }}
-        tokenHoldingsStats={tokenHoldingsStats}
-      />
-    ) : (
-      <AddressView
-        address={onlyAddress}
-        tab={tab}
-        addressInfo={addressInfo}
-        chain={{ stats: chainStats, config: chainConfig }}
-        tokenHoldingsStats={tokenHoldingsStats}
-      />
-    )
+  return isContract ? (
+    <ContractView
+      address={onlyAddress}
+      tab={tab}
+      addressInfo={addressInfo}
+      chain={{ stats: chainStats, config: chainConfig }}
+      tokenHoldingsStats={tokenHoldingsStats}
+    />
+  ) : (
+    <AddressView
+      address={onlyAddress}
+      tab={tab}
+      addressInfo={addressInfo}
+      chain={{ stats: chainStats, config: chainConfig }}
+      tokenHoldingsStats={tokenHoldingsStats}
+    />
   )
 }
 

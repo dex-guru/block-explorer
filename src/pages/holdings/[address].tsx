@@ -1,10 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { isAddress, getAddress } from 'viem'
-import {
-  ChainConfigModel,
-  TokenHoldingsStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
 import { IconNoData, IconSearch } from '@/components/Icons'
@@ -39,12 +36,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
     },
     {
       title: 'Assets Value',
-      value: (
-        <Value
-          value={financialFormat(tokenHoldingsStats?.totalStable || 0)}
-          prefix="$"
-        />
-      ),
+      value: <Value value={financialFormat(tokenHoldingsStats?.totalStable || 0)} prefix="$" />,
     },
   ]
 
@@ -74,10 +66,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
         )}
 
         {!isAddress(address) && (
-          <StateView
-            icon={<IconNoData />}
-            title="No correct address provided"
-          />
+          <StateView icon={<IconNoData />} title="No correct address provided" />
         )}
 
         {!!tokenHoldingsStats && (
@@ -85,8 +74,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
             title="Token Holdings"
             address={checkSumAddress || undefined}
             type="address"
-            chainConfig={chainConfig}
-          >
+            chainConfig={chainConfig}>
             <Summary stats={renderStats()} />
 
             <Ad />

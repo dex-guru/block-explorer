@@ -15,14 +15,9 @@ interface IDexTradesDataTableProps {
   address: string
 }
 
-export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({
-  address,
-}) => {
-  const [getErc20, { data, loading, previousData }] =
-    useLazyQuery(GET_ERC20_EVENTS)
-  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(
-    GET_ERC20_EVENTS_TOTALS
-  )
+export const DexTradesDataTable: FC<IDexTradesDataTableProps> = ({ address }) => {
+  const [getErc20, { data, loading, previousData }] = useLazyQuery(GET_ERC20_EVENTS)
+  const [getErc20Totals, { data: fullTotalsData }] = useLazyQuery(GET_ERC20_EVENTS_TOTALS)
   const isMount = useIsMount()
 
   const addressStr = address?.toLowerCase()

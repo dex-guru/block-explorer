@@ -1,9 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import {
-  ChainConfigModel,
-  CsrStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, CsrStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import Card from '@/components/Card'
 import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
@@ -14,11 +11,7 @@ import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-  getShortDate,
-} from '@/lib/utils'
+import { financialFormat, financialFormatLowValueHighPrecision, getShortDate } from '@/lib/utils'
 import styles from './Pages.module.scss'
 
 interface CSRStatsProps {
@@ -71,12 +64,9 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
           </Card>
           <Card title="Registered Contracts">
             <Value
-              value={financialFormatLowValueHighPrecision(
-                csrStats.sumContracts,
-                {
-                  decimals: 2,
-                }
-              )}
+              value={financialFormatLowValueHighPrecision(csrStats.sumContracts, {
+                decimals: 2,
+              })}
               className={styles.valueBig}
             />
           </Card>
@@ -133,9 +123,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data, error } = await apolloClient.query({
     query: GET_CSR_STATS,
   })
-  error
-    ? logger.error(error, 'Error getting csr info')
-    : logger.info({ msg: 'Got csr info', data })
+  error ? logger.error(error, 'Error getting csr info') : logger.info({ msg: 'Got csr info', data })
 
   return addApolloState(apolloClient, {
     props: {

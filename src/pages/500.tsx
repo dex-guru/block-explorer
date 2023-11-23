@@ -48,8 +48,7 @@ const ErrorPage: NextPage = () => {
               window.location.reload()
             },
           },
-        ]}
-      >
+        ]}>
         Give us a little time, we we fix it soon!
       </StateView>
     </>

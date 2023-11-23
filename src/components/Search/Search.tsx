@@ -10,10 +10,9 @@ import { useGenericSearch } from '@/hooks/useGenericSearch'
 import { GET_SEARCH } from '@/lib/apollo/queries'
 import styles from './Search.module.scss'
 
-const DropdownContent = dynamic(
-  () => import('@/components/Dropdown/DropdownContent'),
-  { ssr: false }
-)
+const DropdownContent = dynamic(() => import('@/components/Dropdown/DropdownContent'), {
+  ssr: false,
+})
 const SearchVariants = dynamic(() => import('./SearchVariants'), { ssr: false })
 
 const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
@@ -60,9 +59,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
   })
 
   return (
-    <div
-      className={clsx(styles.container, { [styles.focus]: isFocus }, className)}
-    >
+    <div className={clsx(styles.container, { [styles.focus]: isFocus }, className)}>
       {!!showFilter && <div className={styles.filter}></div>}
       <form className={styles.body} onSubmit={handleSubmit}>
         <label className={styles.combo}>
@@ -79,9 +76,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
           <div className={styles.actions}>
             <Button
               disabled={!canSubmit}
-              icon={
-                !loading ? <IconSearch className={styles.icon} /> : undefined
-              }
+              icon={!loading ? <IconSearch className={styles.icon} /> : undefined}
               className={clsx(styles.action, {
                 [styles.actionLoading]: loading,
               })}
@@ -96,8 +91,7 @@ const Search: FC<SearchProps> = ({ showFilter, query, className }) => {
           onClose={handleHide}
           className={styles.dropdown}
           toggle={ref?.current}
-          isOpen={isOpen}
-        >
+          isOpen={isOpen}>
           <SearchVariants data={data?.search} className={styles.results} />
         </DropdownContent>
       )}

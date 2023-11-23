@@ -1,9 +1,6 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
@@ -22,14 +19,8 @@ interface IInternalTxsProps {
   chainStats: ChainStatsModel
 }
 
-export const InternalTxs: FC<IInternalTxsProps> = ({
-  hash,
-  address,
-  chainConfig,
-  chainStats,
-}) => {
-  const [getInternalTxs, { data, loading, previousData }] =
-    useLazyQuery(GET_INTERNAL_TXS)
+export const InternalTxs: FC<IInternalTxsProps> = ({ hash, address, chainConfig, chainStats }) => {
+  const [getInternalTxs, { data, loading, previousData }] = useLazyQuery(GET_INTERNAL_TXS)
   const isMount = useIsMount()
 
   const getVariables = useCallback(

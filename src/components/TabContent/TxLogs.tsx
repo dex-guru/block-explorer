@@ -10,9 +10,7 @@ import { GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
 const TxLogs: FC<{ data: TransactionModel }> = (props) => {
   const hash = props.data?.hash
 
-  const [getLogs, { data, loading }] = useLazyQuery<{ logs: LogModel[] }>(
-    GET_TRANSACTION_LOGS
-  )
+  const [getLogs, { data, loading }] = useLazyQuery<{ logs: LogModel[] }>(GET_TRANSACTION_LOGS)
 
   useEffect(() => {
     getLogs({ variables: { hash } })

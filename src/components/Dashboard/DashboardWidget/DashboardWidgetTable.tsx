@@ -15,9 +15,7 @@ const DashboardWidgetTable: FC<{
 }> = ({ data, className, isLoading }) => {
   const [currentSkip, setCurrentSkip] = useState(0)
   const [currentFirst, setCurrentFirst] = useState(DEFAULT_PER_PAGE)
-  const [currentRows, setCurrentRows] = useState<
-    Array<Record<string, number | string>>
-  >([])
+  const [currentRows, setCurrentRows] = useState<Array<Record<string, number | string>>>([])
 
   const handlePageChange = (vars: PaginationVariables) => {
     setCurrentFirst(vars.first)
@@ -25,8 +23,7 @@ const DashboardWidgetTable: FC<{
   }
 
   useEffect(() => {
-    const newRows =
-      data?.rows.slice(currentSkip, currentSkip + currentFirst) || []
+    const newRows = data?.rows.slice(currentSkip, currentSkip + currentFirst) || []
     setCurrentRows(newRows)
   }, [data, currentSkip, currentFirst])
 
@@ -46,9 +43,7 @@ const DashboardWidgetTable: FC<{
           return {
             accessor: col.name,
             title: col.friendly_name,
-            type: ['float', 'integer', 'number'].includes(col.type)
-              ? 'number'
-              : 'text',
+            type: ['float', 'integer', 'number'].includes(col.type) ? 'number' : 'text',
             render: (row) => (
               <div className={styles.tcellData}>
                 {isNumber &&

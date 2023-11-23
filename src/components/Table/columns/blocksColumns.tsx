@@ -11,16 +11,14 @@ import {
   getNormalizedValue,
 } from '@/lib/utils'
 
-export const blocksColumns: (
-  chainConfig: ChainConfigModel
-) => IColumn<BlockModel>[] = (chainConfig) => [
+export const blocksColumns: (chainConfig: ChainConfigModel) => IColumn<BlockModel>[] = (
+  chainConfig
+) => [
   {
     accessor: 'number',
     title: 'Block',
     modifier: 'block-number',
-    render: (data) => (
-      <Address address={`${data.number}`} type="block" isCopy />
-    ),
+    render: (data) => <Address address={`${data.number}`} type="block" isCopy />,
   },
   {
     accessor: 'timestamp',
@@ -40,9 +38,7 @@ export const blocksColumns: (
         return <span className={styles.muted}>0</span>
       }
 
-      return (
-        <Link href={`/txs?block=${data.number}`}>{data.transactionCount}</Link>
-      )
+      return <Link href={`/txs?block=${data.number}`}>{data.transactionCount}</Link>
     },
   },
   {
@@ -87,10 +83,7 @@ export const blocksColumns: (
     modifier: 'block-baseFee',
     render: (data) => (
       <Value
-        value={getNormalizedValue(
-          data.baseFeePerGas || 0,
-          chainConfig.nativeCurrency.decimals - 9
-        )}
+        value={getNormalizedValue(data.baseFeePerGas || 0, chainConfig.nativeCurrency.decimals - 9)}
         suffix={<>&nbsp;{chainConfig.gasUnit}</>}
       />
     ),

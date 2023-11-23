@@ -103,10 +103,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
             await sleep(500)
             return await authenticationAdapter.getNonce()
           }
-          const response = await loginRequest(
-            dexGuruLoginApiV3Url,
-            accountRef.current
-          )
+          const response = await loginRequest(dexGuruLoginApiV3Url, accountRef.current)
           return response.nonce || ''
         },
         createMessage: ({ nonce, address, chainId }) => {
@@ -123,13 +120,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         getMessageBody: ({ message }) => {
           return message.nonce
         },
-        verify: async ({
-          message,
-          signature,
-        }: {
-          message: SiweMessage
-          signature: string
-        }) => {
+        verify: async ({ message, signature }: { message: SiweMessage; signature: string }) => {
           const accountId = localStorage.getItem(LocalStorageKeyEnum.account_id) || undefined
           if (!accountRef.current) {
             // when you disconnect and then immediately connect again, account isn't resolved yet
@@ -179,10 +170,7 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
     [connector]
   )
   return (
-    <RainbowKitAuthenticationProvider
-      adapter={authenticationAdapter}
-      status={status}
-    >
+    <RainbowKitAuthenticationProvider adapter={authenticationAdapter} status={status}>
       {children}
     </RainbowKitAuthenticationProvider>
   )

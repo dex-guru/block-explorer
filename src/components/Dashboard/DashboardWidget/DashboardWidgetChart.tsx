@@ -6,10 +6,7 @@ import HeatmapChart from '@/components/HeatmapChart'
 import Loading from '@/components/Loading'
 import Message from '@/components/Message'
 import PieChart from '@/components/PieChart'
-import {
-  TRedashQueryResultData,
-  TRedashVisualization,
-} from '@/lib/redash/types'
+import { TRedashQueryResultData, TRedashVisualization } from '@/lib/redash/types'
 import { financialFormat, formatAutoDetect } from '@/lib/utils'
 import styles from './DashboardWidgetChart.module.scss'
 
@@ -25,32 +22,22 @@ const DashboardWidgetChart: FC<{
   isLoading?: boolean
 }> = ({ type, data, visualization: initialVisualization, isLoading }) => {
   if (!SUPPORTED_CHARTS.includes(type)) {
-    return (
-      <Message
-        type="danger"
-        text="This chart type is currently not supported"
-      />
-    )
+    return <Message type="danger" text="This chart type is currently not supported" />
   }
 
   const visualization = { ...initialVisualization }
   const columnMapping: Record<string, string[]> = { x: [], y: [], zVal: [] }
 
-  Object.entries(visualization.options.columnMapping || {}).forEach(
-    ([key, axis]) => {
-      columnMapping[axis].push(key)
-    }
-  )
+  Object.entries(visualization.options.columnMapping || {}).forEach(([key, axis]) => {
+    columnMapping[axis].push(key)
+  })
 
   if (type === 'heatmap') {
     const mapping = Object.fromEntries(
-      Object.entries(visualization.options.columnMapping || {}).map(
-        ([key, value]) => [value, key]
-      )
+      Object.entries(visualization.options.columnMapping || {}).map(([key, value]) => [value, key])
     )
 
-    const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]
-      ?.name
+    const tooltipName = (visualization.options.seriesOptions || {})[mapping.y]?.name
 
     return (
       <div
@@ -58,8 +45,7 @@ const DashboardWidgetChart: FC<{
           styles.container,
           { [styles.loading]: isLoading },
           { [styles.empty]: !data?.rows?.length }
-        )}
-      >
+        )}>
         {isLoading && <Loading className={styles.loader} />}
 
         <div className={styles.wrapper}>
@@ -69,9 +55,9 @@ const DashboardWidgetChart: FC<{
             keys={{ x: mapping.x, y: mapping.y, val: mapping.zVal }}
             tickXFormatter={tickFormatter}
             tooltipFormat={({ x, y, value }) => {
-              return `${
-                tooltipName ? `${tooltipName} on ` : ''
-              } ${x} ${y}: ${financialFormat(value)}`
+              return `${tooltipName ? `${tooltipName} on ` : ''} ${x} ${y}: ${financialFormat(
+                value
+              )}`
             }}
           />
         </div>
@@ -86,8 +72,7 @@ const DashboardWidgetChart: FC<{
           styles.container,
           { [styles.loading]: isLoading },
           { [styles.empty]: !data?.rows?.length }
-        )}
-      >
+        )}>
         {isLoading && <Loading className={styles.loader} />}
 
         <div className={styles.wrapper}>
@@ -97,8 +82,7 @@ const DashboardWidgetChart: FC<{
             options={{
               dataKey: columnMapping.y[0],
               nameKey: columnMapping.x[0],
-              formatter: (val) =>
-                financialFormat(`${val}`, { highPrecession: true }),
+              formatter: (val) => financialFormat(`${val}`, { highPrecession: true }),
             }}
           />
         </div>
@@ -112,15 +96,10 @@ const DashboardWidgetChart: FC<{
                   className={styles.entry}
                   style={
                     {
-                      '--color': uniqolor(
-                        `${item[columnMapping.x[0]] || ''}${idx}`
-                      ).color,
+                      '--color': uniqolor(`${item[columnMapping.x[0]] || ''}${idx}`).color,
                     } as CSSProperties
-                  }
-                >
-                  <span className={styles.caption}>
-                    {item[columnMapping.x[0]]}
-                  </span>
+                  }>
+                  <span className={styles.caption}>{item[columnMapping.x[0]]}</span>
                 </li>
               )
             })}
@@ -131,14 +110,8 @@ const DashboardWidgetChart: FC<{
   }
 
   if (['line', 'area', 'column', 'bar'].includes(type)) {
-    const entities: Record<
-      string,
-      { name: string; friendly_name: string; type: string }
-    > =
-      data?.columns?.reduce(
-        (obj, curr) => ({ ...obj, [curr.name]: curr }),
-        {}
-      ) || {}
+    const entities: Record<string, { name: string; friendly_name: string; type: string }> =
+      data?.columns?.reduce((obj, curr) => ({ ...obj, [curr.name]: curr }), {}) || {}
 
     const dataset = columnMapping.y.map((col, idx) => {
       const entity = entities[col]
@@ -165,8 +138,7 @@ const DashboardWidgetChart: FC<{
           styles.wrapper,
           { [styles.loading]: isLoading },
           { [styles.empty]: !data?.rows?.length }
-        )}
-      >
+        )}>
         {isLoading && <Loading className={styles.loader} />}
 
         <CommonChart
@@ -195,11 +167,7 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  return (
-    <Message type="warn">
-      Type &quot;{type}&quot; is not implemented yet
-    </Message>
-  )
+  return <Message type="warn">Type &quot;{type}&quot; is not implemented yet</Message>
 }
 
 export default DashboardWidgetChart

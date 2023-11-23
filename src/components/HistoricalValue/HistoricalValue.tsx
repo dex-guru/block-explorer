@@ -49,26 +49,17 @@ const HistoricalValue: FC<HistoricalValueProps> = ({
 
   const priceValue = new BigNumber(value)
 
-  const priceRate = isShowHistorical
-    ? historicalPrice || 0
-    : chainStats.nativeTokenPriceUsd
+  const priceRate = isShowHistorical ? historicalPrice || 0 : chainStats.nativeTokenPriceUsd
 
   return (
     <Button
       className={clsx(styles.container, className)}
       data-tooltip-id="app-tooltip"
       data-tooltip-content={
-        isShowHistorical
-          ? `Estimated ${title} on the day of TXn`
-          : `Current ${title} price`
+        isShowHistorical ? `Estimated ${title} on the day of TXn` : `Current ${title} price`
       }
       onClick={handleClick}
-      icon={
-        isShowHistorical && !loading ? (
-          <IconAgo className={styles.icon} />
-        ) : undefined
-      }
-    >
+      icon={isShowHistorical && !loading ? <IconAgo className={styles.icon} /> : undefined}>
       {isShowHistorical && loading && <Loading className={styles.loader} />}
       {!loading && (
         <Value

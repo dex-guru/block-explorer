@@ -32,30 +32,16 @@
     // background-repeat: repeat-y;
 
     --color-banner-color: 96, 70, 255;
-    background: radial-gradient(
-          circle,
-          #46a6ff 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        ) -5% -1% no-repeat,
-      radial-gradient(
-          circle,
-          #12b886 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        )
-        50% -20% no-repeat,
-      radial-gradient(
-          circle,
-          #ff646d 50%,
-          rgba(var(--color-banner-color), 0) 95%
-        )
-        105% -1% no-repeat;
+    background: radial-gradient(circle, #46a6ff 50%, rgba(var(--color-banner-color), 0) 95%) -5% -1%
+        no-repeat,
+      radial-gradient(circle, #12b886 50%, rgba(var(--color-banner-color), 0) 95%) 50% -20% no-repeat,
+      radial-gradient(circle, #ff646d 50%, rgba(var(--color-banner-color), 0) 95%) 105% -1% no-repeat;
     background-repeat: no-repeat;
     background-position: -5% 5%, 50% -15%, 105% 5%;
     background-color: rgb(var(--color-banner-color));
     background-size: 496px;
 
-    animation: banner-bg-size 23s infinite alternate,
-      banner-bg-position 37s infinite alternate;
+    animation: banner-bg-size 23s infinite alternate, banner-bg-position 37s infinite alternate;
 
     @keyframes banner-bg-size {
       0% {

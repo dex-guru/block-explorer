@@ -51,10 +51,7 @@ const TraceL2Events: FC<TraceL2EventsProps> = ({ title, events }) => {
                     {
                       title: 'Value',
                       value: (
-                        <Code
-                          defaultFormat="hex"
-                          format={{ dec: true, hex: true }}
-                        >
+                        <Code defaultFormat="hex" format={{ dec: true, hex: true }}>
                           {event.value?.toString()}
                         </Code>
                       ),

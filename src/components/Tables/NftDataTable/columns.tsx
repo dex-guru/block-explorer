@@ -20,26 +20,20 @@ export const nftColumns: IColumn<Erc721TransferModel>[] = [
     title: 'From',
     modifier: 'address',
     render: (data) =>
-      data.fromAddress ? (
-        <Address address={data.fromAddress} type="account" isCopy />
-      ) : null,
+      data.fromAddress ? <Address address={data.fromAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'toAddress',
     title: 'To',
     modifier: 'address',
     render: (data) =>
-      data.toAddress ? (
-        <Address address={data.toAddress} type="account" isCopy />
-      ) : null,
+      data.toAddress ? <Address address={data.toAddress} type="account" isCopy /> : null,
   },
   {
     accessor: 'tokenAddress',
     title: 'Item',
     modifier: 'address',
     render: (data) =>
-      data.toAddress ? (
-        <Address address={data.tokenAddress} type="account" isCopy />
-      ) : null,
+      data.toAddress ? <Address address={data.tokenAddress} type="account" isCopy /> : null,
   },
 ]

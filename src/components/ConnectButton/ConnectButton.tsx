@@ -31,8 +31,7 @@ const CustomConnectButton = () => {
                 pointerEvents: 'none',
                 userSelect: 'none',
               },
-            })}
-          >
+            })}>
             {(() => {
               if (!connected) {
                 return (

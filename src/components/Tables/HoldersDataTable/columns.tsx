@@ -1,11 +1,6 @@
 import { TokenBalanceModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
-import {
-  IconContract,
-  IconLiquidityPool,
-  IconNoIcon,
-  IconWallet,
-} from '@/components/Icons'
+import { IconContract, IconLiquidityPool, IconNoIcon, IconWallet } from '@/components/Icons'
 import Label from '@/components/Label'
 import { IColumn } from '@/components/Table/types'
 import Tile from '@/components/Tile'
@@ -84,10 +79,7 @@ export const holdersColumns = (skip: number): IColumn<TokenBalanceModel>[] => [
     type: 'number',
     render: (data) => (
       <>
-        <Value
-          value={financialFormat((data.percentage || 0) * 100)}
-          suffix="%"
-        />
+        <Value value={financialFormat((data.percentage || 0) * 100)} suffix="%" />
         <progress max="100" value={(data.percentage || 0) * 100} />
       </>
     ),

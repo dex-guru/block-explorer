@@ -3,10 +3,7 @@ import Delta from '@/components/Delta'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import Value from '@/components/Value'
-import {
-  financialFormat,
-  financialFormatLowValueHighPrecision,
-} from '@/lib/utils'
+import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
 
 export const topTokensColumns: IColumn<TopTokenModel>[] = [
   {
@@ -25,28 +22,19 @@ export const topTokensColumns: IColumn<TopTokenModel>[] = [
     accessor: 'volume24',
     title: 'Volume, 24h',
     type: 'number',
-    render: (data) => (
-      <Value prefix="$" value={financialFormat(data.volume24h)} />
-    ),
+    render: (data) => <Value prefix="$" value={financialFormat(data.volume24h)} />,
   },
   {
     accessor: 'liquidity',
     title: 'Liquidity',
     type: 'number',
-    render: (data) => (
-      <Value prefix="$" value={financialFormat(data.liquidity)} />
-    ),
+    render: (data) => <Value prefix="$" value={financialFormat(data.liquidity)} />,
   },
   {
     accessor: 'price',
     title: 'Price',
     type: 'number',
-    render: (data) => (
-      <Value
-        prefix="$"
-        value={financialFormatLowValueHighPrecision(data.price)}
-      />
-    ),
+    render: (data) => <Value prefix="$" value={financialFormatLowValueHighPrecision(data.price)} />,
   },
   {
     accessor: 'priceChange24h',

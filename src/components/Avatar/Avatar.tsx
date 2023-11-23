@@ -5,23 +5,11 @@ import { AvatarProps } from './types'
 import { jsNumberForAddress } from './utils'
 import styles from './Avatar.module.scss'
 
-const Avatar: FC<AvatarProps> = ({
-  address,
-  letters,
-  className,
-  type = 'smooth',
-}) => {
+const Avatar: FC<AvatarProps> = ({ address, letters, className, type = 'smooth' }) => {
   return (
-    <div
-      className={clsx(styles.container, styles[type], className)}
-      data-letters={letters}
-    >
+    <div className={clsx(styles.container, styles[type], className)} data-letters={letters}>
       {!!address && (
-        <JazzIcon
-          size={32}
-          seed={jsNumberForAddress(address)}
-          className={styles.icon}
-        />
+        <JazzIcon size={32} seed={jsNumberForAddress(address)} className={styles.icon} />
       )}
     </div>
   )

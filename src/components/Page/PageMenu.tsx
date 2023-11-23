@@ -33,11 +33,7 @@ const PageMenu: FC<{
     document.body.classList[!isOpen ? 'remove' : 'add']('open-menu')
   }, [isOpen])
 
-  const renderLink = (
-    link: PageMenuLink,
-    hasSubmenu?: boolean,
-    className?: string
-  ) => {
+  const renderLink = (link: PageMenuLink, hasSubmenu?: boolean, className?: string) => {
     const props = { ...link, submenu: undefined }
 
     return (
@@ -60,8 +56,7 @@ const PageMenu: FC<{
           },
           link.className,
           className
-        )}
-      >
+        )}>
         {link.caption}
         {hasSubmenu && <IconArrowDown className={styles.arrow} />}
       </Link>
@@ -72,8 +67,7 @@ const PageMenu: FC<{
     <div
       className={clsx(styles.container, className, {
         [styles.opened]: isOpen,
-      })}
-    >
+      })}>
       <Button
         icon={<Icon className={styles.icon} />}
         className={clsx(styles.toggle, { [styles.toggled]: isOpen })}

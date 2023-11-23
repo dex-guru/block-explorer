@@ -43,16 +43,11 @@ export const checkAllByAddresses = async (
  *
  */
 export const getSourcifyChains = async (): Promise<Chain[]> => {
-  const chainsArray = await (
-    await fetch(`${SERVER_URL}/chains`, { credentials: 'omit' })
-  ).json()
+  const chainsArray = await (await fetch(`${SERVER_URL}/chains`, { credentials: 'omit' })).json()
   return chainsArray
 }
 
-export const generateRepoLink = (
-  address: string,
-  matchStatus: 'perfect' | 'partial'
-) => {
+export const generateRepoLink = (address: string, matchStatus: 'perfect' | 'partial') => {
   let matchPath
   if (matchStatus === 'perfect') matchPath = 'full_match'
   if (matchStatus === 'partial') matchPath = 'partial_match'

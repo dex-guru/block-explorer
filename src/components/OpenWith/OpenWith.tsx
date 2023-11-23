@@ -39,24 +39,14 @@ const getLogo = (el: ExplorerData): ReactNode => {
   return <IconQuestion width={24} height={24} className={styles.icon} />
 }
 
-const OpenWith: FC<OpenWithProps> = ({
-  address,
-  type,
-  className,
-  chainConfig,
-}) => {
+const OpenWith: FC<OpenWithProps> = ({ address, type, className, chainConfig }) => {
   const renderElement = useCallback(
     (el: ExplorerData, idx: number) => {
-      const chainName = chainConfig.name
-        .toLowerCase()
-        .replace('ethereum', 'eth')
+      const chainName = chainConfig.name.toLowerCase().replace('ethereum', 'eth')
 
       const url = `${el.url}${el[`${type}_path`]}`
         .replace(':address', address)
-        .replace(
-          ':chain',
-          el.id === 'tenderly' && chainName === 'eth' ? 'mainnet' : chainName
-        )
+        .replace(':chain', el.id === 'tenderly' && chainName === 'eth' ? 'mainnet' : chainName)
         .replace(':tx', address)
 
       return (
@@ -67,8 +57,7 @@ const OpenWith: FC<OpenWithProps> = ({
           key={idx}
           className={styles.link}
           data-tooltip-content={el.display_name}
-          data-tooltip-id="app-tooltip"
-        >
+          data-tooltip-id="app-tooltip">
           {getLogo(el)}
         </Link>
       )

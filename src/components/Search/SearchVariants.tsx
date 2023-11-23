@@ -39,9 +39,7 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
       )
 
       const addressTitle = account.symbol ? (
-        `${account.symbol}${
-          account.name !== account.symbol ? ` (${account.name})` : ''
-        } `
+        `${account.symbol}${account.name !== account.symbol ? ` (${account.name})` : ''} `
       ) : (
         <Address
           address={account.address}
@@ -59,17 +57,14 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           key={account.address}
           onClick={() => {
             router.push(AddressValues['account'].url(account.address) || '')
-          }}
-        >
+          }}>
           <Tile
             className={styles.variant}
             icon={addressIcon}
             title={addressTitle}
             postfix={
               <Label type="tag" className={styles.tag}>
-                {account.addressType === 'smart_contract'
-                  ? 'Smart Contract'
-                  : 'Address'}
+                {account.addressType === 'smart_contract' ? 'Smart Contract' : 'Address'}
               </Label>
             }
           />
@@ -94,11 +89,8 @@ const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {
           className={styles.item}
           key={block.number}
           onClick={() => {
-            router.push(
-              AddressValues['block'].url(block.number.toString()) || ''
-            )
-          }}
-        >
+            router.push(AddressValues['block'].url(block.number.toString()) || '')
+          }}>
           <Tile
             className={styles.variant}
             icon={<IconBlock className={styles.avatar} />}

@@ -39,13 +39,10 @@ const ChainSelect: FC<ChainSelectProps> = ({
             return (
               <li key={chain.chainId} className={styles.item}>
                 <Link
-                  href={
-                    urlGenerator ? urlGenerator(chain) : explorer?.url || ''
-                  }
+                  href={urlGenerator ? urlGenerator(chain) : explorer?.url || ''}
                   className={styles.link}
                   style={{ color: chain?.chainColor }}
-                  onClick={handleClick}
-                >
+                  onClick={handleClick}>
                   <Image
                     src={chain.icon || ''}
                     alt={chain.name}
@@ -53,9 +50,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
                     width={32}
                     height={32}
                   />
-                  <span className={styles.caption}>
-                    {titleFormatter?.(chain) || chain.name}
-                  </span>
+                  <span className={styles.caption}>{titleFormatter?.(chain) || chain.name}</span>
                 </Link>
               </li>
             )
@@ -67,19 +62,11 @@ const ChainSelect: FC<ChainSelectProps> = ({
   return (
     <Dropdown
       className={clsx(styles.button, className)}
-      icon={
-        <Image
-          src={chainConfig.icon}
-          alt={chainConfig.name}
-          width={32}
-          height={32}
-        />
-      }
+      icon={<Image src={chainConfig.icon} alt={chainConfig.name} width={32} height={32} />}
       caption={titleFormatter?.(chainConfig) || chainConfig.name}
       onOpen={handleOpen}
       onClose={handleClose}
-      isOpen={isOpen}
-    >
+      isOpen={isOpen}>
       {!loading && renderContent()}
     </Dropdown>
   )

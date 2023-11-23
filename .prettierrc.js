@@ -1,9 +1,14 @@
 module.exports = {
+  arrowParens: 'always',
+  bracketSpacing: true,
+  endOfLine: 'auto',
+  bracketSameLine: true,
+  jsxSingleQuote: false,
+  printWidth: 100,
   semi: false,
-  trailingComma: 'es5',
   singleQuote: true,
   tabWidth: 2,
-  useTabs: false,
+  trailingComma: 'es5',
   importOrder: [
     'react',
     'next',

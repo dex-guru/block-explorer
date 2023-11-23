@@ -19,10 +19,7 @@ import {
   DEFAULT_DATE_RANGE,
   DATETIME_FORMATS,
 } from '@/lib/dates'
-import {
-  getRedashQueryResponse,
-  generateRedashQueryParams,
-} from '@/lib/redash/client'
+import { getRedashQueryResponse, generateRedashQueryParams } from '@/lib/redash/client'
 import { TRedashJob, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
 import styles from './DashboardWidget.module.scss'
@@ -42,16 +39,11 @@ const DashboardWidget: FC<{
   const queryParams = visualization?.query
     ? generateRedashQueryParams(visualization?.query, {
         ...(params || {}),
-        dates: getDynamicDateRangePeriod(
-          currentDateRange,
-          'datetime-range-with-seconds'
-        ),
+        dates: getDynamicDateRangePeriod(currentDateRange, 'datetime-range-with-seconds'),
       })
     : null
 
-  const swrKey = queryParams
-    ? { id: visualization?.query?.id, params: queryParams }
-    : null
+  const swrKey = queryParams ? { id: visualization?.query?.id, params: queryParams } : null
 
   const isQueryActiveJob = !!queryActiveJob && queryActiveJob.status < 3
 
@@ -108,9 +100,7 @@ const DashboardWidget: FC<{
     }
 
     if (visualization?.type === 'TABLE') {
-      return (
-        <DashboardWidgetTable data={queryResult?.data} isLoading={isFetching} />
-      )
+      return <DashboardWidgetTable data={queryResult?.data} isLoading={isFetching} />
     }
 
     if (visualization?.type) {
@@ -126,13 +116,7 @@ const DashboardWidget: FC<{
 
   const renderFooterStatus = () => {
     if (isFetching && !queryJob?.id) {
-      return (
-        <Value
-          className={styles.footer}
-          icon={<IconWatch />}
-          value={'Querying data'}
-        />
-      )
+      return <Value className={styles.footer} icon={<IconWatch />} value={'Querying data'} />
     }
 
     if (isFetching && !!queryJob?.id) {
@@ -146,13 +130,7 @@ const DashboardWidget: FC<{
     }
 
     if (!isFetching && !queryResult?.retrieved_at) {
-      return (
-        <Value
-          className={styles.timestamp}
-          icon={<IconAgo />}
-          value="Request failed"
-        />
-      )
+      return <Value className={styles.timestamp} icon={<IconAgo />} value="Request failed" />
     }
 
     if (!isFetching && !!queryResult?.retrieved_at) {
@@ -162,9 +140,7 @@ const DashboardWidget: FC<{
           icon={<IconAgo />}
           value={
             <Suspense fallback={<>&nbsp;</>}>
-              <TimeAgo
-                timestamp={new Date(queryResult?.retrieved_at).getTime() / 1000}
-              />
+              <TimeAgo timestamp={new Date(queryResult?.retrieved_at).getTime() / 1000} />
             </Suspense>
           }
         />
@@ -227,28 +203,19 @@ const DashboardWidget: FC<{
       className={clsx(styles.widget, className)}
       header={tools}
       style={{
-        gridColumn: `${options?.position.col + 1} / span ${
-          options?.position.sizeX
-        }`,
-        gridRow: `${options?.position.row + 1} / span ${
-          options?.position.sizeY
-        }`,
+        gridColumn: `${options?.position.col + 1} / span ${options?.position.sizeX}`,
+        gridRow: `${options?.position.row + 1} / span ${options?.position.sizeY}`,
       }}
-      footer={visualization ? renderWidgetFooter() : undefined}
-    >
+      footer={visualization ? renderWidgetFooter() : undefined}>
       {!!visualization?.query?.description && (
-        <div className={styles.description}>
-          {visualization.query.description}
-        </div>
+        <div className={styles.description}>{visualization.query.description}</div>
       )}
 
       {!!text && (
         <div
           className="text"
           dangerouslySetInnerHTML={{
-            __html: sanitize(
-              marked.parse(text, { mangle: false, headerIds: false })
-            ),
+            __html: sanitize(marked.parse(text, { mangle: false, headerIds: false })),
           }}
         />
       )}

@@ -1,7 +1,4 @@
-import {
-  ChainConfigModel,
-  ChainStatsModel,
-} from '@/__generated__/resolvers-types'
+import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 
 export type GasPriceType = 'low' | 'avg' | 'high' | 'standart'
 

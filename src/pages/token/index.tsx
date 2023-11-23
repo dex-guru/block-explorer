@@ -7,9 +7,7 @@ import StateView from '@/components/StateView'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
-const TokenIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
-  chainConfig,
-}) => {
+const TokenIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   const pageTitle = `No ${chainConfig.name} token address provided`
 
   return (

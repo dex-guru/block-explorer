@@ -1,10 +1,7 @@
 import { FC, useCallback, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { tokensColumns } from './columns'
-import {
-  TokenHoldingsModel,
-  TokenHoldingsStatsModel,
-} from '@/__generated__/resolvers-types'
+import { TokenHoldingsModel, TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
 import { IconNoData, IconWarehouse } from '@/components/Icons'

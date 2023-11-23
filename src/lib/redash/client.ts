@@ -1,9 +1,5 @@
 import isString from 'lodash/isString'
-import {
-  DEFAULT_DATE_RANGE,
-  DYNAMIC_DATE_PREFIX,
-  getDynamicDateRangePeriod,
-} from '../dates'
+import { DEFAULT_DATE_RANGE, DYNAMIC_DATE_PREFIX, getDynamicDateRangePeriod } from '../dates'
 import { getLogger } from '../logger'
 import { TRedashDashboard, TRedashQuery, TRedashQueryResponse } from './types'
 
@@ -72,9 +68,7 @@ export const getRedashDashboardsByTag = (
   return redashFetch(`/dashboards?tags=${tag}`)
 }
 
-export const getRedashDashboard = (
-  id: string | number
-): Promise<TRedashDashboard> => {
+export const getRedashDashboard = (id: string | number): Promise<TRedashDashboard> => {
   return redashFetch(`/dashboards/${id}${isString(id) ? '?legacy=true' : ''}`)
 }
 
@@ -111,9 +105,7 @@ export const generateRedashDashboardParams = (
       return
     }
 
-    params.push(
-      generateRedashQueryParams(widget?.visualization?.query, globalParams)
-    )
+    params.push(generateRedashQueryParams(widget?.visualization?.query, globalParams))
   })
 
   const resultParams: Record<string, unknown> = {}
@@ -187,9 +179,7 @@ export const getRadashDashboardWithResults = async (
   params?: Record<string, unknown>
 ) => {
   const dashboard = await getRedashDashboard(id)
-  const queryIds = dashboard?.widgets?.map(
-    (widget) => widget?.visualization?.query
-  )
+  const queryIds = dashboard?.widgets?.map((widget) => widget?.visualization?.query)
   const queries = await getRedashQueriesResponse(queryIds || [], params)
   return {
     dashboard,

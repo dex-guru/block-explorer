@@ -18,17 +18,12 @@ interface СhartsDetailsPageProps {
   dashboard: TRedashDashboard
 }
 
-const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
-  chainConfig,
-  dashboard,
-}) => {
+const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({ chainConfig, dashboard }) => {
   if (!checkChainFeature(chainConfig, 'charts')) {
     return null
   }
 
-  const pageTitle = `${dashboard?.name || 'No dashboard'} for ${
-    chainConfig.name
-  }`
+  const pageTitle = `${dashboard?.name || 'No dashboard'} for ${chainConfig.name}`
 
   return (
     <>
@@ -39,16 +34,9 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Page chainConfig={chainConfig}>
-        {!dashboard && (
-          <StateView icon={<IconSearch />} title="No dashboard  was found" />
-        )}
+        {!dashboard && <StateView icon={<IconSearch />} title="No dashboard  was found" />}
 
-        {!!dashboard && (
-          <Dashboard
-            data={dashboard}
-            params={{ network: chainConfig.shortName }}
-          />
-        )}
+        {!!dashboard && <Dashboard data={dashboard} params={{ network: chainConfig.shortName }} />}
 
         <Ad />
       </Page>

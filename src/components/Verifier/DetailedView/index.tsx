@@ -21,11 +21,8 @@ const DetailedView = ({ checkedContract, className }: DetailedViewProps) => {
     return (
       <Details
         title={`Missing ${missingCount} of ${totalFilesCount} files`}
-        className={clsx(styles.viewDetails, className)}
-      >
-        <Message type="danger">
-          Unable to find or retrieve the required source files below.
-        </Message>
+        className={clsx(styles.viewDetails, className)}>
+        <Message type="danger">Unable to find or retrieve the required source files below.</Message>
         <ul className={styles.filesList}>
           {Object.keys(files.missing).map((filePath, i) => (
             <li className={styles.filesItem} key={`${filePath}-${i}`}>
@@ -62,9 +59,7 @@ const DetailedView = ({ checkedContract, className }: DetailedViewProps) => {
                 <p>{files.invalid[filePath].msg}</p>
                 <h4 className="font-bold">Expected keccak256 hash:</h4>
                 <p>{files.invalid[filePath].expectedHash}</p>
-                <h4 className="font-bold">
-                  Calculated source content hash in the metadata:
-                </h4>
+                <h4 className="font-bold">Calculated source content hash in the metadata:</h4>
                 <p>{files.invalid[filePath].calculatedHash}</p>
               </div>
             </li>
@@ -78,8 +73,7 @@ const DetailedView = ({ checkedContract, className }: DetailedViewProps) => {
     return (
       <Details
         title={`Found ${files.found.length} of ${totalFilesCount}`}
-        className={clsx(styles.viewDetails, className)}
-      >
+        className={clsx(styles.viewDetails, className)}>
         <ul className={styles.filesList}>
           {files.found.map((file, i) => (
             <li className={styles.filesItem} key={`${file}-${i}`}>

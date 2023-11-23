@@ -9,16 +9,12 @@ export const logsColumns: IColumn<LogModel>[] = [
     accessor: 'hash',
     title: 'TX Hash',
     modifier: 'address',
-    render: (data) => (
-      <Address address={data.transactionHash} type="tx" isCopy />
-    ),
+    render: (data) => <Address address={data.transactionHash} type="tx" isCopy />,
   },
   {
     accessor: 'number',
     title: 'Block',
-    render: (data) => (
-      <Address address={`${data.blockNumber}`} type="block" isCopy />
-    ),
+    render: (data) => <Address address={`${data.blockNumber}`} type="block" isCopy />,
   },
 
   {

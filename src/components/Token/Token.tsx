@@ -10,13 +10,7 @@ import styles from './Token.module.scss'
 
 const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
   const logoImage = logo ? (
-    <Image
-      src={logo}
-      width={24}
-      height={24}
-      alt={symbol}
-      className={styles.icon}
-    />
+    <Image src={logo} width={24} height={24} alt={symbol} className={styles.icon} />
   ) : address ? (
     <Avatar address={address} className={styles.icon} />
   ) : (
@@ -31,11 +25,7 @@ const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
         <span className={styles.symbol}>{symbol}</span>
 
         {!!name && (
-          <span
-            className={styles.name}
-            data-tooltip-content={name}
-            data-tooltip-id="app-tooltip"
-          >
+          <span className={styles.name} data-tooltip-content={name} data-tooltip-id="app-tooltip">
             {name}
           </span>
         )}
@@ -47,8 +37,7 @@ const Token: FC<TokenProps> = ({ address, logo, name, symbol, className }) => {
     return (
       <Link
         href={AddressValues.token.url(address) || ''}
-        className={clsx(styles.container, className)}
-      >
+        className={clsx(styles.container, className)}>
         {content}
       </Link>
     )

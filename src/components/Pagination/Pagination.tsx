@@ -31,9 +31,7 @@ export const Pagination: FC<IPaginationProps> = ({
   const isMounted = useIsMount()
 
   const [currentPage, setCurrentPage] = useState(defaultCurrentPage)
-  const [totalPages, setTotalPages] = useState(() =>
-    getTotalPages(total, perPage)
-  )
+  const [totalPages, setTotalPages] = useState(() => getTotalPages(total, perPage))
 
   const doChangePage = useCallback(
     (page: number) => {

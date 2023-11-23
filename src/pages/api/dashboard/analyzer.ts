@@ -6,11 +6,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return
   }
 
-  const {
-    dashboard_slug,
-    parameters = '',
-    selected_prompt = '',
-  } = JSON.parse(req.body || {})
+  const { dashboard_slug, parameters = '', selected_prompt = '' } = JSON.parse(req.body || {})
 
   if (!dashboard_slug || !parameters) {
     res.status(404).send({ message: 'No enough parameters provided' })

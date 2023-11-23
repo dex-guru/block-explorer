@@ -7,19 +7,14 @@ import StateView from '@/components/StateView'
 import { initializeApollo, addApolloState } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 
-const BlockIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({
-  chainConfig,
-}) => {
+const BlockIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   const pageTitle = `No ${chainConfig.name} block number provided`
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Explore block to see included transactions.`}
-        />
+        <meta name="description" content={`Explore block to see included transactions.`} />
         <link rel="icon" href={chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

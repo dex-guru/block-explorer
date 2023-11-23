@@ -38,8 +38,7 @@ export const PerPageSelector: FC<IPerPageSelectorProps> = ({
       <select
         onChange={onPerPageChangeHandler}
         className={clsx(styles.selector, className)}
-        value={currentPerPage}
-      >
+        value={currentPerPage}>
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="25">25</option>

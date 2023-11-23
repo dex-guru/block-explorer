@@ -17,20 +17,14 @@ export const internalTxsColumns: (
   chainConfig: ChainConfigModel,
   chainStats: ChainStatsModel,
   inner?: boolean
-) => IColumn<InternalTransactionModel>[] = (
-  chainConfig,
-  chainStats,
-  inner = false
-) => {
+) => IColumn<InternalTransactionModel>[] = (chainConfig, chainStats, inner = false) => {
   const parentTxCols: IColumn<InternalTransactionModel>[] = inner
     ? []
     : [
         {
           accessor: 'blockNumber',
           title: 'Block',
-          render: (data) => (
-            <Address address={`${data.blockNumber}`} type="block" isCopy />
-          ),
+          render: (data) => <Address address={`${data.blockNumber}`} type="block" isCopy />,
         },
         {
           accessor: 'blockTimestamp',
@@ -55,16 +49,12 @@ export const internalTxsColumns: (
     {
       accessor: 'fromAddress',
       title: 'Address Out',
-      render: (data) => (
-        <Address type="account" address={data.fromAddress} isCopy />
-      ),
+      render: (data) => <Address type="account" address={data.fromAddress} isCopy />,
     },
     {
       accessor: 'toAddress',
       title: 'Address In',
-      render: (data) => (
-        <Address type="account" address={data.toAddress} isCopy />
-      ),
+      render: (data) => <Address type="account" address={data.toAddress} isCopy />,
     },
     {
       accessor: 'value',
@@ -80,10 +70,7 @@ export const internalTxsColumns: (
             className={styles.valueNativeWithStable}
             title={
               <Value
-                value={getNormalizedValue(
-                  bigValue,
-                  chainConfig?.nativeCurrency.decimals
-                )}
+                value={getNormalizedValue(bigValue, chainConfig?.nativeCurrency.decimals)}
                 suffix={
                   chainConfig?.nativeCurrency.symbol ? (
                     <>&nbsp;{chainConfig?.nativeCurrency.symbol}</>
@@ -95,9 +82,7 @@ export const internalTxsColumns: (
               <Value
                 prefix="$"
                 value={getNormalizedValue(
-                  bigValue.multipliedBy(
-                    Number(chainStats?.nativeTokenPriceUsd || 0)
-                  ),
+                  bigValue.multipliedBy(Number(chainStats?.nativeTokenPriceUsd || 0)),
                   chainConfig?.nativeCurrency.decimals,
                   { decimals: 2 }
                 )}

@@ -27,9 +27,7 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
     accessor: 'miner',
     render: (data) => {
       const txsCountDisplay = data.transactionCount ? (
-        <Link href={`/txs?block=${data.number}`}>
-          {data.transactionCount} txns
-        </Link>
+        <Link href={`/txs?block=${data.number}`}>{data.transactionCount} txns</Link>
       ) : (
         '0 txns'
       )
@@ -59,20 +57,11 @@ export const lastBlocksColumns: IColumn<BlockModelWithTimeDiff>[] = [
         return null
       }
 
-      const gasUtilization = financialFormat(
-        ((data.gasUsed || 0) / data.gasLimit) * 100,
-        {
-          decimals: 2,
-        }
-      )
+      const gasUtilization = financialFormat(((data.gasUsed || 0) / data.gasLimit) * 100, {
+        decimals: 2,
+      })
 
-      return (
-        <Label
-          title={`${gasUtilization}%`}
-          type="accent"
-          tooltip="Gas Utilization"
-        />
-      )
+      return <Label title={`${gasUtilization}%`} type="accent" tooltip="Gas Utilization" />
     },
   },
 ]

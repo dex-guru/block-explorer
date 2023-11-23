@@ -42,12 +42,7 @@ const getYAxisLabelsWidth = (
   return width
 }
 
-const CommonChart: FC<CommonChartProps> = ({
-  data,
-  className,
-  type = 'line',
-  options,
-}) => {
+const CommonChart: FC<CommonChartProps> = ({ data, className, type = 'line', options }) => {
   const chartData = generateCommonChartData(data, options.axis.x.dataKey)
 
   let Chart
@@ -106,9 +101,7 @@ const CommonChart: FC<CommonChartProps> = ({
         <TooltipContent
           title={`${tooltipTitle}`}
           entries={payload.map((item) => {
-            const resultValue = yFormatter
-              ? yFormatter(item.value, 0)
-              : item.value
+            const resultValue = yFormatter ? yFormatter(item.value, 0) : item.value
 
             return {
               title: item.name,
@@ -129,21 +122,11 @@ const CommonChart: FC<CommonChartProps> = ({
   const hasLeftAxis = !!leftAxisData.length
   const hasRightAxis = !!rightAxisData.length
 
-  const leftAxisWidth = getYAxisLabelsWidth(
-    leftAxisData,
-    options?.axis?.y?.tickFormatter
-  )
-  const rightAxisWidth = getYAxisLabelsWidth(
-    rightAxisData,
-    options?.axis?.y?.tickFormatter
-  )
+  const leftAxisWidth = getYAxisLabelsWidth(leftAxisData, options?.axis?.y?.tickFormatter)
+  const rightAxisWidth = getYAxisLabelsWidth(rightAxisData, options?.axis?.y?.tickFormatter)
 
   return (
-    <ResponsiveContainer
-      width="100%"
-      height="100%"
-      className={clsx(styles.container, className)}
-    >
+    <ResponsiveContainer width="100%" height="100%" className={clsx(styles.container, className)}>
       <Chart data={chartData} className={styles.chart}>
         {!!options?.grid && <CartesianGrid className={styles.grid} />}
 
@@ -151,11 +134,7 @@ const CommonChart: FC<CommonChartProps> = ({
           type={options?.axis.x.type || 'category'}
           domain={['dataMin', 'dataMax']}
           {...options?.axis?.x}
-          className={clsx(
-            styles.axisX,
-            styles.axisYLeft,
-            options?.axis?.x?.className
-          )}
+          className={clsx(styles.axisX, styles.axisYLeft, options?.axis?.x?.className)}
         />
 
         {hasLeftAxis && (
@@ -197,8 +176,7 @@ const CommonChart: FC<CommonChartProps> = ({
             dataKey={options?.axis.x.dataKey}
             type={options.axis.x.type}
             className={styles.zoom}
-            tickFormatter={options?.axis?.x?.tickFormatter}
-          >
+            tickFormatter={options?.axis?.x?.tickFormatter}>
             <Chart data={chartData}>{renderedSeries}</Chart>
           </Brush>
         )}

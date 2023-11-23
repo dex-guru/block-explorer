@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useIntervalWhen } from 'rooks'
+import { usePublicClient } from 'wagmi'
 import Loading from '../Loading'
 import GasPriceEntry from './GasPriceEntry'
 import { GasPriceProps, GasPriceValue } from './types'
 import Card from '@/components/Card'
 import { avg, checkChainFeature, formatFeeHistory } from '@/lib/utils'
 import styles from './GasPrice.module.scss'
-import { usePublicClient } from 'wagmi'
 
 const DateTime = dynamic(() => import('@/components/DateTime'), { ssr: false })
 
@@ -29,12 +29,7 @@ const Countdown: FC<{ value: number }> = ({ value }) => {
   return <>{secsLeft}</>
 }
 
-const GasPrice: FC<GasPriceProps> = ({
-  chainConfig,
-  chainStats,
-  className,
-  onChange,
-}) => {
+const GasPrice: FC<GasPriceProps> = ({ chainConfig, chainStats, className, onChange }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [gasData, setGasData] = useState<GasPriceValue | null>(null)
 
@@ -61,9 +56,7 @@ const GasPrice: FC<GasPriceProps> = ({
             const blocks = formatFeeHistory(feeHistory, false)
 
             const slow = avg(blocks.map((b) => b.priorityFeePerGas?.[0] || 0))
-            const average = avg(
-              blocks.map((b) => b.priorityFeePerGas?.[1] || 0)
-            )
+            const average = avg(blocks.map((b) => b.priorityFeePerGas?.[1] || 0))
             const fast = avg(blocks.map((b) => b.priorityFeePerGas?.[2] || 0))
 
             client.getBlock({ blockTag: 'pending' }).then((block) => {
@@ -109,8 +102,7 @@ const GasPrice: FC<GasPriceProps> = ({
         ) : (
           <Loading className={styles.loader} />
         )
-      }
-    >
+      }>
       <div className={styles.container}>
         <GasPriceEntry
           chainConfig={chainConfig}

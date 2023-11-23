@@ -43,30 +43,21 @@ const DropdownContent: FC<DropdownContentProps> = ({
 
     const rectButton = toggle?.getBoundingClientRect()
 
-    const isTopLimit =
-      (rectButton?.bottom || 0) + (rectDropdown?.height || 0) >
-      window.innerHeight
+    const isTopLimit = (rectButton?.bottom || 0) + (rectDropdown?.height || 0) > window.innerHeight
 
     setIsDropdownUp(isTopLimit)
 
     setDropdownCoord({
-      left: isRight
-        ? (rectButton?.right || 0) - (rectDropdown?.width || 0)
-        : rectButton?.left,
+      left: isRight ? (rectButton?.right || 0) - (rectDropdown?.width || 0) : rectButton?.left,
       top: !isTopLimit ? rectButton?.bottom : undefined,
-      bottom: isTopLimit
-        ? window.innerHeight - (rectButton?.top || 0)
-        : undefined,
+      bottom: isTopLimit ? window.innerHeight - (rectButton?.top || 0) : undefined,
     })
   }, [rectDropdown, toggle, isRight])
 
   const handleClickOutside = (event: Event): void => {
     if (
       !event.target ||
-      !(
-        toggle?.contains(event.target as Node) ||
-        dropdown?.contains(event.target as Node)
-      )
+      !(toggle?.contains(event.target as Node) || dropdown?.contains(event.target as Node))
     ) {
       setIsCurrentOpen(false)
     }
@@ -95,19 +86,12 @@ const DropdownContent: FC<DropdownContentProps> = ({
       )}
       style={
         {
-          '--coord-left': dropdownCoord?.left
-            ? `${dropdownCoord?.left}px`
-            : undefined,
-          '--coord-top': dropdownCoord?.top
-            ? `${dropdownCoord?.top}px`
-            : undefined,
-          '--coord-bottom': dropdownCoord?.bottom
-            ? `${dropdownCoord?.bottom}px`
-            : undefined,
+          '--coord-left': dropdownCoord?.left ? `${dropdownCoord?.left}px` : undefined,
+          '--coord-top': dropdownCoord?.top ? `${dropdownCoord?.top}px` : undefined,
+          '--coord-bottom': dropdownCoord?.bottom ? `${dropdownCoord?.bottom}px` : undefined,
           minWidth: toggle?.getBoundingClientRect()?.width || undefined,
         } as CSSProperties
-      }
-    >
+      }>
       {children || content}
     </div>,
     getRootElement()

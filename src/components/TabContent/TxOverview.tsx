@@ -29,11 +29,7 @@ import Table, {
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
-import {
-  checkChainFeature,
-  financialFormat,
-  getNormalizedValue,
-} from '@/lib/utils'
+import { checkChainFeature, financialFormat, getNormalizedValue } from '@/lib/utils'
 import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
 import styles from './TxOverview.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
@@ -63,16 +59,12 @@ const TxOverview: FC<{
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
 }> = ({ data, chainConfig, chainStats }) => {
-  const [erc20TransfersData, setErc20TransfersData] = useState<
-    Erc20EventModel[]
-  >([])
+  const [erc20TransfersData, setErc20TransfersData] = useState<Erc20EventModel[]>([])
   const [getErc2Events, { loading: loadingTransfers }] = useLazyQuery<{
     erc20Events: { total: number; data: Erc20EventModel[] }
   }>(GET_ERC20_EVENTS)
 
-  const [erc20ActionsData, setErc20ActionsData] = useState<Erc20EventModel[]>(
-    []
-  )
+  const [erc20ActionsData, setErc20ActionsData] = useState<Erc20EventModel[]>([])
   const [getErc2Actions, { loading: loadingActions }] = useLazyQuery<{
     erc20Events: { total: number; data: Erc20EventModel[] }
   }>(GET_ERC20_EVENTS)
@@ -152,8 +144,7 @@ const TxOverview: FC<{
 
   const gigaNative = <>&nbsp;{chainConfig.gasUnit}</>
 
-  const txStatus =
-    statusValues[data.status || (data.receiptStatus ? 'success' : 'failed')]
+  const txStatus = statusValues[data.status || (data.receiptStatus ? 'success' : 'failed')]
 
   const IconStatus = txStatus.icon
 
@@ -182,9 +173,7 @@ const TxOverview: FC<{
     {
       title: data.status === 'pending' ? 'Time last seen:' : 'Timestamp:',
       tooltip:
-        data.status === 'pending'
-          ? ''
-          : 'The date and time at which a transaction is produced.',
+        data.status === 'pending' ? '' : 'The date and time at which a transaction is produced.',
       value: (
         <Value
           icon={<IconWatch className={pageStyles.muted} />}
@@ -192,10 +181,7 @@ const TxOverview: FC<{
           suffix={
             <>
               &nbsp;
-              <DateTime
-                timestamp={data.blockTimestamp}
-                className={pageStyles.muted}
-              />
+              <DateTime timestamp={data.blockTimestamp} className={pageStyles.muted} />
             </>
           }
         />
@@ -207,17 +193,8 @@ const TxOverview: FC<{
       value: (
         <Separated>
           <>
-            <Address
-              address={data.fromAddress}
-              type="account"
-              isShorten={false}
-              isCopy
-            />
-            <EnsName
-              chainConfig={chainConfig}
-              address={data.fromAddress}
-              isTag
-            />
+            <Address address={data.fromAddress} type="account" isShorten={false} isCopy />
+            <EnsName chainConfig={chainConfig} address={data.fromAddress} isTag />
           </>
           <Label type="tag" className={pageStyles.success}>
             {data.nonce}
@@ -227,16 +204,10 @@ const TxOverview: FC<{
     },
     {
       title: 'Interacted With (To):',
-      tooltip:
-        'The receiving party of the transaction (could be a contract address).',
+      tooltip: 'The receiving party of the transaction (could be a contract address).',
       value: data.toAddress ? (
         <Separated>
-          <Address
-            address={data.toAddress}
-            type="account"
-            isShorten={false}
-            isCopy
-          />
+          <Address address={data.toAddress} type="account" isShorten={false} isCopy />
           <EnsName chainConfig={chainConfig} address={data.toAddress} isTag />
         </Separated>
       ) : null,
@@ -271,15 +242,11 @@ const TxOverview: FC<{
     },
     {
       title: 'Transaction Fee:',
-      tooltip:
-        'Amount paid to the block producer for processing the transaction.',
+      tooltip: 'Amount paid to the block producer for processing the transaction.',
       value: (
         <Separated>
           <Value
-            value={getNormalizedValue(
-              bigTxFee,
-              chainConfig.nativeCurrency.decimals
-            )}
+            value={getNormalizedValue(bigTxFee, chainConfig.nativeCurrency.decimals)}
             suffix={<>&nbsp;{chainConfig.nativeCurrency.symbol}</>}
           />
           <HistoricalValue
@@ -326,10 +293,7 @@ const TxOverview: FC<{
         <Separated>
           <Value value={financialFormat(data.gas)} />
           <Value value={financialFormat(data.receiptGasUsed)} />
-          <Value
-            value={financialFormat((data.receiptGasUsed * 100) / data.gas)}
-            suffix="%"
-          />
+          <Value value={financialFormat((data.receiptGasUsed * 100) / data.gas)} suffix="%" />
         </Separated>
       ),
     },
@@ -381,14 +345,8 @@ const TxOverview: FC<{
     transfersTotal - erc20TransfersData.length,
     MAX_EVENTS_PER_PAGE
   )
-  const countMoreNft = Math.min(
-    nftTotal - nftEventsData.length,
-    MAX_EVENTS_PER_PAGE
-  )
-  const countMoreActions = Math.min(
-    actionsTotal - erc20ActionsData.length,
-    MAX_EVENTS_PER_PAGE
-  )
+  const countMoreNft = Math.min(nftTotal - nftEventsData.length, MAX_EVENTS_PER_PAGE)
+  const countMoreActions = Math.min(actionsTotal - erc20ActionsData.length, MAX_EVENTS_PER_PAGE)
 
   return (
     <>
@@ -402,12 +360,9 @@ const TxOverview: FC<{
               title={
                 <div className={styles.cardTitle}>
                   ERC-20 Tokens Transferred:{' '}
-                  <Label className={pageStyles.propertyIndicator}>
-                    {transfersTotal}
-                  </Label>
+                  <Label className={pageStyles.propertyIndicator}>{transfersTotal}</Label>
                 </div>
-              }
-            >
+              }>
               <Card
                 actions={
                   countMoreTransfers > 0
@@ -422,8 +377,7 @@ const TxOverview: FC<{
                       ]
                     : undefined
                 }
-                className={styles.innerCard}
-              >
+                className={styles.innerCard}>
                 <Table
                   className={styles.table}
                   data={erc20TransfersData}
@@ -439,12 +393,9 @@ const TxOverview: FC<{
               title={
                 <div className={styles.cardTitle}>
                   NFT Tokens Transferred:{' '}
-                  <Label className={pageStyles.propertyIndicator}>
-                    {nftTotal}
-                  </Label>
+                  <Label className={pageStyles.propertyIndicator}>{nftTotal}</Label>
                 </div>
-              }
-            >
+              }>
               <Card
                 actions={
                   countMoreNft > 0
@@ -459,8 +410,7 @@ const TxOverview: FC<{
                       ]
                     : undefined
                 }
-                className={styles.innerCard}
-              >
+                className={styles.innerCard}>
                 <Table
                   className={styles.table}
                   data={nftEventsData}
@@ -476,12 +426,9 @@ const TxOverview: FC<{
               title={
                 <div className={styles.cardTitle}>
                   Transaction Actions:{' '}
-                  <Label className={pageStyles.propertyIndicator}>
-                    {actionsTotal}
-                  </Label>
+                  <Label className={pageStyles.propertyIndicator}>{actionsTotal}</Label>
                 </div>
-              }
-            >
+              }>
               <Card
                 actions={
                   countMoreActions > 0
@@ -496,8 +443,7 @@ const TxOverview: FC<{
                       ]
                     : undefined
                 }
-                className={styles.innerCard}
-              >
+                className={styles.innerCard}>
                 <Table
                   className={styles.table}
                   data={erc20ActionsData}
