@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { isHexString } from '@ethersproject/bytes'
-import { WagmiConfig } from 'wagmi'
 import styles from '../Pages.module.scss'
 import {
   ChainConfigModel,
@@ -21,7 +20,6 @@ import OpenWith from '@/components/OpenWith'
 import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
@@ -46,16 +44,14 @@ interface ITxProps {
 
 const TxPage: NextPage<ITxProps> = (props) => {
   const router = useRouter()
-  const { wagmiConfig } = useWagmiConfig(props.chainConfig)
 
   const { tab } = router.query
   const pathname = router.asPath.split('?')[0]
 
   const currentTab = Array.isArray(tab) ? tab[0] : tab || ''
 
-  const pageTitle = `${props.chainConfig.name} Transaction ${
-    props.data?.hash || 'not found'
-  }`
+  const pageTitle = `${props.chainConfig.name} Transaction ${props.data?.hash || 'not found'
+    }`
 
   return (
     <>
@@ -64,9 +60,8 @@ const TxPage: NextPage<ITxProps> = (props) => {
         <link rel="canonical" href={pathname} />
         <meta
           name="description"
-          content={`Explore transaction ${
-            props.data?.hash || ''
-          } to see what happened with token balances and smart contracts in this TX.`}
+          content={`Explore transaction ${props.data?.hash || ''
+            } to see what happened with token balances and smart contracts in this TX.`}
         />
         <link rel="icon" href={props.chainConfig.icon} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -101,79 +96,77 @@ const TxPage: NextPage<ITxProps> = (props) => {
                   to: pathname,
                   content: (
                     <Suspense fallback={<LoadingCard />}>
-                      <WagmiConfig config={wagmiConfig}>
-                        <TxOverview {...props} />
-                      </WagmiConfig>
+                      <TxOverview {...props} />
                     </Suspense>
                   ),
                 },
                 ...(props.data.status !== 'pending'
                   ? [
-                      ...(checkChainFeature(props.chainConfig, 'traces')
-                        ? [
-                            {
-                              title: 'Internal TXns',
-                              value: 'internal',
-                              to: `${pathname}?tab=internal`,
-                              content: (
-                                <Suspense fallback={<LoadingCard />}>
-                                  <InternalTxs
-                                    hash={props.data.hash}
-                                    {...props}
-                                  />
-                                </Suspense>
-                              ),
-                            },
-                          ]
-                        : []),
-                      ...(checkChainFeature(props.chainConfig, 'balances')
-                        ? [
-                            {
-                              title: (
-                                <>
-                                  Balance Changes{' '}
-                                  <Label
-                                    title="alpha"
-                                    tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
-                                    className={styles['label-info']}
-                                  />
-                                </>
-                              ),
-                              value: 'balanceChanges',
-                              to: `${pathname}?tab=balanceChanges`,
-                              content: (
-                                <Suspense fallback={<LoadingCard />}>
-                                  <TxBalanceChanges {...props} />
-                                </Suspense>
-                              ),
-                            },
-                          ]
-                        : []),
-                      {
-                        title: `Logs (${props.data.receiptLogsCount || 0})`,
-                        value: 'logs',
-                        to: `${pathname}?tab=logs`,
-                        content: (
-                          <Suspense fallback={<LoadingCard />}>
-                            <TxLogs {...props} />
-                          </Suspense>
-                        ),
-                      },
-                      ...(checkChainFeature(props.chainConfig, 'traces')
-                        ? [
-                            {
-                              title: 'Trace',
-                              value: 'trace',
-                              to: `${pathname}?tab=trace`,
-                              content: (
-                                <Suspense fallback={<LoadingCard />}>
-                                  <TxTrace {...props} />
-                                </Suspense>
-                              ),
-                            },
-                          ]
-                        : []),
-                    ]
+                    ...(checkChainFeature(props.chainConfig, 'traces')
+                      ? [
+                        {
+                          title: 'Internal TXns',
+                          value: 'internal',
+                          to: `${pathname}?tab=internal`,
+                          content: (
+                            <Suspense fallback={<LoadingCard />}>
+                              <InternalTxs
+                                hash={props.data.hash}
+                                {...props}
+                              />
+                            </Suspense>
+                          ),
+                        },
+                      ]
+                      : []),
+                    ...(checkChainFeature(props.chainConfig, 'balances')
+                      ? [
+                        {
+                          title: (
+                            <>
+                              Balance Changes{' '}
+                              <Label
+                                title="alpha"
+                                tooltip="This section is undergoing development and testing. Please do not hesitate to reach out to us in case you encounter any errors."
+                                className={styles['label-info']}
+                              />
+                            </>
+                          ),
+                          value: 'balanceChanges',
+                          to: `${pathname}?tab=balanceChanges`,
+                          content: (
+                            <Suspense fallback={<LoadingCard />}>
+                              <TxBalanceChanges {...props} />
+                            </Suspense>
+                          ),
+                        },
+                      ]
+                      : []),
+                    {
+                      title: `Logs (${props.data.receiptLogsCount || 0})`,
+                      value: 'logs',
+                      to: `${pathname}?tab=logs`,
+                      content: (
+                        <Suspense fallback={<LoadingCard />}>
+                          <TxLogs {...props} />
+                        </Suspense>
+                      ),
+                    },
+                    ...(checkChainFeature(props.chainConfig, 'traces')
+                      ? [
+                        {
+                          title: 'Trace',
+                          value: 'trace',
+                          to: `${pathname}?tab=trace`,
+                          content: (
+                            <Suspense fallback={<LoadingCard />}>
+                              <TxTrace {...props} />
+                            </Suspense>
+                          ),
+                        },
+                      ]
+                      : []),
+                  ]
                   : []),
               ]}
               value={currentTab}

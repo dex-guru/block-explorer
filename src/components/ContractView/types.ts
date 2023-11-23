@@ -1,4 +1,3 @@
-import { RainbowKitChain } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/RainbowKitChainContext'
 import {
   AddressModel,
   ChainConfigModel,
@@ -15,6 +14,5 @@ export interface IContractViewProps {
     stats: ChainStatsModel
     config: ChainConfigModel
   }
-  chains: RainbowKitChain[]
   tokenHoldingsStats?: TokenHoldingsStatsModel
 }

@@ -5,7 +5,7 @@ import styles from './ThemeToggle.module.scss'
 
 export const THEME_STORAGE_NAME = 'blockExplorerSelectedTheme'
 
-const getCurrentTheme = (): string => {
+export const getCurrentTheme = (): string => {
   const value = window
     .getComputedStyle(document.documentElement)
     .getPropertyValue('content')

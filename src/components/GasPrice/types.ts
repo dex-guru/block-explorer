@@ -1,5 +1,3 @@
-import { FallbackTransport } from 'viem'
-import { PublicClient } from 'wagmi'
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -17,7 +15,6 @@ export type GasPriceValue = {
 export type GasPriceProps = {
   chainConfig: ChainConfigModel
   chainStats: ChainStatsModel
-  publicClient: (value: { chainId?: number }) => PublicClient<FallbackTransport>
   className?: string
   onChange?: (value: GasPriceValue) => void
 }
