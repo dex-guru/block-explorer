@@ -29,6 +29,10 @@ const DashboardWidgetChart: FC<{
   const columnMapping: Record<string, string[]> = { x: [], y: [], zVal: [] }
 
   Object.entries(visualization.options.columnMapping || {}).forEach(([key, axis]) => {
+    if (!columnMapping[axis]) {
+      columnMapping[axis] = []
+    }
+
     columnMapping[axis].push(key)
   })
 

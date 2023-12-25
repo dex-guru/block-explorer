@@ -54,6 +54,7 @@ export type TRedashVisualization = {
     legend?: {
       enabled?: boolean
     }
+    swappedAxes?: boolean
   }
 }
 
