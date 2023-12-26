@@ -39,23 +39,38 @@ export type TRedashQuery = {
   }
 }
 
+type TRedashTableColumn = {
+  visible?: boolean
+  order?: number
+  title?: string
+  name: string
+  type: 'integer' | 'string'
+}
+
+export type TRedashVisualizationOptions = unknown & {
+  globalSeriesType?: string
+  columnMapping?: Record<string, string>
+  counterLabel?: string
+  counterColName?: string
+  rowNumber?: 1
+  series?: {
+    stacking?: boolean
+  }
+  seriesOptions?: Record<string, { name?: string; type?: string; color?: string }>
+  legend?: {
+    enabled?: boolean
+  }
+  swappedAxes?: boolean
+  columns?: TRedashTableColumn[]
+  stringSuffix?: string
+}
+
 export type TRedashVisualization = {
   type: string
   name: string
   description: string
   query: TRedashQuery
-  options: unknown & {
-    globalSeriesType?: string
-    columnMapping?: Record<string, string>
-    counterLabel?: string
-    counterColName?: string
-    rowNumber?: 1
-    seriesOptions?: Record<string, { name?: string; type?: string; color?: string }>
-    legend?: {
-      enabled?: boolean
-    }
-    swappedAxes?: boolean
-  }
+  options: TRedashVisualizationOptions
 }
 
 export type TRedashWidget = {

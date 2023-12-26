@@ -22,6 +22,7 @@ export type CommonChartOptions = {
   }
   zoom?: boolean
   isAnimated?: boolean
+  stackId?: string
 }
 
 export type CommonChartProps = {

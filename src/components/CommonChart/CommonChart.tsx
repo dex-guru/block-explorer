@@ -66,6 +66,7 @@ const CommonChart: FC<CommonChartProps> = ({ data, className, type = 'line', opt
       dataKey: el.id || 'value',
       stroke: el.color,
       fill: el.color,
+      stackId: options.stackId,
       dot: false,
       yAxisId: el.yAxis || 'left',
       isAnimationActive: options?.isAnimated ?? false,

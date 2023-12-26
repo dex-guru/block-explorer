@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from 'react'
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
-import CommonChart from '@/components/CommonChart'
+import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
 import HeatmapChart from '@/components/HeatmapChart'
 import Loading from '@/components/Loading'
 import Message from '@/components/Message'
@@ -117,23 +117,44 @@ const DashboardWidgetChart: FC<{
     const entities: Record<string, { name: string; friendly_name: string; type: string }> =
       data?.columns?.reduce((obj, curr) => ({ ...obj, [curr.name]: curr }), {}) || {}
 
-    const dataset = columnMapping.y.map((col, idx) => {
-      const entity = entities[col]
+    const dataset: CommonChartDataset[] = []
+    const dataSeries: Record<string, CommonChartDataset> = {}
 
-      const entityTitle = visualization.options?.seriesOptions
-        ? visualization.options?.seriesOptions[entity?.name]?.name
-        : entity?.friendly_name || entity?.name
+    if (!columnMapping.series?.length) {
+      columnMapping.series = ['']
+    }
 
-      return {
-        id: col,
-        data: data?.rows || [],
-        color:
-          visualization.options?.seriesOptions?.[entity?.name]?.color ||
-          uniqolor(`${idx}-${col}`).color,
-        name: entityTitle,
-        key: entity?.name,
-        className: `has-color ${entity?.name}`,
-      }
+    data?.rows.forEach((row) => {
+      columnMapping.y.forEach((col) => {
+        const entity = entities[col]
+        const entityTitle =
+          visualization.options?.seriesOptions?.[entity?.name]?.name ||
+          entity?.friendly_name ||
+          entity?.name
+
+        columnMapping.series?.forEach((serial) => {
+          const serialKey = row[serial] ? `${row[serial]}:${col}` : col
+
+          if (!dataSeries[serialKey]) {
+            dataSeries[serialKey] = {
+              id: serialKey,
+              data: [],
+              color:
+                visualization.options?.seriesOptions?.[entity?.name]?.color ||
+                uniqolor(`${row[serial] || entityTitle}`).color,
+              key: entity?.name,
+              name: `${row[serial] || entityTitle}`,
+              className: `has-color ${entity?.name}`,
+            }
+          }
+
+          dataSeries[serialKey].data.push(row)
+        })
+      })
+    })
+
+    Object.values(dataSeries).forEach((dataSerial) => {
+      dataset.push(dataSerial)
     })
 
     return (
@@ -150,6 +171,7 @@ const DashboardWidgetChart: FC<{
           type={type || 'line'}
           data={dataset}
           options={{
+            stackId: visualization.options.series?.stacking ? columnMapping.x[0] : undefined,
             zoom: true,
             axis: {
               x: {

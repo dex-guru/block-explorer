@@ -75,6 +75,8 @@ const DashboardWidget: FC<{
 
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
+      console.log(visualization)
+
       return (
         <DashboardWidgetCounter
           isLoading={isFetching}
@@ -83,7 +85,8 @@ const DashboardWidget: FC<{
               visualization.options.counterColName || ''
             ] || ''
           )}
-          unit={visualization.options.counterLabel}
+          unit={visualization.options.stringSuffix}
+          subtitle={visualization.options.counterLabel}
         />
       )
     }
@@ -100,7 +103,13 @@ const DashboardWidget: FC<{
     }
 
     if (visualization?.type === 'TABLE') {
-      return <DashboardWidgetTable data={queryResult?.data} isLoading={isFetching} />
+      return (
+        <DashboardWidgetTable
+          options={visualization.options}
+          data={queryResult?.data}
+          isLoading={isFetching}
+        />
+      )
     }
 
     if (visualization?.type) {
