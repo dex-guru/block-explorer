@@ -1,9 +1,13 @@
 import { CSSProperties, FC, useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
+
 import clsx from 'clsx'
+import { createPortal } from 'react-dom'
 import { useDimensionsRef } from 'rooks'
-import { DropdownContentProps } from './types'
+
 import { getRootElement } from '@/lib/utils'
+
+import { DropdownContentProps } from './types'
+
 import styles from './Dropdown.module.scss'
 
 const DropdownContent: FC<DropdownContentProps> = ({

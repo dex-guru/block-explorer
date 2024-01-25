@@ -1,8 +1,11 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
+
 import JazzIcon from './JazzIcon'
 import { AvatarProps } from './types'
 import { jsNumberForAddress } from './utils'
+
 import styles from './Avatar.module.scss'
 
 const Avatar: FC<AvatarProps> = ({ address, letters, className, type = 'smooth' }) => {

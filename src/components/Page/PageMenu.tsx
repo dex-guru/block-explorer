@@ -1,9 +1,13 @@
-import { FC, useEffect, useState } from 'react'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
+
+import { FC, useEffect, useState } from 'react'
+
 import { clsx } from 'clsx'
+
 import Button from '@/components/Button'
 import { IconArrowDown, IconCross, IconMenu } from '@/components/Icons'
+
 import styles from './PageMenu.module.scss'
 
 export type PageMenuLink = LinkProps & { caption: string; className?: string }

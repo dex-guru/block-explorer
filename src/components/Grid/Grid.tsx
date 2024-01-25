@@ -1,6 +1,9 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
+
 import { GridProps } from './types'
+
 import styles from './Grid.module.scss'
 
 const Grid: FC<GridProps> = ({ className, children }) => {

@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
+import { useCallback, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import {
   ChainConfigModel,
   ChainStatsModel,

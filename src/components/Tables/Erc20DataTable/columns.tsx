@@ -1,5 +1,7 @@
 import Image from 'next/image'
+
 import clsx from 'clsx'
+
 import { DexModel, Erc20EventModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Label from '@/components/Label'
@@ -7,6 +9,7 @@ import { IColumn } from '@/components/Table/types'
 import TimeAgo from '@/components/TimeAgo'
 import Token from '@/components/Token'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+
 import styles from './Erc20DataTable.module.scss'
 
 export const erc20Columns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [

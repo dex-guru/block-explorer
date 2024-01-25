@@ -6,6 +6,7 @@ import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
+
 import styles from './TokensDataTable.module.scss'
 
 export const tokensColumns: IColumn<TokenHoldingsModel>[] = [

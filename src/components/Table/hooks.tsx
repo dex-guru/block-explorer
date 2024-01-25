@@ -1,10 +1,13 @@
 import { createRef } from 'react'
-import { CSSTransition } from 'react-transition-group'
+
 import clsx from 'clsx'
+import { CSSTransition } from 'react-transition-group'
+
 import TooltipAnchor from '../TooltipAnchor'
 import { Cell } from './Cell'
 import { Row } from './Row'
 import { IColumn } from './types'
+
 import styles from './Table.module.scss'
 
 export const useBodyRows = <T,>(options: {

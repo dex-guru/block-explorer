@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import styles from '../Table.module.scss'
+
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -12,6 +12,8 @@ import Tile from '@/components/Tile'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import { financialFormat, getNormalizedValue } from '@/lib/utils'
+
+import styles from '../Table.module.scss'
 
 export const internalTxsColumns: (
   chainConfig: ChainConfigModel,

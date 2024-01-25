@@ -1,15 +1,19 @@
 import { CSSProperties, FC, useEffect, useMemo, useState } from 'react'
-import { RainbowKitProvider, darkTheme, lightTheme, Theme } from '@rainbow-me/rainbowkit'
+
+import { RainbowKitProvider, Theme, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 import merge from 'lodash/merge'
 import { WagmiConfig } from 'wagmi'
+
+import RainbowKitAuthWrapper from '@/containers/RainbowKitAuthWrapper'
+import { useWagmiConfig } from '@/hooks/useWagmiConfig'
+import { hexToHsl } from '@/lib/utils'
+
 import { Theme as ThemeEnum } from '../ThemeToggle'
 import { THEME_STORAGE_NAME, getCurrentTheme } from '../ThemeToggle/ThemeToggle'
 import PageFooter from './PageFooter'
 import PageHeader from './PageHeader'
 import { PageProps } from './types'
-import RainbowKitAuthWrapper from '@/containers/RainbowKitAuthWrapper'
-import { useWagmiConfig } from '@/hooks/useWagmiConfig'
-import { hexToHsl } from '@/lib/utils'
+
 import styles from './Page.module.scss'
 
 const Page: FC<PageProps> = ({ children, chainConfig }) => {

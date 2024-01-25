@@ -1,6 +1,8 @@
-import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
+import { useState } from 'react'
+
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import Dashboard from '@/components/Dashboard'

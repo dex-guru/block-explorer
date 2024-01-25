@@ -1,12 +1,16 @@
 import { FC, useCallback, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
-import { dexTradesColumns } from './columns'
+
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
+import { dexTradesColumns } from './columns'
+
 import styles from './DexTradesDataTable.module.scss'
 
 const PER_PAGE = 10

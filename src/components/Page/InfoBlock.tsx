@@ -1,11 +1,15 @@
 import { FC } from 'react'
+
 import { useQuery } from '@apollo/client'
 import clsx from 'clsx'
-import { InfoBlockProps } from './types'
+
 import Tile from '@/components/Tile'
 import Value from '@/components/Value'
 import { CHAIN_STATS } from '@/lib/apollo/queries'
 import { financialFormat } from '@/lib/utils'
+
+import { InfoBlockProps } from './types'
+
 import styles from './InfoBlock.module.scss'
 
 const INFOBLOCK_POLL_INTERVAL = 5 * 60 * 1000

@@ -1,8 +1,10 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
-import HoldingsPage from './[address]'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { initializeApollo, addApolloState } from '@/lib/apollo/client'
+import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
+
+import HoldingsPage from './[address]'
 
 const HoldingsIndex: NextPage<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => (
   <HoldingsPage address="" chainConfig={chainConfig} />

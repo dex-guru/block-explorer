@@ -1,5 +1,7 @@
 import { FC, useCallback, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
@@ -8,6 +10,7 @@ import { transfersColumns } from '@/components/Table/columns/transfersColumns'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
 import styles from './TransfersDataTable.module.scss'
 
 const PER_PAGE = 10

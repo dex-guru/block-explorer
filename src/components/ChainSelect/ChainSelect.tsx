@@ -1,10 +1,15 @@
-import { FC, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { FC, useState } from 'react'
+
 import clsx from 'clsx'
+
+import { useChainsWhen } from '@/hooks/useChains'
+
 import Dropdown from '../Dropdown'
 import { ChainSelectProps } from './types'
-import { useChainsWhen } from '@/hooks/useChains'
+
 import styles from './ChainSelect.module.scss'
 
 const ChainSelect: FC<ChainSelectProps> = ({

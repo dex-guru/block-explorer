@@ -1,10 +1,10 @@
-import { FC, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, useState } from 'react'
+
 import { useQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
-import Details from '../Details'
-import TxBalanceChangesFlow from './TxBalanceChangesFlow'
-import { useBalanceChanges } from './hooks'
+
 import {
   ChainConfigModel,
   DecodedInputModel,
@@ -18,6 +18,11 @@ import { LoadingCard } from '@/components/Loading'
 import Table from '@/components/Table'
 import { balanceChangesColumns } from '@/components/Table/columns/balanceChangesColumns'
 import { GET_INTERNAL_TXS, GET_TRANSACTION_LOGS } from '@/lib/apollo/queries'
+
+import Details from '../Details'
+import TxBalanceChangesFlow from './TxBalanceChangesFlow'
+import { useBalanceChanges } from './hooks'
+
 import styles from './TxBalanceChanges.module.scss'
 
 const StateView = dynamic(() => import('@/components/StateView'), {

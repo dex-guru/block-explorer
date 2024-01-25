@@ -1,8 +1,12 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { useControls, TransformComponent } from 'react-zoom-pan-pinch'
+
 import clsx from 'clsx'
 import mermaid from 'mermaid'
+import { TransformComponent, useControls } from 'react-zoom-pan-pinch'
 import uniqid from 'uniqid'
+
+import Button from '@/components/Button'
+
 import {
   IconDownload,
   IconExpand,
@@ -11,7 +15,7 @@ import {
   IconZoomIn,
   IconZoomOut,
 } from '../Icons'
-import Button from '@/components/Button'
+
 import styles from './Graph.module.scss'
 
 const GraphContent: FC<{

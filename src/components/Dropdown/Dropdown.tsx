@@ -1,8 +1,12 @@
-import { FC, useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, useEffect, useRef, useState } from 'react'
+
 import clsx from 'clsx'
+
 import { IconArrowDown } from '../Icons'
 import { DropdownProps } from './types'
+
 import styles from './Dropdown.module.scss'
 
 const DropdownContent = dynamic(() => import('./DropdownContent'), {

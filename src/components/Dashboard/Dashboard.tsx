@@ -1,13 +1,16 @@
 import { FC, useMemo, useState } from 'react'
-import { IconNoData, IconWarehouse } from '../Icons'
-import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
-import DashboardWidget from './DashboardWidget/DashboardWidget'
+
 import Button from '@/components/Button'
 import DetailsView from '@/components/DetailsView'
 import StateView from '@/components/StateView'
 import { DEFAULT_DATE_RANGE, DYNAMIC_DATE_PREFIX, getDynamicDateRangePeriod } from '@/lib/dates'
 import { generateRedashDashboardParams } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
+
+import { IconNoData, IconWarehouse } from '../Icons'
+import DashboardAnalyzer from './DashboardAnalyzer/DashboardAnalyzer'
+import DashboardWidget from './DashboardWidget/DashboardWidget'
+
 import styles from './Dashboard.module.scss'
 
 const Dashboard: FC<{

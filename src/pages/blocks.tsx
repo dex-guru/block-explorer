@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
+import { useCallback, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import {
   BlockModel,
   BlockStatsModel,
@@ -24,6 +27,7 @@ import { GET_BLOCKS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
+
 import styles from './Pages.module.scss'
 
 interface IBlocksProps {

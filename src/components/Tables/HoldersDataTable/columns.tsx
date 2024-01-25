@@ -6,6 +6,7 @@ import { IColumn } from '@/components/Table/types'
 import Tile from '@/components/Tile'
 import Value from '@/components/Value'
 import { financialFormat } from '@/lib/utils'
+
 import styles from './HoldersDataTable.module.scss'
 
 export const holdersColumns = (skip: number): IColumn<TokenBalanceModel>[] => [

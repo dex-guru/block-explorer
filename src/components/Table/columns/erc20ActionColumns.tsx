@@ -1,12 +1,14 @@
 import Image from 'next/image'
+
 import clsx from 'clsx'
+
 import { DexModel, Erc20EventModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Label from '@/components/Label'
+import stylesTable from '@/components/Table/Table.module.scss'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import { financialFormat } from '@/lib/utils'
-import stylesTable from '@/components/Table/Table.module.scss'
 import styles from '@/pages/Pages.module.scss'
 
 export const erc20ActionColumns = (dexes: DexModel[]): IColumn<Erc20EventModel>[] => [

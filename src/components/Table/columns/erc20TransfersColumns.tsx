@@ -1,9 +1,9 @@
 import { Erc20EventModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
+import styles from '@/components/Tables/Erc20DataTable/Erc20DataTable.module.scss'
 import Token from '@/components/Token'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
-import styles from '@/components/Tables/Erc20DataTable/Erc20DataTable.module.scss'
 
 export const erc20TransfersColumns: IColumn<Erc20EventModel>[] = [
   {

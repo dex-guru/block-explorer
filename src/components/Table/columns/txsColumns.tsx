@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import styles from '../Table.module.scss'
+
 import { TransactionModel } from '@/__generated__/resolvers-types'
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
@@ -8,6 +8,8 @@ import Tile from '@/components/Tile'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
+
+import styles from '../Table.module.scss'
 
 export const txsColumns = (
   chainConfig?: ChainConfigModel,

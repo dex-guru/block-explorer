@@ -1,4 +1,5 @@
-import { init, ApmBase } from '@elastic/apm-rum'
+import { ApmBase, init } from '@elastic/apm-rum'
+
 import { CHAIN_ID } from '@/constants'
 
 let apm: ApmBase | undefined

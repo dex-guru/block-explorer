@@ -1,11 +1,15 @@
 import { FC, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
 import { sanitize } from 'isomorphic-dompurify'
-import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
-import { useDashboardAnalyze } from './hooks'
+
 import Button from '@/components/Button'
 import { IconArrowDown, IconOutput } from '@/components/Icons'
 import { useTypewriter } from '@/hooks/useTypewriter'
+
+import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
+import { useDashboardAnalyze } from './hooks'
+
 import styles from './DashboardAnalyzerOverview.module.scss'
 
 const DashboardAnalyzerOverview: FC<{

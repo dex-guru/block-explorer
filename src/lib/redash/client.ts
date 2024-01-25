@@ -1,4 +1,5 @@
 import isString from 'lodash/isString'
+
 import { DEFAULT_DATE_RANGE, DYNAMIC_DATE_PREFIX, getDynamicDateRangePeriod } from '../dates'
 import { getLogger } from '../logger'
 import { TRedashDashboard, TRedashQuery, TRedashQueryResponse } from './types'

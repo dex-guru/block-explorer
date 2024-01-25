@@ -1,10 +1,12 @@
-import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+
+import { Suspense } from 'react'
+
 import { isHexString } from '@ethersproject/bytes'
-import styles from '../Pages.module.scss'
+
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -24,6 +26,8 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_TRANSACTIONS_BY_HASH } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { checkChainFeature } from '@/lib/utils'
+
+import styles from '../Pages.module.scss'
 
 const TxOverview = dynamic(() => import('@/components/TabContent/TxOverview'))
 const TxLogs = dynamic(() => import('@/components/TabContent/TxLogs'))

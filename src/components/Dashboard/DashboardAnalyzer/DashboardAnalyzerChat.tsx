@@ -1,12 +1,16 @@
 import { ChangeEventHandler, FC, FormEventHandler, useEffect, useRef, useState } from 'react'
+
 import { sanitize } from 'isomorphic-dompurify'
-import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
-import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
-import { useDashboardAnalyze } from './hooks'
+
 import Button from '@/components/Button'
 import { IconSend, IconUser } from '@/components/Icons'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import ImageAvatar from '@/images/guru-avatar.svg'
+
+import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
+import DashboardAnalyzerVariants from './DashboardAnalyzerVariants'
+import { useDashboardAnalyze } from './hooks'
+
 import styles from './DashboardAnalyzerChat.module.scss'
 
 const DashboardAnalyzerChat: FC<{

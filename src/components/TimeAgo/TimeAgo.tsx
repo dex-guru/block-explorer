@@ -1,8 +1,12 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
+
+import { getDateTime } from '@/lib/dates'
+
 import { formatTime } from './helpers'
 import { TimeAgoProps } from './types'
-import { getDateTime } from '@/lib/dates'
+
 import styles from './TimeAgo.module.scss'
 
 const TimeAgo: FC<TimeAgoProps> = ({ timestamp, className, showTooltip = true }) => {

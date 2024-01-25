@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
+
 import clsx from 'clsx'
+
+import Details from '@/components/Details'
+import Label from '@/components/Label'
+import { LoadingCard } from '@/components/Loading'
+import Properties from '@/components/Properties'
+
 import DetailedView from '../../DetailedView'
-import styles from '../../Verifier.module.scss'
 import { SendableContract, VerificationInput, VerifyResponse } from '../../types'
 import { Status } from '../../types'
 import ChainAddressForm from './ChainAddressForm'
 import Invalid from './Invalid'
 import Missing from './Missing'
-import Details from '@/components/Details'
-import Label from '@/components/Label'
-import { LoadingCard } from '@/components/Loading'
-import Properties from '@/components/Properties'
+
+import styles from '../../Verifier.module.scss'
 
 type CheckedContractProps = {
   isOpen?: boolean

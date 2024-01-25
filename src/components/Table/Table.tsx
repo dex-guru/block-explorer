@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { TransitionGroup } from 'react-transition-group'
+
 import clsx from 'clsx'
+import { TransitionGroup } from 'react-transition-group'
+
 import { useBodyRows, useHeader } from './hooks'
 import { IColumn } from './types'
+
 import styles from './Table.module.scss'
 
 export interface ITableProps<T> {

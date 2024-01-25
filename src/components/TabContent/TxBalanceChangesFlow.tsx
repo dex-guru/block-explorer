@@ -1,12 +1,16 @@
-import { CSSProperties, FC } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+
+import { CSSProperties, FC } from 'react'
+
 import BigNumber from 'bignumber.js'
-import { BalanceFlow } from './hooks'
+import { renderToStaticMarkup } from 'react-dom/server'
+
 import { ChainConfigModel, TokenModel } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
 import { getNormalizedValue } from '@/lib/utils'
+
+import { BalanceFlow } from './hooks'
 
 const Graph = dynamic(() => import('@/components/Graph'), { ssr: false })
 

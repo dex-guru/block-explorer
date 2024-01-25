@@ -1,13 +1,17 @@
-import { FC, useEffect, useState } from 'react'
-import { Tooltip } from 'react-tooltip'
 import type { AppProps } from 'next/app'
-import { Sora, IBM_Plex_Sans_Condensed } from 'next/font/google'
+import { IBM_Plex_Sans_Condensed, Sora } from 'next/font/google'
+
+import { FC, useEffect, useState } from 'react'
+
 import { ApolloProvider } from '@apollo/client'
+import { Tooltip } from 'react-tooltip'
+
 import Loading from '@/components/Loading'
 import { useApollo } from '@/lib/apollo/client'
 import { initApm } from '@/services/apmService'
-import styles from './Pages.module.scss'
 import '@/styles/index.scss'
+
+import styles from './Pages.module.scss'
 
 const sora = Sora({
   weight: ['500', '600'],

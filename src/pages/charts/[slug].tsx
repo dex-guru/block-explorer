@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import Dashboard from '@/components/Dashboard/Dashboard'

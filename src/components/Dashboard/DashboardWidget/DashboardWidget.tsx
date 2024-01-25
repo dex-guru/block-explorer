@@ -1,11 +1,10 @@
 import { ChangeEventHandler, FC, Suspense, useState } from 'react'
+
 import clsx from 'clsx'
 import { sanitize } from 'isomorphic-dompurify'
 import { marked } from 'marked'
 import useSWRImmutable from 'swr/immutable'
-import DashboardWidgetChart from './DashboardWidgetChart'
-import DashboardWidgetCounter from './DashboardWidgetCounter'
-import DashboardWidgetTable from './DashboardWidgetTable'
+
 import Button from '@/components/Button'
 import Card from '@/components/Card'
 import { IconAgo, IconWarehouse, IconWatch } from '@/components/Icons'
@@ -13,15 +12,20 @@ import Message from '@/components/Message'
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import {
-  DYNAMIC_DATE_RANGES,
-  DYNAMIC_DATE_PREFIX,
-  getDynamicDateRangePeriod,
-  DEFAULT_DATE_RANGE,
   DATETIME_FORMATS,
+  DEFAULT_DATE_RANGE,
+  DYNAMIC_DATE_PREFIX,
+  DYNAMIC_DATE_RANGES,
+  getDynamicDateRangePeriod,
 } from '@/lib/dates'
-import { getRedashQueryResponse, generateRedashQueryParams } from '@/lib/redash/client'
+import { generateRedashQueryParams, getRedashQueryResponse } from '@/lib/redash/client'
 import { TRedashJob, TRedashWidget } from '@/lib/redash/types'
 import { financialFormat } from '@/lib/utils'
+
+import DashboardWidgetChart from './DashboardWidgetChart'
+import DashboardWidgetCounter from './DashboardWidgetCounter'
+import DashboardWidgetTable from './DashboardWidgetTable'
+
 import styles from './DashboardWidget.module.scss'
 
 const WIDGET_QUERY_INTERVAL = 5 * 1000

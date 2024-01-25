@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
+
 import bytes from 'bytes'
+
+import Grid from '@/components/Grid'
+import Message from '@/components/Message'
+
 import CheckedContractsView from './CheckedContractsView'
 import FileUpload from './FileUpload'
 import { ADD_FILES_URL, RESTART_SESSION_URL, SESSION_DATA_URL, VERIFY_URL } from './constants'
@@ -11,8 +16,7 @@ import {
   VerificationInput,
   VerifyResponse,
 } from './types'
-import Grid from '@/components/Grid'
-import Message from '@/components/Message'
+
 import styles from './Verifier.module.scss'
 
 const UI_MAX_FILE_SIZE = 30 * 1024 * 1024

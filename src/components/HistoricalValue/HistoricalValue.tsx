@@ -1,15 +1,19 @@
 import { FC, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import Loading from '../Loading'
-import { HistoricalValueProps } from './types'
+
 import { HistoricalPriceModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
 import { IconAgo } from '@/components/Icons'
 import Value from '@/components/Value'
 import { GET_HISTORICAL_TOKEN_PRICE } from '@/lib/apollo/queries'
 import { getNormalizedValue } from '@/lib/utils'
+
+import Loading from '../Loading'
+import { HistoricalValueProps } from './types'
+
 import styles from './HistoricalValue.module.scss'
 
 const HistoricalValue: FC<HistoricalValueProps> = ({

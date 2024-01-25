@@ -1,8 +1,10 @@
-import { FC, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+
+import { FC, useState } from 'react'
+
 import clsx from 'clsx'
-import { SearchVariantsProps } from './types'
+
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import Avatar from '@/components/Avatar'
@@ -12,6 +14,9 @@ import TabPanel from '@/components/TabPanel'
 import Table from '@/components/Table'
 import { searchTxsColumns } from '@/components/Table/columns/searchTxsColumns'
 import Tile from '@/components/Tile'
+
+import { SearchVariantsProps } from './types'
+
 import styles from './Search.module.scss'
 
 const SearchVariants: FC<SearchVariantsProps> = ({ data, className }) => {

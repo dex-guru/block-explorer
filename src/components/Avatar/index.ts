@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+
 import JazzIcon from './JazzIcon'
 import { AvatarProps, AvatarType } from './types'
 

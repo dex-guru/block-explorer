@@ -1,6 +1,7 @@
+import { CHAIN_ID } from '@/constants'
+
 import { generateRepoLink } from '../../../api'
 import { CheckAllByAddressResult, SendableContract } from '../../../types'
-import { CHAIN_ID } from '@/constants'
 
 // Message displayed after each interaction inside the container
 type MessageProps = {

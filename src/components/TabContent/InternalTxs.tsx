@@ -1,5 +1,7 @@
 import { FC, useCallback, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
@@ -8,6 +10,7 @@ import { internalTxsColumns } from '@/components/Table/columns/internalTxsColumn
 import { useIsMount } from '@/hooks'
 import { GET_INTERNAL_TXS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
 import styles from './InternalTxs.module.scss'
 
 const PER_PAGE = 10

@@ -1,14 +1,19 @@
-import { FC, ReactNode, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { FC, ReactNode, useCallback } from 'react'
+
 import clsx from 'clsx'
-import { OpenWithProps } from './types'
+
 import Heading from '@/components/Heading'
 import { IconQuestion } from '@/components/Icons'
 import { ExplorerData, explorers } from '@/constants/explorers'
 import IconDexGuru from '@/images/explorers/dexguru.svg'
 import IconEigenPhi from '@/images/explorers/eigenphi.svg'
 import IconTenderly from '@/images/explorers/tenderly.svg'
+
+import { OpenWithProps } from './types'
+
 import styles from './OpenWith.module.scss'
 
 const getLogo = (el: ExplorerData): ReactNode => {

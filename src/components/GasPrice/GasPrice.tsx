@@ -1,12 +1,17 @@
-import { FC, useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, useCallback, useEffect, useState } from 'react'
+
 import { useIntervalWhen } from 'rooks'
 import { usePublicClient } from 'wagmi'
+
+import Card from '@/components/Card'
+import { avg, checkChainFeature, formatFeeHistory } from '@/lib/utils'
+
 import Loading from '../Loading'
 import GasPriceEntry from './GasPriceEntry'
 import { GasPriceProps, GasPriceValue } from './types'
-import Card from '@/components/Card'
-import { avg, checkChainFeature, formatFeeHistory } from '@/lib/utils'
+
 import styles from './GasPrice.module.scss'
 
 const DateTime = dynamic(() => import('@/components/DateTime'), { ssr: false })

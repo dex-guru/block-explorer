@@ -1,11 +1,12 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import DetailsView from '@/components/DetailsView'
 import { IconVerify } from '@/components/Icons'
 import Page from '@/components/Page'
 import Verifier from '@/components/Verifier'
-import { initializeApollo, addApolloState } from '@/lib/apollo/client'
+import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CHAIN_CONFIG } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 

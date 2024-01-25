@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode } from 'react'
+
 import { ButtonProps } from '../Button'
 
 export type CardProps = {

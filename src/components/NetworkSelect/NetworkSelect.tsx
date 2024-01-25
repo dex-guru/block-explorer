@@ -1,9 +1,13 @@
 import { FC, Suspense, lazy } from 'react'
+
 import clsx from 'clsx'
-import Dropdown from '../Dropdown'
-import { NetworkSelectProps } from './types'
+
 import Button from '@/components/Button'
 import { IconQuestion } from '@/components/Icons'
+
+import Dropdown from '../Dropdown'
+import { NetworkSelectProps } from './types'
+
 import styles from './NetworkSelect.module.scss'
 
 const NetworkSelect: FC<NetworkSelectProps> = ({ current, className, variants }) => {

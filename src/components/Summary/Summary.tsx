@@ -1,10 +1,13 @@
 import { FC } from 'react'
-import { SummaryProps } from './types'
+
 import Card from '@/components/Card'
 import CommonChart from '@/components/CommonChart'
 import Tile from '@/components/Tile'
 import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat, getShortDate } from '@/lib/utils'
+
+import { SummaryProps } from './types'
+
 import styles from './Summary.module.scss'
 
 const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {

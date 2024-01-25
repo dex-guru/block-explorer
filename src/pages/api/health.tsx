@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_HEALTH } from '@/lib/apollo/queries'
 

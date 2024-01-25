@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react'
+
 import clsx from 'clsx'
-import Separated from '../Separated'
-import { GasPriceType } from './types'
+
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Heading from '@/components/Heading'
 import Value from '@/components/Value'
@@ -9,6 +9,10 @@ import ImageStress from '@/images/emoji/stress.svg'
 import ImageSwear from '@/images/emoji/swear.svg'
 import ImageSweet from '@/images/emoji/sweet.svg'
 import { getNormalizedValue } from '@/lib/utils'
+
+import Separated from '../Separated'
+import { GasPriceType } from './types'
+
 import styles from './GasPrice.module.scss'
 
 const gasPriceValues: Record<GasPriceType, { title: string; icon: ReactNode }> = {

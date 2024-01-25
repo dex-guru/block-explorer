@@ -1,7 +1,11 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import Loading from './Loading'
+
 import Card from '@/components/Card'
+
+import Loading from './Loading'
+
 import styles from './Loading.module.scss'
 
 const LoadingCard: FC<{ className?: string }> = ({ className }) => {

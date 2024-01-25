@@ -1,5 +1,7 @@
 import { FC } from 'react'
+
 import { BannerProps } from './types'
+
 import styles from './Banner.module.scss'
 
 const Banner: FC<BannerProps> = ({ children }) => {

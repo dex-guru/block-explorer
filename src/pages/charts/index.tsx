@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { useState } from 'react'
+
 import clsx from 'clsx'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'
@@ -28,6 +31,7 @@ import { getLogger } from '@/lib/logger'
 import { getRedashDashboardsAll } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
 import { checkChainFeature, getSlug } from '@/lib/utils'
+
 import styles from './Charts.module.scss'
 
 interface ChartsPageProps {

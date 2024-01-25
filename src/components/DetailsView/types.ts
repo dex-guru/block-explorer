@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
-import { OpenWithType } from '../OpenWith/types'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
+
+import { OpenWithType } from '../OpenWith/types'
 
 export type DetailsViewProps = {
   title: ReactNode

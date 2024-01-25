@@ -1,5 +1,7 @@
 import { FC, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import { LogModel, TransactionModel } from '@/__generated__/resolvers-types'
 import { IconNoData } from '@/components/Icons'
 import { LoadingCard } from '@/components/Loading'

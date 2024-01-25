@@ -1,9 +1,13 @@
 import { FC, useEffect, useState } from 'react'
+
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import { CodeFormat, CodeProps } from './types'
+
 import Button from '@/components/Button'
 import Copy from '@/components/Copy'
+
+import { CodeFormat, CodeProps } from './types'
+
 import styles from './Code.module.scss'
 
 const Code: FC<CodeProps> = ({

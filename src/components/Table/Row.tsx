@@ -1,5 +1,7 @@
 import { ForwardedRef, ReactNode, forwardRef } from 'react'
+
 import clsx from 'clsx'
+
 import styles from './Table.module.scss'
 
 interface IRowProps {

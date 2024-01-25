@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useMemo } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
-import { erc20Columns } from './columns'
+
 import Button from '@/components/Button'
 import DataTable from '@/components/DataTable'
 import { IconNoData, IconWarehouse } from '@/components/Icons'
@@ -8,6 +9,9 @@ import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ERC20_EVENTS, GET_ERC20_EVENTS_TOTALS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
+import { erc20Columns } from './columns'
+
 import styles from './Erc20DataTable.module.scss'
 
 const PER_PAGE = 10

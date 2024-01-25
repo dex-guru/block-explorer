@@ -1,9 +1,13 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import { SocialsProps } from './types'
+
 import IconDiscord from '@/images/socials/discord.svg'
 import IconTelegram from '@/images/socials/telegram.svg'
 import IconTwitter from '@/images/socials/twitter.svg'
+
+import { SocialsProps } from './types'
+
 import styles from './Socials.module.scss'
 
 const Socials: FC<SocialsProps> = ({ className }) => {

@@ -1,9 +1,13 @@
 import { FC, useEffect, useState } from 'react'
+
 import { useQuery } from '@apollo/client'
-import { lastTxsColumns } from './columns'
+
 import { ChainConfigModel, TransactionModel } from '@/__generated__/resolvers-types'
 import Table from '@/components/Table/Table'
 import { TRANSACTIONS_LAST } from '@/lib/apollo/queries'
+
+import { lastTxsColumns } from './columns'
+
 import styles from './ShortTxs.module.scss'
 
 interface IShortTxsTableProps {

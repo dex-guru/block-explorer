@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+
 import { useLazyQuery } from '@apollo/client'
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+
 import {
   ChainConfigModel,
   TransactionModel,
@@ -13,6 +15,7 @@ import StateView from '@/components/StateView'
 import TabPanel from '@/components/TabPanel'
 import Trace from '@/components/Trace'
 import { GET_TRANSACTION_TRACES } from '@/lib/apollo/queries'
+
 import styles from './TxTrace.module.scss'
 
 const TxTrace: FC<{

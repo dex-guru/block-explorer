@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { clsx } from 'clsx'
+
 import { ChainConfigModel, Maybe, TokenModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
 import Label from '@/components/Label'
+import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 import { IColumn } from '@/components/Table/types'
 import Token from '@/components/Token'
 import { getNormalizedValue } from '@/lib/utils'
-import styles from '@/components/TabContent/TxBalanceChanges.module.scss'
 
 const getTokenData = (tokens?: TokenModel[], address?: string | null) =>
   tokens?.find((tkn) => tkn.address.toLowerCase() === address?.toLowerCase())

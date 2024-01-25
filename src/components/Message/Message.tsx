@@ -1,8 +1,12 @@
 import { FC, ReactNode } from 'react'
+
 import clsx from 'clsx'
-import { MessageProps, MessageType } from './types'
+
 import Button from '@/components/Button'
 import { IconDanger, IconIdea, IconQuestion, IconSuccess, IconWarning } from '@/components/Icons'
+
+import { MessageProps, MessageType } from './types'
+
 import styles from './Message.module.scss'
 
 const icons: Record<MessageType, ReactNode> = {

@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
+
 import {
   InternalTransactionModel,
   LogModel,

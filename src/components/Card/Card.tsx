@@ -1,8 +1,12 @@
 import React, { FC } from 'react'
+
 import clsx from 'clsx'
-import { CardProps } from './types'
+
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
+
+import { CardProps } from './types'
+
 import styles from './Card.module.scss'
 
 export const Card: FC<CardProps> = ({

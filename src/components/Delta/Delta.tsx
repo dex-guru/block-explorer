@@ -1,7 +1,11 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import { DeltaProps } from './types'
+
 import { financialFormat } from '@/lib/utils'
+
+import { DeltaProps } from './types'
+
 import styles from './Delta.module.scss'
 
 export const normalizeDelta = (value: number): string => {
