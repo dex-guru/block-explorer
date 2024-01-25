@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Button from '@/components/Button'
@@ -17,6 +18,7 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS_FULL } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
+
 import styles from './Pages.module.scss'
 
 interface ChainPageProps {
