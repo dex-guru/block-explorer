@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 
 export type HistoricalValueProps = {

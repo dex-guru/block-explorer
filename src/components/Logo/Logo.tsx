@@ -1,8 +1,12 @@
-import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { LogoProps } from './types'
+
+import { FC } from 'react'
+
 import ImgBlockExplorer from '@/images/blockexplorer.svg'
+
+import { LogoProps } from './types'
+
 import styles from './Logo.module.scss'
 
 const Logo: FC<LogoProps> = ({ title, to, url }) => {

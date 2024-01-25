@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { GET_ALL_CHAINS } from '@/lib/apollo/queries'
 

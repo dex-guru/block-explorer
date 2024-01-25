@@ -1,6 +1,8 @@
 import { FC, useMemo } from 'react'
-import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+
 import { useQuery } from '@apollo/client'
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+
 import { ContractCodeModel } from '@/__generated__/resolvers-types'
 import Code from '@/components/Code'
 import Details from '@/components/Details'
@@ -10,6 +12,7 @@ import Properties from '@/components/Properties'
 import { Property } from '@/components/Properties/types'
 import { GET_CONTRACT_CODE } from '@/lib/apollo/queries'
 import { Match } from '@/types'
+
 import styles from './ContractView.module.scss'
 
 export interface IFilesProps {

@@ -1,6 +1,8 @@
-import { renderToStaticMarkup } from 'react-dom/server'
 import type { NextApiRequest, NextApiResponse } from 'next'
+
+import { renderToStaticMarkup } from 'react-dom/server'
 import { isAddress } from 'viem'
+
 import { JazzIcon, jsNumberForAddress } from '@/components/Avatar'
 
 const handler = (req: NextApiRequest, res: NextApiResponse) => {

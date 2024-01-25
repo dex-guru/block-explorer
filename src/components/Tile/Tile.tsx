@@ -1,6 +1,9 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
+
 import { TileProps } from './types'
+
 import styles from './Tile.module.scss'
 
 const Tile: FC<TileProps> = ({ title, prefix, postfix, icon, className, children }) => {

@@ -1,6 +1,8 @@
 import { getAddress, isAddress } from 'viem'
-import { AddressType } from './types'
+
 import { getShortAddress } from '@/lib/utils'
+
+import { AddressType } from './types'
 
 type AddressValueProps = {
   format: (address: string, shorten?: boolean) => string

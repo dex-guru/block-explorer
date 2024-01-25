@@ -1,7 +1,11 @@
-import React, { FC } from 'react'
 import Link from 'next/link'
+
+import React, { FC } from 'react'
+
 import clsx from 'clsx'
+
 import { ButtonProps } from './types'
+
 import styles from './Button.module.scss'
 
 const Button: FC<React.HTMLProps<HTMLAnchorElement> & ButtonProps> = ({

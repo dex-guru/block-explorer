@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+
 import BlockOverview from './BlockOverview'
 
 const TxOverview = dynamic(() => import('./TxOverview'))

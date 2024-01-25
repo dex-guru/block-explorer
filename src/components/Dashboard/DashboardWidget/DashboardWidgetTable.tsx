@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
+
 import DataTable from '@/components/DataTable'
 import { DEFAULT_PER_PAGE } from '@/components/Pagination'
 import { IColumn } from '@/components/Table'
 import { TRedashQueryResultData, TRedashVisualizationOptions } from '@/lib/redash/types'
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
+
 import styles from './DashboardWidget.module.scss'
 
 const DashboardWidgetTable: FC<{

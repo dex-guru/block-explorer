@@ -1,6 +1,8 @@
-import { SliseAd } from '@slise/embed-react'
 import { FC } from 'react'
+
+import { SliseAd } from '@slise/embed-react'
 import { useDimensionsRef } from 'rooks'
+
 import styles from './Ad.module.scss'
 
 const Ad: FC = () => {

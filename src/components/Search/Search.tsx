@@ -1,13 +1,18 @@
-import { FC, FocusEventHandler, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, FocusEventHandler, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
 import { useDebounce } from 'rooks'
-import { SearchProps, SearchResults } from './types'
+
 import Button from '@/components/Button'
 import { IconSearch } from '@/components/Icons'
 import { useGenericSearch } from '@/hooks/useGenericSearch'
 import { GET_SEARCH } from '@/lib/apollo/queries'
+
+import { SearchProps, SearchResults } from './types'
+
 import styles from './Search.module.scss'
 
 const DropdownContent = dynamic(() => import('@/components/Dropdown/DropdownContent'), {

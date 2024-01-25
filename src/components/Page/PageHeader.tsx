@@ -1,16 +1,21 @@
-import { FC, MouseEvent, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, MouseEvent, useMemo, useState } from 'react'
+
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
 import Cookies from 'js-cookie'
-import InfoBlock from './InfoBlock'
-import PageMenu, { PageMenuMainLink } from './PageMenu'
-import { PageHeaderProps } from './types'
+
 import Logo from '@/components/Logo'
 import Search from '@/components/Search'
 import { AUTH_COOKIE_NAME } from '@/constants'
 import { SUCCESS_AUTH_EVENT } from '@/containers/RainbowKitAuthWrapper'
 import { checkChainFeature } from '@/lib/utils'
+
+import InfoBlock from './InfoBlock'
+import PageMenu, { PageMenuMainLink } from './PageMenu'
+import { PageHeaderProps } from './types'
+
 import styles from './PageHeader.module.scss'
 
 const ThemeToggle = dynamic(() => import('@/components/ThemeToggle'), {

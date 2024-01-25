@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { redashFetch } from '@/lib/redash/client'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

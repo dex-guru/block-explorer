@@ -1,10 +1,13 @@
-import { useEffect } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+
+import { useEffect } from 'react'
+
 import StateView from '@/components/StateView'
 import { CHAIN_ID } from '@/constants'
 import ImageError from '@/images/error.svg'
+
 import styles from './Pages.module.scss'
 
 const ErrorPage: NextPage = () => {

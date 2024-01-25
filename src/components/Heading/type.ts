@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+
 import { TooltipAnchorOptions } from '../TooltipAnchor/types'
 
 export type HeadingSize = 'lg' | 'md' | 'sm' | 'xs'

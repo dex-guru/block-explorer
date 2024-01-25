@@ -1,7 +1,11 @@
 import { CSSProperties, FC } from 'react'
+
 import clsx from 'clsx'
-import { HeatmapChartProps } from './types'
+
 import { financialFormatLowValueHighPrecision } from '@/lib/utils'
+
+import { HeatmapChartProps } from './types'
+
 import styles from './HeatmapChart.module.scss'
 
 const format = (value: string | number, formatter?: (value: string) => string): string =>

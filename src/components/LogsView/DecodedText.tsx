@@ -1,5 +1,7 @@
 import { FC } from 'react'
+
 import { LogModel } from '@/__generated__/resolvers-types'
+
 import styles from './LogsView.module.scss'
 
 interface IDecodedTextProps {

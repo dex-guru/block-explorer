@@ -1,7 +1,9 @@
 import { FC, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
+
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -30,9 +32,10 @@ import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat, getNormalizedValue } from '@/lib/utils'
-import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
-import styles from './TxOverview.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
+import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
+
+import styles from './TxOverview.module.scss'
 
 const statusValues: Record<
   string,

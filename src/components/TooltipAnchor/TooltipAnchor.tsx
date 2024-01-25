@@ -1,8 +1,12 @@
 import React, { FC } from 'react'
+
 import { renderToStaticMarkup } from 'react-dom/server'
-import { TooltipAnchorProps } from './types'
+
 import IconInfo from '@/images/icons/info.svg'
 import { getTextWithAnchors } from '@/lib/utils'
+
+import { TooltipAnchorProps } from './types'
+
 import styles from './TooltipAnchor.module.scss'
 
 export const TooltipAnchor: FC<TooltipAnchorProps> = ({ tooltip, className, place, type }) => {

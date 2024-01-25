@@ -1,8 +1,12 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import { DetailsProps } from './types'
+
 import Heading from '@/components/Heading'
 import { IconArrowDown } from '@/components/Icons'
+
+import { DetailsProps } from './types'
+
 import styles from './Details.module.scss'
 
 const Details: FC<DetailsProps> = ({ title, isOpen, className, children, onToggle }) => {

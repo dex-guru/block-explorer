@@ -1,9 +1,13 @@
 import { FC, MouseEventHandler, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
-import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
-import { useDashboardPrompts } from './hooks'
+
 import Button from '@/components/Button'
 import Loading from '@/components/Loading'
+
+import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
+import { useDashboardPrompts } from './hooks'
+
 import styles from './DashboardAnalyzerVariants.module.scss'
 
 const DashboardAnalyzerVariants: FC<{

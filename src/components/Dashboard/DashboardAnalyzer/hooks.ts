@@ -1,4 +1,5 @@
 import useSWRImmutable from 'swr/immutable'
+
 import { DashboardAnalyzerHistory } from './DashboardAnalyzer'
 
 type Params = Record<string, unknown>

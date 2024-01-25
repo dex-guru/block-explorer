@@ -1,7 +1,10 @@
-import { ChangeEventHandler, useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
+import { ChangeEventHandler, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import { ChainConfigModel, ChainStatsModel, TopTokensModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DataTable from '@/components/DataTable'
@@ -13,8 +16,8 @@ import { useIsMount } from '@/hooks'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_TOP_TOKENS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
-import { PaginationVariables } from '@/types'
 import styles from '@/pages/Pages.module.scss'
+import { PaginationVariables } from '@/types'
 
 const DEFAULT_VARIABLES = {
   first: DEFAULT_PER_PAGE,

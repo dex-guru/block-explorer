@@ -1,5 +1,7 @@
-import { FC, Suspense, useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
+
+import { FC, Suspense, useCallback, useEffect, useState } from 'react'
+
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
 

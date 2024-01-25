@@ -1,5 +1,7 @@
 import * as React from 'react'
+
 import MersenneTwister from 'mersenne-twister'
+
 import { colorRotate, colors } from './utils'
 
 // constants

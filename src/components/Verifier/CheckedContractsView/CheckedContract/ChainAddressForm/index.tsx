@@ -1,7 +1,14 @@
 import React, { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react'
+
 import { clsx } from 'clsx'
 import { getAddress, isHex } from 'viem'
-import styles from '../../../Verifier.module.scss'
+
+import Button from '@/components/Button'
+import Label from '@/components/Label'
+import Properties from '@/components/Properties'
+import DetailedView from '@/components/Verifier/DetailedView'
+import { CHAIN_ID } from '@/constants'
+
 import { checkAllByAddresses } from '../../../api'
 import {
   CheckAllByAddressResult,
@@ -10,11 +17,8 @@ import {
   VerifyResponse,
 } from '../../../types'
 import Message from './Message'
-import Button from '@/components/Button'
-import Label from '@/components/Label'
-import Properties from '@/components/Properties'
-import DetailedView from '@/components/Verifier/DetailedView'
-import { CHAIN_ID } from '@/constants'
+
+import styles from '../../../Verifier.module.scss'
 
 type ChainAddressFormProps = {
   customStatus: string

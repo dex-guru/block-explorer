@@ -1,13 +1,18 @@
-import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { FC } from 'react'
+
 import clsx from 'clsx'
-import ChainSelect from '../ChainSelect/ChainSelect'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import Button from '@/components/Button'
 import Heading from '@/components/Heading'
 import ImgBlockExplorer from '@/images/blockexplorer.svg'
 import IconGotoTop from '@/images/icons/goto-top.svg'
+
+import ChainSelect from '../ChainSelect/ChainSelect'
+
 import styles from './PageFooter.module.scss'
 
 const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {

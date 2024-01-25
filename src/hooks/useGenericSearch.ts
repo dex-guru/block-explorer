@@ -1,5 +1,7 @@
-import { ChangeEventHandler, FormEventHandler, RefObject, useRef, useState } from 'react'
 import { NextRouter, useRouter } from 'next/router'
+
+import { ChangeEventHandler, FormEventHandler, RefObject, useRef, useState } from 'react'
+
 import { isAddress, isHex } from 'viem'
 
 const doSearch = async (q: string, router: NextRouter) => {

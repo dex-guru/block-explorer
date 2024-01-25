@@ -1,6 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
-import { holdersColumns } from './columns'
+
 import { TokenBalanceModel, TokenBalancesStatsModel } from '@/__generated__/resolvers-types'
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
@@ -8,6 +9,9 @@ import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_ADDRESS_HOLDERS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
+import { holdersColumns } from './columns'
+
 import styles from './HoldersDataTable.module.scss'
 
 const PER_PAGE = 10

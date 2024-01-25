@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+
 import { BlockModel, ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView/DetailsView'

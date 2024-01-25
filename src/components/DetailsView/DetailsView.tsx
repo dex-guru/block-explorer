@@ -1,9 +1,13 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import { DetailsViewProps } from './types'
+
 import Copy from '@/components/Copy'
 import Heading from '@/components/Heading'
 import Label from '@/components/Label'
+
+import { DetailsViewProps } from './types'
+
 import styles from './DetaisView.module.scss'
 
 const DetailsView: FC<DetailsViewProps> = ({

@@ -1,5 +1,7 @@
 import { FC, useCallback, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
+
 import {
   ChainConfigModel,
   ChainStatsModel,
@@ -14,6 +16,7 @@ import { txsColumns } from '@/components/Table'
 import { useIsMount } from '@/hooks'
 import { GET_TRANSACTIONS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
 import styles from './TxsDataTable.module.scss'
 
 const PER_PAGE = 10

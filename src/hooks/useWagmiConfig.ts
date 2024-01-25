@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+
 import { connectorsForWallets } from '@rainbow-me/rainbowkit'
 import {
   argentWallet,
@@ -39,6 +40,7 @@ import { publicProvider } from '@wagmi/core/providers/public'
 import get from 'lodash/get'
 import * as viemChains from 'viem/chains'
 import { configureChains, createConfig } from 'wagmi'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 import { WALLET_CONNECT_PROJECT_ID } from '@/constants'
 

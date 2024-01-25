@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from 'react'
-import Card from '../Card'
-import { AnalyticsProps } from './types'
+
 import Dashboard from '@/components/Dashboard'
 import { LoadingCard } from '@/components/Loading'
 import TabPanel from '@/components/TabPanel'
 import { getRedashDashboard, getRedashDashboardsByTag } from '@/lib/redash/client'
 import { TRedashDashboard } from '@/lib/redash/types'
+
+import Card from '../Card'
+import { AnalyticsProps } from './types'
+
 import styles from './Analytics.module.scss'
 
 const Analytics: FC<AnalyticsProps> = ({ tag, params }) => {

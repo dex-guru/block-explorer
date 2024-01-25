@@ -1,8 +1,10 @@
-import { Suspense } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+
+import { Suspense } from 'react'
+
 import {
   ChainConfigModel,
   ChainStatsModel,

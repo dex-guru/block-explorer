@@ -1,7 +1,10 @@
 import { FC, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
 import { useIntervalWhen } from 'rooks'
+
 import { DateTimeProps } from './types'
+
 import styles from './DateTime.module.scss'
 
 const DateTime: FC<DateTimeProps> = ({

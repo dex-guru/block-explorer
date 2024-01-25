@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import styles from '../Table.module.scss'
+
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { IColumn } from '@/components/Table/types'
@@ -10,6 +10,8 @@ import {
   financialFormatLowValueHighPrecision,
   getNormalizedValue,
 } from '@/lib/utils'
+
+import styles from '../Table.module.scss'
 
 export const blocksColumns: (chainConfig: ChainConfigModel) => IColumn<BlockModel>[] = (
   chainConfig

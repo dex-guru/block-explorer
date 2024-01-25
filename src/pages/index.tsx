@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Link from 'next/link'
+
+import { useEffect, useState } from 'react'
+
 import { useQuery } from '@apollo/client'
+
 import {
   BlockModel,
   ChainConfigModel,
@@ -34,6 +37,7 @@ import {
   financialFormatLowValueHighPrecision,
   getBlocksWithTimeDiff,
 } from '@/lib/utils'
+
 import styles from './Pages.module.scss'
 
 const Tabs = dynamic(() => import('@/components/Tabs'), {

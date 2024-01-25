@@ -1,7 +1,10 @@
 import { CSSProperties, FC } from 'react'
+
 import clsx from 'clsx'
+
 import Heading from '../Heading'
 import { TooltipContentProps } from './types'
+
 import styles from './TooltipContent.module.scss'
 
 const TooltipContent: FC<TooltipContentProps> = ({ title, entries, children }) => {

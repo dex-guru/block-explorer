@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { useIntervalWhen } from 'rooks'
 
 export const useTypewriterWords = (text = '', delay = 200) => {

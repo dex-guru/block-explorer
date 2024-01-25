@@ -1,6 +1,8 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
-import { isAddress, getAddress } from 'viem'
+
+import { getAddress, isAddress } from 'viem'
+
 import { ChainConfigModel, TokenHoldingsStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import DetailsView from '@/components/DetailsView'

@@ -1,11 +1,15 @@
 import { FC, useCallback, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
-import { getDisabled, getTotalPages } from './utils'
+
 import Button from '@/components/Button'
 import { IconArrowLeft, IconArrowRight } from '@/components/Icons'
 import { useIsMount } from '@/hooks'
 import { financialFormat } from '@/lib/utils'
 import { PaginationVariables } from '@/types'
+
+import { getDisabled, getTotalPages } from './utils'
+
 import styles from './Pagination.module.scss'
 
 interface IPaginationProps {

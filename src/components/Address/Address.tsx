@@ -1,11 +1,16 @@
-import { FC } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { FC } from 'react'
+
 import clsx from 'clsx'
+
+import Copy from '@/components/Copy'
+
 import Avatar from '../Avatar'
 import { AddressValues } from './helpers'
 import { AddressProps } from './types'
-import Copy from '@/components/Copy'
+
 import styles from './Address.module.scss'
 
 const Address: FC<AddressProps> = ({

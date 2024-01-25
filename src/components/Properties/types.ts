@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+
 import { CardProps } from '../Card'
 
 export type Property = {

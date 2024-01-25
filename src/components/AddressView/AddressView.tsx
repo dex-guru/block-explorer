@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+
+import { FC, useEffect, useState } from 'react'
+
 import { createWeb3Name } from '@web3-name-sdk/core'
-import { isAddress, getAddress } from 'viem'
-import Ad from '../Ad'
-import ChainSelect from '../ChainSelect/ChainSelect'
-import { IAddressViewProps } from './types'
+import { getAddress, isAddress } from 'viem'
+
 import AddressWallet from '@/components/AddressWallet'
 import Avatar from '@/components/Avatar'
 import Card from '@/components/Card'
@@ -20,6 +20,10 @@ import TabPanel from '@/components/TabPanel'
 import Value from '@/components/Value'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
 import styles from '@/pages/Pages.module.scss'
+
+import Ad from '../Ad'
+import ChainSelect from '../ChainSelect/ChainSelect'
+import { IAddressViewProps } from './types'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
 const Erc20DataTable = dynamic(() => import('@/components/Tables/Erc20DataTable'))

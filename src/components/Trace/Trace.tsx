@@ -1,8 +1,8 @@
 import { FC, ReactNode } from 'react'
+
 import BigNumber from 'bignumber.js'
 import clsx from 'clsx'
-import TraceL2Events from './TraceL2Events'
-import { TraceProps } from './types'
+
 import Address from '@/components/Address'
 import Code from '@/components/Code'
 import { IconArrowDown } from '@/components/Icons'
@@ -11,6 +11,10 @@ import Message from '@/components/Message'
 import Properties from '@/components/Properties'
 import Value from '@/components/Value'
 import { getNormalizedValue } from '@/lib/utils'
+
+import TraceL2Events from './TraceL2Events'
+import { TraceProps } from './types'
+
 import styles from './Trace.module.scss'
 
 const Trace: FC<TraceProps> = ({ data, chainConfig }) => {

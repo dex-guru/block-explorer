@@ -1,6 +1,9 @@
 import { ChangeEventHandler, FC } from 'react'
+
 import clsx from 'clsx'
+
 import { Theme, ThemeToggleProps } from './types'
+
 import styles from './ThemeToggle.module.scss'
 
 export const THEME_STORAGE_NAME = 'blockExplorerSelectedTheme'

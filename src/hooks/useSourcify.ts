@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
+
 import { Interface } from '@ethersproject/abi'
 import { ErrorDescription } from '@ethersproject/abi/lib/interface'
 import { Fetcher } from 'swr'
 import useSWRImmutable from 'swr/immutable'
+
 import { CHAIN_ID } from '@/constants'
-import { Match, Metadata, MatchType, SourcifySource } from '@/types'
+import { Match, MatchType, Metadata, SourcifySource } from '@/types'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 const ipfsGatewayPrefix = API_URL + '/api/v2/sourcify'

@@ -1,6 +1,8 @@
 import { CSSProperties, FC } from 'react'
+
 import clsx from 'clsx'
 import uniqolor from 'uniqolor'
+
 import CommonChart, { CommonChartDataset } from '@/components/CommonChart'
 import HeatmapChart from '@/components/HeatmapChart'
 import Loading from '@/components/Loading'
@@ -8,6 +10,7 @@ import Message from '@/components/Message'
 import PieChart from '@/components/PieChart'
 import { TRedashQueryResultData, TRedashVisualization } from '@/lib/redash/types'
 import { financialFormat, formatAutoDetect } from '@/lib/utils'
+
 import styles from './DashboardWidgetChart.module.scss'
 
 const SUPPORTED_CHARTS = ['line', 'area', 'column', 'bar', 'pie', 'heatmap']

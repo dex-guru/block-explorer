@@ -7,28 +7,33 @@ import React, {
   useRef,
   useState,
 } from 'react'
+
 import {
   AuthenticationStatus,
-  createAuthenticationAdapter,
   RainbowKitAuthenticationProvider,
+  createAuthenticationAdapter,
 } from '@rainbow-me/rainbowkit'
 import { AuthenticationAdapter } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/AuthenticationContext'
-import '@rainbow-me/rainbowkit/styles.css'
-import { loginRequest } from '@telekomconsalting/dex-guru-internal-sdk/lib/adapters/apiAuthAdapter'
-import { refreshToken } from '@telekomconsalting/dex-guru-internal-sdk/lib/services/authService'
 import Cookies from 'js-cookie'
 import jwt_decode from 'jwt-decode'
 import { SiweMessage } from 'siwe'
 import { useAccount } from 'wagmi'
+
+import { loginRequest } from '@telekomconsalting/dex-guru-internal-sdk/lib/adapters/apiAuthAdapter'
+import { refreshToken } from '@telekomconsalting/dex-guru-internal-sdk/lib/services/authService'
+
+import { getRootDomain, sleep } from '@/lib/utils'
+
 import {
   AUTH_COOKIE_NAME,
   AUTH_REFRESH_COOKIE_NAME,
-  dexGuruLoginApiV2Url,
-  dexGuruLoginApiV3Url,
   JWT_TOKEN_REFRESH_INTERVAL,
   LocalStorageKeyEnum,
+  dexGuruLoginApiV2Url,
+  dexGuruLoginApiV3Url,
 } from '../constants'
-import { getRootDomain, sleep } from '@/lib/utils'
+
+import '@rainbow-me/rainbowkit/styles.css'
 
 export const SUCCESS_AUTH_EVENT = 'SUCCESS_AUTH_EVENT'
 

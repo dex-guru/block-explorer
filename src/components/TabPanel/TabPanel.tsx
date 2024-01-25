@@ -1,7 +1,11 @@
 import { ReactElement } from 'react'
+
 import clsx from 'clsx'
-import { TabPanelProps } from './types'
+
 import Tabs from '@/components/Tabs'
+
+import { TabPanelProps } from './types'
+
 import styles from './TabPanel.module.scss'
 
 const TabPanel = <T,>(props: TabPanelProps<T>): ReactElement => {

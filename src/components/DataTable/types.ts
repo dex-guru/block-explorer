@@ -1,7 +1,9 @@
 import { ReactNode } from 'react'
+
+import { PaginationVariables } from '@/types'
+
 import { StateViewProps } from '../StateView'
 import { ITableProps } from '../Table'
-import { PaginationVariables } from '@/types'
 
 export type DataTableProps<T> = ITableProps<T> & {
   className?: string

@@ -1,8 +1,11 @@
 import React from 'react'
-import styles from '../Verifier.module.scss'
+
+import Card from '@/components/Card'
+
 import { SendableContract, VerificationInput, VerifyResponse } from '../types'
 import CheckedContract from './CheckedContract'
-import Card from '@/components/Card'
+
+import styles from '../Verifier.module.scss'
 
 type CheckedContractsViewProps = {
   checkedContracts: SendableContract[]

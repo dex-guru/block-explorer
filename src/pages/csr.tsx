@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
+
 import { ChainConfigModel, CsrStatsModel } from '@/__generated__/resolvers-types'
 import Ad from '@/components/Ad'
 import Card from '@/components/Card'
@@ -12,6 +13,7 @@ import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { GET_CSR_STATS } from '@/lib/apollo/queries'
 import { getLogger } from '@/lib/logger'
 import { financialFormat, financialFormatLowValueHighPrecision, getShortDate } from '@/lib/utils'
+
 import styles from './Pages.module.scss'
 
 interface CSRStatsProps {

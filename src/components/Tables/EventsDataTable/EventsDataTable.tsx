@@ -1,12 +1,16 @@
 import { FC, useCallback, useEffect } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
-import { logsColumns } from './columns'
+
 import DataTable from '@/components/DataTable'
 import { IconNoData } from '@/components/Icons'
 import StateView from '@/components/StateView'
 import { useIsMount } from '@/hooks'
 import { GET_LOGS_BY_ADDRESS } from '@/lib/apollo/queries'
 import { PaginationVariables } from '@/types'
+
+import { logsColumns } from './columns'
+
 import styles from './EventsDataTable.module.scss'
 
 interface IEventsDataTableProps {

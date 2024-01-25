@@ -1,6 +1,7 @@
+import { CHAIN_ID } from '@/constants'
+
 import { REPOSITORY_SERVER_URL, SERVER_URL } from './constants'
 import { Chain, CheckAllByAddressResult } from './types'
-import { CHAIN_ID } from '@/constants'
 
 type ChainIdsResponse = {
   chainId: string

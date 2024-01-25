@@ -1,10 +1,11 @@
-import { FC, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { FC, useEffect, useState } from 'react'
+
 import { useLazyQuery } from '@apollo/client'
 import clsx from 'clsx'
-import Dropdown from '../Dropdown'
-import { AddressWalletProps } from './types'
+
 import { TokenHoldingsModel } from '@/__generated__/resolvers-types'
 import { AddressValues } from '@/components/Address/helpers'
 import Button from '@/components/Button'
@@ -15,6 +16,10 @@ import Tile from '@/components/Tile'
 import Value from '@/components/Value'
 import { GET_ADDRESS_TOKENS } from '@/lib/apollo/queries'
 import { financialFormat, financialFormatLowValueHighPrecision } from '@/lib/utils'
+
+import Dropdown from '../Dropdown'
+import { AddressWalletProps } from './types'
+
 import styles from './AddressWallet.module.scss'
 
 const ADDRESS_WALLET_LIMIT = 100

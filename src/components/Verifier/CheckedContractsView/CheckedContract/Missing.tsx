@@ -1,6 +1,8 @@
 import React from 'react'
-import { SendableContract } from '../../types'
+
 import Message from '@/components/Message'
+
+import { SendableContract } from '../../types'
 
 type MissingProps = {
   checkedContract: SendableContract

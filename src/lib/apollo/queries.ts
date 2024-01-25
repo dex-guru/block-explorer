@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+
 import { CHAIN_ID, CHAIN_IDS } from '@/constants'
 
 export const TRANSACTIONS_LAST = gql`

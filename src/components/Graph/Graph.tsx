@@ -1,9 +1,13 @@
 import { FC, useRef, useState } from 'react'
-import { TransformWrapper } from 'react-zoom-pan-pinch'
+
 import clsx from 'clsx'
+import { TransformWrapper } from 'react-zoom-pan-pinch'
+
+import Message from '@/components/Message'
+
 import GraphContent from './GraphContent'
 import { GraphProps } from './types'
-import Message from '@/components/Message'
+
 import styles from './Graph.module.scss'
 
 const DEFAULT_CONFIG = {

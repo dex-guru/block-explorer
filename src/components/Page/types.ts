@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+
 import { ChainConfigModel } from '@/__generated__/resolvers-types'
 
 export type PageHeaderProps = {

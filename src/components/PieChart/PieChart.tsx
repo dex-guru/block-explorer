@@ -1,10 +1,14 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
-import { PieChart as Chart, Tooltip, ResponsiveContainer, Pie, Cell } from 'recharts'
+import { Cell, PieChart as Chart, Pie, ResponsiveContainer, Tooltip } from 'recharts'
 import uniqolor from 'uniqolor'
+
+import { financialFormat } from '@/lib/utils'
+
 import TooltipContent from '../TooltipContent'
 import { PieChartProps } from './types'
-import { financialFormat } from '@/lib/utils'
+
 import styles from './PieChart.module.scss'
 
 const PieChart: FC<PieChartProps> = ({ data, className, options }) => {

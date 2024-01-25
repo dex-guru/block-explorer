@@ -1,14 +1,15 @@
-import { FC, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { FC, useEffect } from 'react'
+
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { Abi } from 'abitype'
-import { isAddress, getAddress } from 'viem'
-import Ad from '../Ad'
-import { IContractViewProps } from './types'
+import { getAddress, isAddress } from 'viem'
+
 import { ContractCreatorModel, TokenBalancesStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import { AddressValues } from '@/components/Address/helpers'
@@ -36,8 +37,12 @@ import { CHAIN_ID } from '@/constants'
 import { useSourcifyMetadata } from '@/hooks/useSourcify'
 import { GET_CONTRACT_INFO, GET_TOKEN_INFO } from '@/lib/apollo/queries'
 import { checkChainFeature, financialFormat } from '@/lib/utils'
-import styles from './ContractView.module.scss'
 import pageStyles from '@/pages/Pages.module.scss'
+
+import Ad from '../Ad'
+import { IContractViewProps } from './types'
+
+import styles from './ContractView.module.scss'
 
 const TxsDataTable = dynamic(() => import('@/components/Tables/TxsDataTable/'))
 const HoldersDataTable = dynamic(() => import('@/components/Tables/HoldersDataTable/'))

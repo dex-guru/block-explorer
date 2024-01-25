@@ -1,22 +1,25 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
 import {
-  Brush,
-  AreaChart,
-  BarChart,
-  Bar,
   Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  Brush,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
 } from 'recharts'
+
 import TooltipContent from '../TooltipContent'
 import { CommonChartDataset, CommonChartProps } from './types'
 import { generateCommonChartData } from './utils'
+
 import styles from './CommonChart.module.scss'
 
 const getYAxisLabelsWidth = (

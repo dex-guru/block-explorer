@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
+
 import clsx from 'clsx'
-import { DataTableProps } from './types'
+
 import { IconNoData, IconSearch } from '@/components/Icons'
 import Loading from '@/components/Loading'
 import Pagination, { DEFAULT_FIRST_PAGE, DEFAULT_PER_PAGE } from '@/components/Pagination'
@@ -9,6 +10,9 @@ import StateView from '@/components/StateView'
 import Table from '@/components/Table'
 import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat } from '@/lib/utils'
+
+import { DataTableProps } from './types'
+
 import styles from './DataTable.module.scss'
 
 export function DataTable<T>(props: DataTableProps<T>) {

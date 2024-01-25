@@ -1,6 +1,9 @@
 import { FC } from 'react'
+
 import clsx from 'clsx'
+
 import { SeparatedProps } from './types'
+
 import styles from './Separated.module.scss'
 
 const Separated: FC<SeparatedProps> = ({ children, className }) => {
