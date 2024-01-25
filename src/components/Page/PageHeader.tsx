@@ -42,6 +42,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
               ]
             : []),
           { caption: 'View Blocks', href: '/blocks' },
+          { caption: 'Chain Info', href: '/chain' },
         ],
       },
       {

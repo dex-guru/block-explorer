@@ -17,7 +17,7 @@ export const ShortTxsTable: FC<IShortTxsTableProps> = (props) => {
   const { data, loading } = useQuery<{
     transactions: TransactionModel[]
   }>(TRANSACTIONS_LAST, {
-    pollInterval: Number(props.chainConfig?.blockTime || process.env.pollInterval),
+    pollInterval: Math.max(Number(props.chainConfig?.blockTime || process.env.pollInterval), 5000),
   })
 
   useEffect(() => {
