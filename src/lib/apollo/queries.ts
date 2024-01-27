@@ -115,6 +115,69 @@ export const CHAIN_STATS = gql`
   }
 `
 
+export const CHAIN_STATS_FULL = gql`
+  query ChainStatsFull {
+    chainStats(chainId: ${CHAIN_ID}) {
+      activeAddressesCount
+      activeAddressesCount24h
+      averageBlockTime
+      lastBlockNumber
+      liquidity24hDelta
+      liquidityUsd
+      marketCap
+      mediumGasPrice
+      nativeTokenPriceUsd
+      nativeTokenPriceUsd24hDelta
+      smartContractsCount
+      tokenSupply
+      transactionsCount
+      transactionsPerSecond
+      transactionsPerSecondDailyAVG
+      transactionsPerSecondFiveMinutesAVG
+      transactionsCountHistory {
+        timestamp
+        value
+      }
+      volume24hDeltaUsd
+      volume24hUsd
+    }
+    chainConfig(chainId: ${CHAIN_ID}) {
+      blockTime
+      chain
+      chainColor
+      chainId
+      explorers {
+        name
+        standard
+        url
+      }
+      faucets
+      features {
+        name
+      }
+      gasUnit
+      infoURL
+      message
+      name
+      icon
+      nativeCurrency {
+        decimals
+        name
+        symbol
+        wrappedAddress
+      }
+      networkId
+      rpc
+      shortName
+      relatives {
+        name
+        standard
+        url
+      }
+    }
+  }
+`
+
 export const GET_TRANSACTIONS_STATS = gql`
   query TransactionsStats {
     transactionStats(chainId: ${CHAIN_ID}) {

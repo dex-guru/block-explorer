@@ -62,7 +62,7 @@ const Index: NextPage<IndexProps> = (props) => {
 
   const { data: blocksUpdate, loading } = useQuery<{ blocks: BlockModel[] }>(GET_BLOCKS_SHORT, {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
-    pollInterval: Number(chainConfig?.blockTime || process.env.pollInterval),
+    pollInterval: Math.max(Number(chainConfig?.blockTime || process.env.pollInterval), 5000),
   })
 
   useEffect(() => {
@@ -271,7 +271,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   })
 
   error
-    ? logger.error(error, 'Error getting GET_BLOCKS_TXNS_CHAIN_STATS info')
+    ? logger.error(error, 'Error getting CHAIN_STATS_FULL info')
     : logger.info({ msg: 'Got GET_BLOCKS_TXNS_CHAIN_STATS info', data })
 
   const blocksWithTimeDiff = getBlocksWithTimeDiff(data?.blocks || [], ITEMS_PER_PAGE)
