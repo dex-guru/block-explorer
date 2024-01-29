@@ -219,5 +219,5 @@ export const explorers: Record<number, ExplorerData[]> = {
   ],
   84531: [explorersData.baseGoerliScan, explorersData.coinGecko],
   8453: [explorersData.baseScan, explorersData.coinGecko],
-  43114: [explorersData.dexguru, explorersData.coinMarketCap],
+  43114: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
 }
