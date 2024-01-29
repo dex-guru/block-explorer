@@ -75,7 +75,7 @@
     "uniqid": "^5.4.0",
     "uniqolor": "^1.1.0",
     "viem": "^1.10.9",
-    "wagmi": "^1.4.1"
+    "wagmi": "^1.4.13"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "3.3.1",
