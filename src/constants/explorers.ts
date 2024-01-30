@@ -24,6 +24,7 @@ export enum Explorers {
   baseGoerliScan = 'baseGoerliScan',
   baseScan = 'baseScan',
   coinGecko = 'coinGecko',
+  coinMarketCap = 'coinMarketCap',
 }
 
 const explorersData: Record<Explorers, ExplorerData> = {
@@ -145,30 +146,44 @@ const explorersData: Record<Explorers, ExplorerData> = {
     token_path: '/coins/:address',
     url: 'https://coingecko.com',
   },
+  coinMarketCap: {
+    id: 'coinMarketCap',
+    display_name: 'CoinMarketCap',
+    logo_uri: 'https://assets-stage.dex.guru/icons/coinmarketcap.svg',
+    token_path: '/currencies/:slug',
+    url: 'https://coinmarketcap.com',
+  },
 }
 
 export const explorers: Record<number, ExplorerData[]> = {
-  7700: [explorersData.dexguru, explorersData.coinGecko],
-  7701: [explorersData.dexguru, explorersData.coinGecko],
+  7700: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
+  7701: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
   42161: [
     explorersData.dexguru,
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
   ],
-  42170: [explorersData.dexguru, explorersData.arbitrumNovaScan, explorersData.coinGecko],
+  42170: [
+    explorersData.dexguru,
+    explorersData.arbitrumNovaScan,
+    explorersData.coinGecko,
+    explorersData.coinMarketCap,
+  ],
   10: [
     explorersData.dexguru,
     explorersData.optimismExplorer,
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   100: [
     explorersData.dexguru,
     explorersData.gnosisScan,
     explorersData.tenderly,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   250: [
     explorersData.dexguru,
@@ -176,6 +191,7 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   137: [
     explorersData.dexguru,
@@ -183,6 +199,7 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   56: [
     explorersData.dexguru,
@@ -190,6 +207,7 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   1: [
     explorersData.dexguru,
@@ -197,7 +215,9 @@ export const explorers: Record<number, ExplorerData[]> = {
     explorersData.tenderly,
     explorersData.eigenphi,
     explorersData.coinGecko,
+    explorersData.coinMarketCap,
   ],
   84531: [explorersData.baseGoerliScan, explorersData.coinGecko],
   8453: [explorersData.baseScan, explorersData.coinGecko],
+  43114: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
 }

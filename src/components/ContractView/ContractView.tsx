@@ -61,6 +61,7 @@ const ContractView: FC<IContractViewProps> = ({
   addressInfo,
   chain,
   tokenHoldingsStats,
+  tokenSlug,
 }) => {
   const { data } = useQuery(GET_CONTRACT_INFO, { variables: { address } })
   const [getTokenData, { data: tokenData }] = useLazyQuery<{
@@ -218,6 +219,7 @@ const ContractView: FC<IContractViewProps> = ({
               type={type === 'token' ? 'token' : 'address'}
               chainConfig={chain.config}
               address={address}
+              tokenSlug={tokenSlug}
             />
           }>
           <Grid>

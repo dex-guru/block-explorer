@@ -16,6 +16,7 @@ import Page from '@/components/Page'
 import StateView from '@/components/StateView'
 import { addApolloState, initializeApollo } from '@/lib/apollo/client'
 import { CHAIN_STATS, GET_ADDRESS_INFO } from '@/lib/apollo/queries'
+import { getCMCTokenSlug } from '@/lib/coinmarketcap'
 import { getLogger } from '@/lib/logger'
 
 interface TokenPageServerProps {
@@ -23,6 +24,7 @@ interface TokenPageServerProps {
   chainStats: ChainStatsModel
   chainConfig: ChainConfigModel
   tokenHoldingsStats: TokenHoldingsStatsModel
+  tokenSlug?: string
 }
 
 const TokenPage: NextPage<TokenPageServerProps> = ({
@@ -30,6 +32,7 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
   chainStats,
   chainConfig,
   tokenHoldingsStats,
+  tokenSlug,
 }) => {
   const router = useRouter()
   const { address, tab } = router.query
@@ -51,6 +54,7 @@ const TokenPage: NextPage<TokenPageServerProps> = ({
         addressInfo={addressInfo}
         chain={{ stats: chainStats, config: chainConfig }}
         tokenHoldingsStats={tokenHoldingsStats}
+        tokenSlug={tokenSlug}
       />
     )
   }
@@ -123,8 +127,10 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       ctx.res.statusCode = 404
     }
 
+    const tokenSlug = await getCMCTokenSlug(address)
+
     return addApolloState(apolloClient, {
-      props: { ...data },
+      props: { ...data, tokenSlug: tokenSlug },
     })
   } catch (e) {
     logger.error(e, 'getServerSideProps error')

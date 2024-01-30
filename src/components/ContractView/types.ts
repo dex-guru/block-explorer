@@ -15,4 +15,5 @@ export interface IContractViewProps {
     config: ChainConfigModel
   }
   tokenHoldingsStats?: TokenHoldingsStatsModel
+  tokenSlug?: string
 }
