@@ -1,13 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { FC, ReactNode, useCallback } from 'react'
+import { FC, ReactNode } from 'react'
 
-import clsx from 'clsx'
-
-import Heading from '@/components/Heading'
 import { IconQuestion } from '@/components/Icons'
-import { ExplorerData, explorers } from '@/constants/explorers'
+import { ExplorerData } from '@/constants/explorers'
 import IconCoinMarketCap from '@/images/explorers/coinmarketcap.svg'
 import IconDexGuru from '@/images/explorers/dexguru.svg'
 import IconEigenPhi from '@/images/explorers/eigenphi.svg'
@@ -60,7 +57,7 @@ const OpenWithItem: FC<OpenWithItemProps> = ({
     return null
   }
 
-  const chainName = chainConfig.name.toLowerCase().replace('ethereum', 'eth')
+  const chainName = chainConfig.shortName.toLowerCase()
 
   const url = `${explorer.url}${explorer[`${type}_path`]}`
     .replace(':address', address)
