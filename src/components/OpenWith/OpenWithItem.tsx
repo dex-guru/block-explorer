@@ -9,6 +9,7 @@ import IconCoinMarketCap from '@/images/explorers/coinmarketcap.svg'
 import IconDexGuru from '@/images/explorers/dexguru.svg'
 import IconEigenPhi from '@/images/explorers/eigenphi.svg'
 import IconTenderly from '@/images/explorers/tenderly.svg'
+import IconZetaScan from '@/images/explorers/zetascan.svg'
 
 import { OpenWithItemProps } from './types'
 
@@ -29,6 +30,10 @@ const getLogo = (el: ExplorerData): ReactNode => {
 
   if (el.id === 'coinMarketCap') {
     return <IconCoinMarketCap width={24} height={24} className={styles.icon} />
+  }
+
+  if (el.id === 'zetaChain') {
+    return <IconZetaScan width={24} height={24} className={styles.icon} />
   }
 
   if (el.logo_uri) {

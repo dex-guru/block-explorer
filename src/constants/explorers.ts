@@ -25,6 +25,7 @@ export enum Explorers {
   baseScan = 'baseScan',
   coinGecko = 'coinGecko',
   coinMarketCap = 'coinMarketCap',
+  zetaChain = 'zetaChain',
 }
 
 const explorersData: Record<Explorers, ExplorerData> = {
@@ -139,6 +140,15 @@ const explorersData: Record<Explorers, ExplorerData> = {
     block_path: '/block/:tx',
     url: 'https://basescan.org',
   },
+  zetaChain: {
+    id: 'zetaChain',
+    address_path: '/address/:address',
+    display_name: 'ZetaScan',
+    logo_uri: 'https://assets-stage.dex.guru/icons/explorer-7000.svg',
+    tx_path: '/evm/tx/:tx',
+    block_path: '/block/:tx',
+    url: 'https://explorer.zetachain.com',
+  },
   coinGecko: {
     id: 'coinGecko',
     display_name: 'CoinGecko',
@@ -156,6 +166,7 @@ const explorersData: Record<Explorers, ExplorerData> = {
 }
 
 export const explorers: Record<number, ExplorerData[]> = {
+  7000: [explorersData.dexguru, explorersData.zetaChain],
   7700: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
   7701: [explorersData.dexguru, explorersData.coinGecko, explorersData.coinMarketCap],
   42161: [
