@@ -141,7 +141,7 @@ const AddressView: FC<IAddressViewProps> = ({
               ]}
             />
 
-            <Ad />
+            <Ad chainConfig={chain.config} />
 
             <TabPanel
               tabs={[

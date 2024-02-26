@@ -187,7 +187,7 @@ const ChartsPage: NextPage<ChartsPageProps> = ({ chainConfig, dashboards }) => {
       </Head>
       <Page chainConfig={chainConfig}>
         <DetailsView title={pageTitle}>
-          <Ad />
+          <Ad chainConfig={chainConfig} />
 
           <TabPanel
             tabs={tabs}

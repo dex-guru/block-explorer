@@ -3,10 +3,17 @@ import { FC } from 'react'
 import { SliseAd } from '@slise/embed-react'
 import { useDimensionsRef } from 'rooks'
 
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import { checkChainFeature } from '@/lib/utils'
+
 import styles from './Ad.module.scss'
 
-const Ad: FC = () => {
+const Ad: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   const [ref, dimensions] = useDimensionsRef({ updateOnScroll: false })
+
+  if (checkChainFeature(chainConfig, 'no_ads')) {
+    return null
+  }
 
   const isMobile = (dimensions?.width || 0) < 728
 

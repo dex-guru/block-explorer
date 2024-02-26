@@ -422,7 +422,7 @@ const ContractView: FC<IContractViewProps> = ({
             />
           </Grid>
 
-          <Ad />
+          <Ad chainConfig={chain.config} />
 
           <TabPanel
             tabs={[

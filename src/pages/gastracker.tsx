@@ -45,7 +45,7 @@ const GasTrackerPage: NextPage<GasTrackerPageProps> = ({ dashboard, chainConfig,
           <GasPrice chainConfig={chainConfig} chainStats={chainStats} onChange={setGasData} />
         </DetailsView>
 
-        <Ad />
+        <Ad chainConfig={chainConfig} />
 
         {!!dashboard && checkChainFeature(chainConfig, 'charts') && (
           <Dashboard

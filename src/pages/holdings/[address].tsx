@@ -79,7 +79,7 @@ const HoldingsPage: NextPage<HoldingsPageServerProps> = ({
             chainConfig={chainConfig}>
             <Summary stats={renderStats()} />
 
-            <Ad />
+            <Ad chainConfig={chainConfig} />
 
             <TokensDataTable address={address} />
           </DetailsView>

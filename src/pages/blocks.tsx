@@ -97,7 +97,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
             ]}
           />
 
-          <Ad />
+          <Ad chainConfig={props.chainConfig} />
 
           <DataTable
             header={
