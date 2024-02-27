@@ -179,7 +179,6 @@ const Index: NextPage<IndexProps> = (props) => {
 
   useTimeoutWhen(
     () => {
-      console.log('reload')
       window.location.reload()
     },
     30 * 60 * 1000,
