@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { useQuery } from '@apollo/client'
+import { useTimeoutWhen } from 'rooks'
 
 import {
   BlockModel,
@@ -175,6 +176,15 @@ const Index: NextPage<IndexProps> = (props) => {
   const pageTitle = `${chainConfig.name}${
     chainConfig.chain ? ` ${chainConfig.chain}` : ''
   } Block Explorer`
+
+  useTimeoutWhen(
+    () => {
+      console.log('reload')
+      window.location.reload()
+    },
+    30 * 60 * 1000,
+    true
+  )
 
   return (
     <>

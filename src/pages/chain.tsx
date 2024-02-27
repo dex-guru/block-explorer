@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ChainConfigModel, ChainStatsModel } from '@/__generated__/resolvers-types'
 import Address from '@/components/Address'
 import Button from '@/components/Button'
+import Card from '@/components/Card'
 import DetailsView from '@/components/DetailsView'
 import Grid from '@/components/Grid'
 import { IconCross, IconSuccess } from '@/components/Icons'
@@ -52,45 +53,6 @@ const ChainPage: NextPage<ChainPageProps> = ({ chainConfig, chainStats: stats })
 
   const statsDisplay = [
     {
-      title: 'Chain ID',
-      value: (
-        <Value
-          value={chainConfig.chainId}
-          suffix={<>&nbsp;0x{chainConfig.chainId.toString(16)}</>}
-        />
-      ),
-    },
-    {
-      title: 'Info',
-      value: <Link href={chainConfig.infoURL}>{chainConfig.infoURL}</Link>,
-    },
-    {
-      title: 'Currency',
-      value: chainConfig.nativeCurrency.symbol,
-    },
-    {
-      title: `${chainConfig.nativeCurrency.symbol} Price`,
-      value: (
-        <Value
-          value={financialFormat(stats.nativeTokenPriceUsd)}
-          prefix="$"
-          delta={stats.nativeTokenPriceUsd24hDelta * 100}
-        />
-      ),
-    },
-    {
-      title: 'Gas Unit',
-      value: chainConfig.gasUnit,
-    },
-    {
-      title: 'EIP1559',
-      value: chainConfig.features.find((item) => item.name === 'EIP1559') ? (
-        <IconSuccess style={{ width: 20 }} />
-      ) : (
-        <IconCross style={{ width: 20 }} />
-      ),
-    },
-    {
       title: 'Transactions',
       value: <Value value={financialFormatLowValueHighPrecision(stats.transactionsCount)} />,
     },
@@ -122,6 +84,10 @@ const ChainPage: NextPage<ChainPageProps> = ({ chainConfig, chainStats: stats })
       ),
     },
     {
+      title: 'Average Block Time, 24h',
+      value: <Value value={financialFormatLowValueHighPrecision(stats.averageBlockTime)} />,
+    },
+    {
       title: 'Total Addresses',
       tooltip: 'Total of distinct address numbers who send at least one transaction on-chain.',
       value: <Value value={financialFormatLowValueHighPrecision(stats.activeAddressesCount)} />,
@@ -135,31 +101,49 @@ const ChainPage: NextPage<ChainPageProps> = ({ chainConfig, chainStats: stats })
       tooltip: 'Total number of smart contracts created on-chain.',
       value: <Value value={financialFormatLowValueHighPrecision(stats.smartContractsCount)} />,
     },
-    {
-      title: 'Average Block Time, 24h',
-      value: <Value value={financialFormatLowValueHighPrecision(stats.averageBlockTime)} />,
-    },
   ]
 
-  // const getPropertiesFromObject = (object: Record<string, unknown>): Property[] => {
-  //   return Object.entries(object)
-  //     .filter(([key]) => key !== '__typename')
-  //     .map(([key, value]) => {
-  //       return {
-  //         title: key,
-  //         value:
-  //           typeof value === 'object' && value !== null ? (
-  //             <Properties data={getPropertiesFromObject(value as Record<string, unknown>)} />
-  //           ) : (
-  //             value?.toString()
-  //           ),
-  //       }
-  //     })
-  // }
-
-  // const propertiesFull: Property[] = getPropertiesFromObject(chainConfig)
-
   const propertiesTech: Property[] = [
+    {
+      title: 'Chain ID',
+      value: (
+        <Value
+          value={chainConfig.chainId}
+          suffix={<>&nbsp;0x{chainConfig.chainId.toString(16)}</>}
+        />
+      ),
+    },
+    {
+      title: 'Info',
+      value: <Link href={chainConfig.infoURL}>{chainConfig.infoURL}</Link>,
+    },
+    ...(chainConfig.description ? [{ title: 'Description', value: chainConfig.description }] : []),
+    {
+      title: 'Currency',
+      value: chainConfig.nativeCurrency.symbol,
+    },
+    {
+      title: `${chainConfig.nativeCurrency.symbol} Price`,
+      value: (
+        <Value
+          value={financialFormat(stats.nativeTokenPriceUsd)}
+          prefix="$"
+          delta={stats.nativeTokenPriceUsd24hDelta * 100}
+        />
+      ),
+    },
+    {
+      title: 'Gas Unit',
+      value: chainConfig.gasUnit,
+    },
+    {
+      title: 'EIP1559',
+      value: chainConfig.features.find((item) => item.name === 'EIP1559') ? (
+        <IconSuccess style={{ width: 20 }} />
+      ) : (
+        <IconCross style={{ width: 20 }} />
+      ),
+    },
     {
       title: 'RPC',
       value: (
@@ -213,16 +197,9 @@ const ChainPage: NextPage<ChainPageProps> = ({ chainConfig, chainStats: stats })
             <Button caption="Add to wallet" className={styles.addToWallet} onClick={addNetwork} />
           }
           title={chainConfig.name}>
-          <Grid>
-            <Summary stats={statsDisplay} />
-
-            <div className={styles.column}>
-              <Properties data={propertiesTech} />
-              <Properties title="Native Currency" data={propertiesNative} />
-            </div>
-
-            {/* <Properties data={propertiesFull} /> */}
-          </Grid>
+          <Summary title="Chain stats" stats={statsDisplay} />
+          <Properties data={propertiesTech} />
+          <Properties title="Native Currency" data={propertiesNative} />
         </DetailsView>
       </Page>
     </>

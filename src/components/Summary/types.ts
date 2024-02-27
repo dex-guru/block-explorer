@@ -10,6 +10,7 @@ export type SummaryStat = {
 }
 
 export type SummaryProps = {
+  title?: ReactNode
   className?: string
   children?: ReactNode | ReactNode[]
 

@@ -115,6 +115,7 @@ export type ChainConfigModel = {
   relatives: Array<ExplorerModel>
   rpc: Array<Scalars['String']>
   shortName: Scalars['String']
+  description?: Scalars['String']
 }
 
 export type ChainFeatureModel = {

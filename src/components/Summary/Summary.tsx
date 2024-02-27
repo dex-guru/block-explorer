@@ -10,7 +10,7 @@ import { SummaryProps } from './types'
 
 import styles from './Summary.module.scss'
 
-const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
+const Summary: FC<SummaryProps> = ({ title, stats, charts, children }) => {
   const renderCharts = () => {
     return charts?.map((chart, index) => {
       return (
@@ -61,7 +61,7 @@ const Summary: FC<SummaryProps> = ({ stats, charts, children }) => {
   }
 
   return (
-    <Card>
+    <Card title={title}>
       <div className={styles.container}>
         <div className={styles.body}>
           {!!stats && <div className={styles.stats}>{renderStats()}</div>}
