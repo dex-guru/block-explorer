@@ -1357,6 +1357,11 @@ export const GET_COSMOS_TRANSACTIONS = gql`
 export const GET_CHAIN_CONFIG = gql`
 query ChainConfig {
   chainConfig(chainId: ${CHAIN_ID}){
+    message {
+      text
+      type
+    }
+    description
     blockTime
     chain
     chainColor
@@ -1372,7 +1377,6 @@ query ChainConfig {
     }
     gasUnit
     infoURL
-    message
     name
     icon
     nativeCurrency {

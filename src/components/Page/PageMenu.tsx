@@ -68,37 +68,36 @@ const PageMenu: FC<{
   }
 
   return (
-    <div
-      className={clsx(styles.container, className, {
-        [styles.opened]: isOpen,
-      })}>
+    <div className={clsx(styles.container, className)}>
       <Button
         icon={<Icon className={styles.icon} />}
         className={clsx(styles.toggle, { [styles.toggled]: isOpen })}
         onClick={handleClick}
       />
-      <ul className={clsx(styles.list, { [styles.open]: isOpen })}>
-        {links.map((link, idx) => {
-          return (
-            <li className={styles.item} key={idx}>
-              {renderLink(link, !!link.submenu?.length)}
-              {!!link.submenu?.length && (
-                <div className={styles.submenu}>
-                  <ul className={styles.submenuList}>
-                    {link.submenu.map((submenuLink, submenuIdx) => {
-                      return (
-                        <li className={styles.submenuItem} key={submenuIdx}>
-                          {renderLink(submenuLink, false, styles.submenuLink)}
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              )}
-            </li>
-          )
-        })}
-      </ul>
+      <div className={clsx(styles.body, { [styles.open]: isOpen })}>
+        <ul className={clsx(styles.list, { [styles.open]: isOpen })}>
+          {links.map((link, idx) => {
+            return (
+              <li className={styles.item} key={idx}>
+                {renderLink(link, !!link.submenu?.length)}
+                {!!link.submenu?.length && (
+                  <div className={styles.submenu}>
+                    <ul className={styles.submenuList}>
+                      {link.submenu.map((submenuLink, submenuIdx) => {
+                        return (
+                          <li className={styles.submenuItem} key={submenuIdx}>
+                            {renderLink(submenuLink, false, styles.submenuLink)}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </div>
   )
 }
