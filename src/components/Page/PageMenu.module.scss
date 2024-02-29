@@ -1,6 +1,26 @@
 .container {
 }
 
+.body {
+  @media (max-width: 1260px) {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+    height: 100vh;
+    padding: 0 0 56px;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    background: var(--color-bg);
+    pointer-events: all !important;
+
+    &:not(.open) {
+      display: none !important;
+    }
+  }
+}
+
 .list {
   font-size: 16px;
   line-height: 32px;
@@ -14,7 +34,6 @@
   justify-content: flex-end;
 
   @media (max-width: 1260px) {
-    background: var(--color-bg);
     justify-content: flex-start;
     align-items: stretch;
     flex-flow: column;
@@ -23,10 +42,6 @@
     flex: 1 0 0;
     overflow: auto;
     padding: 16px 8px;
-
-    &:not(.open) {
-      display: none !important;
-    }
   }
 }
 
@@ -66,7 +81,7 @@
   composes: lg from '../Button/Button.module.scss';
 
   padding: 0;
-  position: fixed;
+  position: absolute;
   z-index: 1001;
   right: 8px;
   top: 12px;
@@ -78,13 +93,6 @@
 }
 
 .toggled {
-}
-
-.opened {
-  @media (max-width: 1260px) {
-    background: var(--color-bg);
-    pointer-events: all !important;
-  }
 }
 
 .icon {

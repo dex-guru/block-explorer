@@ -74,16 +74,10 @@
   flex: 0 0 auto;
 
   @media (max-width: 1260px) {
-    position: fixed;
+    position: absolute;
     left: 0;
+    top: 0;
     right: 0;
-    top: 56px;
-    bottom: 0;
-    padding: 0 0 56px;
-    z-index: 1000;
-    display: flex;
-    flex-flow: column;
-    pointer-events: none;
   }
 }
 
