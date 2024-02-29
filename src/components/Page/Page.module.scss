@@ -55,7 +55,7 @@
   top: 0;
   z-index: 10;
   flex: 0 0 auto;
-  box-shadow: 0 0 4px var(--color-bg);
+  box-shadow: 0 1px 1px var(--color-bg);
 }
 
 .footer {
@@ -64,4 +64,25 @@
   max-width: 1440px;
   margin: 0 auto;
   flex: 0 0 auto;
+}
+
+.message {
+  width: 100%;
+  margin-bottom: -16px;
+  padding: 8px 16px;
+  text-align: center;
+  background: var(--color-info);
+
+  &.success {
+    background: var(--color-positive);
+  }
+
+  &.danger {
+    background: var(--color-negative);
+  }
+
+  &.warn,
+  &.warning {
+    background: var(--color-warn);
+  }
 }

@@ -108,7 +108,10 @@ export type ChainConfigModel = {
   guruBlockExplorer?: Maybe<BlockExplorerModel>
   icon: Scalars['String']
   infoURL: Scalars['String']
-  message?: Maybe<Scalars['String']>
+  message?: {
+    text: Maybe<Scalars['String']>
+    type: 'info' | 'warning' | 'danger' | 'success'
+  }
   name: Scalars['String']
   nativeCurrency: NativeCurrencyModel
   networkId: Scalars['Int']

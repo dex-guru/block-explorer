@@ -22,6 +22,11 @@ export const CHAIN_HEALTH = gql`
       number
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -37,7 +42,6 @@ export const CHAIN_HEALTH = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -79,6 +83,11 @@ export const CHAIN_STATS = gql`
       volume24hUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -94,7 +103,6 @@ export const CHAIN_STATS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -142,6 +150,11 @@ export const CHAIN_STATS_FULL = gql`
       volume24hUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -157,7 +170,6 @@ export const CHAIN_STATS_FULL = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -194,6 +206,11 @@ export const GET_TRANSACTIONS_STATS = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -209,7 +226,6 @@ export const GET_TRANSACTIONS_STATS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -269,6 +285,11 @@ export const GET_TRANSACTIONS = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -284,7 +305,6 @@ export const GET_TRANSACTIONS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -324,6 +344,11 @@ export const GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -339,7 +364,6 @@ export const GET_INTERNAL_TXS_WITH_TOTAL_AND_CHAIN = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -410,6 +434,11 @@ export const GET_BLOCKS = gql`
       lastBlockNumber
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -425,7 +454,6 @@ export const GET_BLOCKS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -497,6 +525,11 @@ export const GET_TOP_TOKENS = gql`
       total
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -512,7 +545,6 @@ export const GET_TOP_TOKENS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -565,6 +597,11 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -586,7 +623,6 @@ export const GET_TRANSACTIONS_BY_HASH = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -627,6 +663,11 @@ export const GET_TRANSACTION_LOGS = gql`
       }
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -642,7 +683,6 @@ export const GET_TRANSACTION_LOGS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -669,6 +709,11 @@ export const GET_TRANSACTION_TRACES = gql`
       tracesJSON
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -684,7 +729,6 @@ export const GET_TRANSACTION_TRACES = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -733,6 +777,11 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -748,7 +797,6 @@ export const GET_BLOCKS_BY_NUMBER = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -785,6 +833,11 @@ export const GET_CSR_STATS = gql`
       sumContracts
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -800,7 +853,6 @@ export const GET_CSR_STATS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -843,6 +895,11 @@ export const GET_ADDRESS_INFO = gql`
       nativeTokenPriceUsd
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -858,7 +915,6 @@ export const GET_ADDRESS_INFO = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -918,6 +974,11 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
       totalStable
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -933,7 +994,6 @@ export const GET_ADDRESS_TOKENS_STATS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -1115,6 +1175,11 @@ export const GET_ERC20_EVENTS = gql`
       }
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       dexes {
         description
         displayName
@@ -1200,6 +1265,11 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
         : ''
     }
     chainConfig(chainId: ${CHAIN_ID}) {
+      message {
+        text
+        type
+      }
+      description
       blockTime
       chain
       chainColor
@@ -1215,7 +1285,6 @@ export const GET_BLOCKS_TXNS_CHAIN_STATS = gql`
       }
       gasUnit
       infoURL
-      message
       name
       icon
       nativeCurrency {
@@ -1351,7 +1420,6 @@ export const GET_ALL_CHAINS = gql`
       }
       icon
       infoURL
-      message
       networkId
       shortName
       relatives {
