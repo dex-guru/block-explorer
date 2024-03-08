@@ -39,7 +39,7 @@ const ChartsDetailsPage: NextPage<СhartsDetailsPageProps> = ({ chainConfig, das
 
         {!!dashboard && <Dashboard data={dashboard} params={{ network: chainConfig.shortName }} />}
 
-        <Ad chainConfig={chainConfig} />
+        <Ad />
       </Page>
     </>
   )

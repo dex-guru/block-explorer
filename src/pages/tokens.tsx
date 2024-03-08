@@ -79,7 +79,7 @@ const TopTokensPage: NextPage<ITopTokensProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="ERC-20 Top Tokens">
-          <Ad chainConfig={props.chainConfig} />
+          <Ad />
 
           <DataTable
             isLoading={loading}

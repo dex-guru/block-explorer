@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic'
-
-const Ad = dynamic(() => import('./Ad'), { ssr: false })
+import Ad from './Ad'
 
 export default Ad

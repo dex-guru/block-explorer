@@ -80,7 +80,7 @@ const CSRStats: NextPage<CSRStatsProps> = ({ csrStats, chainConfig }) => {
           </Card>
         </Grid>
 
-        <Ad chainConfig={chainConfig} />
+        <Ad />
 
         <Card title={`${chainConfig.name} Emissions`}>
           <CommonChart

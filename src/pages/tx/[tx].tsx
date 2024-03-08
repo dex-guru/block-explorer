@@ -81,7 +81,7 @@ const TxPage: NextPage<ITxProps> = (props) => {
             header={
               <OpenWith type={'tx'} chainConfig={props.chainConfig} address={props.data?.hash} />
             }>
-            <Ad chainConfig={props.chainConfig} />
+            <Ad />
 
             <TabPanel
               tabs={[

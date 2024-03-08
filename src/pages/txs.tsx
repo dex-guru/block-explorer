@@ -176,7 +176,7 @@ const Txs: NextPage<ITxsProps> = ({ block, ...props }) => {
             />
           )}
 
-          <Ad chainConfig={props.chainConfig} />
+          <Ad />
 
           <TabPanel value={currentTab} tabs={tabs} />
         </DetailsView>

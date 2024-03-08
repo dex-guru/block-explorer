@@ -209,7 +209,7 @@ const Index: NextPage<IndexProps> = (props) => {
           />
         )}
 
-        <Ad chainConfig={chainConfig} />
+        <Ad />
 
         <Grid>
           <Card
