@@ -4,6 +4,9 @@ import { FC, useCallback, useEffect, useRef } from 'react'
 
 import useScript from 'react-script-hook'
 
+import { ChainConfigModel } from '@/__generated__/resolvers-types'
+import { checkChainFeature } from '@/lib/utils'
+
 import styles from './Ad.module.scss'
 
 export type SevioAdProps = {
@@ -13,7 +16,7 @@ export type SevioAdProps = {
   accountId: string
 }
 
-export const Ad: FC = () => {
+export const Ad: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
   const ref = useRef<HTMLDivElement | null>(null)
   const zone = '7aecae46-d352-4bab-8fa2-aaf53481cdd7'
   const adType = 'banner'
@@ -26,15 +29,19 @@ export const Ad: FC = () => {
     wnd.sevioads.push([{ zone, adType, inventoryId, accountId }])
   }, [accountId, adType, inventoryId, zone])
 
-  const [loading, error] = useScript({
-    src: 'https://cdn.adx.ws/scripts/loader.js',
+  const [loading] = useScript({
+    src: '/assets/js/loader.js',
     checkForExisting: true,
     async: true,
   })
 
   useEffect(() => {
-    !loading && !error && ref?.current && addSlot()
-  }, [addSlot, loading, error])
+    !loading && ref?.current && addSlot()
+  }, [addSlot, loading])
+
+  if (checkChainFeature(chainConfig, 'no_ads')) {
+    return null
+  }
 
   return <div className={`sevioads ${styles.container}`} data-zone={zone} ref={ref} />
 }
