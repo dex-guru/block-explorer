@@ -1,7 +1,9 @@
 .container {
   height: 90px;
+  width: 728px;
+  margin: 0 auto;
 
-  iframe {
-    margin: 0 auto;
+  @media (max-width: 760px) {
+    display: none;
   }
 }
