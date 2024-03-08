@@ -32,7 +32,7 @@ const Txs: NextPage<ITxsProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="ERC-20 Token TXns">
-          <Ad chainConfig={props.chainConfig} />
+          <Ad />
 
           <Erc20DataTable />
         </DetailsView>

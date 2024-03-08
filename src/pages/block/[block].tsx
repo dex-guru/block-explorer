@@ -65,7 +65,7 @@ const Block: NextPage<IBlockProps> = ({ data, chainConfig, chainStats }) => {
                 address={data?.number.toString()}
               />
             }>
-            <Ad chainConfig={chainConfig} />
+            <Ad />
 
             <BlockOverview data={data} chainConfig={chainConfig} chainStats={chainStats} />
           </DetailsView>

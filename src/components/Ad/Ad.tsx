@@ -1,48 +1,45 @@
-import { FC } from 'react'
+'use client'
 
-import { SliseAd } from '@slise/embed-react'
-import { useDimensionsRef } from 'rooks'
+import { FC, useCallback, useEffect, useRef } from 'react'
 
-import { ChainConfigModel } from '@/__generated__/resolvers-types'
-import { checkChainFeature } from '@/lib/utils'
+import useScript from 'react-script-hook'
 
 import styles from './Ad.module.scss'
 
-const Ad: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
-  const [ref, dimensions] = useDimensionsRef({ updateOnScroll: false })
+export type SevioAdProps = {
+  zone: string
+  adType: string
+  inventoryId: string
+  accountId: string
 
-  if (checkChainFeature(chainConfig, 'no_ads')) {
-    return null
-  }
+  style?: React.CSSProperties
+  __overrideSevioHost?: string
+}
 
-  const isMobile = (dimensions?.width || 0) < 728
+export const Ad: FC = () => {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const zone = '7aecae46-d352-4bab-8fa2-aaf53481cdd7'
+  const adType = 'banner'
+  const inventoryId = '2b61ac91-467e-4230-ae17-91acd647a900'
+  const accountId = '012bff72-4fdf-4622-8741-9ddfbdc582fe'
 
-  const content = !!dimensions ? (
-    <>
-      {!isMobile && (
-        <SliseAd
-          slotId="leaderboard"
-          pub="pub-23"
-          format="728x90"
-          style={{ width: '728px', height: '90px' }}
-        />
-      )}
-      {isMobile && (
-        <SliseAd
-          slotId="mobile"
-          pub="pub-23"
-          format="270x90"
-          style={{ width: '270px', height: '90px' }}
-        />
-      )}
-    </>
-  ) : null
+  const addSlot = useCallback(() => {
+    const wnd = window as Window & typeof globalThis & { sevioads: [[SevioAdProps]] }
+    wnd.sevioads = (wnd.sevioads || []) as [[SevioAdProps]]
+    wnd.sevioads.push([{ zone, adType, inventoryId, accountId }])
+  }, [accountId, adType, inventoryId, zone])
 
-  return (
-    <div className={styles.container} ref={ref}>
-      {content}
-    </div>
-  )
+  const [loading, error] = useScript({
+    src: 'https://cdn.adx.ws/scripts/loader.js',
+    checkForExisting: true,
+    async: true,
+  })
+
+  useEffect(() => {
+    !loading && !error && ref?.current && addSlot()
+  }, [addSlot, loading, error])
+
+  return <div className={styles.container} data-zone={zone} ref={ref} />
 }
 
 export default Ad

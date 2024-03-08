@@ -67,7 +67,7 @@ const BlockPage: NextPage<IBlocksProps> = (props) => {
 
       <Page chainConfig={props.chainConfig}>
         <DetailsView title="Contract Internal Transactions">
-          <Ad chainConfig={props.chainConfig} />
+          <Ad />
 
           <DataTable
             isLoading={loading}
