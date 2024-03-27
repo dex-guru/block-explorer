@@ -73,6 +73,10 @@
   text-align: center;
   background: var(--color-info);
 
+  a {
+    text-decoration: underline;
+  }
+
   &.success {
     background: var(--color-positive);
   }

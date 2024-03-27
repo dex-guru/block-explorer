@@ -2,6 +2,7 @@ import { CSSProperties, FC, useEffect, useMemo, useState } from 'react'
 
 import { RainbowKitProvider, Theme, darkTheme, lightTheme } from '@rainbow-me/rainbowkit'
 import clsx from 'clsx'
+import { sanitize } from 'isomorphic-dompurify'
 import merge from 'lodash/merge'
 import { WagmiConfig } from 'wagmi'
 
@@ -57,10 +58,11 @@ const Page: FC<PageProps> = ({ children, chainConfig }) => {
           '--color-accent-base-l': `${l * 100}%`,
         } as CSSProperties
       }>
-      {chainConfig.message?.text && (
-        <div className={clsx(styles.message, styles[chainConfig.message.type || 'info'])}>
-          {chainConfig.message?.text}
-        </div>
+      {chainConfig.message?.text?.trim() && (
+        <div
+          className={clsx(styles.message, styles[chainConfig.message?.type || 'info'])}
+          dangerouslySetInnerHTML={{ __html: sanitize(chainConfig.message?.text?.trim(), {}) }}
+        />
       )}
       <div className={styles.header}>
         <PageHeader chainConfig={chainConfig} />
