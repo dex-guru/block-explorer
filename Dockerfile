@@ -51,7 +51,7 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-RUN touch /.next/static/04704b3254996391.css
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static/d758b8ec872c3e85.css ./.next/static/04704b3254996391.css
 COPY --from=builder --chown=nextjs:nodejs /app/server-cached.js ./server-cached.js
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
