@@ -69,7 +69,7 @@
     "react-tooltip": "5.21.3",
     "react-transition-group": "^4.4.5",
     "react-zoom-pan-pinch": "^3.1.0",
-    "recharts": "^2.10.3",
+    "recharts": "^2.12.3",
     "redis": "^4.6.7",
     "rooks": "^7.14.1",
     "siwe": "1.1.6",

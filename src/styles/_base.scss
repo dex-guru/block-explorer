@@ -291,13 +291,63 @@ pre {
       fill: var(--color-accent);
       fill-opacity: 0.4;
     }
+
+    &-texts {
+      text {
+        fill: var(--color-muted);
+        font-family: inherit;
+        font-size: 10px;
+        line-height: 16px;
+      }
+    }
   }
 
   &-tooltip {
+    &-wrapper {
+      z-index: 999;
+    }
+
     &-cursor {
       stroke: var(--color-separator);
-      opacity: 0.25;
+      opacity: 0.5;
       transition: 0.25s ease;
+    }
+
+    &-item {
+      margin: 0;
+      padding: 0;
+      display: flex !important;
+      gap: 8px;
+      align-items: center;
+      padding: 0 !important;
+
+      &:before {
+        content: '';
+        width: 1em;
+        height: 1em;
+        background: currentColor;
+        border-radius: 50%;
+        margin: 0.2em;
+      }
+
+      &:only-child:not(.hasColor),
+      &[style*='color: rgb(0, 0, 0)'] {
+        color: var(--color-accent) !important;
+      }
+
+      &-name,
+      &-separator,
+      &-value,
+      &-unit {
+        color: var(--color-text);
+      }
+
+      &-separator,
+      &-unit {
+        &:empty {
+          display: none;
+        }
+      }
     }
   }
 
@@ -314,14 +364,14 @@ pre {
     stroke-width: 4;
   }
 
-  &-area,
-  &-line {
-    &:not(.has-color) {
-      path {
-        stroke: var(--color-accent);
-      }
-    }
-  }
+  // &-area,
+  // &-line {
+  //   &:not(.has-color) {
+  //     path {
+  //       stroke: var(--color-accent);
+  //     }
+  //   }
+  // }
 }
 
 .item-enter {

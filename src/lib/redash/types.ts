@@ -56,13 +56,15 @@ export type TRedashVisualizationOptions = unknown & {
   series?: {
     stacking?: boolean
   }
-  seriesOptions?: Record<string, { name?: string; type?: string; color?: string }>
+  seriesOptions?: Record<string, { name?: string; type?: string; color?: string; yAxis: number }>
   legend?: {
     enabled?: boolean
   }
   swappedAxes?: boolean
   columns?: TRedashTableColumn[]
   stringSuffix?: string
+  yAxis: { type: string; opposite?: boolean }[]
+  xAxis: { type: string }
 }
 
 export type TRedashVisualization = {
