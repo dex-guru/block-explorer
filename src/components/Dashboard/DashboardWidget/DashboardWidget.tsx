@@ -79,8 +79,6 @@ const DashboardWidget: FC<{
 
   const renderWidgetVisualization = () => {
     if (visualization?.type === 'COUNTER') {
-      console.log(visualization)
-
       return (
         <DashboardWidgetCounter
           isLoading={isFetching}

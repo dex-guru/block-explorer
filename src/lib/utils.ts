@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { GetFeeHistoryReturnType } from 'viem'
+import { GetFeeHistoryReturnType, isAddress } from 'viem'
 
 import { BlockModel, ChainConfigModel } from '@/__generated__/resolvers-types'
 import { BlockModelWithTimeDiff } from '@/components/Table'
@@ -336,10 +336,10 @@ export const formatAutoDetect = (
   value: string | number,
   options?: { number: FinancialFormatOptions }
 ): string => {
-  const valueStr = value?.toString() || ''
+  const valueStr = value?.toString() ?? ''
 
-  if (valueStr.startsWith('0x')) {
-    return valueStr
+  if (isAddress(valueStr)) {
+    return getShortAddress(valueStr)
   }
 
   if (!isNaN(Number(valueStr))) {
@@ -353,7 +353,7 @@ export const formatAutoDetect = (
     return getShortDate(new Date(value).getTime(), false)
   }
 
-  return valueStr
+  return `${valueStr}`
 }
 
 export const formatFeeHistory = (result: GetFeeHistoryReturnType, includePending: boolean) => {

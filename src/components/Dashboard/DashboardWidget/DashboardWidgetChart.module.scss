@@ -67,3 +67,28 @@
 .caption {
   flex: 1 1 auto;
 }
+
+.tooltip {
+  background: var(--color-tooltip-bg) !important;
+  color: var(--color-tooltip-text);
+  padding: 8px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+  border: 0 !important;
+
+  &Label {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--color-muted);
+
+    &:empty {
+      display: none;
+    }
+  }
+}
