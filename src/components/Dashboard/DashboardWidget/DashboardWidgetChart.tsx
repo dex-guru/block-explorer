@@ -110,72 +110,99 @@ const DashboardWidgetChart: FC<{
     )
   }
 
-  if (['line', 'area', 'column', 'bar', 'scatter'].includes(type)) {
-    const xKey =
-      Object.entries(visualization.options.columnMapping || {}).find(
-        ([, value]) => value === 'x'
-      )?.[0] || 'x'
+  const yCategoryValues: Record<string, (string | number)[]> = {}
+  let chartData = [...(data?.rows || [])]
 
-    const dataSeries: ChartSeries[] = (data?.columns || [])
-      ?.filter((column) => {
-        return visualization.options.columnMapping?.[column.name] === 'y'
-      })
-      .map((column) => {
-        const id = visualization.options.seriesOptions?.[column.name]?.yAxis || 0
-        return {
-          key: column.name,
-          type: visualization.options.seriesOptions?.[column.name]?.type ?? type,
-          name:
-            visualization.options.seriesOptions?.[column.name]?.name ??
-            column.friendly_name ??
-            column.name,
-          yAxis: {
-            id: `yAxis${id}`,
-            orientation: visualization.options.yAxis[id].opposite ? 'right' : 'left',
-            type: visualization.options.yAxis[id].type === 'category' ? 'category' : 'number',
-          },
-          color:
-            visualization.options.seriesOptions?.[column.name]?.color ??
-            uniqolor(column.name).color,
-        }
-      })
-
-    return (
-      <div
-        className={clsx(
-          styles.wrapper,
-          { [styles.loading]: isLoading },
-          { [styles.empty]: !data?.rows?.length }
-        )}>
-        {isLoading && <Loading className={styles.loader} />}
-
-        <DashboardWidgetChartRenderer
-          className={styles.chart}
-          series={Object.values(dataSeries)}
-          data={data?.rows}
-          options={{
-            zoom: true,
-            axis: {
-              x: {
-                type: 'category',
-                dataKey: xKey,
-                axisLine: false,
-                tickLine: false,
-                tickFormatter,
-              },
-              y: {
-                axisLine: false,
-                tickLine: false,
-                tickFormatter,
-              },
-            },
-          }}
-        />
-      </div>
-    )
+  if (!['line', 'area', 'column', 'bar', 'scatter'].includes(type)) {
+    return <Message type="warn">Type &quot;{type}&quot; is not implemented yet</Message>
   }
 
-  return <Message type="warn">Type &quot;{type}&quot; is not implemented yet</Message>
+  const xKey =
+    Object.entries(visualization.options.columnMapping || {}).find(
+      ([, value]) => value === 'x'
+    )?.[0] || 'x'
+  let domain: [number, number] | undefined = undefined
+
+  const dataSeries: ChartSeries[] = (data?.columns || [])
+    ?.filter((column) => {
+      return visualization.options.columnMapping?.[column.name] === 'y'
+    })
+    .map((column) => {
+      const id = visualization.options.seriesOptions?.[column.name]?.yAxis || 0
+      const yAxisType = visualization.options.yAxis[id].type === 'category' ? 'category' : 'number'
+
+      if (yAxisType === 'category') {
+        yCategoryValues[id] = [...new Set(chartData?.map((row) => `${row[column.name]}`) || [])]
+        chartData = chartData?.map((row) => ({
+          ...row,
+          [column.name]: yCategoryValues[id].findIndex((item) => item === row[column.name]),
+        }))
+      } else {
+        const chartDataValues = [...chartData.map((row) => +row[column.name]), 0]
+        domain = [Math.min.apply(null, chartDataValues), Math.max.apply(null, chartDataValues)]
+      }
+
+      return {
+        key: column.name,
+        type: visualization.options.seriesOptions?.[column.name]?.type ?? type,
+        name:
+          visualization.options.seriesOptions?.[column.name]?.name ??
+          column.friendly_name ??
+          column.name,
+        yAxis: {
+          id: `yAxis${id}`,
+          orientation: visualization.options.yAxis[id].opposite ? 'right' : 'left',
+          type: 'number',
+          domain,
+          interval: yAxisType === 'category' ? 0 : undefined,
+          tickCount: yCategoryValues[id]?.length,
+          tickFormatter: (value) => {
+            if (yAxisType === 'category') {
+              const yCategoryValue = yCategoryValues[id]?.[+value]
+              return tickFormatter(`${yCategoryValue || ''}`)
+            }
+
+            return tickFormatter(`${value}`)
+          },
+        },
+        color:
+          visualization.options.seriesOptions?.[column.name]?.color ?? uniqolor(column.name).color,
+      }
+    })
+
+  return (
+    <div
+      className={clsx(
+        styles.wrapper,
+        { [styles.loading]: isLoading },
+        { [styles.empty]: !data?.rows?.length }
+      )}>
+      {isLoading && <Loading className={styles.loader} />}
+
+      <DashboardWidgetChartRenderer
+        className={styles.chart}
+        series={Object.values(dataSeries)}
+        data={chartData}
+        options={{
+          zoom: true,
+          axis: {
+            x: {
+              type: 'category',
+              dataKey: xKey,
+              axisLine: false,
+              tickLine: false,
+              tickFormatter,
+            },
+            y: {
+              axisLine: false,
+              tickLine: false,
+              tickFormatter,
+            },
+          },
+        }}
+      />
+    </div>
+  )
 }
 
 export default DashboardWidgetChart

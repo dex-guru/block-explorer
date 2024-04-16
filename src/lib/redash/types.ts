@@ -94,6 +94,7 @@ export type TRedashQueryResultData = {
 export type TRedashQueryResult = {
   data: TRedashQueryResultData
   retrieved_at: string
+  id: number
 }
 
 export type TRedashJob = {

@@ -26,10 +26,6 @@ import { formatAutoDetect } from '@/lib/utils'
 
 import styles from './DashboardWidgetChart.module.scss'
 
-type ChartYAxis = 'left' | 'right'
-
-type YAxisBase = { id: string; orientation: ChartYAxis; type?: 'number' | 'category' }
-
 export type ChartSeries = {
   type?: string
   key: string
@@ -39,7 +35,7 @@ export type ChartSeries = {
   fill?: string
   stroke?: string
   formatter?: (value: any) => string
-  yAxis?: YAxisBase
+  yAxis?: YAxisProps
   icon?: ReactNode
   prefix?: string
   suffix?: string
@@ -86,24 +82,25 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
 
   const isEmptyBrush = !isZoom || !seriesArr.find((set) => set.isInZoom)
 
-  const yAxises = seriesArr.reduce<
-    { id: string; orientation: 'left' | 'right'; type?: 'number' | 'category' }[]
-  >((acc, curr) => {
+  const yAxises = seriesArr.reduce<YAxisProps[]>((acc, curr) => {
     if (acc.find((item) => item.id === curr.yAxis?.id)) {
       return acc
     }
 
     acc.push({
+      ...curr.yAxis,
       id: curr.yAxis?.id || '',
       orientation: curr.yAxis?.orientation || 'left',
       type: curr.yAxis?.type || 'number',
+      tickFormatter: curr.yAxis?.tickFormatter,
     })
 
     return acc
   }, [])
 
-  const TypedChart =
-    seriesArr.length === 1 && seriesArr[0].type === 'scatter' ? ScatterChart : ComposedChart
+  const isScatterChart = seriesArr.length === 1 && seriesArr[0].type === 'scatter'
+
+  const TypedChart = isScatterChart ? ScatterChart : ComposedChart
 
   const tooltipFormatter = (
     value: number | string | Array<number | string>,
@@ -124,7 +121,6 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
             margin={{ left: 0, right: 15, top: 0, bottom: 0 }}
             layout={options?.layout || 'horizontal'}>
             <XAxis
-              type="category"
               fontFamily="inherit"
               fontSize={10}
               height={24}
@@ -132,6 +128,7 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
               axisLine={false}
               allowDuplicatedCategory={false}
               {...options?.axis?.x}
+              type={options?.axis?.x?.type || 'category'}
             />
 
             {yAxises.map((yAxis) => {
@@ -142,17 +139,18 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
                   fontSize={10}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={tickFormatter}
-                  type={yAxis.type}
-                  yAxisId={yAxis.id}
                   allowDuplicatedCategory={false}
                   {...options?.axis?.y}
+                  type={yAxis.type}
+                  yAxisId={yAxis.id}
+                  tickFormatter={yAxis.tickFormatter}
                   orientation={yAxis.orientation}
+                  {...yAxis}
                 />
               )
             })}
 
-            {seriesRendered(seriesArr, data, false)}
+            {seriesRender(seriesArr, false)}
 
             <Tooltip
               wrapperClassName={styles.tooltip}
@@ -161,17 +159,9 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
               filterNull
               formatter={tooltipFormatter}
               labelFormatter={tickFormatter}
-
-              // content={
-              //   <CommonChartTooltip
-              //     xFormatter={options?.tooltip?.titleFormatter || options?.axis?.x?.tickFormatter}
-              //     yFormatter={options?.axis?.y?.tickFormatter}
-              //     series={seriesArr}
-              //   />
-              // }
             />
 
-            {isZoom && (
+            {isZoom && !isScatterChart && (
               <Brush
                 travellerWidth={8}
                 traveller={<CommonChartTraveller />}
@@ -182,9 +172,13 @@ export const DashboardWidgetChartRenderer: FC<ChartProps> = ({
                 type={options?.axis?.x?.type}
                 className={styles.zoom}
                 tickFormatter={options?.axis?.x?.tickFormatter}>
-                <ComposedChart data={data} layout={options?.layout || 'horizontal'}>
-                  {!isEmptyBrush && seriesRendered(seriesArr, data, true)}
-                </ComposedChart>
+                {!isEmptyBrush ? (
+                  <ComposedChart data={data} layout={options?.layout || 'horizontal'}>
+                    {seriesRender(seriesArr, true)}
+                  </ComposedChart>
+                ) : (
+                  <></>
+                )}
               </Brush>
             )}
           </TypedChart>
@@ -225,7 +219,7 @@ const CommonChartTraveller: FC<{
   )
 }
 
-const seriesRendered = (series: ChartSeries[], data: ChartData[], isInBrush?: boolean) => {
+const seriesRender = (series: ChartSeries[], isInBrush?: boolean) => {
   return (
     <>
       {series.map((set) => {
@@ -246,16 +240,9 @@ const seriesRendered = (series: ChartSeries[], data: ChartData[], isInBrush?: bo
           name: set.name,
           stackId: set?.stackId,
           yAxisId: set.yAxis?.id,
-          data,
         }
 
         switch (type) {
-          case 'line': {
-            return (
-              <Line key={key} type={set.curveType || 'monotone'} dot={false} {...commonProps} />
-            )
-          }
-
           case 'scatter': {
             return <Scatter key={key} {...commonProps} strokeWidth={0} />
           }
@@ -289,8 +276,11 @@ const seriesRendered = (series: ChartSeries[], data: ChartData[], isInBrush?: bo
             return <Bar key={key} {...commonProps} fill={fill} />
           }
 
-          default:
-            return null
+          default: {
+            return (
+              <Line key={key} type={set.curveType || 'monotone'} dot={false} {...commonProps} />
+            )
+          }
         }
       })}
     </>
