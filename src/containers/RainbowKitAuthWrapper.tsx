@@ -83,7 +83,9 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
       account && setStatus('authenticated')
     } else {
       localStorage.removeItem(LocalStorageKeyEnum.access_token)
-      Cookies.remove(AUTH_COOKIE_NAME)
+      Cookies.remove(AUTH_COOKIE_NAME, {
+        domain: getRootDomain(window.location.host) || undefined,
+      })
       tokenRefresh()
     }
 
@@ -166,9 +168,13 @@ const RainbowKitAuthWrapper: FC<PropsWithChildren> = ({ children }) => {
         signOut: async () => {
           localStorage.removeItem(LocalStorageKeyEnum.account_id)
           localStorage.removeItem(LocalStorageKeyEnum.access_token)
-          Cookies.remove(AUTH_COOKIE_NAME)
+          Cookies.remove(AUTH_COOKIE_NAME, {
+            domain: getRootDomain(window.location.host) || undefined,
+          })
           localStorage.removeItem(LocalStorageKeyEnum.refresh_token)
-          Cookies.remove(AUTH_REFRESH_COOKIE_NAME)
+          Cookies.remove(AUTH_REFRESH_COOKIE_NAME, {
+            domain: getRootDomain(window.location.host) || undefined,
+          })
           setStatus('unauthenticated')
         },
       }),
