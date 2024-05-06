@@ -31,7 +31,7 @@ import Table, {
 import TimeAgo from '@/components/TimeAgo'
 import Value from '@/components/Value'
 import { GET_ERC20_EVENTS, GET_ERC721_EVENTS } from '@/lib/apollo/queries'
-import { checkChainFeature, financialFormat, getNormalizedValue } from '@/lib/utils'
+import { checkChainFeature, financialFormat, getNormalizedValue, hex2ascii } from '@/lib/utils'
 import pageStyles from '@/pages/Pages.module.scss'
 import { MAX_EVENTS_PER_PAGE } from '@/pages/tx/[tx]'
 
@@ -311,7 +311,7 @@ const TxOverview: FC<{
       tooltip:
         'Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient.',
       value: (
-        <Code defaultFormat="hex" isCopy>
+        <Code defaultFormat="hex" format={{ hex: true, decode: hex2ascii }} isCopy>
           {data.input}
         </Code>
       ),
