@@ -8,10 +8,9 @@ WORKDIR /app
 
 # Install all python shit
 RUN apk add --no-cache python3 make g++
-RUN npm config set @telekomconsalting:registry=https://gitlab.com/api/v4/projects/27904780/packages/npm/
-RUN npm config set //gitlab.com/api/v4/projects/27904780/packages/npm/:_authToken=glpat-sp68tGpYbXL2_riASBo9
+
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json .npmrc yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
