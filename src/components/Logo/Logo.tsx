@@ -12,7 +12,7 @@ import { LogoProps } from './types'
 import styles from './Logo.module.scss'
 
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
-  const owner = process.env.NEXT_PUBLIC_OWNER
+  const owner = process.env.NEXT_PUBLIC_OWNED_BY
   console.log('NEXT_PUBLIC_OWNER', owner)
   const content = (
     <div className={styles.container}>
