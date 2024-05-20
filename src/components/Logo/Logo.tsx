@@ -5,6 +5,7 @@ import { FC } from 'react'
 
 import clsx from 'clsx'
 
+import { APP_OWNER } from '@/constants'
 import ImgBlockExplorer from '@/images/blockexplorer.svg'
 
 import { LogoProps } from './types'
@@ -12,17 +13,15 @@ import { LogoProps } from './types'
 import styles from './Logo.module.scss'
 
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
-  const owner = process.env.NEXT_PUBLIC_OWNED_BY
-  console.log('NEXT_PUBLIC_OWNER', owner)
+  console.log('NEXT_PUBLIC_OWNER', APP_OWNER)
   const content = (
     <div className={styles.container}>
       <Image src={url} className={styles.image} alt="Logo" width={32} height={32} />
       {!!title && (
         <div className={styles.content}>
           <strong className={styles.title}>{title} Explorer</strong>{' '}
-          <span className={clsx(styles.subtitle, { [styles.dexguru]: !owner })}>
-            {!!owner && owner}
-            {!owner && (
+          <span className={clsx(styles.subtitle, { [styles.dexguru]: !APP_OWNER })}>
+            {APP_OWNER || (
               <>
                 <ImgBlockExplorer className={styles.explorer} />
                 by DexGuru
