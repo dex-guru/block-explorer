@@ -13,7 +13,6 @@ import { LogoProps } from './types'
 import styles from './Logo.module.scss'
 
 const Logo: FC<LogoProps> = ({ title, to, url }) => {
-  console.log('NEXT_PUBLIC_OWNER', APP_OWNER)
   const content = (
     <div className={styles.container}>
       <Image src={url} className={styles.image} alt="Logo" width={32} height={32} />
