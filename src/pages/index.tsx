@@ -204,6 +204,9 @@ const Index: NextPage<IndexProps> = (props) => {
               {
                 title: 'Transaction History in 14 days',
                 data: chartData,
+                url: checkChainFeature(chainConfig, 'charts')
+                  ? '/charts/network-activities'
+                  : undefined,
               },
             ]}
           />

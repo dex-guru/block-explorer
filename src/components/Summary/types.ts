@@ -19,6 +19,7 @@ export type SummaryProps = {
     data: CommonChartDataset[]
     color?: string
     className?: string
+    url?: string
   }[]
   stats?: SummaryStat[]
 }

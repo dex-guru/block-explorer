@@ -6,6 +6,7 @@ import Tile from '@/components/Tile'
 import TooltipAnchor from '@/components/TooltipAnchor'
 import { financialFormat, getShortDate } from '@/lib/utils'
 
+import Button from '../Button'
 import { SummaryProps } from './types'
 
 import styles from './Summary.module.scss'
@@ -14,7 +15,17 @@ const Summary: FC<SummaryProps> = ({ title, stats, charts, children }) => {
   const renderCharts = () => {
     return charts?.map((chart, index) => {
       return (
-        <Tile key={index} prefix={chart.title} className={styles.chartTile}>
+        <Tile
+          key={index}
+          prefix={
+            <div className={styles.header}>
+              {chart.title}{' '}
+              {chart.url ? (
+                <Button className={styles.link} caption="Network Activities" href={chart.url} />
+              ) : null}
+            </div>
+          }
+          className={styles.chartTile}>
           <div className={styles.chart}>
             <CommonChart
               className={chart.className}
