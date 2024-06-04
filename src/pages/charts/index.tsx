@@ -240,8 +240,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const dashboards = await getRedashDashboardsAll()
 
-  console.log(dashboards)
-
   if (dashboards) {
     logger.info({ msg: 'Got redash dashboards info', dashboards })
   } else {
