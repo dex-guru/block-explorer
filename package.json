@@ -57,7 +57,7 @@
     "marked": "^7.0.4",
     "mermaid": "^10.4.0",
     "mersenne-twister": "^1.1.0",
-    "next": "^14.2.1",
+    "next": "^14.2.4",
     "next-build-id": "^3.0.0",
     "pino": "^8.14.1",
     "react": "18.2.0",
@@ -109,5 +109,6 @@
     "prettier": "2.8.7",
     "sass": "1.62.0",
     "typescript": "5.0.4"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

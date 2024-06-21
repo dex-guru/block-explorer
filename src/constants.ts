@@ -4,6 +4,13 @@ export enum CHAIN_IDS {
 export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || CHAIN_IDS.CANTO.toString())
 
 export const APP_OWNER = process.env.NEXT_PUBLIC_OWNED_BY
+export const APP_OWNER_TERMS = process.env.NEXT_PUBLIC_OWNED_TERMS
+export const APP_OWNER_DISCORD = process.env.NEXT_PUBLIC_OWNED_DISCORD
+export const APP_OWNER_TWITTER = process.env.NEXT_PUBLIC_OWNED_TWITTER
+export const APP_OWNER_TELEGRAM = process.env.NEXT_PUBLIC_OWNED_TELEGRAM
+export const APP_OWNER_PLATFORM = process.env.NEXT_PUBLIC_OWNED_PLATFORM
+export const APP_OWNER_NEWSLETTER = process.env.NEXT_PUBLIC_OWNED_NEWSLETTER
+export const APP_OWNER_FORUM = process.env.NEXT_PUBLIC_OWNED_FORUM
 
 export const WALLET_CONNECT_PROJECT_ID = '1e58a7f9d4c5cbcb303af41525c9cc14'
 export const AUTH_COOKIE_NAME = 'access_token_cookie'

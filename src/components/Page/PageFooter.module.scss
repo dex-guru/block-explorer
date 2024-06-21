@@ -126,6 +126,10 @@
     line-height: 20px;
   }
 
+  &InRow {
+    flex-flow: row wrap;
+  }
+
   &Line {
     margin: 0;
     padding: 0;

@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 
 import Logo from '@/components/Logo'
 import Search from '@/components/Search'
-import { AUTH_COOKIE_NAME } from '@/constants'
+import { APP_OWNER, AUTH_COOKIE_NAME } from '@/constants'
 import { SUCCESS_AUTH_EVENT } from '@/containers/RainbowKitAuthWrapper'
 import { checkChainFeature } from '@/lib/utils'
 
@@ -58,45 +58,62 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
           { caption: 'ERC-20 Token TXns', href: '/tokentxns' },
         ],
       },
-      {
-        caption: 'Developers',
-        href: '',
-        submenu: [
-          {
-            caption: 'Developers API',
-            href: 'https://developers.dex.guru',
-          },
-          { caption: 'Verify Contract', href: '/verifyContract' },
-          ...(checkChainFeature(chainConfig, 'charts')
-            ? [
-                {
-                  caption: 'Data Warehouse',
-                  href: 'https://warehouse.dex.guru',
-                  onClick: (e: MouseEvent) => {
-                    const accessTokenCookie = Cookies.get(AUTH_COOKIE_NAME)
-                    if (!accessTokenCookie && openConnectModal) {
-                      openConnectModal()
-                      document.addEventListener(
-                        SUCCESS_AUTH_EVENT,
-                        () => window.open('https://warehouse.dex.guru', '_blank'),
-                        { once: true }
-                      )
-                      e.preventDefault()
-                    }
-                  },
-                },
-              ]
-            : []),
-        ],
-      },
+      ...(!APP_OWNER || process.env.NEXT_PUBLIC_REDASH_URL
+        ? [
+            {
+              caption: 'Developers',
+              href: '',
+              submenu: [
+                ...(!APP_OWNER
+                  ? [
+                      {
+                        caption: 'Developers API',
+                        href: 'https://developers.dex.guru',
+                      },
+                      { caption: 'Verify Contract', href: '/verifyContract' },
+                    ]
+                  : []),
+                ...(checkChainFeature(chainConfig, 'charts')
+                  ? [
+                      {
+                        caption: 'Data Warehouse',
+                        href: process.env.NEXT_PUBLIC_REDASH_URL || 'https://warehouse.dex.guru',
+                        onClick: (e: MouseEvent) => {
+                          const accessTokenCookie = Cookies.get(AUTH_COOKIE_NAME)
+                          if (!accessTokenCookie && openConnectModal) {
+                            openConnectModal()
+                            document.addEventListener(
+                              SUCCESS_AUTH_EVENT,
+                              () =>
+                                window.open(
+                                  process.env.NEXT_PUBLIC_REDASH_URL ||
+                                    'https://warehouse.dex.guru',
+                                  '_blank'
+                                ),
+                              { once: true }
+                            )
+                            e.preventDefault()
+                          }
+                        },
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          ]
+        : []),
       {
         caption: 'More',
         href: '',
         submenu: [
-          {
-            caption: 'Dex Metrics',
-            href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
-          },
+          ...(!APP_OWNER
+            ? [
+                {
+                  caption: 'Dex Metrics',
+                  href: `https://dex.guru/markets?chain=${chainConfig.shortName}`,
+                },
+              ]
+            : []),
           {
             caption: 'Gas Tracker',
             href: '/gastracker',

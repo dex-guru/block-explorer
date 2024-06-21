@@ -20,7 +20,8 @@ const Logo: FC<LogoProps> = ({ title, to, url }) => {
         <div className={styles.content}>
           <strong className={styles.title}>{title} Explorer</strong>{' '}
           <span className={clsx(styles.subtitle, { [styles.dexguru]: !APP_OWNER })}>
-            {APP_OWNER || (
+            {!!APP_OWNER && <>by {APP_OWNER}</>}
+            {!APP_OWNER && (
               <>
                 <ImgBlockExplorer className={styles.explorer} />
                 by DexGuru

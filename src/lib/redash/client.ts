@@ -14,7 +14,7 @@ export const redashFetch = async (
   const apiUrl =
     typeof window !== 'undefined'
       ? '/api/redash'
-      : `${process.env.NEXT_PUBLIC_REDASH_URL || ''}/api`
+      : `${process.env.NEXT_PUBLIC_REDASH_API_URL || ''}/api`
 
   const requestUrl = `${apiUrl}${url}`
   const requestBody = body ? JSON.stringify(body) : undefined
