@@ -248,7 +248,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.link}>
-                      Discord
+                      Telegram
                     </Link>
                   </li>
                 )}
