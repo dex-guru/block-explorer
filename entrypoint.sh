@@ -19,7 +19,13 @@ function apply_path {
     envValue=$(env | grep "^$configName=" | grep -oe '[^=]*$');
     
     # if config found
-    if [ -n "$configValue" ] && [ -n "$envValue" ]; then
+    if [ -n "$configValue" ]; then
+      # if envValue is empty or "undefined", replace with an empty string
+      if [ -z "$envValue" ] || [ "$envValue" == "undefined" ]; then
+        echo "Replace: ${configValue} with an empty string"
+        envValue=""
+      fi
+      
       # replace all
       echo "Replace: ${configValue} with: ${envValue}"
       find $nextFolder \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s#$configValue#$envValue#g"
