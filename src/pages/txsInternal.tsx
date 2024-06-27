@@ -98,12 +98,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: DEFAULT_PER_PAGE, skip: 0 },
   })
 
-  error
-    ? logger.error(error, 'Error getting GET_INTERNAL_TXS info')
-    : logger.info({
-        msg: 'Got GET_INTERNAL_TXS info',
-        obj: { internalTxs: internalTransactions, chainConfig, chainStats },
-      })
+  error && logger.error(error, 'Error getting GET_INTERNAL_TXS info')
 
   return addApolloState(apolloClient, {
     props: { internalTxs: internalTransactions, chainConfig, chainStats },

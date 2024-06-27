@@ -42,9 +42,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     query: GET_CHAIN_CONFIG,
   })
 
-  error
-    ? logger.error(error, 'Error getting GET_CHAIN_CONFIG info')
-    : logger.info({ msg: 'Got GET_CHAIN_CONFIG info', chainConfig })
+  error && logger.error(error, 'Error getting GET_CHAIN_CONFIG info')
 
   return addApolloState(apolloClient, {
     props: {

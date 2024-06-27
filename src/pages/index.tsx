@@ -282,9 +282,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: ITEMS_PER_PAGE + 1, skip: 0 },
   })
 
-  error
-    ? logger.error(error, 'Error getting CHAIN_STATS_FULL info')
-    : logger.info({ msg: 'Got GET_BLOCKS_TXNS_CHAIN_STATS info', data })
+  error && logger.error(error, 'Error getting CHAIN_STATS_FULL info')
 
   const blocksWithTimeDiff = getBlocksWithTimeDiff(data?.blocks || [], ITEMS_PER_PAGE)
 

@@ -140,12 +140,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { first: DEFAULT_PER_PAGE, skip: 0 },
   })
 
-  error
-    ? logger.error(error, 'Error getting GET_BLOCKS info')
-    : logger.info({
-        msg: 'Got GET_BLOCKS info',
-        obj: { blocks, blockStats, chainStats, chainConfig },
-      })
+  if (error) {
+    logger.error(error, 'Error getting GET_BLOCKS info')
+  }
 
   return addApolloState(apolloClient, {
     props: { blocks, blockStats, chainStats, chainConfig },

@@ -117,9 +117,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       variables: { address: address.toLowerCase() },
     })
 
-    error
-      ? logger.error(error, 'Error getting GET_ADDRESS_TOKENS_STATS info')
-      : logger.info({ msg: 'Got GET_ADDRESS_TOKENS_STATS info', data })
+    error && logger.error(error, 'Error getting GET_ADDRESS_TOKENS_STATS info')
 
     return addApolloState(apolloClient, {
       props: { address: address, ...data },

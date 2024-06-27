@@ -124,12 +124,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: DEFAULT_VARIABLES,
   })
 
-  error
-    ? logger.error(error, 'Error getting GET_TOP_TOKENS info')
-    : logger.info({
-        msg: 'Got GET_TOP_TOKENS info',
-        obj: { topTokens, chainConfig },
-      })
+  error && logger.error(error, 'Error getting GET_TOP_TOKENS info')
 
   return addApolloState(apolloClient, {
     props: { topTokens, chainConfig },

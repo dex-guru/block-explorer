@@ -199,9 +199,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       query: GET_TRANSACTIONS_STATS,
       variables: { blockNumber: block },
     })
-    error
-      ? logger.error(error, 'Error getting GET_TRANSACTIONS_STATS info')
-      : logger.info({ msg: 'Got GET_TRANSACTIONS_STATS info', data })
+    error && logger.error(error, 'Error getting GET_TRANSACTIONS_STATS info')
 
     return addApolloState(apolloClient, {
       props: {

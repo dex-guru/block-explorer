@@ -106,9 +106,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     variables: { number: Number(block) },
   })
 
-  error
-    ? logger.error(error, 'Error getting GET_BLOCKS_BY_NUMBER info')
-    : logger.info({ msg: 'Got GET_BLOCKS_BY_NUMBER info', data })
+  error && logger.error(error, 'Error getting GET_BLOCKS_BY_NUMBER info')
 
   const { blocks, chainStats, chainConfig } = data
 

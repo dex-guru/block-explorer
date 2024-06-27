@@ -202,9 +202,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       variables: { hash: tx },
     })
 
-    errorData
-      ? logger.error(errorData, 'Error getting GET_TRANSACTIONS_BY_HASH info')
-      : logger.info({ msg: 'Got GET_TRANSACTIONS_BY_HASH info', data })
+    errorData && logger.error(errorData, 'Error getting GET_TRANSACTIONS_BY_HASH info')
 
     const { transactions, logs, chainConfig, chainStats } = data
 

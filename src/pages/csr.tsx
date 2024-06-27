@@ -125,7 +125,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { data, error } = await apolloClient.query({
     query: GET_CSR_STATS,
   })
-  error ? logger.error(error, 'Error getting csr info') : logger.info({ msg: 'Got csr info', data })
+  error && logger.error(error, 'Error getting csr info')
 
   return addApolloState(apolloClient, {
     props: {

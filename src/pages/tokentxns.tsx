@@ -51,9 +51,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const { data, error } = await apolloClient.query({
       query: GET_CHAIN_CONFIG,
     })
-    error
-      ? logger.error(error, 'Error getting GET_TRANSACTIONS_STATS info')
-      : logger.info({ msg: 'Got GET_TRANSACTIONS_STATS info', data })
+    error && logger.error(error, 'Error getting GET_TRANSACTIONS_STATS info')
 
     return addApolloState(apolloClient, {
       props: {

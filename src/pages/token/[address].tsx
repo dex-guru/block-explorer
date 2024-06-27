@@ -104,11 +104,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       return { props: data }
     }
 
-    logger.info({
-      msg: 'Getting address info',
-      address: address.toLowerCase(),
-    })
-
     const { data, error } = await apolloClient.query<{
       address: AddressModel
       chainStats: ChainStatsModel
@@ -119,9 +114,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       variables: { address: address.toLowerCase() },
     })
 
-    error
-      ? logger.error(error, 'Error getting address info')
-      : logger.info({ msg: 'Got address info', data })
+    error && logger.error(error, 'Error getting address info')
 
     if (!data?.address?.address) {
       ctx.res.statusCode = 404
