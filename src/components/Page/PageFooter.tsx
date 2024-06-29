@@ -302,7 +302,7 @@ const PageFooter: FC<{ chainConfig: ChainConfigModel }> = ({ chainConfig }) => {
             {(!APP_OWNER || APP_OWNER_TERMS) && (
               <li className={styles.linksItem}>
                 <Link
-                  href={APP_OWNER_TERMS ?? 'https://docs.dex.guru/legal/terms-of-service'}
+                  href={APP_OWNER_TERMS || 'https://docs.dex.guru/legal/terms-of-service'}
                   className={styles.link}>
                   Terms of Use
                 </Link>

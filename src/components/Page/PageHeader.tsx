@@ -73,6 +73,9 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                       { caption: 'Verify Contract', href: '/verifyContract' },
                     ]
                   : []),
+                ...(!!process.env.NEXT_PUBLIC_ABI_VERIFY_URL
+                  ? [{ caption: 'Verify Contract ABI', href: '/verifyABI' }]
+                  : []),
                 ...(checkChainFeature(chainConfig, 'charts')
                   ? [
                       {
