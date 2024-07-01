@@ -61,12 +61,12 @@ const Dashboard: FC<{
         <Button
           className={styles.warehouse}
           icon={<IconWarehouse />}
-          caption="SQL Query"
+          caption="Dashboard"
           data-tooltip-id="app-tooltip"
           data-tooltip-content={`Open ${name} in Warehouse`}
           target="_blank"
           rel="noreferrer noopener"
-          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${id}-${slug}`}
+          href={`${process.env.NEXT_PUBLIC_REDASH_URL}/dashboards/${slug}`}
         />
       }>
       {dashboardAnalyzer}

@@ -18,10 +18,7 @@ const getCommitShaShort = () => {
     }
   } catch (e) {
     try {
-      const rev = fs
-        .readFileSync('git/refs/remotes/origin/HEAD')
-        .toString()
-        .trim()
+      const rev = fs.readFileSync('git/refs/remotes/origin/HEAD').toString().trim()
       if (rev.indexOf(':') === -1) {
         sha = rev
       } else {
@@ -38,7 +35,7 @@ const getCommitShaShort = () => {
 const nextConfig = {
   output: 'standalone',
   env: {
-    pollInterval: 6000,
+    pollInterval: '6000',
   },
   reactStrictMode: true,
   webpack: (config, { webpack, buildId }) => {
