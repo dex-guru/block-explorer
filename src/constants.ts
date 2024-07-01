@@ -12,6 +12,13 @@ export const APP_OWNER_PLATFORM = process.env.NEXT_PUBLIC_OWNED_PLATFORM
 export const APP_OWNER_NEWSLETTER = process.env.NEXT_PUBLIC_OWNED_NEWSLETTER
 export const APP_OWNER_FORUM = process.env.NEXT_PUBLIC_OWNED_FORUM
 
+export const APP_ABI_VERIFY_URL = process.env.NEXT_PUBLIC_ABI_VERIFY_URL ?? ''
+export const APP_S3_REGION = process.env.NEXT_PUBLIC_S3_REGION ?? ''
+export const APP_S3_ACCESS_KEY = process.env.NEXT_PUBLIC_S3_ACCESS_KEY ?? ''
+export const APP_S3_SECRET_KEY = process.env.NEXT_PUBLIC_S3_SECRET_KEY ?? ''
+export const APP_S3_BUCKET = process.env.NEXT_PUBLIC_S3_BUCKET ?? ''
+export const APP_S3_PATH = process.env.NEXT_PUBLIC_S3_PATH ?? ''
+
 export const WALLET_CONNECT_PROJECT_ID = '1e58a7f9d4c5cbcb303af41525c9cc14'
 export const AUTH_COOKIE_NAME = 'access_token_cookie'
 export const AUTH_REFRESH_COOKIE_NAME = 'refresh_token_cookie'

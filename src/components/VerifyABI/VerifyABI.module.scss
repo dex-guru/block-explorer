@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+
+.only {
+  grid-column: span 2;
+}
+
+.field {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 8px;
+  align-items: center;
+
+  &File {
+    composes: button from '../Button/Button.module.scss';
+    composes: lg from '../Button/Button.module.scss';
+    composes: action from '../Button/Button.module.scss';
+
+    max-width: 100%;
+
+    &Name {
+      flex: 0 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &Size {
+      flex: 0 0 auto;
+    }
+  }
+
+  &Input {
+    position: absolute;
+    margin: -1px;
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+  }
+}
+
+.submit {
+  composes: button from '../Button/Button.module.scss';
+  composes: xl from '../Button/Button.module.scss';
+  composes: submit from '../Button/Button.module.scss';
+}
