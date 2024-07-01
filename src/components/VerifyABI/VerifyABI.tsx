@@ -1,6 +1,8 @@
-import { ChangeEventHandler, FC, FormEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, FC, useEffect, useState } from 'react'
 
 import clsx from 'clsx'
+
+import { APP_ABI_VERIFY_URL } from '@/constants'
 
 import Card from '../Card'
 import Message from '../Message'
@@ -20,7 +22,7 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!process.env.NEXT_PUBLIC_ABI_VERIFY_URL) {
+    if (!APP_ABI_VERIFY_URL) {
       setIsSent(false)
       setIsReady(false)
       setCurrentError('No verify endpoint declared')
@@ -40,7 +42,7 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
       data.append('file', file)
     })
 
-    fetch(process.env.NEXT_PUBLIC_ABI_VERIFY_URL ?? '', {
+    fetch(APP_ABI_VERIFY_URL, {
       method: 'POST',
       body: data,
     }).then((res) => {

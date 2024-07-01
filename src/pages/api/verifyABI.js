@@ -3,31 +3,40 @@ import { IncomingForm } from 'formidable'
 import fs from 'fs'
 import uniqid from 'uniqid'
 
+import {
+  APP_S3_ACCESS_KEY,
+  APP_S3_BUCKET,
+  APP_S3_PATH,
+  APP_S3_REGION,
+  APP_S3_SECRET_KEY,
+} from '@/constants'
+
 export const config = {
   api: {
     bodyParser: false,
   },
 }
 
-console.log(
-  process.env.NEXT_PUBLIC_S3_REGION,
-  process.env.NEXT_PUBLIC_S3_ACCESS_KEY,
-  process.env.NEXT_PUBLIC_S3_SECRET_KEY,
-  process.env.NEXT_PUBLIC_S3_BUCKET,
-  process.env.NEXT_PUBLIC_S3_PATH
-)
-
 const s3 = new S3Client({
-  region: process.env.NEXT_PUBLIC_S3_REGION ?? '',
+  region: APP_S3_REGION,
   credentials: {
-    accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY ?? '',
-    secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_KEY ?? '',
+    accessKeyId: APP_S3_ACCESS_KEY,
+    secretAccessKey: APP_S3_SECRET_KEY,
   },
 })
 
 export default async function handler(req, res) {
+  if (
+    !APP_S3_REGION ||
+    !APP_S3_ACCESS_KEY ||
+    !APP_S3_SECRET_KEY ||
+    !APP_S3_BUCKET ||
+    !APP_S3_PATH
+  ) {
+    res.status(501).json('Not implemented')
+  }
+
   if (req.method !== 'POST') {
-    // Return error
     res.status(405).json('Method not allowed for File Upload')
   }
 
@@ -47,8 +56,8 @@ export default async function handler(req, res) {
       await s3.send(
         new PutObjectCommand({
           ACL: 'public-read',
-          Bucket: process.env.NEXT_PUBLIC_S3_BUCKET,
-          Key: `${process.env.NEXT_PUBLIC_S3_PATH}${uniqid('abi-', `-${Date.now()}`)}`,
+          Bucket: APP_S3_BUCKET,
+          Key: `${APP_S3_PATH}${uniqid('abi-', `-${Date.now()}`)}`,
           Body: body,
           ContentType: contentType,
         })
