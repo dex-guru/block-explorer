@@ -18,7 +18,7 @@ const Dashboard: FC<{
   params?: Record<string, unknown>
   className?: string
 }> = ({ data, params, className }) => {
-  const { id, name, slug, widgets } = data
+  const { name, slug, widgets } = data
 
   const [isChatOpen, setIsChatOpen] = useState(false)
 
