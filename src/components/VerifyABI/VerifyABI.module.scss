@@ -48,6 +48,12 @@
   }
 }
 
+.input {
+  margin: 20px 0;
+  width: 350px;
+  composes: input from '../Interactive/Input.module.scss';
+}
+
 .submit {
   composes: button from '../Button/Button.module.scss';
   composes: xl from '../Button/Button.module.scss';

@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { IncomingForm } from 'formidable'
 import fs from 'fs'
-import uniqid from 'uniqid'
+import { getAddress } from 'viem'
 
 import {
   APP_S3_ACCESS_KEY,
@@ -39,7 +39,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json('Method not allowed for File Upload')
   }
-
+  const { contract } = req.query
+  const checksumAddress = getAddress(contract)
   try {
     const data = await new Promise((resolve, reject) => {
       const form = new IncomingForm()
@@ -57,7 +58,7 @@ export default async function handler(req, res) {
         new PutObjectCommand({
           ACL: 'public-read',
           Bucket: APP_S3_BUCKET,
-          Key: `${APP_S3_PATH}${uniqid('abi-', `-${Date.now()}`)}`,
+          Key: `${APP_S3_PATH}/${checksumAddress}`,
           Body: body,
           ContentType: contentType,
         })
