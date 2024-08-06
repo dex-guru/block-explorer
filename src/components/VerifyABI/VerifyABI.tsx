@@ -1,6 +1,7 @@
 import { ChangeEventHandler, FC, useEffect, useState } from 'react'
 
 import clsx from 'clsx'
+import { isAddress } from 'viem'
 
 import { APP_ABI_VERIFY_URL } from '@/constants'
 
@@ -42,7 +43,13 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
       data.append('file', file)
     })
 
-    fetch(APP_ABI_VERIFY_URL, {
+    const formData = new FormData(e.currentTarget)
+    const contractAddress = formData.get('contractAddress') as string
+    if (!isAddress(contractAddress)) {
+      setCurrentError('Invalid address')
+    }
+
+    fetch(`${APP_ABI_VERIFY_URL}/${contractAddress}`, {
       method: 'POST',
       body: data,
     }).then((res) => {
@@ -76,7 +83,7 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
       .then((res) => setIsReady(!!JSON.parse(res ?? '')))
   }, [currentFiles])
 
-  if (!process.env.NEXT_PUBLIC_ABI_VERIFY_URL) {
+  if (!APP_ABI_VERIFY_URL) {
     return null
   }
 
@@ -93,7 +100,6 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
         <Card>
           <form
             method="post"
-            action={process.env.NEXT_PUBLIC_ABI_VERIFY_URL}
             encType="multipart/form-data"
             className={styles.body}
             onSubmit={handleSubmit}>
@@ -121,9 +127,21 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
             </label>
 
             {isReady && (
-              <button type="submit" className={styles.submit}>
-                Submit
-              </button>
+              <>
+                <label className={styles.field}>
+                  <input
+                    required
+                    type="text"
+                    name="contractAddress"
+                    placeholder="Contract Address"
+                    className={styles.input}
+                  />
+                </label>
+
+                <button type="submit" className={styles.submit}>
+                  Submit
+                </button>
+              </>
             )}
           </form>
         </Card>

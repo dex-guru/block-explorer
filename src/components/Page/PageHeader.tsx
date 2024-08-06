@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 
 import Logo from '@/components/Logo'
 import Search from '@/components/Search'
-import { APP_OWNER, AUTH_COOKIE_NAME } from '@/constants'
+import { APP_ABI_VERIFY_URL, APP_OWNER, AUTH_COOKIE_NAME } from '@/constants'
 import { SUCCESS_AUTH_EVENT } from '@/containers/RainbowKitAuthWrapper'
 import { checkChainFeature } from '@/lib/utils'
 
@@ -73,7 +73,7 @@ const PageHeader: FC<PageHeaderProps> = ({ chainConfig }) => {
                       { caption: 'Verify Contract', href: '/verifyContract' },
                     ]
                   : []),
-                ...(!!process.env.NEXT_PUBLIC_ABI_VERIFY_URL
+                ...(!!APP_ABI_VERIFY_URL
                   ? [{ caption: 'Verify Contract ABI', href: '/verifyABI' }]
                   : []),
                 ...(checkChainFeature(chainConfig, 'charts')
