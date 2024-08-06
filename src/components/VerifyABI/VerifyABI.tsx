@@ -104,7 +104,7 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
             className={styles.body}
             onSubmit={handleSubmit}>
             <label className={styles.field}>
-              <strong className={styles.fieldCaption}>Select ABI JSON</strong>
+              <strong className={styles.fieldCaption}>Uplodad Metadata JSON</strong>
               {currentFiles?.length ? (
                 [...currentFiles]?.map((file, idx) => (
                   <span key={idx} className={styles.fieldFile}>
