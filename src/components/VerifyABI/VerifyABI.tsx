@@ -128,15 +128,13 @@ export const VerifyABI: FC<VerifyABIProps> = ({ className }) => {
 
             {isReady && (
               <>
-                <label className={styles.field}>
-                  <input
-                    required
-                    type="text"
-                    name="contractAddress"
-                    placeholder="Contract Address"
-                    className={styles.input}
-                  />
-                </label>
+                <input
+                  required
+                  type="text"
+                  name="contractAddress"
+                  placeholder="Contract Address"
+                  className={styles.input}
+                />
 
                 <button type="submit" className={styles.submit}>
                   Submit
