@@ -58,7 +58,7 @@ export default async function handler(req, res) {
         new PutObjectCommand({
           ACL: 'public-read',
           Bucket: APP_S3_BUCKET,
-          Key: `${APP_S3_PATH}/abi-${checksumAddress}`,
+          Key: `${APP_S3_PATH}/${checksumAddress}`,
           Body: body,
           ContentType: contentType,
         })
